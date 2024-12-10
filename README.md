@@ -38,10 +38,18 @@ Arrange pages in the desired order.
 Download the final book as a PDF.
 
 
-## Tech Stack 🧰
-- Frontend: React, TypeScript, CSS Modules
-- Image Processing: Canvas API, JavaScript libraries (e.g., Konva.js)
-- PDF Generation: jsPDF
+- ## Tech Stack 🧰
+
+This project is built with the following technologies and tools:
+
+- **TypeScript**: For type-safe JavaScript development.  
+- **React**: To build the user interface. Documentation referenced directly in the app - [React Documentation](https://react.dev/reference/react).  
+  - **Server API**: For server-side rendering or data fetching.  
+  - **Client API**: For client-side interactions and components.  
+- **Vite**: A fast and modern build tool - [Learn more](https://vite.dev/).  
+- **Tailwind CSS**: For utility-first styling with rapid development.  
+- **GitHub Actions**: For automated deployment workflows.  
+
 
 
 ## Project Structure 📂
