@@ -9,7 +9,7 @@ A React application for creating personalized coloring books from imported or cu
 - Simple and intuitive interface for all age groups.
 
 ## Demo 🚀
-[Live Demo](#) (Link to the deployed version, if available)
+[Live Demo](#)
 
 ## Installation 🛠️
 
