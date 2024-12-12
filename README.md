@@ -11,25 +11,6 @@ A React application for creating personalized coloring books from imported or cu
 ## Demo 🚀
 [Live Demo](#)
 
-## Installation 🛠️
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/willahh/coloringbook.git
-   cd coloringbook
-
-
-### Install dependencies:
-
-```bash
-npm install # Start the development server:
-```
-
-```bash
-npm start
-# Open your browser and navigate to http://localhost:3000.
-```
-
 
 ## Usage 📖
 Upload an image to convert it into a coloring outline.
@@ -67,6 +48,42 @@ coloring-book-creator/
 └── README.md
 ```
 
+
+## Installation 🛠️
+
+1. Clone this repository:
+   ```bash
+   git clone https://github.com/willahh/coloringbook.git
+   cd coloringbook
+
+
+### Install dependencies:
+
+```bash
+npm install # Start the development server:
+```
+
+```bash
+npm start
+# Open your browser and navigate to http://localhost:3000.
+```
+
+## Project setup
+```sh
+npm create vite@latest # Install Vite, Typescript is setup automatically (config files)
+npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss and autoprefixer
+npx tailwindcss init -p
+# npx tailwindcss -i ./src/index.css -o ./src/output.css --watch
+```
+
+## Build
+```sh
+# Build css
+npm run 
+
+## CSS dev
+npm run 
+```
 
 ## Contributing 🤝
 Contributions are welcome!
