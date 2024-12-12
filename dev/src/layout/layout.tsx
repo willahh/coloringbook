@@ -8,13 +8,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ header, main, side }) => {
   return (
-    <>
-      <div className="min-h-screen grid container">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-1">
         {side}
         {main}
-        {header}
       </div>
-    </>
+      {header}
+    </div>
   );
 };
 

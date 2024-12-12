@@ -17,9 +17,13 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
   );
 };
 
-const Pages = () => {
+
+interface PagesProps {
+  className?: string;
+}
+const Pages: React.FC<PagesProps> = ({ className }) => {
   return (
-    <aside className="grid grid-cols-2 gap-2">
+    <aside className={`grid grid-cols-2 gap-2 p-4 ${className}`}>
       <Page pageNumber={1} />
       <Page pageNumber={2} />
       <Page pageNumber={3} />
