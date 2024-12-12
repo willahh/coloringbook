@@ -1,13 +1,14 @@
-import Layout from './layout/layout';
-import Pages from './components/pages/pages';
-import Header from './components/header';
+import Layout from '../../layout/layout';
+import Pages from '../../components/pages/pages';
+import Header from '../../components/header';
+import './edit.css';
 
-function App() {
+function Edit() {
   return (
     <Layout
       header={<Header />}
       main={
-        <main className="flex-1 bg-gray-300">
+        <main className="flex-1 ">
           <p>Content</p>
           <p>
             Edit <code>src/App.tsx</code> and save to test HMR
@@ -19,4 +20,4 @@ function App() {
   );
 }
 
-export default App;
+export default Edit;
