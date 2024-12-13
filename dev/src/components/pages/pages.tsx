@@ -1,18 +1,36 @@
+import { motion } from 'motion/react';
 interface PageProps {
   pageNumber: number;
 }
 
 const Page: React.FC<PageProps> = ({ pageNumber }) => {
+  const transitionDelay = pageNumber / 10;
+  console.log('transitionDelay', transitionDelay);
   return (
-    <div
+    <motion.div
       className="flex flex-col 
-      w-10 h-16 w-14 h-20
+       w-14 h-20
       focus:outline-dashed focus:outline-2 focus:-outline-offset-4
      border-2 border-violet-500  rounded-md overflow-hidden shadow-md shadow-black
       
       
       transition duration-150 ease-in-out
       "
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{
+        // type: 'spring',
+        // stiffness: 100,
+        delay: transitionDelay,
+        duration: 1,
+        type: 'tween',
+      }}
+      // transition= {{
+      //   // default: { type: "spring" },
+      //   y: {delay: transitionDelay},
+      //   opacity: { ease: "linear" }
+      // }}
+
       tabIndex={0}
       onFocus={() => {
         console.log('on focus');
@@ -20,7 +38,7 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
     >
       <div className="flex flex-1 bg-white"></div>
       <div className="bg-violet-500 text-xs p-0.5 text-right">{pageNumber}</div>
-    </div>
+    </motion.div>
   );
 };
 
@@ -30,14 +48,19 @@ interface PagesProps {
 const Pages: React.FC<PagesProps> = ({ className }) => {
   return (
     <div>
-      <aside className={`grid grid-cols-2 gap-4 p-4 ${className}`}>
+      <motion.div
+        className={`grid grid-cols-2 gap-4 p-4 ${className}`}
+        // initial={{ y: -200, opacity: 0 }}
+        // animate={{ y: 0, opacity: 100}}
+        // transition={{delay: 3}}
+      >
         <Page pageNumber={1} />
         <Page pageNumber={2} />
         <Page pageNumber={3} />
         <Page pageNumber={4} />
         <Page pageNumber={5} />
         <Page pageNumber={6} />
-      </aside>
+      </motion.div>
     </div>
   );
 };
