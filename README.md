@@ -73,7 +73,10 @@ npm start
 npm create vite@latest # Install Vite, Typescript is setup automatically (config files)
 npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss and autoprefixer
 npx tailwindcss init -p
-# npx tailwindcss -i ./src/index.css -o ./src/output.css --watch
+npm install motion
+npm install react-router-dom
+npm install @types/react-router-dom
+# npx tailwindcss -i ./src/app.css -o ./src/output.css --watch
 ```
 
 ## Build
