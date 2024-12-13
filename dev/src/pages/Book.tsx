@@ -1,6 +1,6 @@
-import Layout from '../../layout/layout';
-import Pages from '../../components/pages/pages';
-import Header from '../../components/header';
+import Layout from '../layout/layout';
+import Pages from '../components/pages/pages';
+import Header from '../components/header';
 import './book.css';
 
 function Book() {
