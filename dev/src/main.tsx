@@ -1,12 +1,12 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import Edit from './pages/edit/Edit.tsx';
+import Book from './pages/book/Book.tsx';
 // import Home from './pages/home/Home.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Edit />
+    <Book />
     {/* <Home /> */}
   </StrictMode>
 );

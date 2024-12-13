@@ -1,9 +1,9 @@
 import Layout from '../../layout/layout';
 import Pages from '../../components/pages/pages';
 import Header from '../../components/header';
-import './edit.css';
+import './book.css';
 
-function Edit() {
+function Book() {
   return (
     <Layout
       header={<Header />}
@@ -20,4 +20,4 @@ function Edit() {
   );
 }
 
-export default Edit;
+export default Book;
