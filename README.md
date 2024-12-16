@@ -58,7 +58,6 @@ coloring-book-creator/
 
 
 ### Install dependencies:
-
 ```bash
 npm install # Start the development server:
 ```
@@ -79,13 +78,19 @@ npm install @types/react-router-dom
 # npx tailwindcss -i ./src/app.css -o ./src/output.css --watch
 ```
 
-## Build
+## Build css
 ```sh
-# Build css
+cd dev
 npm run 
 
-## CSS dev
-npm run 
+```
+
+## Build for production
+dist folder is /docs to match Github Page configuration
+
+```sh
+cd dev
+npm run build 
 ```
 
 ## Contributing 🤝
