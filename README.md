@@ -104,6 +104,8 @@ Github pages automatically trigger a pipeline after the push.
 Tasks can be monitored on https://github.com/willahh/coloringbook/actions.
 Build time can last between 1 to 5 minutes.
 ```
+<img width="640" alt="Capture d’écran 2024-12-16 à 16 41 00" src="https://github.com/user-attachments/assets/022c7bc0-f695-4ee5-909e-84bbd9119448" />
+
 
 
 ## Acknowledgments 🙏
