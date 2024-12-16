@@ -1,4 +1,6 @@
+import motionConfig from '../shared/shared'; // FIXME/ import from '@shared/shared' doesn't work
 import './layout.css';
+import { motion } from 'motion/react';
 
 interface LayoutProps {
   header: React.ReactNode;
@@ -8,13 +10,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ header, main, side }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <motion.div className="flex flex-col min-h-screen" {...motionConfig}>
       <div className="flex flex-1">
         {side}
         {main}
       </div>
       {header}
-    </div>
+    </motion.div>
   );
 };
 

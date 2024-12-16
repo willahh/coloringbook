@@ -1,17 +1,21 @@
-import './home.css';
+import { motion } from 'motion/react';
 import { Link } from 'react-router';
+import motionConfig from '../shared/shared';
+import './home.css';
 
 const Home: React.FC = () => {
   return (
-    <div className="scene">
+    <motion.div className="scene" {...motionConfig}>
       <div className="spot spot-1" />
       <div className="spot spot-2" />
       <div className="frame">
         <div>
-          <Link to="/book">Book</Link>
+          <Link to="/book" viewTransition>
+            Book
+          </Link>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

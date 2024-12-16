@@ -1,4 +1,4 @@
-import Layout from '../layout/layout';
+import Layout from './layout';
 import Pages from '../components/pages/pages';
 import Header from '../components/header';
 import './book.css';
