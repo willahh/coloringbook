@@ -7,7 +7,7 @@ import Home from './pages/home.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='/coloringbook'>
       <Routes>
         <Route index element={<Home />}></Route>
         <Route path="book" element={<Book />}></Route>

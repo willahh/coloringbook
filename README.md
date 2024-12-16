@@ -19,8 +19,7 @@ Arrange pages in the desired order.
 Download the final book as a PDF.
 
 
-- ## Tech Stack 🧰
-
+## Tech Stack 🧰
 This project is built with the following technologies and tools:
 
 - **TypeScript**: For type-safe JavaScript development.  
@@ -30,7 +29,6 @@ This project is built with the following technologies and tools:
 - **Vite**: A fast and modern build tool - [Learn more](https://vite.dev/).  
 - **Tailwind CSS**: For utility-first styling with rapid development.  
 - **GitHub Actions**: For automated deployment workflows.  
-
 
 
 ## Project Structure 📂
@@ -82,20 +80,30 @@ npm install @types/react-router-dom
 ```sh
 cd dev
 npm run 
-
 ```
 
 ## Build for production
-dist folder is /docs to match Github Page configuration
+The destination folder is in the folder "/docs" to match Github Page default configuration.
 
 ```sh
 cd dev
 npm run build 
 ```
 
-## Contributing 🤝
-Contributions are welcome!
-Feel free to submit issues or pull requests.
+## Deploy for production
+The current production environment is on **Github Page**.
+The url is https://willahh.github.io/coloringbook/
+
+To deploy to production : 
+```sh
+cd dev
+npm run build
+git push # Push to master branch on github.com/willahh/coloringbook
+
+Github pages automatically trigger a pipeline after the push.
+Tasks can be monitored on https://github.com/willahh/coloringbook/actions.
+Build time can last between 1 to 5 minutes.
+```
 
 
 ## Acknowledgments 🙏
