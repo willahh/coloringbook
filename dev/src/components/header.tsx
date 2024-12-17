@@ -9,8 +9,8 @@ const Logo = () => (
 const Header: React.FC<HeaderProps> = ({ className }) => {
   return (
     <header
-      className={`pr-6 h-20 flex items-center justify-end border-t border-violet-800 ${className}`}
-      style={{ backgroundColor: '#3a0ba3' }}
+      className={`pr-6 h-20 flex items-center justify-end border-t border-indigo-900 ${className} bg-indigo-950`}
+      
     >
       <Logo />
     </header>

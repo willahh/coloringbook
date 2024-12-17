@@ -1,4 +1,14 @@
 /* —————————————————————————————————————————————————————————————————————————————
+  [ TODO ]
+  - [ ] Create a default color (primary ?) and switch "violet" occurences to
+  primary
+
+  https://tailwindcss.com/docs/adding-custom-styles#using-css-and-layer
+  ———————————————————————————————————————————————————————————————————————————— */
+
+
+
+/* —————————————————————————————————————————————————————————————————————————————
   Imports
   ———————————————————————————————————————————————————————————————————————————— */
 @tailwind base;
@@ -11,13 +21,13 @@
   Tailwind css utilities classes
   ———————————————————————————————————————————————————————————————————————————— */
 .btn-primary {
-  @apply bg-violet-500 text-white font-sans px-4 py-2 rounded hover:bg-violet-500
+  @apply bg-indigo-500 text-white font-sans px-4 py-2 rounded hover:bg-indigo-500
 }
 
 
 
 /* —————————————————————————————————————————————————————————————————————————————
-  Main
+  Base
   ———————————————————————————————————————————————————————————————————————————— */
 body {
   min-height: 100vh;
@@ -26,14 +36,26 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at top left, rgb(184 52 148) 3%, rgb(0 16 31) 50%);
   overflow: hidden;
+}
+
+@layer base {
+  body {
+    background: radial-gradient(circle at top left, theme('colors.fuchsia.900') 3%, theme('colors.indigo.950') 50%);
+  }
 }
 
 #root {
   min-height: 100vh;
   min-width: 100vw;
 }
+
+
+
+
+/* —————————————————————————————————————————————————————————————————————————————
+  components
+  ———————————————————————————————————————————————————————————————————————————— */
 
 
 

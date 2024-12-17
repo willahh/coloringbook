@@ -37,10 +37,10 @@ const Button: React.FC<ButtonProps> = ({
   const baseStyle =
     // 'flex px-4 rounded bg-blue-500 text-white font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700';
     `py-3 px-6 rounded-lg flex items-center space-x-4 
-    bg-violet-500 text-white font-bold 
+    bg-indigo-500 text-white
     transition-all duration-300 ease-in-out 
-    hover:bg-violet-600 
-    focus:outline-none focus:ring-2 focus:ring-violet-300 active:bg-violet-700`;
+    hover:bg-indigo-600 
+    focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-700`;
   const combinedStyle = `${baseStyle} ${className}`;
 
   return (

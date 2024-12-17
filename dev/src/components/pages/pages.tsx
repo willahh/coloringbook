@@ -11,7 +11,7 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
       className="flex flex-col 
       w-14 h-20
       focus:outline-dashed focus:outline-2 focus:-outline-offset-4
-      border-2 border-violet-500  rounded-md overflow-hidden shadow-md shadow-black
+      border-2 border-indigo-500  rounded-md overflow-hidden shadow-md shadow-black
       transition duration-150 ease-in-out
       "
       initial={{ y: -20, opacity: 0 }}
@@ -28,7 +28,7 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
       }}
     >
       <div className="flex flex-1 bg-white"></div>
-      <div className="bg-violet-500 text-xs p-0.5 text-right">{pageNumber}</div>
+      <div className="bg-indigo-500 text-xs p-0.5 text-right">{pageNumber}</div>
     </motion.div>
   );
 };

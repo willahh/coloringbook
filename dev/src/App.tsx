@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import './app.css'; // FIXME: import './app.css' generate a warning : Cannot find module './app.css' or its corresponding type declarations.ts(2307)
+import './main.css';
 import BookPage from './pages/book';
 import HomePage from './pages/home';
 
