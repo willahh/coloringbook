@@ -1,22 +1,27 @@
 import motionConfig from '../shared/shared'; // FIXME/ import from '@shared/shared' doesn't work
-import './layout.css';
 import { motion } from 'motion/react';
+import Header from '../components/Header';
 
 interface LayoutProps {
-  header: React.ReactNode;
-  main: React.ReactNode;
-  side: React.ReactNode;
+  className?: string;
+  aside?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
-const Layout: React.FC<LayoutProps> = ({ header, main, side }) => {
+const Layout: React.FC<LayoutProps> = ({ className, aside, children }) => {
   return (
-    <motion.div className="flex flex-col min-h-screen" {...motionConfig}>
-      <div className="flex flex-1">
-        {side}
-        {main}
-      </div>
-      {header}
-    </motion.div>
+    <div className={`flex flex-col min-h-screen`}>
+      {/* <div className="spot spot-1" /> */}
+      {/* <div className="spot spot-2" /> */}
+      <motion.div
+        className={`flex flex-1 ${className || ''}`}
+        {...motionConfig}
+      >
+        {aside}
+        {children}
+      </motion.div>
+      <Header />
+    </div>
   );
 };
 
