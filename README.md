@@ -70,6 +70,7 @@ npm start
 npm create vite@latest # Install Vite, Typescript is setup automatically (config files)
 npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss and autoprefixer
 npm install -D @types/node # Install node types (fix an issue with a specific vite.config.ts)
+npm install vite-plugin-svgr --save-dev # To manage the import of svg icons
 npx tailwindcss init -p
 npm install motion
 npm install react-router-dom
@@ -80,7 +81,7 @@ npm install @types/react-router-dom
 ## Build css
 ```sh
 cd dev
-npm run 
+npm run dev
 ```
 
 ## Build for production

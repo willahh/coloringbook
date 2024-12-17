@@ -1,7 +1,7 @@
 import Layout from './layout';
-import Pages from '../components/pages/pages';
+import Pages from '@/components/pages/Pages';
 
-function Book() {
+const BookPage: React.FC = () => {
   return (
     <Layout aside={<Pages className={``} />}>
       <main className="flex-1 ">
@@ -12,6 +12,6 @@ function Book() {
       </main>
     </Layout>
   );
-}
+};
 
-export default Book;
+export default BookPage;

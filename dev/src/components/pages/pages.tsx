@@ -9,27 +9,18 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
   return (
     <motion.div
       className="flex flex-col 
-       w-14 h-20
+      w-14 h-20
       focus:outline-dashed focus:outline-2 focus:-outline-offset-4
-     border-2 border-violet-500  rounded-md overflow-hidden shadow-md shadow-black
-      
-      
+      border-2 border-violet-500  rounded-md overflow-hidden shadow-md shadow-black
       transition duration-150 ease-in-out
       "
       initial={{ y: -20, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        // type: 'spring',
-        // stiffness: 100,
         delay: transitionDelay,
         duration: 1,
         type: 'tween',
       }}
-      // transition= {{
-      //   // default: { type: "spring" },
-      //   y: {delay: transitionDelay},
-      //   opacity: { ease: "linear" }
-      // }}
 
       tabIndex={0}
       onFocus={() => {

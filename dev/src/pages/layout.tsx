@@ -1,6 +1,6 @@
-import motionConfig from '../shared/shared'; // FIXME/ import from '@shared/shared' doesn't work
+import motionConfig from '@/shared/shared'; // FIXME/ import from '@shared/shared' doesn't work
 import { motion } from 'motion/react';
-import Header from '../components/Header';
+import Header from '@/components/Header';
 
 interface LayoutProps {
   className?: string;

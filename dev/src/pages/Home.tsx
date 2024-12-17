@@ -1,8 +1,9 @@
 // import { Link } from 'react-router';
 import Layout from './layout';
-import Button from '@/components/Button';
+import Button from '@components/Button';
+// import AddIcon from '@assets/icons/add.svg?react';
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   return (
     <Layout className="p-10 items-center justify-center w-full">
       <div className="w-96 bg-white rounded-md text-center p-10">
@@ -13,39 +14,16 @@ const Home: React.FC = () => {
         <p className="text-center text-gray-600">
           Create, color, share: your coloring adventure begins here!
         </p>
+        <p>TODO: Add lodash</p>
 
         <Button>
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
+          {/* <AddIcon /> */}
           <span>Create new book</span>
-          <svg
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
+          {/* <AddIcon /> */}
         </Button>
       </div>
     </Layout>
   );
 };
 
-export default Home;
+export default HomePage;

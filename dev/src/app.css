@@ -1,11 +1,35 @@
+/* —————————————————————————————————————————————————————————————————————————————
+  Imports
+  ———————————————————————————————————————————————————————————————————————————— */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* main */
+
+
+/* —————————————————————————————————————————————————————————————————————————————
+  Tailwind css utilities classes
+  ———————————————————————————————————————————————————————————————————————————— */
+.btn-primary {
+  @apply bg-violet-500 text-white font-sans px-4 py-2 rounded hover:bg-violet-500
+}
+
+
+
+/* —————————————————————————————————————————————————————————————————————————————
+  Main
+  ———————————————————————————————————————————————————————————————————————————— */
 body {
   min-height: 100vh;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at top left, rgb(184 52 148) 3%, rgb(0 16 31) 50%);
+  overflow: hidden;
 }
+
 #root {
   min-height: 100vh;
   min-width: 100vw;
@@ -13,9 +37,9 @@ body {
 
 
 
-
-
-/* transitions */
+/* —————————————————————————————————————————————————————————————————————————————
+  Transitions
+  ———————————————————————————————————————————————————————————————————————————— */
 ::view-transition-old(root) {
   animation: none;
 }
@@ -24,7 +48,6 @@ body {
   animation: none;
 }
 
-/* Pour un exemple d'animation personnalisée */
 ::view-transition-old(*),
 ::view-transition-new(*) {
   animation-duration: 0.5s;
@@ -51,21 +74,9 @@ body {
 
 
 
-
-/** home **/
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* background-image: linear-gradient( 135deg, rgb(184 52 148) 0.05%, rgb(0 16 31) 40%); */
-  background: radial-gradient(circle at top left, rgb(184 52 148) 3%, rgb(0 16 31) 50%);
-  
-  
-  overflow: hidden;
-}
-
+/* —————————————————————————————————————————————————————————————————————————————
+  Home
+  ———————————————————————————————————————————————————————————————————————————— */
 .scene {
   position: relative;
   width: 300px;
