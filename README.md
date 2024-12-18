@@ -77,8 +77,13 @@ npm install motion
 npm install react-router-dom
 npm install @types/react-router-dom
 npx storybook@latest init
-# npx tailwindcss -i ./src/app.css -o ./src/output.css --watch
+npm install @storybook/manager-api @storybook/theming --save-dev
+npm install --save-dev storybook-dark-mode
+npm install @heroicons/react
 ```
+
+### Theming
+- https://uicolors.app/create - Tailwind CSS Color Generator
 
 ## Build css
 ```sh
