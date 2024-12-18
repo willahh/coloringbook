@@ -1,12 +1,13 @@
 # Coloring Book Creator 🎨
-
 A React application for creating personalized coloring books from imported or custom-created images.
+
 
 ## Features ✨
 - Import images and convert them into outlines for coloring.
 - Draw custom designs directly in the app.
 - Organize pages into a book format, ready for printing.
 - Simple and intuitive interface for all age groups.
+
 
 ## Demo 🚀
 [Live Demo](https://willahh.github.io/coloringbook/)
@@ -19,7 +20,7 @@ Arrange pages in the desired order.
 Download the final book as a PDF.
 
 
-## Tech Stack 🧰
+## Stack 🧰
 This project is built with the following technologies and tools:
 
 - **TypeScript**: For type-safe JavaScript development.  
@@ -75,6 +76,7 @@ npx tailwindcss init -p
 npm install motion
 npm install react-router-dom
 npm install @types/react-router-dom
+npx storybook@latest init
 # npx tailwindcss -i ./src/app.css -o ./src/output.css --watch
 ```
 
