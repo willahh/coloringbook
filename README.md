@@ -1,24 +1,20 @@
 # Coloring Book Creator 🎨
 A React application for creating personalized coloring books from imported or custom-created images.
 
-
 ## Features ✨
 - Import images and convert them into outlines for coloring.
 - Draw custom designs directly in the app.
 - Organize pages into a book format, ready for printing.
 - Simple and intuitive interface for all age groups.
 
-
 ## Demo 🚀
 [Live Demo](https://willahh.github.io/coloringbook/)
-
 
 ## Usage 📖
 Upload an image to convert it into a coloring outline.
 Use the drawing tool to create custom designs.
 Arrange pages in the desired order.
 Download the final book as a PDF.
-
 
 ## Stack 🧰
 This project is built with the following technologies and tools:
@@ -30,7 +26,6 @@ This project is built with the following technologies and tools:
 - **Vite**: A fast and modern build tool - [Learn more](https://vite.dev/).  
 - **Tailwind CSS**: For utility-first styling with rapid development.  
 - **GitHub Actions**: For automated deployment workflows.  
-
 
 ## Project Structure 📂
 ```
@@ -47,24 +42,24 @@ coloring-book-creator/
 └── README.md
 ```
 
-
 ## Installation 🛠️
 
 1. Clone this repository:
    ```bash
    git clone https://github.com/willahh/coloringbook.git
    cd coloringbook
+   ```
 
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-### Install dependencies:
-```bash
-npm install # Start the development server:
-```
-
-```bash
-npm start
-# Open your browser and navigate to http://localhost:3000.
-```
+3. Start the development server:
+   ```bash
+   npm start
+   # Open your browser and navigate to http://localhost:3000.
+   ```
 
 ## Project setup
 ```sh
@@ -79,7 +74,8 @@ npm install @types/react-router-dom
 npx storybook@latest init
 npm install @storybook/manager-api @storybook/theming --save-dev
 npm install --save-dev storybook-dark-mode
-npm install @heroicons/react
+npm install @heroicons/react #https://heroicons.com/
+npm install @headlessui/react #https://headlessui.com/react/menu
 ```
 
 ### Theming
@@ -115,10 +111,7 @@ Build time can last between 1 to 5 minutes.
 ```
 <img width="640" alt="Capture d’écran 2024-12-16 à 16 41 00" src="https://github.com/user-attachments/assets/022c7bc0-f695-4ee5-909e-84bbd9119448" />
 
-
-
 ## Acknowledgments 🙏
 Inspired by the creative possibilities of coloring books.
 Thanks to open-source libraries and the developer community!
-Screenshots 📸
 

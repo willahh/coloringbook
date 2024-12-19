@@ -1,5 +1,4 @@
 import '../../../../public/tailwind.full.css'; // Importing the full tailwind css
-import React, { useState } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 
 // https://tailwindui.com/components/application-ui/forms/form-layouts

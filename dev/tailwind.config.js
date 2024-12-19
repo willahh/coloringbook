@@ -80,7 +80,7 @@ export default {
         xl: '1.25rem',
       },
       fontFamily: {
-        sans: ['Helvetica', 'Arial', 'sans-serif'],
+        sans: ['ibm-plex-sans-regular', 'Helvetica', 'Arial', 'sans-serif'],
       },
     },
   },
