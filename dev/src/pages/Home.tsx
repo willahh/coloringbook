@@ -4,9 +4,7 @@ import Button from '@components/Button';
 import AnimatedText from '@/components/AnimatedText';
 
 import {
-  UserCircleIcon,
   BookOpenIcon,
-  PlusIcon,
 } from '@heroicons/react/24/solid';
 
 const MainCard = () => {
@@ -56,7 +54,7 @@ const HomePage: React.FC = () => {
   return (
     <Layout className="p-10 items-center justify-center w-full">
       {/* <div className="grid grid-cols-7"> */}
-        {/* <img src="/coloringbook/book_covers/book_cover_1.png" alt="" className='w-20 h-12'/>
+      {/* <img src="/coloringbook/book_covers/book_cover_1.png" alt="" className='w-20 h-12'/>
         <img src="/coloringbook/book_covers/book_cover_2.png" alt="" className='w-20 h-12'/>
         <img src="/coloringbook/book_covers/book_cover_3.png" alt="" className='w-20 h-12'/>
         <img src="/coloringbook/book_covers/book_cover_4.png" alt="" className='w-20 h-12'/>
@@ -64,11 +62,11 @@ const HomePage: React.FC = () => {
         <img src="/coloringbook/book_covers/book_cover_6.png" alt="" className='w-20 h-12'/>
         <img src="/coloringbook/book_covers/book_cover_7.png" alt="" className='w-20 h-12'/> */}
 
-        <div>
-          {/* <img src="/coloringbook/book_covers/book_cover_6.png" alt="" className='w-20 h-12'/>
+      <div>
+        {/* <img src="/coloringbook/book_covers/book_cover_6.png" alt="" className='w-20 h-12'/>
           <img src="/coloringbook/book_covers/book_cover_7.png" alt="" className='w-20 h-12'/> */}
-          <MainCard />
-        </div>
+        <MainCard />
+      </div>
       {/* </div> */}
     </Layout>
   );
