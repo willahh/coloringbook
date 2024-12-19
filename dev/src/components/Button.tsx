@@ -35,7 +35,6 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
 }) => {
   const baseStyle =
-    // 'flex px-4 rounded bg-blue-500 text-white font-bold hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 active:bg-blue-700';
     `py-3 px-6 rounded-lg flex items-center space-x-4 
     bg-indigo-500 text-white
     transition-all duration-300 ease-in-out 
