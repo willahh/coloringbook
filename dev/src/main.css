@@ -13,147 +13,159 @@
 @tailwind components;
 @tailwind utilities;
 
-
-
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts
   https://fonts.google.com/selection/embed
+
+  FIXME: Trier les fonts qui ne sont pas utilisées dans l'application.
   ———————————————————————————————————————————————————————————————————————————— */
 /* */
-  .cookie-regular {
-  font-family: "Cookie", serif;
+.cookie-regular {
+  font-family: 'Cookie', serif;
   font-weight: 400;
   font-style: normal;
 }
 
 /* */
 .dm-serif-text-regular {
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   font-weight: 400;
   font-style: normal;
 }
 
 .dm-serif-text-regular-italic {
-  font-family: "DM Serif Text", serif;
+  font-family: 'DM Serif Text', serif;
   font-weight: 400;
   font-style: italic;
 }
 
-/* 
-// <uniquifier>: Use a unique and descriptive class name
-// <weight>: Use a value from 100 to 900
-*/
-.urbanist-100 {
-  font-family: "Urbanist", serif;
-  font-optical-sizing: auto;
+
+/* Roboto */
+.roboto-thin {
+  font-family: "Roboto", serif;
   font-weight: 100;
   font-style: normal;
 }
-.urbanist-200 {
-  font-family: "Urbanist", serif;
-  font-optical-sizing: auto;
-  font-weight: 200;
+
+.roboto-light {
+  font-family: "Roboto", serif;
+  font-weight: 300;
   font-style: normal;
 }
-.urbanist-500 {
-  font-family: "Urbanist", serif;
-  font-optical-sizing: auto;
+
+.roboto-regular {
+  font-family: "Roboto", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.roboto-medium {
+  font-family: "Roboto", serif;
   font-weight: 500;
   font-style: normal;
 }
-.urbanist-900 {
-  font-family: "Urbanist", serif;
-  font-optical-sizing: auto;
+
+.roboto-bold {
+  font-family: "Roboto", serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.roboto-black {
+  font-family: "Roboto", serif;
   font-weight: 900;
   font-style: normal;
 }
 
-
-/* 
- IBM Plex Sans: CSS classes
- */
- .ibm-plex-sans-thin {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 100;
-  font-style: normal;
-}
-
-.ibm-plex-sans-extralight {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 200;
-  font-style: normal;
-}
-
-.ibm-plex-sans-light {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 300;
-  font-style: normal;
-}
-
-.ibm-plex-sans-regular {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.ibm-plex-sans-medium {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 500;
-  font-style: normal;
-}
-
-.ibm-plex-sans-semibold {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 600;
-  font-style: normal;
-}
-
-.ibm-plex-sans-bold {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 700;
-  font-style: normal;
-}
-
-.ibm-plex-sans-thin-italic {
-  font-family: "IBM Plex Sans", serif;
+.roboto-thin-italic {
+  font-family: "Roboto", serif;
   font-weight: 100;
   font-style: italic;
 }
 
-.ibm-plex-sans-extralight-italic {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 200;
-  font-style: italic;
-}
-
-.ibm-plex-sans-light-italic {
-  font-family: "IBM Plex Sans", serif;
+.roboto-light-italic {
+  font-family: "Roboto", serif;
   font-weight: 300;
   font-style: italic;
 }
 
-.ibm-plex-sans-regular-italic {
-  font-family: "IBM Plex Sans", serif;
+.roboto-regular-italic {
+  font-family: "Roboto", serif;
   font-weight: 400;
   font-style: italic;
 }
 
-.ibm-plex-sans-medium-italic {
-  font-family: "IBM Plex Sans", serif;
+.roboto-medium-italic {
+  font-family: "Roboto", serif;
   font-weight: 500;
   font-style: italic;
 }
 
-.ibm-plex-sans-semibold-italic {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 600;
+.roboto-bold-italic {
+  font-family: "Roboto", serif;
+  font-weight: 700;
   font-style: italic;
 }
 
-.ibm-plex-sans-bold-italic {
-  font-family: "IBM Plex Sans", serif;
-  font-weight: 700;
+.roboto-black-italic {
+  font-family: "Roboto", serif;
+  font-weight: 900;
   font-style: italic;
+}
+
+
+
+/* Roboto-mono
+.roboto-mono-<uniquifier> {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal;
+}
+<uniquifier>: Use a unique and descriptive class name
+<weight>: Use a value from 100 to 700
+*/
+.roboto-mono-thin {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+.roboto-mono-extralight {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
+.roboto-mono-light {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+}
+.roboto-mono-regular {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+.roboto-mono-medium {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+.roboto-mono-semibold {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+.roboto-mono-bold {
+  font-family: "Roboto Mono", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
 }
 
 
@@ -162,22 +174,21 @@
   ———————————————————————————————————————————————————————————————————————————— */
 @layer base {
   .heading-1 {
-    @apply text-4xl font-bold mb-2 dark:text-white;
+    @apply roboto-thin text-4xl font-bold mb-2 dark:text-white;
   }
   .heading-2 {
-    @apply text-3xl font-bold mb-2 dark:text-white;
+    @apply roboto-thin text-3xl font-bold mb-2 dark:text-white;
   }
   .heading-3 {
-    @apply text-2xl font-bold mb-2 dark:text-white;
+    @apply roboto-thin text-2xl font-bold mb-2 dark:text-white;
   }
   .heading-4 {
-    @apply text-xl font-bold mb-2 dark:text-white;
+    @apply roboto-thin text-xl font-bold mb-2 dark:text-white;
   }
 }
 .btn-primary {
   @apply bg-indigo-500 text-white font-sans px-4 py-2 rounded hover:bg-indigo-500;
 }
-
 
 /* —————————————————————————————————————————————————————————————————————————————
   Base
@@ -198,6 +209,11 @@ body {
       circle at top left,
       theme('colors.fuchsia.900') 3%,
       theme('colors.indigo.950') 50%
+    );
+    background: radial-gradient(
+      circle at top left,
+      theme('colors.fuchsia.950') 3%,
+      theme('colors.slate.900') 50%
     );
   }
 }

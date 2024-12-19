@@ -19,22 +19,22 @@ const ContentHtml = ({ className }: { className?: string }) => {
       <div className="col-span-2 dark:text-gray-300">
         <h1 className={headingCls}>Font</h1>
         <div>
-          <code className="text-gray-500 text-xs">ibm-plex-sans-thin</code>
-          <h1 className="heading-1 ibm-plex-sans-thin">
+          <code className="text-gray-500 text-xs">roboto-thin</code>
+          <h1 className="heading-1 roboto-thin">
             Titre Principal
           </h1>
-          <p className="ibm-plex-sans-regular text-lg">
-            Ceci est du texte principal <strong>utilisant</strong> ibm-plex-sans-regular. Lorem ipsum dolor
+          <p className="roboto-regular text-lg">
+            Ceci est du texte principal <strong>utilisant</strong> roboto-regular. Lorem ipsum dolor
             sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.
           </p>
-          <p className="ibm-plex-sans-regular text-base">
-            Ceci est du texte principal utilisant ibm-plex-sans-regular. Lorem ipsum dolor
+          <p className="roboto-regular text-base">
+            Ceci est du texte principal utilisant roboto-regular. Lorem ipsum dolor
             sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.
           </p>
-          <p className="ibm-plex-sans-regular text-sm">
-            Ceci est du texte principal utilisant ibm-plex-sans-regular. Lorem ipsum dolor
+          <p className="roboto-regular text-sm">
+            Ceci est du texte principal utilisant roboto-regular. Lorem ipsum dolor
             sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
             incididunt ut labore et dolore magna aliqua.
           </p>

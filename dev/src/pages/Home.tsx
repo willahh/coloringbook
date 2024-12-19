@@ -6,30 +6,38 @@ import Button from '@components/Button';
 const HomePage: React.FC = () => {
   return (
     <Layout className="p-10 items-center justify-center w-full">
-      <div className="w-96 bg-white rounded-md text-center p-10 text-center">
+      <div
+        className="rounded-md text-center p-10 
+       
+        
+        "
+        style={{ width: '467px' }}
+      >
         <img
           src="coloring-book-logo.svg"
           alt="Logo"
-          className="w-44 mb-4 inline-block"
+          className="w-44 inline-block"
         />
-        <h1 className="text-xl font-bold text-center mb-2">
-          Welcome to ColoringBook
-        </h1>
-        <p className="text-center text-gray-600">
-          Create, color, share: your coloring adventure begins here!
-        </p>
+        <div className="flex flex-col justify-between items-center p-6">
+          <h1 className="roboto-thin heading-1 text-white text-3xl">
+            Welcome to <span className="roboto-light">ColoringBook</span>
+          </h1>
+          <h2 className="heading-2 text-primary-400 text-xl">
+            <span className="text-primary-400">Create</span>,{' '}
+            <span className="text-pink-400">color</span>, <span className='text-'>share: <span className='text-white'>your coloring
+            adventure begins here!</span></span>
+          </h2>
+        </div>
         <p className="card">TODO: Add lodash</p>
-        <Button className="flex justify-center w-full mt-4 rounded-xl"> {/* TODO: Use Link from react-router, maybe generate a <a> </a>*/}
+        <Button className="flex justify-center w-full mt-4 rounded-xl">
+          {' '}
+          {/* TODO: Use Link from react-router, maybe generate a <a> </a>*/}
           {/* <AddIcon /> */}
           <span>Create new book</span>
           {/* <AddIcon /> */}
         </Button>
 
-
-<form>
-  
-</form>
-
+        <form></form>
       </div>
     </Layout>
   );
