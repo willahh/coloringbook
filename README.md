@@ -76,7 +76,6 @@ npm install @storybook/manager-api @storybook/theming --save-dev
 npm install --save-dev storybook-dark-mode
 npm install @heroicons/react #https://heroicons.com/
 npm install @headlessui/react #https://headlessui.com/react/menu
-npm install --save-dev semantic-release @semantic-release/commit-analyzer @semantic-release/release-notes-generator @semantic-release/changelog @semantic-release/git @semantic-release/github # Install semantic-release
 ```
 
 ### Theming
@@ -113,8 +112,7 @@ Build time can last between 1 to 5 minutes.
 <img width="640" alt="Capture d’écran 2024-12-16 à 16 41 00" src="https://github.com/user-attachments/assets/022c7bc0-f695-4ee5-909e-84bbd9119448" />
 
 
-## Build and deploy with Github Action and Semantic-release
-- Configuration file : /release.config.js
+## Build and deploy with Github Action
 
 ## Acknowledgments 🙏
 Inspired by the creative possibilities of coloring books.
