@@ -1,7 +1,7 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite && tailwind",
@@ -11,7 +11,10 @@
     "tailwind": "tailwindcss -i ./src/main.css -o ./public/output.css --watch",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate-full-css": "tailwindcss -i ./src/main.css -o ./public/tailwind.full.css --full"
+    "generate-full-css": "tailwindcss -i ./src/main.css -o ./public/tailwind.full.css --full",
+    "release:major": "npm version major",
+    "release:minor": "npm version minor",
+    "release:patch": "npm version patch"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
