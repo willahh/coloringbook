@@ -22,6 +22,12 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
 
+      - name: "Install app"
+        run: |
+          cd dev
+          ls
+
+
 
       # - uses: actions/checkout@v3
 
