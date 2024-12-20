@@ -1,5 +1,23 @@
-# Coloring Book Creator 🎨
-A React application for creating personalized coloring books from imported or custom-created images.
+<br />
+<p align="center">
+<a href="documents/coloringbook_logo_wide.png">
+    <img src="documents/coloringbook_logo_wide.png" alt="Coloring Book" width="400" >
+  </a>
+
+  <p align="center">
+    A React application for creating personalized coloring books from imported or custom-created images.
+    <br />
+    <a href="https://github.com/willahh/coloringbook"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://willahh.github.io/coloringbook/">Live Demo</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Request Feature</a>
+  </p>
+</p>
+
 
 ## Features ✨
 - Import images and convert them into outlines for coloring.
@@ -7,8 +25,6 @@ A React application for creating personalized coloring books from imported or cu
 - Organize pages into a book format, ready for printing.
 - Simple and intuitive interface for all age groups.
 
-## Demo 🚀
-[Live Demo](https://willahh.github.io/coloringbook/)
 
 ## Usage 📖
 Upload an image to convert it into a coloring outline.
