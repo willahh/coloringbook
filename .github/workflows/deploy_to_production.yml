@@ -1,9 +1,11 @@
-name: Deploy Coloringbook
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Deploy to production
+run-name: Deploy to production {{github.ref}}
 on:
   push:
     branches:
       - master
+    tags:
+      - 'v*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,7 +22,6 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
-
 
       - name: "Install app"
         run: |
