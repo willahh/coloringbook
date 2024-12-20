@@ -1,21 +1,14 @@
-// import { Link } from 'react-router';
 import Layout from './layout';
 import Button from '@components/Button';
 import AnimatedText from '@/components/AnimatedText';
-
-import {
-  BookOpenIcon,
-} from '@heroicons/react/24/solid';
+import Logo from '@assets/coloring-book-logo-wide.svg?react';
+import { BookOpenIcon } from '@heroicons/react/24/solid';
 
 const MainCard = () => {
   return (
     <div className="rounded-md text-center p-10 " style={{ width: '420px' }}>
       <div className="flex flex-col justify-between items-center gap-3">
-        <img
-          src="coloring-book-logo.svg"
-          alt="Logo"
-          className="w-80 inline-block"
-        />
+        <Logo className="w-full" />
         {/* <AnimatedText enterClassName="delay-100">
       <h1 className="roboto-thin heading-1 text-white text-3xl">
         Welcome to <span className="roboto-light text-secondary-500">Coloringbook</span>
