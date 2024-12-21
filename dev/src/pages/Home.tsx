@@ -26,7 +26,7 @@ const MainCard = () => {
           </div>
         </AnimatedText>
         <AnimatedText enterClassName="delay-300">
-          <span className="heading-2 text-primary-400 text-white mb-0">
+          <span className="heading-2 text-white mb-0">
             Your coloring adventure begins here!
           </span>
         </AnimatedText>
