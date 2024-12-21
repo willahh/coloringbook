@@ -1,28 +1,33 @@
-import type React from 'react';
+import React, { useCallback, useRef, useState, useEffect } from 'react';
 import type * as PopperJS from '@popperjs/core';
-import { useCallback, useRef, useState } from 'react';
 import { usePopper } from 'react-popper';
 
 type TooltipProps = {
-  label: React.ReactElement;
+  className?: string;
+  label?: React.ReactElement;
+  text?: string;
   placement?: PopperJS.Placement;
   enterDelay?: number;
   leaveDelay?: number;
+  isVisible?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 export const Tooltip: React.FC<TooltipProps> = (props) => {
   const {
     children,
     label,
-    enterDelay = 250,
-    leaveDelay = 150,
+    text,
+    className = 'bg-white p-2 rounded-md',
+    enterDelay = 200,
+    leaveDelay = 200,
     placement = 'bottom',
+    isVisible = true,
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
   const [referenceElement, setReferenceElement] =
     useState<HTMLDivElement | null>(null);
-  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(    
+  const [popperElement, setPopperElement] = useState<HTMLDivElement | null>(
     null
   );
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
@@ -45,6 +50,13 @@ export const Tooltip: React.FC<TooltipProps> = (props) => {
     leaveTimeout.current = setTimeout(() => setIsOpen(false), leaveDelay);
   }, [leaveDelay]);
 
+  useEffect(() => {
+    if (!isVisible) {
+      console.log('useEffect setisOpen to false');
+      setIsOpen(false);
+    }
+  }, [isVisible]);
+
   return (
     <div>
       <div
@@ -56,14 +68,29 @@ export const Tooltip: React.FC<TooltipProps> = (props) => {
         {children}
       </div>
 
-      <div
-        ref={setPopperElement}
-        style={styles.popper}
-        {...attributes.popper}
-        className={`transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0'}`}
-      >
-        {label}
-      </div>
+      {label ? (
+        <div
+          ref={setPopperElement}
+          style={styles.popper}
+          {...attributes.popper}
+          className={`transition-opacity ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          {label}
+        </div>
+      ) : text ? (
+        <div
+          ref={setPopperElement}
+          style={styles.popper}
+          {...attributes.popper}
+          className={`transition-opacity ${
+            isOpen ? 'opacity-100' : 'opacity-0'
+          } ${className}`}
+        >
+          {text}
+        </div>
+      ) : null}
     </div>
   );
 };
