@@ -17,6 +17,11 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
 
   /**
+   * Si le bouton est en focus.
+   */
+  autoFocus?: boolean;
+
+  /**
    * La classe CSS pour des styles supplémentaires.
    */
   className?: string;
@@ -31,6 +36,7 @@ const Button: React.FC<ButtonProps> = ({
   children,
   onClick,
   type,
+  autoFocus,
   className,
   disabled,
 }) => {
@@ -48,6 +54,7 @@ const Button: React.FC<ButtonProps> = ({
       onClick={onClick}
       className={combinedStyle}
       disabled={disabled}
+      {...(autoFocus ? { autoFocus: true } : {})}
     >
       {children}
     </button>
