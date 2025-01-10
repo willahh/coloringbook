@@ -2,16 +2,25 @@ import motionConfig from '@/shared/shared'; // FIXME/ import from '@shared/share
 import { motion } from 'motion/react';
 import Header from '@/components/Header';
 import { GridDebug, DebugButton } from './Debug';
+import { useEffect } from 'react';
 
 interface LayoutProps {
   className?: string;
   aside?: React.ReactNode;
   children?: React.ReactNode;
+  showHeader?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ className, aside, children }) => {
+const Layout: React.FC<LayoutProps> = ({
+  className,
+  aside,
+  children,
+  showHeader,
+}) => {
   const urlParams = new URLSearchParams(window.location.search);
   const griddDebug = urlParams.get('griddebug') === '1';
+
+  useEffect(() => {});
 
   return (
     <>
@@ -24,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ className, aside, children }) => {
 
       <DebugButton />
       {griddDebug && <GridDebug />}
-      <div className={`flex flex-col min-h-screen`}>
+      <div data-id="page-layout" className={`flex flex-col min-h-screen`}>
         <motion.div
           className={`flex flex-1 ${className || ''}`}
           {...motionConfig}
@@ -33,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ className, aside, children }) => {
           {aside}
           {children}
         </motion.div>
-        <Header />
+        {showHeader && <Header />}
       </div>
     </>
   );

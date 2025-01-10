@@ -4,63 +4,98 @@ import AnimatedText from '@/components/AnimatedText';
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import { BookOpenIcon } from '@heroicons/react/24/solid';
 
+import HomeBackgroundSvg from '@assets/home_background.svg?react';
+
 const MainCard = () => {
   return (
-    <div className="rounded-md text-center p-10 " style={{ width: '420px' }}>
-      <div className="flex flex-col justify-between items-center gap-3">
-        <Logo className="w-full" />
-        {/* <AnimatedText enterClassName="delay-100">
-      <h1 className="roboto-thin heading-1 text-white text-3xl">
-        Welcome to <span className="roboto-light text-secondary-500">Coloringbook</span>
-      </h1>
-    </AnimatedText> */}
-        <AnimatedText enterClassName="delay-200">
-          <div className="">
-            <div className="flex gap-2 items-center font-mono text-base justify-center">
-              <span className="text-white">Create</span>
-              <span className="text-primary-200 bg-primary-900 p-1 px-2 rounded-md shadow-xl border border-primary-800">
-                color
-              </span>
-              <span className="text-white">share</span>
-            </div>
-          </div>
-        </AnimatedText>
-        <AnimatedText enterClassName="delay-300">
-          <span className="heading-2 text-white mb-0">
-            Your coloring adventure begins here!
-          </span>
-        </AnimatedText>
-        <AnimatedText enterClassName="delay-700">
-          <div className="w-full mt-4">
-            <Button className="flex justify-center w-full rounded-xl py-2 px-3">
-              <BookOpenIcon aria-hidden="true" className="size-8" />
-              <span>Create new book</span>
-            </Button>
-          </div>
-        </AnimatedText>
-      </div>
-    </div>
+    <>
+      {/* <img
+        className="absolute top-0 left-0 w-full h-full opacity-50"
+        src="mockup/home-2025-01-09.png"
+        style={{
+          filter: 'invert(100%)',
+          objectFit: 'cover',
+          objectPosition: 'center',
+          width: '100%',
+          height: '100%',
+        }}
+        alt=""
+      /> */}
+
+      {/* <div className="grid grid-cols-12"> */}
+      {/* <div data-id="content" style={{ width: 400, height: 400 }}>
+          <HomeBackgroundSvg className="w-full h-full" />
+        </div> */}
+      {/* </div> */}
+    </>
   );
 };
 
 const HomePage: React.FC = () => {
   return (
-    <Layout className="p-10 items-center justify-center w-full">
-      {/* <div className="grid grid-cols-7"> */}
-      {/* <img src="/coloringbook/book_covers/book_cover_1.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_2.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_3.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_4.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_5.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_6.png" alt="" className='w-20 h-12'/>
-        <img src="/coloringbook/book_covers/book_cover_7.png" alt="" className='w-20 h-12'/> */}
+    <Layout showHeader={false}>
+      <div
+        className="flex w-full w-screen h-screen items-center"
+        style={{
+          background: 'url(assets/home_background.svg) bottom right no-repeat',
+        }}
+      >
+        {/* <img
+          className="absolute top-0 left-0 w-full h-full opacity-50 pointer-events-none"
+          src="mockup/home-2025-01-09.png"
+          style={{
+            filter: 'invert(100%)',
+            objectFit: 'cover',
+            objectPosition: 'center',
+            width: '100%',
+            height: '100%',
+            top: '-60px',
+          }}
+          alt=""
+        /> */}
 
-      <div>
-        {/* <img src="/coloringbook/book_covers/book_cover_6.png" alt="" className='w-20 h-12'/>
-          <img src="/coloringbook/book_covers/book_cover_7.png" alt="" className='w-20 h-12'/> */}
-        <MainCard />
+        <div className="grid md:grid-cols-12 gap-4">
+          <div className="lg:col-span-4"></div>
+          <div
+            className="md:col-start-3 md:col-span-3 lg:col-start-5 lg:col-span-2 text-white"
+            style={{ border: '5px solid #fff;' }}
+          >
+            <Logo className="mb-4 -ml-16" />
+
+            <AnimatedText enterClassName="delay-200">
+              <div className="flex mb-4 gap-2 items-center text-md font-extralight">
+                <span className="">Create</span>
+                <span className="text-primary-200 bg-primary-900 p-1 px-2 rounded-md shadow-xl border border-primary-800">
+                  color
+                </span>
+                <span className="">share</span>
+              </div>
+            </AnimatedText>
+
+            <AnimatedText enterClassName="delay-300">
+              <p className="text-sm mb-4 text-justify">
+                <strong>Plongez dans un univers créatif et coloré</strong> où
+                vous pouvez concevoir des motifs originaux, laisser libre cours
+                à votre personnalité à travers le coloriage et partager vos
+                créations avec notre communauté.
+              </p>
+            </AnimatedText>
+            <AnimatedText enterClassName="delay-800">
+              <p className="text-sm mb-4 text-indigo-500">
+                Lancez-vous dès aujourd'hui :
+              </p>
+            </AnimatedText>
+            <AnimatedText enterClassName="delay-500">
+              <div>
+                <Button className="flex justify-center w-full rounded-md py-1 px-2">
+                  <BookOpenIcon aria-hidden="true" className="size-8" />
+                  <span>Create new book</span>
+                </Button>
+              </div>
+            </AnimatedText>
+          </div>
+        </div>
       </div>
-      {/* </div> */}
     </Layout>
   );
 };
