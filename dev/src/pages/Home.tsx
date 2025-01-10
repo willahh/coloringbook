@@ -5,9 +5,6 @@ import AnimatedText from '@/components/AnimatedText';
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import { BookOpenIcon } from '@heroicons/react/24/solid';
 
-
-
-
 // -----------------------------------------------------------------------------
 const formatOptions = [
   { value: 'square', label: 'Carré' },
@@ -75,9 +72,6 @@ const BookCreationForm: React.FC = () => {
   );
 };
 
-
-
-
 // -----------------------------------------------------------------------------
 interface DescriptionSectionProps {
   onClick: () => void;
@@ -93,28 +87,25 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ onClick }) => {
           notre communauté.
         </p>
       </AnimatedText>
-      <AnimatedText enterClassName="delay-800">
+      <AnimatedText enterClassName="delay-500">
         <p className="text-base mb-4 text-indigo-300">
           Lancez-vous dès aujourd'hui :
         </p>
       </AnimatedText>
-      <AnimatedText enterClassName="delay-500">
+      <AnimatedText enterClassName="delay-1000">
         <div>
           <Button
             className="flex justify-center w-full rounded-xl py-1 px-2"
             onClick={onClick}
           >
             <BookOpenIcon aria-hidden="true" className="size-8" />
-            <span>Create new book</span>
+            <span className='whitespace-nowrap'>Créer un nouveau livre</span>
           </Button>
         </div>
       </AnimatedText>
     </>
   );
 };
-
-
-
 
 // -----------------------------------------------------------------------------
 const HomePage: React.FC = () => {
