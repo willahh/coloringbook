@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Layout from './layout';
 import Button from '@components/Button';
 import AnimatedText from '@/components/AnimatedText';
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import { BookOpenIcon } from '@heroicons/react/24/solid';
+import { motion } from 'motion/react';
 
 // -----------------------------------------------------------------------------
 const formatOptions = [
@@ -12,73 +13,138 @@ const formatOptions = [
   { value: 'landscapeA4', label: 'Paysage A4' },
 ];
 
-const BookCreationForm: React.FC = () => {
+interface BookCreationFormProps {
+  className?: string;
+  isVisible: boolean;
+  onCancelClick: () => void;
+}
+const BookCreationForm: React.FC<BookCreationFormProps> = ({
+  className,
+  isVisible,
+  onCancelClick,
+}) => {
+  const bookNameInput = useRef<HTMLInputElement | null>(null);
+  const hiddenStyle = { y: -100, opacity: 0, height: 0 };
+  const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
+  const animateStyle = isVisible
+    ? { ...visibleStyle, ...{ overflow: 'hidden' } }
+    : { ...hiddenStyle, ...{ overflow: 'hidden' } };
+
+  useEffect(() => {
+    if (isVisible) {
+      if (bookNameInput.current) {
+        bookNameInput.current.focus();
+      }
+    }
+  }, []);
+
   return (
-    <form className="space-y-4">
-      <div>
-        <label
-          htmlFor="bookName"
-          className="block text-sm md:text-base font-medium text-white mb-1"
+    <motion.div
+      initial={isVisible ? hiddenStyle : visibleStyle}
+      animate={animateStyle}
+      transition={{
+        delay: 0,
+        duration: .300,
+        type: 'tween',
+      }}
+    >
+      <form className={`space-y-4 ${className || ''}`}>
+        <div>
+          <label
+            htmlFor="bookName"
+            className="block text-sm md:text-base font-medium text-white mb-1"
+          >
+            Nom
+          </label>
+          <input
+            type="text"
+            id="bookName"
+            name="bookName"
+            disabled={!isVisible}
+            ref={bookNameInput}
+            className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="format"
+            className="block text-sm md:text-base font-medium text-white mb-1"
+          >
+            Format
+          </label>
+          <select
+            id="format"
+            name="format"
+            disabled={!isVisible}
+            className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+          >
+            {formatOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label
+            htmlFor="numberOfPages"
+            className="block text-sm md:text-base font-medium text-white mb-1"
+          >
+            Nombre de pages
+          </label>
+          <input
+            type="number"
+            id="numberOfPages"
+            name="numberOfPages"
+            disabled={!isVisible}
+            className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+          />
+        </div>
+        <Button
+          type="submit"
+          className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
-          Nom
-        </label>
-        <input
-          type="text"
-          id="bookName"
-          name="bookName"
-          className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
-        />
-      </div>
-      <div>
-        <label
-          htmlFor="format"
-          className="block text-sm md:text-base font-medium text-white mb-1"
+          <span>Valider</span>
+        </Button>
+        <Button
+          type="reset"
+          onClick={onCancelClick}
+          className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
-          Format
-        </label>
-        <select
-          id="format"
-          name="format"
-          className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
-        >
-          {formatOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <label
-          htmlFor="numberOfPages"
-          className="block text-sm md:text-base font-medium text-white mb-1"
-        >
-          Nombre de pages
-        </label>
-        <input
-          type="number"
-          id="numberOfPages"
-          name="numberOfPages"
-          className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
-        />
-      </div>
-      <Button
-        type="submit"
-        className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
-      >
-        <span>Valider</span>
-      </Button>
-    </form>
+          <span>Annuler</span>
+        </Button>
+      </form>
+    </motion.div>
   );
 };
 
 // -----------------------------------------------------------------------------
 interface DescriptionSectionProps {
   onClick: () => void;
+  className?: string;
+  isVisible: boolean;
 }
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({ onClick }) => {
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({
+  onClick,
+  className,
+  isVisible,
+}) => {
+  const hiddenStyle = { y: -100, opacity: 0, height: 0 };
+  const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
+  const animateStyle = isVisible
+    ? { ...visibleStyle, ...{ overflow: 'hidden' } }
+    : { ...hiddenStyle, ...{ overflow: 'hidden' } };
+
   return (
-    <>
+    <motion.div
+      initial={isVisible ? hiddenStyle : visibleStyle}
+      animate={animateStyle}
+      transition={{
+        delay: 0,
+        duration: .300,
+        type: 'tween',
+      }}
+    >
       <AnimatedText enterClassName="delay-300">
         <p className="text-base mb-4 text-justify">
           <strong>Plongez dans un univers créatif et coloré</strong> où vous
@@ -96,14 +162,15 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({ onClick }) => {
         <div>
           <Button
             className="flex justify-center w-full rounded-xl py-1 px-2"
+            autoFocus={true}
             onClick={onClick}
           >
             <BookOpenIcon aria-hidden="true" className="size-8" />
-            <span className='whitespace-nowrap'>Créer un nouveau livre</span>
+            <span className="whitespace-nowrap">Créer un nouveau livre</span>
           </Button>
         </div>
       </AnimatedText>
-    </>
+    </motion.div>
   );
 };
 
@@ -112,6 +179,9 @@ const HomePage: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
     setShowForm(true);
+  };
+  const handleCancelClick = () => {
+    setShowForm(false);
   };
 
   return (
@@ -150,12 +220,14 @@ const HomePage: React.FC = () => {
                 <span className="">share</span>
               </div>
             </AnimatedText>
-
-            {showForm ? (
-              <BookCreationForm />
-            ) : (
-              <DescriptionSection onClick={handleCreateBookClick} />
-            )}
+            <BookCreationForm
+              isVisible={showForm}
+              onCancelClick={handleCancelClick}
+            />
+            <DescriptionSection
+              isVisible={!showForm}
+              onClick={handleCreateBookClick}
+            />
           </div>
         </div>
       </div>
