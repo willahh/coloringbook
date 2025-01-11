@@ -128,7 +128,7 @@ interface DescriptionSectionProps {
 }
 const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   onClick,
-  className,
+  // className,
   isVisible,
 }) => {
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
@@ -137,7 +137,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     ? { ...visibleStyle, ...{ overflow: 'hidden' } }
     : { ...hiddenStyle, ...{ overflow: 'hidden' } };
 
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  // const buttonRef = useRef<HTMLButtonElement | null>(null);
   
   // useEffect(() => {
   //   if (isVisible) {
@@ -200,7 +200,7 @@ const HomePage: React.FC = () => {
   return (
     <Layout showHeader={false}>
       <div
-        className="flex w-full w-screen h-screen items-center"
+        className="flex w-full h-screen items-center"
         style={{
           background: 'url(assets/home_background.svg) bottom right no-repeat',
         }}
