@@ -30,6 +30,11 @@ interface ButtonProps {
    * Si le bouton est désactivé.
    */
   disabled?: boolean;
+
+  /**
+   * Référence pour le bouton.
+   */
+  ref?: React.Ref<HTMLButtonElement>;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -39,9 +44,9 @@ const Button: React.FC<ButtonProps> = ({
   autoFocus,
   className,
   disabled,
+  ref,
 }) => {
-  const baseStyle =
-    `py-3 px-6 rounded-md flex items-center space-x-4 
+  const baseStyle = `py-3 px-6 rounded-md flex items-center space-x-4 
     bg-indigo-900 text-indigo-100 border border-indigo-800
     transition-all duration-300 ease-in-out 
     hover:bg-indigo-600 hover:text-white
@@ -55,6 +60,7 @@ const Button: React.FC<ButtonProps> = ({
       className={combinedStyle}
       disabled={disabled}
       {...(autoFocus ? { autoFocus: true } : {})}
+      ref={ref}
     >
       {children}
     </button>
