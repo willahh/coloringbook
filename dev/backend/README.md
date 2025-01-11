@@ -21,15 +21,15 @@ nest new project-name # Initialize Nestjs project
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env.
 npm i dotenv
 
+# TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework.
+npm i typeorm
+
 # Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
 # It is used by DTO objects.
 npm i class-validator
 
 # Class-transformer allows you to transform plain object to some instance of class and versa.
 npm i class-transformer
-
-# TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework.
-npm i typeorm
 
 # Non-blocking PostgreSQL client for Node.js. Pure JavaScript and optional native libpq bindings.
 npm i pg
