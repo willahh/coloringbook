@@ -36,7 +36,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         bookNameInput.current.focus();
       }
     }
-  }, []);
+  }, [isVisible]);
 
   return (
     <motion.div
@@ -44,7 +44,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       animate={animateStyle}
       transition={{
         delay: 0,
-        duration: .300,
+        duration: 0.3,
         type: 'tween',
       }}
     >
@@ -102,12 +102,14 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         </div>
         <Button
           type="submit"
+          disabled={!isVisible}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
           <span>Valider</span>
         </Button>
         <Button
           type="reset"
+          disabled={!isVisible}
           onClick={onCancelClick}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
@@ -135,13 +137,23 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     ? { ...visibleStyle, ...{ overflow: 'hidden' } }
     : { ...hiddenStyle, ...{ overflow: 'hidden' } };
 
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
+  
+  // useEffect(() => {
+  //   if (isVisible) {
+  //     if (buttonRef.current) {
+  //       buttonRef.current.focus();
+  //     }
+  //   }
+  // }, [isVisible]);
+
   return (
     <motion.div
       initial={isVisible ? hiddenStyle : visibleStyle}
       animate={animateStyle}
       transition={{
         delay: 0,
-        duration: .300,
+        duration: 0.3,
         type: 'tween',
       }}
     >
@@ -163,6 +175,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           <Button
             className="flex justify-center w-full rounded-xl py-1 px-2"
             autoFocus={true}
+            // ref={buttonRef}
             onClick={onClick}
           >
             <BookOpenIcon aria-hidden="true" className="size-8" />
