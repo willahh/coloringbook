@@ -4,7 +4,7 @@
   </a>
   <h1 align="center">Coloringbook backend</h1>
   <p align="center">
-    Store and sync your notes across all your devices
+    Unleash your creativity, one color at a time.
   </p>
 </p>
 
@@ -13,7 +13,42 @@ Backend REST API.
 
 Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) and hosted on [Vercel](https://vercel.com/)
 
-### Setup
+
+## Installation
+```sh
+$ npm install
+
+# Create a .env file
+DATABASE_HOST=localhost
+DATABASE_NAME=Coloringbookdb
+DATABASE_PORT=5432
+DATABASE_USER=user
+DATABASE_PASSWORD=password
+````
+
+## Running the app in local environment
+````sh
+# First mount the docker from /infra
+docker-compose up -d
+
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+````
+
+## Test in local
+````sh
+http://localhost:3000/api
+````
+
+
+
+## Project setup
 ````sh
 npm i -g @nestjs/cli # Install the Nestjs cli globally
 nest new project-name # Initialize Nestjs project
@@ -49,6 +84,10 @@ npm i dotenv
 # # nestjs common stuff
 # npm i @nestjs/common
 ````
+
+
+
+
 ## Exemple of the notes module initialization via the cli :
 
 ````sh
@@ -87,8 +126,6 @@ nest generate class common/dto/pagination-query.dto --no-spec
 # 4. Run the server
 npm run start:dev
 
-# Note: npm run start is used by GCP Cloud Engine as default script entry point
-
 # 5. Create a new migration script
 # This will :
 # - Update the db schema 
@@ -103,14 +140,6 @@ npx typeorm migration:generate -n CreateUserTable
 npx typeorm migration:run # Runs all pending migrations
 
 ````
-
-## Generation of the tags module
-This module was generated with the old bad copy pasta method.
-1. Copy users to tags
-2. Rename user and User to tag and Tags
-3. Create a new migration script `npx typeorm migration:generate -n CreateUserTable`
-4. Run the migration script `npx typeorm migration:run`
-   Server need to be up before running the migration.
 
 ## Migrations
 SQL migrations is managed with typeorm.  
@@ -148,50 +177,20 @@ npm run start:dev # Start the backend
 npx typeorm migration:generate -n InitialData # Initialize a first migration
 ```
 
-## Installation
-```sh
-$ npm install
-
-# Create a .env file
-DATABASE_HOST=localhost
-DATABASE_NAME=Coloringbookdb
-DATABASE_PORT=5432
-DATABASE_USER=user
-DATABASE_PASSWORD=password
-````
-
-## Running the app in local environment
-````sh
-# First mount the docker from /infra
-docker-compose up -d
-
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-````
 
 ## Test
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ npm run test # unit tests
+$ npm run test:e2e 
+$ npm run test:cov # test coverage
 ```
 
-## Testing the API with Insomnia
+### Testing the API with Insomnia
 For API testing purpose, an Insomnia workspace settings is available in `resources/Insomnia-workspace.json`.
 
-## Coloringbook backend Documentation
+
+## Documentation
 The backend documentation is generated with [Compodoc](https://compodoc.app/).
 ````sh
 npm i -D @compodoc/compodoc
@@ -200,8 +199,9 @@ npx @compodoc/compodoc -p tsconfig.json -s --port 8081
 npm run generate-doc-local
 ````
 
-## Coloringbook API documentation
+### Coloringbook API documentation
 TODO
+
 
 ## Deployment to production
 The backend is deployed on `Google Cloud` using `App Engine`.
@@ -228,10 +228,10 @@ npm run deploy
 
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)
-- [Coloringbook repository](https://github.com/willahh/Coloringbook)
+- [Coloringbook repository](https://github.com/willahh/coloringbook)
 
 
 ## License
 All Rights Reserved
 
-Copyright (c) 2021 William Ravel
+Copyright (c) 2025 William Ravel
