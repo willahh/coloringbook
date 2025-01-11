@@ -42,6 +42,8 @@ This project is built with the following technologies and tools:
 - **Vite**: A fast and modern build tool - [Learn more](https://vite.dev/).  
 - **Tailwind CSS**: For utility-first styling with rapid development.  
 - **GitHub Actions**: For automated deployment workflows.  
+- **Supabase**: Open source Firebase alternative [Learn more](https://supabase.com/).
+- **Supabase-js**: [Learn more](https://supabase.com/docs/reference/javascript/start).
 
 ## Project Structure 📂
 ```
