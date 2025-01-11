@@ -21,30 +21,33 @@ nest new project-name # Initialize Nestjs project
 # Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env.
 npm i dotenv
 
-# TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework.
-npm i typeorm
+# # TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework.
+# npm i typeorm
 
-# Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
-# It is used by DTO objects.
-npm i class-validator
 
-# Class-transformer allows you to transform plain object to some instance of class and versa.
-npm i class-transformer
 
-# Non-blocking PostgreSQL client for Node.js. Pure JavaScript and optional native libpq bindings.
-npm i pg
 
-# Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
-npm i @nestjs/mapped-types
+# # Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
+# # It is used by DTO objects.
+# npm i class-validator
 
-# TypeORM module for Nest.
-npm i @nestjs/typeorm
+# # Class-transformer allows you to transform plain object to some instance of class and versa.
+# npm i class-transformer
 
-# Configuration module for Nest based on the dotenv (to load process environment variables) package.
-npm i @nestjs/config
+# # Non-blocking PostgreSQL client for Node.js. Pure JavaScript and optional native libpq bindings.
+# npm i pg
 
-# nestjs common stuff
-npm i @nestjs/common
+# # Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
+# npm i @nestjs/mapped-types
+
+# # TypeORM module for Nest.
+# npm i @nestjs/typeorm
+
+# # Configuration module for Nest based on the dotenv (to load process environment variables) package.
+# npm i @nestjs/config
+
+# # nestjs common stuff
+# npm i @nestjs/common
 ````
 ## Exemple of the notes module initialization via the cli :
 
