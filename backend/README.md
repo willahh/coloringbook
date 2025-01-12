@@ -1,14 +1,24 @@
+<br />
 <p align="center">
-  <a href="../documents/images/github-logo.png">
-    <img src="../documents/images/github-logo.png" alt="Logo" width="200" >
+<a href="../documents/images/coloringbook_logo_wide.png">
+    <img src="../documents/images/coloringbook_logo_wide.png" alt="Coloring Book" width="400" >
   </a>
-  <h1 align="center">Coloringbook backend</h1>
+
   <p align="center">
-    Unleash your creativity, one color at a time.
+    A React application for creating personalized coloring books from imported or custom-created images.
+    <br />
+    <a href="https://github.com/willahh/coloringbook"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://willahh.github.io/coloringbook/">Live Demo</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Request Feature</a>
   </p>
 </p>
 
-## Description
+# Backend
 Backend REST API.
 
 Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) and hosted on [Vercel](https://vercel.com/)
