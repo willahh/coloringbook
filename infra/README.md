@@ -1,15 +1,14 @@
 # Infra
+To start the infra in local, just run the script `./run.sh`.
 
-## Start infra
+
 ```sh
-
 # Start infra
 docker-compose up -d
-
-# Connect to postgresql
-docker-compose run notizendb bash
-psql --host=notizendb --username=unicorn_user --dbname=notizendb
-
-## Connect to db
-# \c notizendb
 ```
+
+## Connect to Admin
+- Visit http://localhost:8080 
+  - username: admin
+  - password: admin
+  - db: postgres
