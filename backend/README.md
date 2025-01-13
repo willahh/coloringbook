@@ -67,20 +67,24 @@ nest new project-name # Initialize Nestjs project
 a .env file into process.env.
 npm install dotenv
 
+
 # TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, 
 #React Native, NativeScript, Expo, and Electron platforms and can be used with 
 # TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced
 # by other ORMs, such as Hibernate, Doctrine and Entity Framework.
-npm install typeorm --save # https://typeorm.io/#installation
-npm install reflect-metadata --save # reflect-metadata shim - https://typeorm.io/#installation
-npm install @types/node --save-dev # node typings - https://typeorm.io/#installation
-npm install pg --save # db driver - https://typeorm.io/#installation
+# https://typeorm.io/#installation
+npm install typeorm --save
+npm install reflect-metadata --save # reflect-metadata shim
+npm install @types/node --save-dev # node typings
+npm install pg --save # db driver
 
 # Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
-npm i @nestjs/mapped-types
+# npm i @nestjs/mapped-types
 
 # https://typeorm.io/#quick-start
-npx typeorm init --name MyProject --database postgres 
+npx typeorm init --name ColoringBook --database postgres 
+
+
 
 
 # # Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
@@ -89,9 +93,6 @@ npx typeorm init --name MyProject --database postgres
 
 # # Class-transformer allows you to transform plain object to some instance of class and versa.
 # npm i class-transformer
-
-# # Non-blocking PostgreSQL client for Node.js. Pure JavaScript and optional native libpq bindings.
-# npm i pg
 
 # # Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
 # npm i @nestjs/mapped-types
