@@ -1,0 +1,348 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>coloringbook documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="./" class="navbar-brand">coloringbook documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content getting-started">
+                   <div class="content-data">
+
+<br />
+<p align="center">
+<a href="../documents/images/coloringbook_logo_wide.png">
+    <img src="../documents/images/coloringbook_logo_wide.png" alt="Coloring Book" width="400" >
+  </a>
+
+  <p align="center">
+    A React application for creating personalized coloring books from imported or custom-created images.
+    <br />
+    <a href="https://github.com/willahh/coloringbook"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://willahh.github.io/coloringbook/">Live Demo</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/willahh/coloringbook/issues">Request Feature</a>
+  </p>
+</p>
+
+<h1>Backend</h1>
+<p>Backend REST API.</p>
+<p>Built with <a href="https://github.com/nestjs/nest">Nest</a>, <a href="https://typeorm.io">TypeORM</a> and hosted on <a href="https://vercel.com/">Vercel</a></p>
+<h2>Installation</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh">$ npm install
+
+# Create a .env file
+touch .env
+DATABASE_HOST=localhost
+DATABASE_NAME=Coloringbookdb
+DATABASE_PORT=5432
+DATABASE_USER=user
+DATABASE_PASSWORD=password</code></pre></div><h2>Running the app in local environment</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh"># First mount the docker from /infra
+docker-compose up -d
+
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod</code></pre></div><h2>Test in local</h2>
+<p>You can test the API with the Swagger on <a href="http://localhost:3000/api">http://localhost:3000/api</a></p>
+<h2>Project setup</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh">npm install -g &#64;nestjs/cli # Install the Nestjs cli globally
+nest new project-name # Initialize Nestjs project
+
+# Dotenv is a zero-dependency module that loads environment variables from 
+a .env file into process.env.
+npm install dotenv
+
+
+# TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, 
+#React Native, NativeScript, Expo, and Electron platforms and can be used with 
+# TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced
+# by other ORMs, such as Hibernate, Doctrine and Entity Framework.
+# https://typeorm.io/#installation
+npm install typeorm --save
+npm install reflect-metadata --save # reflect-metadata shim
+npm install &#64;types/node --save-dev # node typings
+npm install pg --save # db driver
+npm install &#64;nestjs/swagger --save
+
+# https://typeorm.io/#quick-start
+npx typeorm init --name ColoringBook --database postgres </code></pre></div><h2></h2>
+<h2>Exemple of the notes module initialization via the cli :</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh"># 1. Generate the notes module
+nest generate module notes
+
+# 2. Generate notes controller
+nest generate controller notes
+
+# 3. Generate notes service
+nest generate service notes
+
+# 4. Generate note Entity
+nest g class notes/note.entity --no-spec
+
+# 5. Generate CreateNoteDTO
+nest g class notes/create-note.dto --no-spec
+
+# 6. Generate UpdateNoteDTO
+nest g class notes/update-note.dto --no-spec
+
+# 7. Generate pagination-query DTO
+nest generate class common/dto/pagination-query.dto --no-spec
+
+## Generation of the users module
+````sh
+# 1. Generate module files
+ nest generate module users
+ nest generate controller users
+ nest generate class users/user.entity --no-spec
+ nest g class users/create-user.dto --no-spec
+ nest g class users/update-user.dto --no-spec
+
+# 2. Generate a new users.service.ts file
+# 3. Fill in generated files
+# 4. Run the server
+npm run start:dev
+
+# 5. Create a new migration script
+# This will :
+# - Update the db schema 
+# - Add a new entry in the migrations table
+# - Add a new migration file
+npx typeorm migration:generate -n CreateUserTable
+
+## Restart the server
+
+# Run the new migration script
+# This will, in this case, create the new user table
+npx typeorm migration:run # Runs all pending migrations
+</code></pre></div><h2>Migrations</h2>
+<p>SQL migrations is managed with typeorm.<br>A <code>ormconfig.js</code> file is required :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-js">module.exports = {
+  type: &#39;postgres&#39;,
+  host: &#39;localhost&#39;,
+  port: 5432,
+  username: &#39;username&#39;,
+  password: &#39;password&#39;,
+  database: &#39;database&#39;,
+  entities: [&#39;dist/**/*.entity{.ts,.js}&#39;],
+  migrations: [&#39;dist/migrations/*.js&#39;],
+  cli: {
+    migrationsDir: &#39;src/migrations&#39;,
+  },
+};</code></pre></div><b>Example :</b><div><pre class="line-numbers"><code class="language-sh">npx typeorm migration:create -n MyMigration # Creates a new migration file
+npx typeorm migration:generate -n SchemaSync # Generates a new migration file with sql needs to be executed to update schema.
+npx typeorm migration:run # Runs all pending migrations
+npx typeorm migration:revert # Reverts last executed migration
+#npx typeorm migration:sync # Sync migration
+npx typeorm migration:show # Show all migrations and whether they have been run or not</code></pre></div><p>Example :<br>The server needs to be started before the scripts can update the migration table :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh">npm run start:dev # Start the backend
+npx typeorm migration:generate -n InitialData # Initialize a first migration</code></pre></div><h2>Test</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">$ npm run test # unit tests
+$ npm run test:e2e 
+$ npm run test:cov # test coverage</code></pre></div><h2>Documentation</h2>
+<p>The backend documentation is generated with <a href="https://compodoc.app/">Compodoc</a>.</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh">npm i -D &#64;compodoc/compodoc
+npx &#64;compodoc/compodoc -p tsconfig.json -s --port 8081
+# Or with the project script
+npm run generate-doc-local</code></pre></div><h3>Coloringbook API documentation</h3>
+<p>TODO</p>
+<h2>Deployment to production</h2>
+<p>The backend is deployed on <code>Google Cloud</code> using <code>App Engine</code>.
+Postgres SQL is managed with <code>Google Cloud SQL</code>.</p>
+<p>To deploy :</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-sh"># A .env file is required with the following informations :
+
+# SQL env
+DATABASE_HOST={database_host_ip}
+DATABASE_NAME=postgres
+DATABASE_PORT=5432
+DATABASE_USER={database_user}
+DATABASE_PASSWORD={database_password}
+
+# Service account
+DB_INSTANCE_NAME={myapplication-xxx:europe-west1:xxx}
+
+# Deploy to production
+npm run deploy
+</code></pre></div><h2>Contact</h2>
+<ul>
+<li><a href="https://twitter.com/willahhravel">@twitter</a></li>
+<li><a href="https://github.com/willahh/coloringbook">Coloringbook repository</a></li>
+</ul>
+<h2>License</h2>
+<p>All Rights Reserved</p>
+<p>Copyright (c) 2025 William Ravel</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 0;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
+            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="./js/libs/custom-elements.min.js"></script>
+       <script src="./js/libs/lit-html.js"></script>
+
+       <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
+
+       <script src="./js/libs/bootstrap-native.js"></script>
+
+       <script src="./js/libs/es6-shim.min.js"></script>
+       <script src="./js/libs/EventDispatcher.js"></script>
+       <script src="./js/libs/promise.min.js"></script>
+
+       <script src="./js/compodoc.js"></script>
+
+       <script src="./js/tabs.js"></script>
+       <script src="./js/menu.js"></script>
+       <script src="./js/libs/clipboard.min.js"></script>
+       <script src="./js/libs/prism.js"></script>
+       <script src="./js/sourceCode.js"></script>
+          <script src="./js/search/search.js"></script>
+          <script src="./js/search/lunr.min.js"></script>
+          <script src="./js/search/search-lunr.js"></script>
+          <script src="./js/search/search_index.js"></script>
+       <script src="./js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
