@@ -60,16 +60,27 @@ http://localhost:3000/api
 
 ## Project setup
 ````sh
-npm i -g @nestjs/cli # Install the Nestjs cli globally
+npm install -g @nestjs/cli # Install the Nestjs cli globally
 nest new project-name # Initialize Nestjs project
 
-# Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env.
-npm i dotenv
+# Dotenv is a zero-dependency module that loads environment variables from 
+a .env file into process.env.
+npm install dotenv
 
-# # TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, React Native, NativeScript, Expo, and Electron platforms and can be used with TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced by other ORMs, such as Hibernate, Doctrine and Entity Framework.
-# npm i typeorm
+# TypeORM is an ORM that can run in NodeJS, Browser, Cordova, PhoneGap, Ionic, 
+#React Native, NativeScript, Expo, and Electron platforms and can be used with 
+# TypeScript and JavaScript (ES5, ES6, ES7, ES8). TypeORM is highly influenced
+# by other ORMs, such as Hibernate, Doctrine and Entity Framework.
+npm install typeorm --save # https://typeorm.io/#installation
+npm install reflect-metadata --save # reflect-metadata shim - https://typeorm.io/#installation
+npm install @types/node --save-dev # node typings - https://typeorm.io/#installation
+npm install pg --save # db driver - https://typeorm.io/#installation
 
+# Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
+npm i @nestjs/mapped-types
 
+# https://typeorm.io/#quick-start
+npx typeorm init --name MyProject --database postgres 
 
 
 # # Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
