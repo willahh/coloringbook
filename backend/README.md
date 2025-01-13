@@ -29,6 +29,7 @@ Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io)
 $ npm install
 
 # Create a .env file
+touch .env
 DATABASE_HOST=localhost
 DATABASE_NAME=Coloringbookdb
 DATABASE_PORT=5432
@@ -52,10 +53,7 @@ $ npm run start:prod
 ````
 
 ## Test in local
-````sh
-http://localhost:3000/api
-````
-
+You can test the API with the Swagger on http://localhost:3000/api
 
 
 ## Project setup
@@ -77,37 +75,13 @@ npm install typeorm --save
 npm install reflect-metadata --save # reflect-metadata shim
 npm install @types/node --save-dev # node typings
 npm install pg --save # db driver
-
-# Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
-# npm i @nestjs/mapped-types
+npm install @nestjs/swagger --save
 
 # https://typeorm.io/#quick-start
 npx typeorm init --name ColoringBook --database postgres 
-
-
-
-
-# # Allows use of decorator and non-decorator based validation. Internally uses validator.js to perform validation. Class-validator works on both browser and node.js platforms.
-# # It is used by DTO objects.
-# npm i class-validator
-
-# # Class-transformer allows you to transform plain object to some instance of class and versa.
-# npm i class-transformer
-
-# # Mapped Types module for Nest used by the @nestjs/graphql and @nestjs/swagger packages.
-# npm i @nestjs/mapped-types
-
-# # TypeORM module for Nest.
-# npm i @nestjs/typeorm
-
-# # Configuration module for Nest based on the dotenv (to load process environment variables) package.
-# npm i @nestjs/config
-
-# # nestjs common stuff
-# npm i @nestjs/common
 ````
 
-
+##
 
 
 ## Exemple of the notes module initialization via the cli :
@@ -207,9 +181,6 @@ $ npm run test # unit tests
 $ npm run test:e2e 
 $ npm run test:cov # test coverage
 ```
-
-### Testing the API with Insomnia
-For API testing purpose, an Insomnia workspace settings is available in `resources/Insomnia-workspace.json`.
 
 
 ## Documentation

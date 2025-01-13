@@ -1,12 +1,27 @@
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppDataSource } from './data-source';
 import { User } from './users/entities/user.entity';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+
+  // Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Coloring Book API')
+    .setDescription('The Coloring Book API description')
+    .setVersion('1.0')
+    .addTag('books')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
+
+  // Init
   await app.listen(process.env.PORT ?? 3000);
 
+  // Initialize AppDataSource
   console.log('Initializing the database connection...');
   AppDataSource.initialize();
 
