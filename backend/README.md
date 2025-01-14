@@ -171,27 +171,11 @@ TODO
 
 
 ## Deployment to production
-The backend is deployed on `Google Cloud` using `App Engine`.
-Postgres SQL is managed with `Google Cloud SQL`.
-
-To deploy :
-````sh
-# A .env file is required with the following informations :
-
-# SQL env
-DATABASE_HOST={database_host_ip}
-DATABASE_NAME=postgres
-DATABASE_PORT=5432
-DATABASE_USER={database_user}
-DATABASE_PASSWORD={database_password}
-
-# Service account
-DB_INSTANCE_NAME={myapplication-xxx:europe-west1:xxx}
-
-# Deploy to production
-npm run deploy
-
-````
+```sh
+npm i -g vercel
+nest build
+nest deploy
+```
 
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)
