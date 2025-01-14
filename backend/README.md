@@ -91,39 +91,6 @@ nest generate resource
 
 
 
-
-
-
-# 1. Generate the notes module
-nest generate module notes
-
-# 2. Generate notes controller
-nest generate controller notes
-
-# 3. Generate notes service
-nest generate service notes
-
-# 4. Generate note Entity
-nest g class notes/note.entity --no-spec
-
-# 5. Generate CreateNoteDTO
-nest g class notes/create-note.dto --no-spec
-
-# 6. Generate UpdateNoteDTO
-nest g class notes/update-note.dto --no-spec
-
-# 7. Generate pagination-query DTO
-nest generate class common/dto/pagination-query.dto --no-spec
-
-## Generation of the users module
-````sh
-# 1. Generate module files
- nest generate module users
- nest generate controller users
- nest generate class users/user.entity --no-spec
- nest g class users/create-user.dto --no-spec
- nest g class users/update-user.dto --no-spec
-
 # 2. Generate a new users.service.ts file
 # 3. Fill in generated files
 # 4. Run the server
