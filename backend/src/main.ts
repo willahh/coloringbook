@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { AppDataSource } from './data-source';
-import { User } from './users/entities/user.entity';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +15,9 @@ async function bootstrap() {
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
+  console.log(
+    'You can consult the API with the Swagger on http://localhost:3000/api',
+  );
 
   // Init
   await app.listen(process.env.PORT ?? 3000);

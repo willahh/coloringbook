@@ -73,9 +73,11 @@ npm install dotenv
 # https://typeorm.io/#installation
 npm install typeorm --save
 npm install reflect-metadata --save # reflect-metadata shim
-npm install @types/node --save-dev # node typings
 npm install pg --save # db driver
+npm install @types/node --save-dev # node typings
+npm install @nestjs/typeorm
 npm install @nestjs/swagger --save
+npm install class-validator class-transformer --save 
 
 # https://typeorm.io/#quick-start
 npx typeorm init --name ColoringBook --database postgres 
