@@ -81,12 +81,17 @@ npm install @nestjs/swagger --save
 npx typeorm init --name ColoringBook --database postgres 
 ````
 
-##
-
 
 ## Exemple of the notes module initialization via the cli :
 
 ````sh
+nest generate resource
+
+
+
+
+
+
 # 1. Generate the notes module
 nest generate module notes
 

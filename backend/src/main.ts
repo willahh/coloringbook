@@ -7,7 +7,6 @@ import { User } from './users/entities/user.entity';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-
   // Swagger
   const config = new DocumentBuilder()
     .setTitle('Coloring Book API')
@@ -24,6 +23,7 @@ async function bootstrap() {
   // Initialize AppDataSource
   console.log('Initializing the database connection...');
   AppDataSource.initialize();
+  console.log('Initialized finished');
 
   // console.log('Initializing the database connection...');
   // AppDataSource.initialize()
