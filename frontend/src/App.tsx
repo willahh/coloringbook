@@ -7,7 +7,7 @@ import HomePage from './pages/Home';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter basename="/coloringbook">
+    <BrowserRouter>
       <Routes>
         <Route index element={<HomePage />}></Route>
         <Route path="book" element={<BookPage />}></Route>
