@@ -22,7 +22,8 @@ export default defineConfig({
   /**
    * Build directory, use of dir "/docs" to match default github Page deploy directory
    */
-  build: { outDir: './../docs' },
+  build: { outDir: './dist' },
+  // build: { outDir: './../docs' },
 
   /**
    * Base dir for deploy : use of github repository name.

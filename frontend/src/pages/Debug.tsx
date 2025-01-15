@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { Tooltip } from '@/components/Tooltip';
@@ -51,7 +51,7 @@ export const DebugButton = () => {
           <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
             <div className="divide-y divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-white shadow">
               <div className="grid grid-cols-2 gap-2">
-                <Switch />
+                <Switch checked={false} onChange={() => {}} />
                 <label htmlFor="a">Debug grid</label>
               </div>
             </div>
