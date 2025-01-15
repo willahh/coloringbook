@@ -82,13 +82,12 @@ npx typeorm init --name ColoringBook --database postgres
 
 
 ## Deploy to production
-```sh
-cd backend
-npm run build # Build the backend project
-cd ..
-vercel build
-vercel deploy
-```
+### Database
+The production database is Postgres. It is deployed on Supabase: [https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public](https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public).
+
+### API
+Builds and deployment are managed via Render: [https://dashboard.render.com/](https://dashboard.render.com/).  
+The production URL for the API is: [https://coloringbook-backend.onrender.com/api](https://coloringbook-backend.onrender.com/api)
 
 
 
@@ -96,10 +95,7 @@ vercel deploy
 https://typeorm.io/migrations  
 SQL migrations is managed with typeorm.  
 
-
-# ```sh
-# First migration script with initials tables. Use the generated .js file 
-# from dist source
+```sh
 npx typeorm migration:generate -d ./dist/data-source.js ./src/migrations/init
 npx typeorm migration:run -d ./dist/data-source.js
 ```

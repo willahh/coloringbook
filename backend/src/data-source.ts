@@ -24,13 +24,6 @@ const password = process.env.DATABASE_PASSWORD;
 const database = process.env.DATABASE_NAME;
 const ssl = process.env.DATABASE_SSL || false;
 
-/**
- * TODO:
- * - [x] Tester en local vers la base de prod
- * - [x] Synchroniser la base de prod supabase avec les nouvelles tables
- * - [-] Si tout est OK, continuer de setup avec Vercel prod
- */
-
 console.log('-----');
 console.log('Start backend with env variables :');
 console.log('envFile: ', envFile);
