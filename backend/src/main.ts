@@ -16,14 +16,14 @@ async function bootstrap() {
 
   // Swagger
   SwaggerModule.setup('api', app, documentFactory);
-  console.log(
-    'You can consult the API with the Swagger on http://localhost:3000/api',
-  );
 
   // Init
   const port = process.env.PORT ?? 3000;
   console.log('Listening on port', port);
   await app.listen(port);
   console.log('Listening finished');
+
+  const url = await app.getUrl();
+  console.log(`You can consult the API with the Swagger on ${url}/api`);
 }
 bootstrap();

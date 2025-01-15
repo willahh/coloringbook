@@ -18,24 +18,19 @@
   </p>
 </p>
 
+
 # Backend
 Backend REST API.
 
-Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) and hosted on [Vercel](https://vercel.com/)
+Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) 
+,hosted on [Vercel](https://vercel.com/). Database: [Neon](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
 
 
 ## Installation
 ```sh
 $ npm install
-
-# Create a .env file
-touch .env
-DATABASE_HOST=localhost
-DATABASE_NAME=Coloringbookdb
-DATABASE_PORT=5432
-DATABASE_USER=user
-DATABASE_PASSWORD=password
 ````
+Create a .env file from the .env.sample.
 
 ## Running the app in local environment
 ````sh
@@ -97,6 +92,11 @@ npx typeorm migration:generate -d ./dist/data-source.js ./src/migrations/init
 npx typeorm migration:run -d ./dist/data-source.js
 ```
 
+### Run the migrations script on production database
+To run the migration scripts on production database, use the `production.env` 
+file before running the `migration:run` command mentioned above. You can
+go in `data-source.ts` file switch override `envFile = 'production.env';`.
+
 
 ## Test
 
@@ -119,7 +119,7 @@ npm run generate-doc-local
 
 ## Deployment to production
 ```sh
-# Navigate to the project root directory before executing any commands
+cd ~/coloringbook # Navigate to the project root directory before executing any commands
 vercel build
 vercel deploy
 ```
