@@ -45,6 +45,7 @@ console.log('-----');
 
 const optionsWithSSL = {
   ssl: true,
+  sslMode: 'require',
   extra: {
     ssl: {
       rejectUnauthorized: false,
