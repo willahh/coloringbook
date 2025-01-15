@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { AppDataSource } from './data-source';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -26,10 +25,5 @@ async function bootstrap() {
   console.log('Listening on port', port);
   await app.listen(port);
   console.log('Listening finished');
-
-  // Initialize AppDataSource
-  console.log('Initializing the database connection...');
-  AppDataSource.initialize();
-  console.log('Initialized finished');
 }
 bootstrap();

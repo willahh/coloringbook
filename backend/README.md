@@ -58,6 +58,7 @@ You can test the API with the Swagger on http://localhost:3000/api
 
 ## Project setup
 ````sh
+npm install -g vercel # Vercel client
 npm install -g @nestjs/cli # Install the Nestjs cli globally
 nest new project-name # Initialize Nestjs project
 
@@ -74,77 +75,26 @@ npm install dotenv
 npm install typeorm --save
 npm install reflect-metadata --save # reflect-metadata shim
 npm install pg --save # db driver
+npm install class-validator class-transformer --save 
 npm install @types/node --save-dev # node typings
 npm install @nestjs/typeorm
 npm install @nestjs/swagger --save
-npm install class-validator class-transformer --save 
 
 # https://typeorm.io/#quick-start
 npx typeorm init --name ColoringBook --database postgres 
 ````
 
 
-## Exemple of the notes module initialization via the cli :
-
-````sh
-nest generate resource
-
-
-
-# 2. Generate a new users.service.ts file
-# 3. Fill in generated files
-# 4. Run the server
-npm run start:dev
-
-# 5. Create a new migration script
-# This will :
-# - Update the db schema 
-# - Add a new entry in the migrations table
-# - Add a new migration file
-npx typeorm migration:generate -n CreateUserTable
-
-## Restart the server
-
-# Run the new migration script
-# This will, in this case, create the new user table
-npx typeorm migration:run # Runs all pending migrations
-
-````
-
 ## Migrations
+https://typeorm.io/migrations  
 SQL migrations is managed with typeorm.  
-A `ormconfig.js` file is required :
-```js
-module.exports = {
-  type: 'postgres',
-  host: 'localhost',
-  port: 5432,
-  username: 'username',
-  password: 'password',
-  database: 'database',
-  entities: ['dist/**/*.entity{.ts,.js}'],
-  migrations: ['dist/migrations/*.js'],
-  cli: {
-    migrationsDir: 'src/migrations',
-  },
-};
-````
 
-```sh
-npx typeorm migration:create -n MyMigration # Creates a new migration file
-npx typeorm migration:generate -n SchemaSync # Generates a new migration file with sql needs to be executed to update schema.
-npx typeorm migration:run # Runs all pending migrations
-npx typeorm migration:revert # Reverts last executed migration
-#npx typeorm migration:sync # Sync migration
-npx typeorm migration:show # Show all migrations and whether they have been run or not
-```
 
-Example :  
-The server needs to be started before the scripts can update the migration table :
-
-```sh
-npm run start:dev # Start the backend
-npx typeorm migration:generate -n InitialData # Initialize a first migration
+# ```sh
+# First migration script with initials tables. Use the generated .js file 
+# from dist source
+npx typeorm migration:generate -d ./dist/data-source.js ./src/migrations/init
+npx typeorm migration:run -d ./dist/data-source.js
 ```
 
 
@@ -166,15 +116,12 @@ npx @compodoc/compodoc -p tsconfig.json -s --port 8081
 npm run generate-doc-local
 ````
 
-### Coloringbook API documentation
-TODO
-
 
 ## Deployment to production
 ```sh
-npm i -g vercel
-nest build
-nest deploy
+# Navigate to the project root directory before executing any commands
+vercel build
+vercel deploy
 ```
 
 ## Contact

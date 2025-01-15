@@ -3,13 +3,17 @@ import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './users/entities/user.entity';
 import { Book } from './books/entities/book.entity';
+import { Init1736932735124 } from './migrations/1736932735124-init';
 
 // Load environment variables based on the environment
-if (process.env.NODE_ENV === 'production') {
-  dotenv.config({ path: '.production.env' });
-} else {
-  dotenv.config();
-}
+const envFile =
+  process.env.NODE_ENV === 'production'
+    ? 'production.env'
+    : process.env.NODE_ENV === 'staging'
+      ? 'staging.env'
+      : '.env';
+
+dotenv.config({ path: envFile });
 
 const host = process.env.DATABASE_HOST;
 const port = Number(process.env.DATABASE_PORT);
@@ -17,12 +21,23 @@ const user = process.env.DATABASE_USER;
 const password = process.env.DATABASE_PASSWORD;
 const database = process.env.DATABASE_NAME;
 
+/**
+ * TODO:
+ * - [x] Tester en local vers la base de prod
+ *   => En erreur.
+ * - [ ] Synchroniser la base de prod supabase avec les nouvelles tables
+ * - [ ] Tester en local avec la base de prod
+ * - [ ] Si tout est OK, continuer de setup avec Vercel prod
+ */
+
 console.log('-----');
 console.log('Start backend with env variables :');
+console.log('envFile', envFile);
 console.log('process.env.NODE_ENV', process.env.NODE_ENV);
 console.log('host', host);
 console.log('port', port);
 console.log('user', user);
+console.log('password', '*********');
 console.log('database', database);
 console.log('-----');
 
@@ -34,8 +49,16 @@ export const options: DataSourceOptions = {
   password: password,
   database: database,
   entities: [User, Book],
-  // synchronize: true,
+  // entities: ['src/**/entities/*.entity.ts'],
+  // entities: ['src/**/*.entity.ts'],
+  // migrations: ['src/migrations/*.ts'],
+  migrations: [Init1736932735124],
+  synchronize: false,
   logging: true,
 };
 
+console.log('Initialize and export the data source for database connection');
 export const AppDataSource = new DataSource(options);
+
+AppDataSource.initialize();
+console.log('Data source initialized');
