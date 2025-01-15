@@ -25,10 +25,5 @@ export default defineConfig({
   build: { outDir: './dist' },
   // build: { outDir: './../docs' },
 
-  /**
-   * Base dir for deploy : use of github repository name.
-   * Used to generate relative path e.g. <script src="/coloringbook/assets/index.js">
-   * https://vitejs.fr/guide/static-deploy.html
-   */
-  base: '/coloringbook/',
+  base: '',
 });
