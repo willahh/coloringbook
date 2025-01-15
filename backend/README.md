@@ -85,9 +85,10 @@ npx typeorm init --name ColoringBook --database postgres
 ### Database
 The production database is Postgres. It is deployed on Supabase: [https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public](https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public).
 
-### API
+### Backend API
 Builds and deployment are managed via Render: [https://dashboard.render.com/](https://dashboard.render.com/).  
 The production URL for the API is: [https://coloringbook-backend.onrender.com/api](https://coloringbook-backend.onrender.com/api)
+The backend API is automatically deployed when pushing new commits to the master branch.
 
 
 
