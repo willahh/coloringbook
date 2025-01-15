@@ -83,7 +83,9 @@ npx typeorm init --name ColoringBook --database postgres
 
 ## Deploy to production
 ```sh
-cd ~/coloringbook # Navigate to the project root directory before executing any commands
+cd backend
+npm run build # Build the backend project
+cd ..
 vercel build
 vercel deploy
 ```
