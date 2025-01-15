@@ -80,6 +80,16 @@ npx typeorm init --name ColoringBook --database postgres
 ````
 
 
+
+## Deploy to production
+```sh
+cd ~/coloringbook # Navigate to the project root directory before executing any commands
+vercel build
+vercel deploy
+```
+
+
+
 ## Migrations
 https://typeorm.io/migrations  
 SQL migrations is managed with typeorm.  
@@ -116,13 +126,6 @@ npx @compodoc/compodoc -p tsconfig.json -s --port 8081
 npm run generate-doc-local
 ````
 
-
-## Deployment to production
-```sh
-cd ~/coloringbook # Navigate to the project root directory before executing any commands
-vercel build
-vercel deploy
-```
 
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)
