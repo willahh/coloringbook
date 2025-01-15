@@ -15,7 +15,7 @@
     "release:major": "npm version major",
     "release:minor": "npm version minor",
     "release:patch": "npm version patch",
-    "serve:prod": "serve"
+    "serve:prod": "serve dist"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
