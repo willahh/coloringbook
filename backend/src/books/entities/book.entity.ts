@@ -36,4 +36,7 @@ export class Book {
 
   @Column({ type: 'jsonb', nullable: true, default: [] })
   pages: Array<object>;
+
+  @Column()
+  coverImage: string;
 }

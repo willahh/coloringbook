@@ -25,4 +25,8 @@ export class CreateBookDto {
 
   @IsOptional()
   pages: Array<object>;
+
+  @IsOptional()
+  @IsString()
+  coverImage: string;
 }

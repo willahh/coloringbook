@@ -4,6 +4,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { User } from './users/entities/user.entity';
 import { Book } from './books/entities/book.entity';
 import { Init1736932735124 } from './migrations/1736932735124-init';
+import { BookAddColumnCoverImage1737027990891 } from './migrations/1737027990891-book-add-column-coverImage';
 
 // Load environment variables based on the environment
 const envFile =
@@ -54,7 +55,7 @@ export const options: DataSourceOptions = {
   password: password,
   database: database,
   entities: [User, Book],
-  migrations: [Init1736932735124],
+  migrations: [Init1736932735124, BookAddColumnCoverImage1737027990891],
   synchronize: false,
   logging: true,
   ...(ssl ? optionsWithSSL : {}),

@@ -19,11 +19,13 @@
 </p>
 
 
+
 # Backend
 Backend REST API.
 
 Built with [Nest](https://github.com/nestjs/nest), [TypeORM](https://typeorm.io) 
 ,hosted on [Vercel](https://vercel.com/). Database: [Neon](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
+
 
 
 ## Installation
@@ -52,7 +54,7 @@ You can test the API with the Swagger on http://localhost:3000/api
 
 
 ## Project setup
-````sh
+```sh
 npm install -g vercel # Vercel client
 npm install -g @nestjs/cli # Install the Nestjs cli globally
 nest new project-name # Initialize Nestjs project
@@ -77,13 +79,15 @@ npm install @nestjs/swagger --save
 
 # https://typeorm.io/#quick-start
 npx typeorm init --name ColoringBook --database postgres 
-````
+```
 
 
 
 ## Deploy to production
 ### Database
 The production database is Postgres. It is deployed on Supabase: [https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public](https://supabase.com/dashboard/project/sdliwenpdqycibocgdzv/editor/33683?schema=public).
+
+
 
 ### Backend API
 Builds and deployment are managed via Render: [https://dashboard.render.com/](https://dashboard.render.com/).  
@@ -97,14 +101,34 @@ https://typeorm.io/migrations
 SQL migrations is managed with typeorm.  
 
 ```sh
-npx typeorm migration:generate -d ./dist/data-source.js ./src/migrations/init
-npx typeorm migration:run -d ./dist/data-source.js
+# 1. Generate the migration script
+npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/init
+
+# 2. Add the migration file to the datasource
+```sh
+export const options: DataSourceOptions = {
+  ...
+  migrations: [Init1736932735124, BookAddColumnCoverImage1737027990891],
+  ...
+};
 ```
+
+# 3. Rebuild the frontend to generate the .js file
+npm run start
+
+# 4. Run the migration script.
+# It should add a new row in the migrations table and update the database 
+# accordingly to the migration script
+npx typeorm migration:run -d ./public/data-source.js
+```
+
+
 
 ### Run the migrations script on production database
 To run the migration scripts on production database, use the `production.env` 
 file before running the `migration:run` command mentioned above. You can
 go in `data-source.ts` file switch override `envFile = 'production.env';`.
+
 
 
 ## Test
@@ -114,6 +138,7 @@ $ npm run test # unit tests
 $ npm run test:e2e 
 $ npm run test:cov # test coverage
 ```
+
 
 
 ## Documentation
@@ -126,9 +151,11 @@ npm run generate-doc-local
 ````
 
 
+
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)
 - [Coloringbook repository](https://github.com/willahh/coloringbook)
+
 
 
 ## License
