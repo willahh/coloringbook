@@ -7,6 +7,7 @@ import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 
 const HomePage: React.FC = () => {
+  console.log('HomePage');
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
     setShowForm(true);

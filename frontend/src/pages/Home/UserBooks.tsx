@@ -1,12 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import Button from '@components/Button';
 import { IBook } from '@/domain/book';
-
-const initialBooks: IBook[] = [
-  { id: 1, name: 'Livre 1', image: 'placeholder.jpg' },
-  { id: 2, name: 'Livre 2', image: 'placeholder.jpg' },
-  // Ajoutez d'autres livres ici
-];
 
 interface BookItemProps {
   book: IBook;
@@ -14,23 +8,32 @@ interface BookItemProps {
   handleDelete: (id: number) => void;
   handleChangeImage: (id: number, newImage: string) => void;
 }
+
 const BookItem: React.FC<BookItemProps> = ({
   book,
   handleRename,
-//   handleDelete,
-//   handleChangeImage,
+  //   handleDelete,
+  //   handleChangeImage,
 }) => {
   return (
-    <div key={book.id} className="book-item relative">
-      <img src={book.image} alt={book.name} className="w-full h-auto" />
-      <div className="book-info absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white p-2">
-        <input
-          type="text"
-          value={book.name}
-          onChange={(e) => handleRename(book.id, e.target.value)}
-          className="bg-transparent border-none text-white w-full"
-        />
-        {/* <Button onClick={() => handleDelete(book.id)} className="text-red-500">
+    <div className="book-item relative">
+      <div
+        className="relative w-32 aspect-[1/1.414] border border-primary-500 
+        border-1 bg-cover bg-center bg-no-repeat overflow-auto rounded-md shadow-lg
+        hover:border-primary-700 hover:scale-105 transition-transform duration-300
+        focus:border-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+        style={{ backgroundImage: `url(${book.coverImage})` }}
+        tabIndex={0}
+        onFocus={() => console.log('focus')}
+      >
+        <div className="book-info absolute w-full bottom-0 left-0 bg-black bg-opacity-50 text-white p-2">
+          <input
+            type="text"
+            value={book.name}
+            onChange={(e) => handleRename(book.id, e.target.value)}
+            className="bg-transparent border-none text-white w-full text-xs font-serif"
+          />
+          {/* <Button onClick={() => handleDelete(book.id)} className="text-red-500">
           Supprimer
         </Button>
         <Button
@@ -39,13 +42,30 @@ const BookItem: React.FC<BookItemProps> = ({
         >
           Changer Image
         </Button> */}
+        </div>
       </div>
     </div>
   );
 };
 
 const UserBooks: React.FC = () => {
-  const [books, setBooks] = useState<IBook[]>(initialBooks);
+  console.log('UserBooks');
+  //   const [books, setBooks] = useState<IBook[]>(initialBooks);
+  const [books, setBooks] = useState<IBook[]>([]);
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/books?delay=500');
+        const data = await response.json();
+        setBooks(data);
+      } catch (error) {
+        console.error('Error fetching books:', error);
+      }
+    };
+
+    fetchBooks();
+  }, []);
 
   const handleRename = (id: number, newName: string) => {
     setBooks(
@@ -69,6 +89,7 @@ const UserBooks: React.FC = () => {
     <div className="user-books">
       {books.map((book) => (
         <BookItem
+          key={book.id}
           book={book}
           handleRename={handleRename}
           handleDelete={handleDelete}
