@@ -64,12 +64,18 @@ This project is built with the following technologies and tools:
    ```
 
 
-### Theming
-- https://uicolors.app/create - Tailwind CSS Color Generator
-
 
 ## Resources
-- [Pixabay](https://pixabay.com/fr/) - Images libres de droits & gratuites à télécharger 
+
+### Applications
+- Backend and frontend apps: [Render Dashboard](https://dashboard.render.com/)
+- Database : [neon/dashboard](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
+
+### External resources
+- [Pixabay](https://pixabay.com/fr/) Images libres de droits & gratuites à télécharger 
+- [Uicolors](https://uicolors.app/create) Tailwind CSS Color Generator
+
+
 
 
 
@@ -82,7 +88,6 @@ This project is built with the following technologies and tools:
 ### Deploy for production
 - frontend/readme.md#deploy
 - backend/readme.md#deploy
-
 
 ## Acknowledgments 🙏
 Inspired by the creative possibilities of coloring books.
