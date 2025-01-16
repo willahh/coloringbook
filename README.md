@@ -19,6 +19,7 @@
 </p>
 
 ## Features ✨
+- Upload a book cover image
 - Import images and convert them into outlines for coloring.
 - Draw custom designs directly in the app.
 - Organize pages into a book format, ready for printing.
@@ -68,8 +69,9 @@ This project is built with the following technologies and tools:
 ## Resources
 
 ### Applications
-- Backend and frontend apps: [Render Dashboard](https://dashboard.render.com/)
+- Backend and frontend apps: [Render Dashboard](https://dashboard.render.com)
 - Database : [neon/dashboard](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
+- Assets : [imgbb](https://ibb.co/album/ymHQ4d)
 
 ### External resources
 - [Pixabay](https://pixabay.com/fr/) Images libres de droits & gratuites à télécharger 
