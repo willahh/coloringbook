@@ -26,9 +26,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   const bookNameInput = useRef<HTMLInputElement | null>(null);
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
-  const animateStyle = isVisible
-    ? { ...visibleStyle, ...{ overflow: 'hidden' } }
-    : { ...hiddenStyle, ...{ overflow: 'hidden' } };
+  const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
 
   useEffect(() => {
     if (isVisible) {
@@ -48,7 +46,10 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         type: 'tween',
       }}
     >
-      <form className={`space-y-4 ${className || ''}`}>
+      <form
+        className={`space-y-4 ${className || ''} 
+        ${isVisible ? '' : 'pointer-events-none'}`}
+      >
         <div>
           <label
             htmlFor="bookName"
@@ -133,12 +134,10 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
 }) => {
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
-  const animateStyle = isVisible
-    ? { ...visibleStyle, ...{ overflow: 'hidden' } }
-    : { ...hiddenStyle, ...{ overflow: 'hidden' } };
+  const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
 
   // const buttonRef = useRef<HTMLButtonElement | null>(null);
-  
+
   // useEffect(() => {
   //   if (isVisible) {
   //     if (buttonRef.current) {
@@ -157,32 +156,34 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
         type: 'tween',
       }}
     >
-      <AnimatedText enterClassName="delay-300">
-        <p className="text-base mb-4 text-justify">
-          <strong>Plongez dans un univers créatif et coloré</strong> où vous
-          pouvez concevoir des motifs originaux, laisser libre cours à votre
-          personnalité à travers le coloriage et partager vos créations avec
-          notre communauté.
-        </p>
-      </AnimatedText>
-      <AnimatedText enterClassName="delay-500">
-        <p className="text-base mb-4 text-indigo-300">
-          Lancez-vous dès aujourd'hui :
-        </p>
-      </AnimatedText>
-      <AnimatedText enterClassName="delay-1000">
-        <div>
-          <Button
-            className="flex justify-center w-full rounded-xl py-1 px-2"
-            autoFocus={true}
-            // ref={buttonRef}
-            onClick={onClick}
-          >
-            <BookOpenIcon aria-hidden="true" className="size-8" />
-            <span className="whitespace-nowrap">Créer un nouveau livre</span>
-          </Button>
-        </div>
-      </AnimatedText>
+      <div className={`${isVisible ? '' : 'pointer-events-none'}`}>
+        <AnimatedText enterClassName="delay-300">
+          <p className="text-base mb-4 text-justify">
+            <strong>Plongez dans un univers créatif et coloré</strong> où vous
+            pouvez concevoir des motifs originaux, laisser libre cours à votre
+            personnalité à travers le coloriage et partager vos créations avec
+            notre communauté.
+          </p>
+        </AnimatedText>
+        <AnimatedText enterClassName="delay-500">
+          <p className="text-base mb-4 text-indigo-300">
+            Lancez-vous dès aujourd'hui :
+          </p>
+        </AnimatedText>
+        <AnimatedText enterClassName="delay-1000">
+          <div>
+            <Button
+              className="flex justify-center w-full rounded-xl py-1 px-2"
+              autoFocus={true}
+              // ref={buttonRef}
+              onClick={onClick}
+            >
+              <BookOpenIcon aria-hidden="true" className="size-8" />
+              <span className="whitespace-nowrap">Créer un nouveau livre</span>
+            </Button>
+          </div>
+        </AnimatedText>
+      </div>
     </motion.div>
   );
 };
