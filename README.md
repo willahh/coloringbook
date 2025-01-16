@@ -44,21 +44,6 @@ This project is built with the following technologies and tools:
 - **Supabase**: Open source Firebase alternative [Learn more](https://supabase.com/).
 - **Supabase-js**: [Learn more](https://supabase.com/docs/reference/javascript/start).
 
-## Project Structure 📂
-```
-coloring-book-creator/
-├── public/               # Static assets
-├── src/
-│   ├── components/       # Reusable UI components
-│   ├── pages/            # Application pages (e.g., Home, Editor)
-│   ├── utils/            # Helper functions (e.g., image conversion)
-│   ├── App.tsx           # Main App component
-│   ├── index.tsx         # Application entry point
-│   └── styles/           # Global and component-specific styles
-├── package.json
-└── README.md
-```
-
 ## Installation 🛠️
 
 1. Clone this repository:
@@ -78,25 +63,6 @@ coloring-book-creator/
    # Open your browser and navigate to http://localhost:3000.
    ```
 
-## Project setup
-```sh
-npm create vite@latest # Install Vite, Typescript is setup automatically (config files)
-npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss and autoprefixer
-npm install -D @types/node # Install node types (fix an issue with a specific vite.config.ts)
-npm install vite-plugin-svgr --save-dev # To manage the import of svg icons
-npx tailwindcss init -p
-npm install motion
-npm install react-router-dom
-npm install @types/react-router-dom
-npx storybook@latest init
-npm install @storybook/manager-api @storybook/theming --save-dev
-npm install --save-dev storybook-dark-mode
-npm install @heroicons/react # https://heroicons.com/
-npm install @headlessui/react # https://headlessui.com/react/menu
-npm install @popperjs/core # A JavaScript library to position floating elements and create interactions for them. - https://floating-ui.com/
-npm install react-popper @popperjs/core # Floting-ui React wrapper - https://popper.js.org/react-popper/v2/ - 
-```
-
 
 ### Theming
 - https://uicolors.app/create - Tailwind CSS Color Generator
@@ -107,18 +73,13 @@ npm install react-popper @popperjs/core # Floting-ui React wrapper - https://pop
 
 
 
-## Build css
-```sh
-cd dev
-npm run dev
-```
-
-## Build for production
+## Build and deployment
+### Build for production
 - frontend/readme.md#build
 - backend/readme.md#build
 
 
-## Deploy for production
+### Deploy for production
 - frontend/readme.md#deploy
 - backend/readme.md#deploy
 
@@ -127,3 +88,13 @@ npm run dev
 Inspired by the creative possibilities of coloring books.
 Thanks to open-source libraries and the developer community!
 
+
+## Contact
+- [@twitter](https://twitter.com/willahhravel)
+- [Coloringbook repository](https://github.com/willahh/coloringbook)
+
+
+## License
+All Rights Reserved
+
+Copyright (c) 2025 William Ravel
