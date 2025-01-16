@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '@components/Button';
+// import Button from '@components/Button';
 import { IBook } from '@/domain/book';
 
 const initialBooks: IBook[] = [
@@ -17,8 +17,8 @@ interface BookItemProps {
 const BookItem: React.FC<BookItemProps> = ({
   book,
   handleRename,
-  handleDelete,
-  handleChangeImage,
+//   handleDelete,
+//   handleChangeImage,
 }) => {
   return (
     <div key={book.id} className="book-item relative">
