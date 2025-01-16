@@ -18,7 +18,6 @@
   </p>
 </p>
 
-
 ## Features ✨
 - Import images and convert them into outlines for coloring.
 - Draw custom designs directly in the app.
@@ -98,8 +97,15 @@ npm install @popperjs/core # A JavaScript library to position floating elements 
 npm install react-popper @popperjs/core # Floting-ui React wrapper - https://popper.js.org/react-popper/v2/ - 
 ```
 
+
 ### Theming
 - https://uicolors.app/create - Tailwind CSS Color Generator
+
+
+## Resources
+- [Pixabay](https://pixabay.com/fr/) - Images libres de droits & gratuites à télécharger 
+
+
 
 ## Build css
 ```sh
@@ -108,31 +114,14 @@ npm run dev
 ```
 
 ## Build for production
-The destination folder is in the folder "/docs" to match Github Page default configuration.
+- frontend/readme.md#build
+- backend/readme.md#build
 
-```sh
-cd dev
-npm run build 
-```
 
 ## Deploy for production
-The current production environment is on **Github Page**.
-The url is https://willahh.github.io/coloringbook/
+- frontend/readme.md#deploy
+- backend/readme.md#deploy
 
-To deploy to production : 
-```sh
-cd dev
-npm run build
-git push # Push to master branch on github.com/willahh/coloringbook
-
-Github pages automatically trigger a pipeline after the push.
-Pipeline can be monitored on https://github.com/willahh/coloringbook/actions.
-Build time can last between 1 to 5 minutes.
-```
-<img width="640" alt="Capture d’écran 2024-12-16 à 16 41 00" src="https://github.com/user-attachments/assets/022c7bc0-f695-4ee5-909e-84bbd9119448" />
-
-
-## Build and deploy with Github Action
 
 ## Acknowledgments 🙏
 Inspired by the creative possibilities of coloring books.
