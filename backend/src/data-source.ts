@@ -15,7 +15,7 @@ const envFile =
 
 // envFile = 'production.env';
 
-dotenv.config({ path: envFile });
+dotenv.config({ path: 'env/' + envFile });
 
 const host = process.env.DATABASE_HOST;
 const port = Number(process.env.DATABASE_PORT);
