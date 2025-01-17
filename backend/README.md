@@ -119,6 +119,7 @@ npm run start
 # 4. Run the migration script.
 # It should add a new row in the migrations table and update the database 
 # accordingly to the migration script
+```sh
 npx typeorm migration:run -d ./public/data-source.js
 ```
 
@@ -127,8 +128,27 @@ npx typeorm migration:run -d ./public/data-source.js
 ### Run the migrations script on production database
 To run the migration scripts on production database, use the `production.env` 
 file before running the `migration:run` command mentioned above. You can
-go in `data-source.ts` file switch override `envFile = 'production.env';`.
+go in `data-source.ts` file switch override `envFile = 'production.env';` : 
 
+1. In `data-source.ts` uncomment `envFile = 'production.env';`.
+2. Run `npm run start` 
+3. Run `npx typeorm migration:run -d ./public/data-source.js`
+
+You should see migrations logs :
+```sh
+...
+Initialize and export the data source for database connection
+Data source initialized
+query: SELECT * FROM current_schema()
+query: SELECT * FROM current_schema()
+query: SELECT version();
+query: SELECT version();
+query: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+query: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+1 migrations are already loaded in the database.
+2 migrations were found in the source code.
+...
+```
 
 
 ## Test

@@ -7,14 +7,15 @@ import { Init1736932735124 } from './migrations/1736932735124-init';
 import { BookAddColumnCoverImage1737027990891 } from './migrations/1737027990891-book-add-column-coverImage';
 
 // Load environment variables based on the environment
-const envFile =
+let envFile =
   process.env.NODE_ENV === 'production'
     ? 'production.env'
     : process.env.NODE_ENV === 'staging'
       ? 'staging.env'
       : '.env';
 
-// envFile = 'production.env';
+envFile += '';
+// envFile = 'production.env'; // Uncomment me to run production migration scripts
 
 dotenv.config({ path: 'env/' + envFile });
 
