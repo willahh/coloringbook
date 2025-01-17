@@ -4,8 +4,9 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite && tailwind",
-    "build": "tsc -b && vite build",
+    "dev": "vite --mode localhost && tailwind",
+    "build": "tsc -b && vite build --mode localhost",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "tailwind": "tailwindcss -i ./src/main.css -o ./public/output.css --watch",

@@ -1,15 +1,7 @@
-/**
- * UserBooks
- *
- * [TODO]
- * - [ ] Appliquer un filtre aux images peut être gris ou autre
- * - [ ] Skip  élément 8
- */
-
 import React, { useState, useEffect } from 'react';
 import { IBook } from '@/domain/book';
 import { Transition } from '@headlessui/react';
-
+import { getBooksUrl } from '@/utils/api';
 interface BookItemProps {
   index?: number;
   book: IBook;
@@ -36,7 +28,11 @@ const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   }
   if (index === 7) {
     // Layout specificity
-    cls += ' hidden';
+    cls += ' xl:hidden';
+  }
+
+  if (index === 6) {
+    cls += ' md:hidden xl:block';
   }
 
   if (book.coverImage === '') {
@@ -99,10 +95,12 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
   const [books, setBooks] = useState<IBook[]>([]);
   const [loading, setLoading] = useState(true);
 
+  console.log('process.env.NODE_ENV ', process.env.NODE_ENV);
+
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await fetch('http://localhost:3000/books?delay=500');
+        const response = await fetch(getBooksUrl());
         const data = await response.json();
         setBooks(data);
       } catch (error) {
