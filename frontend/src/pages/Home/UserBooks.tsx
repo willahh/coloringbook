@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IBook } from '@/domain/book';
 import { Transition } from '@headlessui/react';
-import { getBooksUrl } from '@/utils/api';
+import { getBooksUrl, getPublicURI } from '@/utils/api';
 interface BookItemProps {
   index?: number;
   book: IBook;
@@ -36,7 +36,7 @@ const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   }
 
   if (book.coverImage === '') {
-    book.coverImage = `public/book_covers/${index}.jpg`;
+    book.coverImage = `${getPublicURI()}/book_covers/${index}.jpg`;
   }
   return (
     <Transition
@@ -149,7 +149,7 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
                 <UserBookItem
                   index={index}
                   book={{
-                    coverImage: `public/book_covers/${++index}.jpg`,
+                    coverImage: `${getPublicURI()}/book_covers/${++index}.jpg`,
                     id: -1,
                     image: '',
                     name: '',

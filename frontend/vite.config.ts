@@ -11,6 +11,8 @@ export default defineConfig(() => {
   return {
     plugins: [react(), svgr({})],
     envDir: './env',
+    publicDir: './public',
+    build: { outDir: './dist', copyPublicDir: true },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
@@ -19,6 +21,5 @@ export default defineConfig(() => {
         '@shared': path.resolve(__dirname, './src/shared'),
       },
     },
-    build: { outDir: './dist' },
   };
 });
