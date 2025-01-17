@@ -95,8 +95,6 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
   const [books, setBooks] = useState<IBook[]>([]);
   const [loading, setLoading] = useState(true);
 
-  console.log('process.env.NODE_ENV ', process.env.NODE_ENV);
-
   useEffect(() => {
     const fetchBooks = async () => {
       try {
@@ -151,7 +149,7 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
                 <UserBookItem
                   index={index}
                   book={{
-                    coverImage: `public/book_covers/${index}.jpg`,
+                    coverImage: `public/book_covers/${++index}.jpg`,
                     id: -1,
                     image: '',
                     name: '',
