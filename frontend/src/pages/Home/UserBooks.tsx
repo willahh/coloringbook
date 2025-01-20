@@ -19,9 +19,9 @@ const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   className,
 }) => {
   let cls = `${className} relative w-full aspect-[1/1.414] rounded-md overflow-hidden`;
-  const bookExist = book.id === -1;
+  const bookExistAndHaveCover = book.id === -1 && book.coverImage !== null;
 
-  if (bookExist) {
+  if (bookExistAndHaveCover) {
     cls += `cursor-pointer transition-all
       focus-visible:outline-2 focus-visible:outline focus-visible:scale-110 
       focus:border-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500`;
@@ -60,10 +60,10 @@ const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
           backgroundPosition: 'center',
           // filter: 'grayscale(100%)',
           // filter: `sepia(10%) saturate(30%)`
-          filter: bookExist ? `sepia(50%) blur(2px)` : undefined,
+          filter: bookExistAndHaveCover ? `sepia(50%) blur(2px)` : undefined,
         }}
-        tabIndex={bookExist ? 1 : 0}
-        onFocus={bookExist ? () => console.log('focus') : undefined}
+        tabIndex={bookExistAndHaveCover ? 1 : 0}
+        onFocus={bookExistAndHaveCover ? () => console.log('focus') : undefined}
       >
         <div className="book-info absolute w-full bottom-0 left-0 text-white p-2">
           {/* <input
@@ -91,7 +91,6 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
   itemClassName: itemClassName,
   minItems,
 }) => {
-  console.log('UserBooks');
   const [books, setBooks] = useState<IBook[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -135,7 +134,7 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
         (_, index) => (
           <div key={index} className={itemClassName}>
             {!loading &&
-              (books[index] ? (
+              (books[index] && books[index].coverImage !== null ? (
                 // Book found
                 <UserBookItem
                   index={index}
