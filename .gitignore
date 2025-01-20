@@ -5,6 +5,7 @@ node_modules
 ../.idea/
 .DS_Store
 *.env
+.vscode
 
 *storybook.log
 .vercel
