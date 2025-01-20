@@ -18,7 +18,7 @@ export class BooksService {
   ): Promise<Book> {
     const book = this.bookRepository.create({
       ...createBookDto,
-      coverImage: coverImage ? coverImage.path : null,
+      coverImage: coverImage ? coverImage.filename : null,
     });
     return await this.bookRepository.save(book);
   }

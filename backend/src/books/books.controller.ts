@@ -26,16 +26,16 @@ export class BooksController {
   @UseInterceptors(FileInterceptor('coverImage', multerOptions))
   create(
     @Body() createBookDto: CreateBookDto,
-    @UploadedFile(
+    @UploadedFile() coverImage?: Express.Multer.File, // Rendre le paramètre optionnel
+  ) {
+    if (coverImage) {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }), // 5 MB
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
         ],
-      }),
-    )
-    coverImage: Express.Multer.File,
-  ) {
+      }).transform(coverImage);
+    }
     return this.booksService.create(createBookDto, coverImage);
   }
 
