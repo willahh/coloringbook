@@ -59,6 +59,9 @@ npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss a
 npm install -D @types/node # Install node types (fix an issue with a specific vite.config.ts)
 npm install vite-plugin-svgr --save-dev # To manage the import of svg icons
 npm install es-toolkit # [es-toolkit](https://es-toolkit.slash.page/usage.html)
+npm install react-hook-form # React form
+npm zod # Data validation
+npm @hookform/resolvers # React-hook-form resolvers for zod
 npx tailwindcss init -p
 npm install motion
 npm install react-router-dom
