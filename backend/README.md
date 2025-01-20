@@ -125,7 +125,7 @@ npx typeorm migration:run -d ./public/data-source.js
 
 
 
-### Run the migrations script on production database
+## Run the migrations script on production database
 To run the migration scripts on production database, use the `production.env` 
 file before running the `migration:run` command mentioned above. You can
 go in `data-source.ts` file switch override `envFile = 'production.env';` : 
