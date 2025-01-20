@@ -7,14 +7,19 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 
+
 const ContentDiv: React.FC = () => {
+  console.log('ContentDiv')
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
     setShowForm(true);
   };
   const handleCancelClick = () => {
+    console.log('handleCancelClick');
     setShowForm(false);
   };
+
+  console.log('showForm', showForm)
 
   return (
     <div className=" text-white">

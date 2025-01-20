@@ -4,8 +4,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 import Button from '@components/Button';
-import { getBooksUrl } from '@/utils/api';
 import Toast from '@/components/Toast';
+import { getBooksUrl } from '@/utils/api';
 
 const formatOptions = [
   { value: 'square', label: 'Carré' },
@@ -59,6 +59,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset, // Add reset function from useForm
   } = useForm<BookFormData>({
     resolver: zodResolver(bookSchema),
   });
@@ -79,6 +80,8 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       }
       setToastMessage('Livre créé avec succès !');
       setToastType('success');
+      reset(); // Reset the form to its initial state
+      onCancelClick(); // Close the form on success
     } catch (e) {
       console.error(e);
       setToastMessage('Une erreur est survenue.');
