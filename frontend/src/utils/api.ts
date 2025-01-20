@@ -18,5 +18,5 @@ export const getPublicURI = (): string => {
  * @returns {string} The URL for fetching books.
  */
 export const getBooksUrl = (): string => {
-  return `${API_URL}/books?delay=500`;
+  return `${API_URL}/books`;
 };

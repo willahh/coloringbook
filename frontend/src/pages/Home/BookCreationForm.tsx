@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 import Button from '@components/Button';
 import { getBooksUrl } from '@/utils/api';
+import { IBook } from '@/domain/book';
 
 const formatOptions = [
   { value: 'square', label: 'Carré' },
@@ -39,7 +40,7 @@ interface BookCreationFormProps {
   isVisible: boolean;
   onCancelClick: () => void;
   showToast: (message: string, type: 'success' | 'error') => void; // Add showToast prop
-  onBookCreationSuccess?: () => void;
+  onBookCreationSuccess?: (book: IBook) => void;
 }
 
 const BookCreationForm: React.FC<BookCreationFormProps> = ({
@@ -47,7 +48,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   isVisible,
   onCancelClick,
   showToast,
-  onBookCreationSuccess
+  onBookCreationSuccess,
 }) => {
   const bookNameInput = useRef<HTMLInputElement | null>(null);
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
@@ -83,7 +84,8 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       showToast(`Livre ${responseData.name} créé avec succès !`, 'success'); // Use showToast function
       reset(); // Reset the form to its initial state
       onCancelClick();
-      onBookCreationSuccess?.();
+
+      onBookCreationSuccess?.(responseData);
     } catch (e) {
       console.error(e);
       showToast('Une erreur est survenue.', 'error'); // Use showToast function

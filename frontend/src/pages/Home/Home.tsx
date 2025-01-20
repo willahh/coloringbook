@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import Layout from '../layout';
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
@@ -7,8 +7,14 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import Toast from '@/components/Toast';
+import { IBook } from '@/domain/book';
+import { getBooksUrl } from '@/utils/api';
 
-const ContentDiv: React.FC = () => {
+interface ContentDivProps {
+  onBookCreationSuccess: (book: IBook) => void;
+}
+
+const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   console.log('ContentDiv');
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
@@ -19,23 +25,16 @@ const ContentDiv: React.FC = () => {
     setShowForm(false);
   };
 
+  // toast
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
-  const [reloadBooks, setReloadBooks] = useState(false);
-
-  const handleReloadBooks = () => {
-    setReloadBooks(!reloadBooks);
-  };
 
   const handleShowToast = (message: string, type: 'success' | 'error') => {
     console.log('handleShowToast', message, type);
     setToastMessage(message);
     setToastType(type);
     setShowToast(true);
-    if (type === 'success') {
-      handleReloadBooks();
-    }
   };
 
   console.log('showForm', showForm);
@@ -62,7 +61,7 @@ const ContentDiv: React.FC = () => {
         isVisible={showForm}
         onCancelClick={handleCancelClick}
         showToast={handleShowToast}
-        onBookCreationSuccess={handleReloadBooks}
+        onBookCreationSuccess={onBookCreationSuccess}
       />
       <DescriptionSection
         isVisible={!showForm}
@@ -80,6 +79,32 @@ const HomePage: React.FC = () => {
   const gridDebug = params.get('griddebug') === '1';
   const gridBorderDebugCls =
     'border-4 sm:border-green-500 md:border-red-500 xl:border-yellow-500';
+
+  // Books data
+  const [books, setBooks] = useState<IBook[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [highlightBookId, setHighlightBookId] = useState(0);
+  const fetchBooks = async () => {
+    try {
+      const response = await fetch(getBooksUrl());
+      const data = await response.json();
+      setBooks(data);
+    } catch (error) {
+      console.error('Error fetching books:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBooks();
+  }, []);
+
+  const onBookCreationSuccess = (book: IBook) => {
+    console.log('onBookCreationSuccess', book);
+    setHighlightBookId(book.id);
+    fetchBooks();
+  };
 
   return (
     <Layout showHeader={false}>
@@ -107,7 +132,10 @@ const HomePage: React.FC = () => {
               xl:grid-cols-6 xl:grid-rows-3 gap-4 w-full"
               >
                 <UserBooks
+                  books={books}
+                  loading={loading}
                   minItems={20}
+                  highlightBookId={highlightBookId}
                   itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414] hidden md:block px-2
       ${gridDebug ? 'border border-primary-500' : ''}`}
                 />
@@ -115,7 +143,7 @@ const HomePage: React.FC = () => {
                   className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
                              md:col-span-4 md:row-span-3 md:row-start-2 md:col-start-2"
                 >
-                  <ContentDiv />
+                  <ContentDiv onBookCreationSuccess={onBookCreationSuccess} />
                 </div>
               </div>
             </div>

@@ -5,15 +5,14 @@ import { motion } from 'motion/react';
 interface BookItemProps {
   index: number;
   book: IBook;
-  handleRename: (id: number, newName: string) => void;
-  handleDelete: (id: number) => void;
-  handleChangeImage: (id: number, newImage: string) => void;
+  highlightBookId: number;
 }
 
 export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   index,
   book,
   className,
+  highlightBookId,
 }) => {
   let cls = `${className} relative w-full aspect-[1/1.414] rounded-md overflow-hidden
   `;
@@ -27,6 +26,8 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
       hover:border-white
       `;
   }
+  const highlightBook = book.id === highlightBookId;
+
   if (index === 7) {
     // Layout specificity
     cls += ' xl:hidden';
@@ -54,8 +55,14 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
       }}
       tabIndex={bookExist ? 1 : 0}
       onFocus={bookExist ? () => console.log('focus') : undefined}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      initial={{
+        opacity: 0,
+        ...(highlightBook ? { transform: 'scale(2)' } : {}),
+      }}
+      animate={{
+        opacity: 1,
+        ...(highlightBook ? { transform: 'scale(1)' } : {}),
+      }}
       transition={{
         delay: index / 10,
         duration: 1,
@@ -69,8 +76,9 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
     >
       <div className="book-info absolute w-full bottom-0 left-0 text-white p-2 pointer-events-none">
         <div
-          className="bg-transparent border-none text-white w-full font-serif text-md font-semibold cursor-default select-none"
-          style={{ textShadow: '2px 2px 4px #000' }}
+          className={`bg-transparent border-none text-white w-full cursor-default select-none
+          font-serif font-semibold leading-1 lg:leading-4 md:text-xs lg:text-lg `}
+          style={{ textShadow: '1px 1px 2px #000', padding: '1px 1px 1px 0' }}
         >
           {book.name}
         </div>
