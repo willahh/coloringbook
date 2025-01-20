@@ -50,7 +50,8 @@ const Button: React.FC<ButtonProps> = ({
     bg-indigo-900 text-indigo-100 border border-indigo-800
     transition-all duration-300 ease-in-out 
     hover:bg-indigo-600 hover:text-white
-    focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-700 focus:text-white`;
+    focus:outline-none focus:ring-2 focus:ring-indigo-300 active:bg-indigo-700 focus:text-white
+    disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-800`;
   const combinedStyle = `${baseStyle} ${className}`;
 
   return (

@@ -141,6 +141,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 id="name"
                 type="text"
                 value={field.value ?? ''}
+                disabled={isLoading}
                 placeholder="Nom du livre"
                 className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
                 ref={bookNameInput}
@@ -168,7 +169,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 id="format"
                 name="format"
                 value={field.value ?? ''}
-                disabled={!isVisible}
+                disabled={!isVisible || isLoading}
                 className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
               >
                 {formatOptions.map((option) => (
@@ -200,10 +201,10 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 id="bookImage"
                 name="bookImage"
                 // value={field.value ?? ''}
-                disabled={!isVisible}
+                disabled={!isVisible || isLoading}
                 // onChange={handleImageChange}
                 onChange={(e) => {
-                  console.log('onChange', e.target.files)
+                  console.log('onChange', e.target.files);
                   setCoverImage(e.target.files?.[0] || null);
                 }}
                 className="w-full p-2 border border-gray-300 rounded-md"
@@ -232,8 +233,8 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 type="number"
                 id="pageCount"
                 name="pageCount"
-                value={field.value ?? ''}
-                disabled={!isVisible}
+                value={field.value ?? 12}
+                disabled={!isVisible || isLoading}
                 className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
               />
             )}
@@ -247,11 +248,11 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
           disabled={!isVisible || isLoading}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
-          <span>{isLoading ? 'Loading...' : 'Valider'}</span>
+          <span>{isLoading ? 'Chargement...' : 'Valider'}</span>
         </Button>
         <Button
           type="reset"
-          disabled={!isVisible}
+          disabled={!isVisible || isLoading}
           onClick={onCancelClick}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >

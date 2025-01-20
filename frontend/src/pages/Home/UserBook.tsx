@@ -1,5 +1,5 @@
 import { IBook } from '@/domain/book';
-import { getPublicURI } from '@/utils/api';
+import { getPublicURI, getMediaUrl } from '@/utils/api';
 import { motion } from 'motion/react';
 
 interface BookItemProps {
@@ -37,14 +37,30 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
     cls += ' md:hidden xl:block';
   }
 
+  let imageUrl = '';
+  imageUrl += '';
+  console.log('book.coverImage', book.coverImage);
+  // console.log('book.coverImage', book.coverImage)
   if (book.coverImage === '' || book.coverImage == null) {
-    book.coverImage = `${getPublicURI()}/book_covers/${index}.jpg`;
+    imageUrl = `public/book_covers/${++index}.jpg`;
+  } else {
+    imageUrl = `${getMediaUrl()}/${book.coverImage}`;
   }
+
+  console.log('getMediaUrl()', getMediaUrl())
+
+  console.log('imageUrl', imageUrl);
+  // else {
+  //   book.coverImage = `${getUploadDir()}/${book.coverImage}`;
+  // }
+
+
+  // getMediaUrl();
   return (
     <motion.div
       className={cls}
       style={{
-        background: `linear-gradient(to right, rgb(60, 13, 20) 3px, rgba(255, 255, 255, 0.5) 5px, rgba(255, 255, 255, 0.25) 7px, rgba(255, 255, 255, 0.25) 10px, transparent 12px, transparent 16px, rgba(255, 255, 255, 0.25) 17px, transparent 22px), center center / cover url(${book.coverImage})`,
+        background: `linear-gradient(to right, rgb(60, 13, 20) 3px, rgba(255, 255, 255, 0.5) 5px, rgba(255, 255, 255, 0.25) 7px, rgba(255, 255, 255, 0.25) 10px, transparent 12px, transparent 16px, rgba(255, 255, 255, 0.25) 17px, transparent 22px), center center / cover url(${imageUrl})`,
         boxShadow:
           '0 0 5px -1px black, inset -1px 1px 2px rgba(255, 255, 255, 0.5)',
         margin: 'auto',

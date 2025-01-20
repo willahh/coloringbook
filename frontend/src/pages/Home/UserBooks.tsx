@@ -37,7 +37,7 @@ const UserBooks: React.FC<UserBooksProps> = ({
                 index={index}
                 highlightBookId={highlightBookId}
                 book={{
-                  coverImage: `${getPublicURI()}/book_covers/${++index}.jpg`,
+                  coverImage: '',
                   id: -1,
                   image: '',
                   name: '',
