@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 import Button from '@components/Button';
 import { getBooksUrl } from '@/utils/api';
+import Toast from '@/components/Toast';
 
 const formatOptions = [
   { value: 'square', label: 'Carré' },
@@ -49,7 +50,10 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
-
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
@@ -63,15 +67,25 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
 
   const onSubmit = async (data: BookFormData) => {
     console.log('onSubmit', data);
+    setIsLoading(true);
     try {
       const response = await fetch(getBooksUrl(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      alert('Livre créé avec succès !');
-    } catch (error) {
-      alert('Une erreur est survenue.');
+      if (!response.ok) {
+        throw new Error('Une erreur est survenue.');
+      }
+      setToastMessage('Livre créé avec succès !');
+      setToastType('success');
+    } catch (e) {
+      console.error(e);
+      setToastMessage('Une erreur est survenue.');
+      setToastType('error');
+    } finally {
+      setShowToast(true);
+      setIsLoading(false);
     }
   };
 
@@ -98,6 +112,13 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         ${isVisible ? '' : 'pointer-events-none'}`}
         onSubmit={handleSubmit(onSubmit)}
       >
+        <Toast
+          message={toastMessage}
+          type={toastType}
+          show={showToast}
+          onClose={() => setShowToast(false)}
+        />
+
         <div>
           <label
             htmlFor="name"
@@ -210,10 +231,10 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         </div>
         <Button
           type="submit"
-          disabled={!isVisible}
+          disabled={!isVisible || isLoading}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >
-          <span>Valider</span>
+          <span>{isLoading ? 'Loading...' : 'Valider'}</span>
         </Button>
         <Button
           type="reset"
