@@ -27,10 +27,7 @@ const bookSchema = z.object({
     .pipe(z.number().min(1, 'Le nombre de pages doit être au moins 1.')), // Validation après transformation
 
   pages: z.array(z.object({})).default([]),
-  coverImage: z
-    .string()
-    .url("L'URL de l'image de couverture est invalide.")
-    .optional(),
+  coverImage: z.any().optional(), // Change this to handle file uploads
 });
 
 type BookFormData = z.infer<typeof bookSchema>;
@@ -55,6 +52,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
   const [isLoading, setIsLoading] = useState(false);
+  const [coverImage, setCoverImage] = useState<File | null>(null);
 
   const {
     control,
@@ -65,16 +63,26 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
     resolver: zodResolver(bookSchema),
   });
 
-  console.log('errors', errors);
-
   const onSubmit = async (data: BookFormData) => {
     console.log('onSubmit', data);
     setIsLoading(true);
+
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key !== 'coverImage') {
+        formData.append(key, value.toString());
+      }
+    });
+
+    if (coverImage) {
+      formData.append('coverImage', coverImage);
+    }
+
     try {
       const response = await fetch(getBooksUrl(), {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        // headers: { 'Content-Type': 'application/json' },
+        body: formData,
       });
       if (!response.ok) {
         throw new Error('Une erreur est survenue.');
@@ -84,7 +92,6 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       showToast(`Livre ${responseData.name} créé avec succès !`, 'success'); // Use showToast function
       reset(); // Reset the form to its initial state
       onCancelClick();
-
       onBookCreationSuccess?.(responseData);
     } catch (e) {
       console.error(e);
@@ -116,6 +123,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         className={`space-y-4 ${className || ''} 
         ${isVisible ? '' : 'pointer-events-none'}`}
         onSubmit={handleSubmit(onSubmit)}
+        // encType="multipart/form-data"
       >
         <div>
           <label
@@ -135,6 +143,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 value={field.value ?? ''}
                 placeholder="Nom du livre"
                 className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                ref={bookNameInput}
               />
             )}
           ></Controller>
@@ -190,15 +199,21 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 type="file"
                 id="bookImage"
                 name="bookImage"
-                value={field.value ?? ''}
+                // value={field.value ?? ''}
                 disabled={!isVisible}
                 // onChange={handleImageChange}
+                onChange={(e) => {
+                  console.log('onChange', e.target.files)
+                  setCoverImage(e.target.files?.[0] || null);
+                }}
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
             )}
           />
           {errors.coverImage && (
-            <p className="text-sm text-red-500">{errors.coverImage?.message}</p>
+            <p className="text-sm text-red-500">
+              {errors.coverImage?.message?.toString()}
+            </p>
           )}
         </div>
         <div>

@@ -12,7 +12,6 @@ interface UserBooksProps {
 }
 
 const UserBooks: React.FC<UserBooksProps> = ({
-  minItems,
   itemClassName,
   books,
   loading,
@@ -21,7 +20,7 @@ const UserBooks: React.FC<UserBooksProps> = ({
   return (
     <>
       {Array.from({
-        length: Math.min(20, Math.max(minItems, Math.max(20, books.length))),
+        length: 20,
       }).map((_, index) => (
         <div key={index} className={itemClassName}>
           {!loading &&

@@ -33,7 +33,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
     cls += ' xl:hidden';
   }
 
-  if (index === 6) {
+  if (index === 6 || index === 18 || index === 19) {
     cls += ' md:hidden xl:block';
   }
 
