@@ -22,12 +22,20 @@ const ContentDiv: React.FC = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
+  const [reloadBooks, setReloadBooks] = useState(false);
+
+  const handleReloadBooks = () => {
+    setReloadBooks(!reloadBooks);
+  };
 
   const handleShowToast = (message: string, type: 'success' | 'error') => {
     console.log('handleShowToast', message, type);
     setToastMessage(message);
     setToastType(type);
     setShowToast(true);
+    if (type === 'success') {
+      handleReloadBooks();
+    }
   };
 
   console.log('showForm', showForm);
@@ -54,6 +62,7 @@ const ContentDiv: React.FC = () => {
         isVisible={showForm}
         onCancelClick={handleCancelClick}
         showToast={handleShowToast}
+        onBookCreationSuccess={handleReloadBooks}
       />
       <DescriptionSection
         isVisible={!showForm}

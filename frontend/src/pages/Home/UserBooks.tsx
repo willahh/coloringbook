@@ -3,10 +3,12 @@ import { IBook } from '@/domain/book';
 import { getBooksUrl, getPublicURI } from '@/utils/api';
 import { UserBookItem } from './UserBook';
 
-const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
-  itemClassName: itemClassName,
-  minItems,
-}) => {
+interface UserBooksProps {
+  minItems: number;
+  itemClassName: string;
+}
+
+const UserBooks: React.FC<UserBooksProps> = ({ minItems, itemClassName }) => {
   const [books, setBooks] = useState<IBook[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,6 +27,10 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
 
     fetchBooks();
   }, []);
+
+  // useEffect(() => {
+  //   // Logic to reload books
+  // }, [reload]);
 
   const handleRename = (id: number, newName: string) => {
     setBooks(

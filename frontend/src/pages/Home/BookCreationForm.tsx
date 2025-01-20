@@ -39,6 +39,7 @@ interface BookCreationFormProps {
   isVisible: boolean;
   onCancelClick: () => void;
   showToast: (message: string, type: 'success' | 'error') => void; // Add showToast prop
+  onBookCreationSuccess?: () => void;
 }
 
 const BookCreationForm: React.FC<BookCreationFormProps> = ({
@@ -46,6 +47,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   isVisible,
   onCancelClick,
   showToast,
+  onBookCreationSuccess
 }) => {
   const bookNameInput = useRef<HTMLInputElement | null>(null);
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
@@ -81,6 +83,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       showToast(`Livre ${responseData.name} créé avec succès !`, 'success'); // Use showToast function
       reset(); // Reset the form to its initial state
       onCancelClick();
+      onBookCreationSuccess?.();
     } catch (e) {
       console.error(e);
       showToast('Une erreur est survenue.', 'error'); // Use showToast function
