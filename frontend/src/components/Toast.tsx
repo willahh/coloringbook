@@ -15,6 +15,7 @@ interface ToastProps {
   type: 'success' | 'error' | 'info';
   show: boolean;
   onClose: () => void;
+  autoClose?: number;
 }
 
 /**
@@ -26,6 +27,7 @@ interface ToastProps {
  * @param {'success' | 'error' | 'info'} type - Le type de notification.
  * @param {boolean} show - Détermine si la notification est visible.
  * @param {function} onClose - Fonction à appeler lorsque la notification est fermée.
+ * @param {number} [autoClose] - Temps en secondes avant que la notification ne se ferme automatiquement.
  *
  * @example
  * // Exemple 1 : Notification de succès
@@ -43,6 +45,7 @@ interface ToastProps {
  *         type="success"
  *         show={showToast}
  *         onClose={() => setShowToast(false)}
+ *         autoClose={5} // Ferme automatiquement après 5 secondes
  *       />
  *     </div>
  *   );
@@ -64,6 +67,7 @@ interface ToastProps {
  *         type="error"
  *         show={showToast}
  *         onClose={() => setShowToast(false)}
+ *         autoClose={5} // Ferme automatiquement après 5 secondes
  *       />
  *     </div>
  *   );
@@ -85,6 +89,7 @@ interface ToastProps {
  *         type="info"
  *         show={showToast}
  *         onClose={() => setShowToast(false)}
+ *         autoClose={5} // Ferme automatiquement après 5 secondes
  *       />
  *     </div>
  *   );
@@ -96,12 +101,20 @@ export default function Toast({
   type,
   show,
   onClose,
+  autoClose = 8, // Set default value to 8 seconds
 }: ToastProps) {
   const [isVisible, setIsVisible] = useState(show);
 
   useEffect(() => {
     setIsVisible(show);
-  }, [show]);
+    if (show && autoClose) {
+      const timer = setTimeout(() => {
+        setIsVisible(false);
+        onClose();
+      }, autoClose * 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [show, autoClose, onClose]);
 
   const getIcon = () => {
     switch (type) {
