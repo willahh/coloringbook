@@ -6,18 +6,37 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  ParseFilePipe,
+  MaxFileSizeValidator,
+  FileTypeValidator,
 } from '@nestjs/common';
+import { multerOptions } from './../config/multer.config'; // Mise à jour du chemin
 import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('books')
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  create(@Body() createBookDto: CreateBookDto) {
-    return this.booksService.create(createBookDto);
+  @UseInterceptors(FileInterceptor('coverImage', multerOptions))
+  create(
+    @Body() createBookDto: CreateBookDto,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }), // 5 MB
+          new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
+        ],
+      }),
+    )
+    coverImage: Express.Multer.File,
+  ) {
+    return this.booksService.create(createBookDto, coverImage);
   }
 
   @Get()

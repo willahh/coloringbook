@@ -19,9 +19,7 @@ export const delayMiddleware = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log('delayMiddleware');
   const delay = parseInt((req.query.delay as string) ?? '0', 10);
-  console.log('delay', delay);
   if (delay > 0) {
     setTimeout(() => next(), delay);
   } else {

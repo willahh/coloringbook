@@ -76,6 +76,7 @@ npm install class-validator class-transformer --save
 npm install @types/node --save-dev # node typings
 npm install @nestjs/typeorm
 npm install @nestjs/swagger --save
+npm install @types/multer -D #https://docs.nestjs.com/techniques/file-upload
 
 # https://typeorm.io/#quick-start
 npx typeorm init --name ColoringBook --database postgres 
