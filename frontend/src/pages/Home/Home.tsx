@@ -6,10 +6,10 @@ import AnimatedText from '@/components/AnimatedText';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
-
+import Toast from '@/components/Toast';
 
 const ContentDiv: React.FC = () => {
-  console.log('ContentDiv')
+  console.log('ContentDiv');
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
     setShowForm(true);
@@ -19,10 +19,27 @@ const ContentDiv: React.FC = () => {
     setShowForm(false);
   };
 
-  console.log('showForm', showForm)
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastType, setToastType] = useState<'success' | 'error'>('success');
+
+  const handleShowToast = (message: string, type: 'success' | 'error') => {
+    console.log('handleShowToast', message, type);
+    setToastMessage(message);
+    setToastType(type);
+    setShowToast(true);
+  };
+
+  console.log('showForm', showForm);
 
   return (
     <div className=" text-white">
+      <Toast
+        message={toastMessage}
+        type={toastType}
+        show={showToast}
+        onClose={() => setShowToast(false)}
+      />
       <Logo className="mb-4 md:-ml-16 max-w-xs" />
       <AnimatedText enterClassName="delay-200">
         <div className="flex mb-4 gap-2 items-center text-md font-extralight">
@@ -36,6 +53,7 @@ const ContentDiv: React.FC = () => {
       <BookCreationForm
         isVisible={showForm}
         onCancelClick={handleCancelClick}
+        showToast={handleShowToast}
       />
       <DescriptionSection
         isVisible={!showForm}

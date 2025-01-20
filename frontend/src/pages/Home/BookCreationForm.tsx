@@ -4,7 +4,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 import Button from '@components/Button';
-import Toast from '@/components/Toast';
 import { getBooksUrl } from '@/utils/api';
 
 const formatOptions = [
@@ -39,27 +38,26 @@ interface BookCreationFormProps {
   className?: string;
   isVisible: boolean;
   onCancelClick: () => void;
+  showToast: (message: string, type: 'success' | 'error') => void; // Add showToast prop
 }
 
 const BookCreationForm: React.FC<BookCreationFormProps> = ({
   className,
   isVisible,
   onCancelClick,
+  showToast,
 }) => {
   const bookNameInput = useRef<HTMLInputElement | null>(null);
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
   const [isLoading, setIsLoading] = useState(false);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset, // Add reset function from useForm
+    reset,
   } = useForm<BookFormData>({
     resolver: zodResolver(bookSchema),
   });
@@ -78,16 +76,15 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
       if (!response.ok) {
         throw new Error('Une erreur est survenue.');
       }
-      setToastMessage('Livre créé avec succès !');
-      setToastType('success');
+
+      const responseData = await response.json();
+      showToast(`Livre ${responseData.name} créé avec succès !`, 'success'); // Use showToast function
       reset(); // Reset the form to its initial state
-      onCancelClick(); // Close the form on success
+      onCancelClick();
     } catch (e) {
       console.error(e);
-      setToastMessage('Une erreur est survenue.');
-      setToastType('error');
+      showToast('Une erreur est survenue.', 'error'); // Use showToast function
     } finally {
-      setShowToast(true);
       setIsLoading(false);
     }
   };
@@ -115,13 +112,6 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         ${isVisible ? '' : 'pointer-events-none'}`}
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Toast
-          message={toastMessage}
-          type={toastType}
-          show={showToast}
-          onClose={() => setShowToast(false)}
-        />
-
         <div>
           <label
             htmlFor="name"

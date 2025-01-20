@@ -13,9 +13,6 @@ interface BookItemProps {
 const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   index,
   book,
-  // handleRename,
-  // handleDelete,
-  // handleChangeImage,
   className,
 }) => {
   let cls = `${className} relative w-full aspect-[1/1.414] rounded-md overflow-hidden`;
@@ -58,8 +55,6 @@ const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
           borderRadius: '5px',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          // filter: 'grayscale(100%)',
-          // filter: `sepia(10%) saturate(30%)`
           filter: bookExistAndHaveCover ? `sepia(50%) blur(2px)` : undefined,
         }}
         tabIndex={bookExistAndHaveCover ? 1 : 0}
@@ -130,38 +125,38 @@ const UserBooks: React.FC<{ itemClassName?: string; minItems: number }> = ({
 
   return (
     <>
-      {Array.from({ length: Math.max(minItems, books.length) }).map(
-        (_, index) => (
-          <div key={index} className={itemClassName}>
-            {!loading &&
-              (books[index] && books[index].coverImage !== null ? (
-                // Book found
-                <UserBookItem
-                  index={index}
-                  book={books[index]}
-                  handleRename={handleRename}
-                  handleDelete={handleDelete}
-                  handleChangeImage={handleChangeImage}
-                />
-              ) : (
-                // No book
-                <UserBookItem
-                  index={index}
-                  book={{
-                    coverImage: `${getPublicURI()}/book_covers/${++index}.jpg`,
-                    id: -1,
-                    image: '',
-                    name: '',
-                    pageCount: 1,
-                  }}
-                  handleRename={handleRename}
-                  handleDelete={handleDelete}
-                  handleChangeImage={handleChangeImage}
-                />
-              ))}
-          </div>
-        )
-      )}
+      {Array.from({
+        length: Math.min(20, Math.max(minItems, Math.max(20, books.length))),
+      }).map((_, index) => (
+        <div key={index} className={itemClassName}>
+          {!loading &&
+            (books[index] && books[index].coverImage !== null ? (
+              // Book found
+              <UserBookItem
+                index={index}
+                book={books[index]}
+                handleRename={handleRename}
+                handleDelete={handleDelete}
+                handleChangeImage={handleChangeImage}
+              />
+            ) : (
+              // No book
+              <UserBookItem
+                index={index}
+                book={{
+                  coverImage: `${getPublicURI()}/book_covers/${++index}.jpg`,
+                  id: -1,
+                  image: '',
+                  name: '',
+                  pageCount: 1,
+                }}
+                handleRename={handleRename}
+                handleDelete={handleDelete}
+                handleChangeImage={handleChangeImage}
+              />
+            ))}
+        </div>
+      ))}
     </>
   );
 };
