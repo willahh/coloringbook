@@ -10,7 +10,7 @@
     <a href="https://github.com/willahh/coloringbook"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://willahh.github.io/coloringbook/">Live Demo</a>
+    <a href="https://coloringbook-frontend.onrender.com/">Live Demo</a>
     ·
     <a href="https://github.com/willahh/coloringbook/issues">Report Bug</a>
     ·
