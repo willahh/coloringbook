@@ -86,7 +86,15 @@ const PagesPanel: React.FC<{ className?: string }> = ({ className }) => {
 };
 
 const TemplatePanel: React.FC<{ className?: string }> = ({ className }) => {
-  return <div className={`${className}  p-2 text-xs`}>TemplatePanel</div>;
+  return (
+    <div className={`${className}  p-2 text-xs`}>
+      <div>TemplatePanel</div>
+      <div>Dessin 1</div>
+      <div>Dessin 2</div>
+      <div>Dessin 3</div>
+      <div>Uploader une image</div>
+    </div>
+  );
 };
 
 const MainSpread: React.FC<{
@@ -124,6 +132,25 @@ const MainPanel: React.FC<{
   children?: React.ReactNode;
 }> = ({ className, children }) => {
   return <main className={`${className || ''}`}>{children}</main>;
+};
+
+const Range: React.FC = () => {
+  return (
+    // <div className="price-range p-4">
+    <input
+      className="w-full accent-indigo-600"
+      type="range"
+      name=""
+      value="300"
+      min="0"
+      max="1000"
+      onInput={() => {
+        // (e.currentTarget.previousElementSibling as HTMLElement)!.innerText =
+        //   e.currentTarget.value;
+      }}
+    />
+    // </div>
+  );
 };
 
 const PageToolbar: React.FC<{
@@ -181,9 +208,9 @@ const BookPage: React.FC = () => {
         <div className="flex-1 border-r border-primary-950">
           <PagesPanel className="h-96" />
           <VerticalSeparator />
-          <ColorPanel className="" />
-          <VerticalSeparator />
           <TemplatePanel className="" />
+          <VerticalSeparator />
+          <ColorPanel className="" />
         </div>
         <Toolsbar />
       </SidePanel>
@@ -199,7 +226,14 @@ const BookPage: React.FC = () => {
             <MainPage />
           </MainSpread>
         </div>
-        <PageToolbar className="">PageToolbar</PageToolbar>
+        <PageToolbar className="">
+          <div
+            className="bg-white rounded-lg p-4 shadow-lg"
+            style={{ maxWidth: '300px' }}
+          >
+            <Range />
+          </div>
+        </PageToolbar>
       </MainPanel>
     </Layout>
   );
