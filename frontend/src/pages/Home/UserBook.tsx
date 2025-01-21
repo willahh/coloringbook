@@ -1,5 +1,5 @@
 import { IBook } from '@/domain/book';
-import { getPublicURI, getMediaUrl } from '@/utils/api';
+import { getMediaUrl } from '@/utils/api';
 import { motion } from 'motion/react';
 
 interface BookItemProps {
@@ -39,23 +39,12 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
 
   let imageUrl = '';
   imageUrl += '';
-  console.log('book.coverImage', book.coverImage);
-  // console.log('book.coverImage', book.coverImage)
   if (book.coverImage === '' || book.coverImage == null) {
     imageUrl = `public/book_covers/${++index}.jpg`;
   } else {
     imageUrl = `${getMediaUrl()}/${book.coverImage}`;
   }
 
-  console.log('getMediaUrl()', getMediaUrl())
-
-  console.log('imageUrl', imageUrl);
-  // else {
-  //   book.coverImage = `${getUploadDir()}/${book.coverImage}`;
-  // }
-
-
-  // getMediaUrl();
   return (
     <motion.div
       className={cls}
@@ -67,7 +56,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         borderRadius: '5px',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        filter: bookExist ? `sepia(50%)` : `sepia(50%) blur(2px)`,
+        filter: bookExist ? `sepia(20%)` : `sepia(50%) blur(2px)`,
       }}
       tabIndex={bookExist ? 1 : 0}
       onFocus={bookExist ? () => console.log('focus') : undefined}
@@ -75,6 +64,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         opacity: 0,
         ...(highlightBook ? { transform: 'scale(2)' } : {}),
       }}
+      
       animate={{
         opacity: 1,
         ...(highlightBook ? { transform: 'scale(1)' } : {}),
@@ -84,11 +74,6 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         duration: 1,
         type: 'tween',
       }}
-
-      //   tabIndex={0}
-      //   onFocus={() => {
-      //     console.log('on focus');
-      //   }}
     >
       <div className="book-info absolute w-full bottom-0 left-0 text-white p-2 pointer-events-none">
         <div

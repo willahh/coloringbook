@@ -1,6 +1,5 @@
 import React from 'react';
 import { IBook } from '@/domain/book';
-import { getPublicURI } from '@/utils/api';
 import { UserBookItem } from './UserBook';
 
 interface UserBooksProps {
@@ -25,7 +24,7 @@ const UserBooks: React.FC<UserBooksProps> = ({
         <div key={index} className={itemClassName}>
           {!loading &&
             (books[index] ? (
-              // Book found
+              // Book
               <UserBookItem
                 index={index}
                 highlightBookId={highlightBookId}
