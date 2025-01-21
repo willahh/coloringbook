@@ -70,8 +70,9 @@ This project is built with the following technologies and tools:
 
 ### Applications
 - Backend and frontend apps: [Render Dashboard](https://dashboard.render.com)
+- CI/CD: [Render CI/CD](https://dashboard.render.com)
 - Database : [neon/dashboard](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
-- Assets : [imgbb](https://ibb.co/album/ymHQ4d)
+- Assets : [Supabase Storage](https://supabase.com/)
 
 ### External resources
 - [Pixabay](https://pixabay.com/fr/) Images libres de droits & gratuites à télécharger 
