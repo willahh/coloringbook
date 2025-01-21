@@ -9,7 +9,7 @@ import Switch from '@/components/Switch';
  * ?griddebug=1 is present in the URL
  */
 export const GridDebug = () => (
-  <div
+  <div data-id="grid-debug"
     className="absolute w-full h-full grid grid-cols-12 gap-4 opacity-10 z-10 
   pointer-events-none text-white text-center"
   >
@@ -32,7 +32,7 @@ export const DebugButton = () => {
   const [isTooltipVisible, setTooltipVisible] = useState(true);
 
   return (
-    <div className="absolute top-0 right-0 p-5">
+    <div data-id="setting-button" className="absolute top-0 right-0 p-5">
       <div className="relative">
         <Popover className="absolute top-0 right-0">
           <Tooltip text="Préférences" isVisible={isTooltipVisible}>

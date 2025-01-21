@@ -33,8 +33,15 @@ const Layout: React.FC<LayoutProps> = ({
 
       <DebugButton />
       {griddDebug && <GridDebug />}
-      <div data-id="page-layout" className={`flex flex-col min-h-screen`}>
+      <div
+        data-id="page-layout-container"
+        className={`flex flex-col min-h-screen`}
+        style={{
+          background: 'url(assets/home_background.svg) bottom right no-repeat',
+        }}
+      >
         <motion.div
+          data-id="page-layout"
           className={`flex flex-1 ${className || ''}`}
           {...motionConfig}
           aria-live="polite"

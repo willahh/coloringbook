@@ -17,6 +17,7 @@ export default {
           700: '#4138ca',
           800: '#3730a3',
           900: '#332e81',
+          950: '#1d1b4b',
         },
         secondary: {
           DEFAULT: '#f43f5e',

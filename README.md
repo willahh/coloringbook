@@ -80,8 +80,6 @@ This project is built with the following technologies and tools:
 
 
 
-
-
 ## Build and deployment
 ### Build for production
 - frontend/readme.md#build

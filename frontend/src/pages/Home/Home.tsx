@@ -110,9 +110,6 @@ const HomePage: React.FC = () => {
     <Layout showHeader={false}>
       <div
         className="w-full h-screen items-center"
-        style={{
-          background: 'url(assets/home_background.svg) bottom right no-repeat',
-        }}
       >
         <div className="flex items-center h-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">

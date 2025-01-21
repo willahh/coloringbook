@@ -2,6 +2,7 @@ import { IBook } from '@/domain/book';
 import { getMediaUrl } from '@/utils/api';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface BookItemProps {
   index: number;
@@ -17,6 +18,12 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const handleImageLoad = () => setImageLoaded(true);
+  const navigate = useNavigate();
+  const handleBookClick = () => {
+    if (bookExist) {
+      navigate(`/book/${book.id}`);
+    }
+  };
 
   let cls = `${className} relative w-full aspect-[1/1.414] rounded-md overflow-hidden
   `;
@@ -71,6 +78,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         }}
         tabIndex={bookExist ? 1 : 0}
         onFocus={bookExist ? () => console.log('focus') : undefined}
+        onClick={handleBookClick}
         initial={{
           opacity: 0,
           ...(highlightBook ? { transform: 'scale(2)' } : {}),
