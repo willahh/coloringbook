@@ -261,7 +261,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                     <div
                       className="absolute w-5 h-5 flex items-center justify-center
                       cursor-pointer top-1 right-1 shadow-sm rounded-md
-                       bg-white text-black font-mono font-bold text-md bg-white 
+                       bg-white text-black font-mono font-bold text-md
                        "
                       onClick={() => setCoverImage(null)}
                     >
