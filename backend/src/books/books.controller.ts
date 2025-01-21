@@ -1,3 +1,4 @@
+import { join } from 'path';
 import {
   Controller,
   Get,
@@ -17,14 +18,19 @@ import { BooksService } from './books.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { SupabaseService } from 'src/supabase.service';
+import { createReadStream } from 'fs';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly booksService: BooksService) {}
+  constructor(
+    private readonly booksService: BooksService,
+    private readonly supabaseService: SupabaseService,
+  ) {}
 
   @Post()
   @UseInterceptors(FileInterceptor('coverImage', multerOptions))
-  create(
+  async create(
     @Body() createBookDto: CreateBookDto,
     @UploadedFile() coverImage?: Express.Multer.File, // Rendre le paramètre optionnel
   ) {
@@ -36,7 +42,30 @@ export class BooksController {
         ],
       }).transform(coverImage);
     }
-    return this.booksService.create(createBookDto, coverImage);
+
+    // Upload file to Supabase storage
+    const supabase = this.supabaseService.getClient();
+    const bucketName = 'uploads';
+
+    // Read file from local disk
+    const filePath = join(__dirname, '..', '..', coverImage.path);
+    const fileStream = createReadStream(filePath);
+
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .upload(coverImage.originalname, fileStream, {
+        contentType: coverImage.mimetype,
+        duplex: 'half',
+      });
+
+    if (error) {
+      throw new Error(`Error when uploading file: ${error.message}`);
+    }
+
+    // Public file path
+    const supabaseFilePath = data.path;
+
+    return this.booksService.create(createBookDto, supabaseFilePath);
   }
 
   @Get()

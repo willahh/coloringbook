@@ -12,13 +12,10 @@ export class BooksService {
     private readonly bookRepository: Repository<Book>,
   ) {}
 
-  async create(
-    createBookDto: CreateBookDto,
-    coverImage: Express.Multer.File,
-  ): Promise<Book> {
+  async create(createBookDto: CreateBookDto, filePath: string): Promise<Book> {
     const book = this.bookRepository.create({
       ...createBookDto,
-      coverImage: coverImage ? coverImage.filename : null,
+      coverImage: filePath || null,
     });
     return await this.bookRepository.save(book);
   }

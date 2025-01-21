@@ -3,11 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BooksService } from './books.service';
 import { BooksController } from './books.controller';
 import { Book } from './entities/book.entity';
+import { SupabaseService } from 'src/supabase.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Book])],
   controllers: [BooksController],
-  providers: [BooksService],
-  exports: [BooksService],
+  providers: [BooksService, SupabaseService],
+  exports: [BooksService, SupabaseService],
 })
 export class BooksModule {}
