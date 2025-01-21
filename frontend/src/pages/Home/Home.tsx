@@ -49,7 +49,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
       />
       <Logo className="mb-4 md:-ml-16 max-w-xs" />
       <AnimatedText enterClassName="delay-200">
-        <div className="flex mb-4 gap-2 items-center text-md font-extralight">
+        <div className="flex mb-4 gap-2 items-center text-md font-extralight select-none">
           <span className="">Create</span>
           <span className="text-primary-200 bg-primary-900 p-1 px-2 rounded-md shadow-xl border border-primary-800">
             color

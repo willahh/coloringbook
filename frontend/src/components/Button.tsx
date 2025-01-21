@@ -46,7 +46,7 @@ const Button: React.FC<ButtonProps> = ({
   disabled,
   ref,
 }) => {
-  const baseStyle = `py-3 px-6 rounded-md flex items-center space-x-4 
+  const baseStyle = `py-3 px-6 rounded-md flex items-center space-x-4 select-none
     bg-indigo-900 text-indigo-100 border border-indigo-800
     transition-all duration-300 ease-in-out 
     hover:bg-indigo-600 hover:text-white

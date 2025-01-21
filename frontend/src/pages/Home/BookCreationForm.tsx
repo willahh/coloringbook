@@ -279,7 +279,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 {!coverImage && (
                   <label
                     htmlFor="coverImage"
-                    className="px-4 py-2 rounded-md bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200"
+                    className="px-4 py-2 rounded-md bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200 select-none"
                   >
                     Choisir une image
                   </label>
