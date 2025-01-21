@@ -40,7 +40,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   let imageUrl = '';
   imageUrl += '';
   if (book.coverImage === '' || book.coverImage == null) {
-    imageUrl = `public/book_covers/${++index}.jpg`;
+    imageUrl = `${getMediaUrl()}/cover/default/${++index}.jpg`;
   } else {
     imageUrl = `${getMediaUrl()}/${book.coverImage}`;
   }
@@ -64,7 +64,6 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         opacity: 0,
         ...(highlightBook ? { transform: 'scale(2)' } : {}),
       }}
-      
       animate={{
         opacity: 1,
         ...(highlightBook ? { transform: 'scale(1)' } : {}),
