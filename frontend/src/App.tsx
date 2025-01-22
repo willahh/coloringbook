@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Route, Routes } from 'react-router';
-import BookPage from './pages/Book/Book';
+import BookPage from './pages/Book/BookPage';
 import HomePage from './pages/Home/Home';
 import './main.css';
 import '@radix-ui/themes/styles.css';

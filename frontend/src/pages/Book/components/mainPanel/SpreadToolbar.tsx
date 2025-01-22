@@ -13,12 +13,12 @@ const iconProps = {
   strokeWidth: 0.5,
 };
 
-export const PageToolbar: React.FC<{
+export const SpreadToolbar: React.FC<{
   className?: string;
   children?: React.ReactNode;
 }> = () => {
   return (
-    <div className="flex items-center gap-4 p-4">
+    <div className="flex justify-center  items-center gap-4 p-4">
       <MagnifyingGlassIcon className="w-6 h-6" />
       <Slider.Root
         className="relative flex h-5 w-[200px] touch-none select-none items-center"
@@ -34,7 +34,6 @@ export const PageToolbar: React.FC<{
           aria-label="Volume"
         />
       </Slider.Root>
-
       <div className="flex gap-2">
         <ToolbarButton tooltipContent="Save">
           <ArrowDownOnSquareStackIcon {...iconProps} />
