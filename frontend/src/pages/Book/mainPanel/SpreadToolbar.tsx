@@ -5,6 +5,7 @@ import {
   DocumentArrowDownIcon,
   DocumentArrowUpIcon,
   ArrowDownTrayIcon,
+  PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from './ToolbarButton';
 
@@ -46,6 +47,9 @@ export const SpreadToolbar: React.FC<{
         </ToolbarButton>
         <ToolbarButton tooltipContent="Download">
           <ArrowDownTrayIcon {...iconProps} />
+        </ToolbarButton>
+        <ToolbarButton tooltipContent="Print">
+          <PrinterIcon {...iconProps} />
         </ToolbarButton>
       </div>
     </div>

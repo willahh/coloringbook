@@ -8,7 +8,6 @@ import { SidePanel } from './SidePanel/SidePanel';
 import { GraphicsPanel } from './SidePanel/GraphicsPanel';
 import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
-// import { MainPage } from './mainPanel/MainPage';
 import SpreadCanvas from './mainPanel/MainSpread';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
 

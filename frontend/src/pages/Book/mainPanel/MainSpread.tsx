@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import * as fabric from 'fabric'; // Import the entire fabric library
+import jsPDF from 'jspdf';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -17,7 +18,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
-        backgroundColor: 'pink',
+        // backgroundColor: 'pink',
         selection: false,
         renderOnAddRemove: true,
       }),
@@ -30,7 +31,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         document.documentElement.clientHeight,
         window.innerHeight || 0
       );
-      console.log('#1 viewportHeight', viewportHeight)
+      console.log('#1 viewportHeight', viewportHeight);
       const { clientWidth } = containerRef.current;
       const height = viewportHeight - 150;
       setDimensions({ width: clientWidth, height: height });
@@ -55,6 +56,32 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         console.log('hello');
       });
 
+      // Add two white rectangles with borders to represent two pages
+      const page1 = new fabric.Rect({
+        width: 210,
+        height: 297,
+        left: dimensions.width / 4 - 5,
+        top: dimensions.height / 4,
+        fill: 'white',
+        stroke: 'black',
+        strokeWidth: 2,
+        selectable: false, // Make non-selectable
+        evented: false, // Make non-editable
+      });
+
+      const page2 = new fabric.Rect({
+        width: 210,
+        height: 297,
+        left: page1.getX() + page1.width,
+        top: page1.getY(),
+        fill: 'white',
+        stroke: 'black',
+        strokeWidth: 2,
+        selectable: false, // Make non-selectable
+        evented: false, // Make non-editable
+      });
+      canvas.add(page1, page2);
+
       const text = new fabric.Text('Fabric.JS', {
         cornerStrokeColor: 'blue',
         cornerColor: 'lightblue',
@@ -76,8 +103,23 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
     }
   }, [dimensions, initCanvas]);
 
+  const exportToPDF = () => {
+    const canvas = fabricCanvasRef.current;
+    if (canvas) {
+      const pdf = new jsPDF('p', 'px', [dimensions.width, dimensions.height]);
+      const imgData = canvas.toDataURL({
+        format: 'png',
+        multiplier: 0,
+      });
+
+      // Les dimensions du PDF doivent correspondre à celles du canvas
+      pdf.addImage(imgData, 'PNG', 0, 0, dimensions.width, dimensions.height);
+      pdf.save('canvas.pdf');
+    }
+  };
+
   return (
-    <div ref={containerRef} className='flex-1'>
+    <div ref={containerRef} className="flex-1">
       <canvas ref={canvasRef} />
     </div>
   );
