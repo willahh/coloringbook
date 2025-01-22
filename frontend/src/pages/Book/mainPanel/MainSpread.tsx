@@ -1,5 +1,4 @@
-import React, { useRef, useEffect } from 'react';
-// import { Canvas, Point } from 'fabric';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import * as fabric from 'fabric'; // Import the entire fabric library
 
 interface SpreadCanvasProps {
@@ -10,30 +9,55 @@ interface SpreadCanvasProps {
 const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [dimensions, setDimensions] = useState({ width: 800, height: 800 });
 
-  const initCanvas = (canvasElement: HTMLCanvasElement) =>
-    new fabric.Canvas(canvasElement, {
-      height: 800,
-      width: 800,
-      backgroundColor: 'pink',
-      selection: false,
-      renderOnAddRemove: true,
-    });
+  const initCanvas = useCallback(
+    (canvasElement: HTMLCanvasElement) =>
+      new fabric.Canvas(canvasElement, {
+        height: dimensions.height,
+        width: dimensions.width,
+        backgroundColor: 'pink',
+        selection: false,
+        renderOnAddRemove: true,
+      }),
+    [dimensions]
+  );
+
+  const updateDimensions = () => {
+    if (containerRef.current) {
+      const viewportHeight = Math.max(
+        document.documentElement.clientHeight,
+        window.innerHeight || 0
+      );
+      console.log('#1 viewportHeight', viewportHeight)
+      const { clientWidth } = containerRef.current;
+      const height = viewportHeight - 150;
+      setDimensions({ width: clientWidth, height: height });
+    }
+  };
+
+  useEffect(() => {
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => {
+      window.removeEventListener('resize', updateDimensions);
+    };
+  }, []);
 
   useEffect(() => {
     if (canvasRef.current) {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
 
-      fabricCanvasRef.current.on('mouse:over', () => {
+      const canvas = fabricCanvasRef.current; // Alias to make it like most examples on the web!
+
+      canvas.on('mouse:over', () => {
         console.log('hello');
       });
 
-      //
-      const text = new fabric.FabricText('Fabric.JS', {
-        // cornerStyle: 'round',
+      const text = new fabric.Text('Fabric.JS', {
         cornerStrokeColor: 'blue',
         cornerColor: 'lightblue',
-        // cornerStyle: 'circle',
         padding: 10,
         transparentCorners: false,
         cornerDashArray: [2, 2],
@@ -41,20 +65,19 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         borderDashArray: [3, 1, 3],
         borderScaleFactor: 2,
       });
-      fabricCanvasRef.current.add(text);
-      fabricCanvasRef.current.centerObject(text);
-      fabricCanvasRef.current.setActiveObject(text);
-      //
+      canvas.add(text);
+      canvas.centerObject(text);
+      canvas.setActiveObject(text);
 
       return () => {
-        fabricCanvasRef.current?.dispose();
+        canvas.dispose();
         fabricCanvasRef.current = null;
       };
     }
-  }, []);
+  }, [dimensions, initCanvas]);
 
   return (
-    <div>
+    <div ref={containerRef} className='flex-1'>
       <canvas ref={canvasRef} />
     </div>
   );

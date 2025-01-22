@@ -21,8 +21,13 @@ const BookPage: React.FC = () => {
         className="flex flex-row bg-primary-900 w-72 shadow-black z-10
       shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
       >
-        <div className="flex-1 border-r border-primary-950">
-          <PagesPanel className="h-96" />
+        <div
+          className={`flex-1 border-r border-primary-950 
+          overflow-y-auto overflow-x-hidden overflow-y-auto
+          `}
+          style={{ height: 'calc(100vh - 4rem)' }}
+        >
+          <PagesPanel />
           <VerticalSeparator />
           <TemplatePanel className="" />
           <VerticalSeparator />
