@@ -73,6 +73,8 @@ npm install @heroicons/react # https://heroicons.com/
 npm install @headlessui/react # https://headlessui.com/react/menu
 npm install @popperjs/core # A JavaScript library to position floating elements and create interactions for them. - https://floating-ui.com/
 npm install react-popper @popperjs/core # Floting-ui React wrapper - https://popper.js.org/react-popper/v2/ - 
+npm install @radix-ui/themes
+npm install @radix-ui/react-hover-card
 ```
 
 

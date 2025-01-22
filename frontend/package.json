@@ -23,6 +23,8 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
     "@popperjs/core": "^2.11.8",
+    "@radix-ui/react-hover-card": "^1.1.4",
+    "@radix-ui/themes": "^3.1.6",
     "es-toolkit": "^1.31.0",
     "motion": "^11.14.4",
     "react": "^18.3.1",
