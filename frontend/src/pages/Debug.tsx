@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
-import { Tooltip } from '@/components/Tooltip';
+// import { Tooltip } from '@/components/Tooltip';
 import Switch from '@/components/Switch';
 
 /**
@@ -29,20 +28,20 @@ export const GridDebug = () => (
 );
 
 export const DebugButton = () => {
-  const [isTooltipVisible, setTooltipVisible] = useState(true);
+  // const [isTooltipVisible, setTooltipVisible] = useState(true);
 
   return (
     <div data-id="setting-button" className="absolute top-0 right-0 p-5">
       <div className="relative">
         <Popover className="absolute top-0 right-0">
-          <Tooltip text="Préférences" isVisible={isTooltipVisible}>
+          {/* <Tooltip text="Préférences" isVisible={isTooltipVisible}> */}
             <PopoverButton
               className="rounded-full bg-indigo-900 text-white shadow-sm p-3 outline outline-offset-2 outline-transparent
             hover:bg-indigo-500 hover:scale-110
             focus-visible:outline focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
             transition-all duration-300 "
               onClick={() => {
-                setTooltipVisible(false);
+                // setTooltipVisible(false);
               }}
             >
               <AdjustmentsHorizontalIcon
@@ -50,7 +49,7 @@ export const DebugButton = () => {
                 className="size-5"
               />
             </PopoverButton>
-          </Tooltip>
+          {/* </Tooltip> */}
           <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
             <div className="divide-y divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-white shadow">
               <div className="grid grid-cols-2 gap-2">

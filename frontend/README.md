@@ -75,6 +75,8 @@ npm install @popperjs/core # A JavaScript library to position floating elements 
 npm install react-popper @popperjs/core # Floting-ui React wrapper - https://popper.js.org/react-popper/v2/ - 
 npm install @radix-ui/themes
 npm install @radix-ui/react-hover-card
+# npm install react-konva konva --save # [Konva.js](https://konvajs.org/docs/react/) HTML5 2d canvas js library for desktop and mobile applications
+npm i --save fabric
 ```
 
 

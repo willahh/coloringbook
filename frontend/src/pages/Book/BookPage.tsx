@@ -8,8 +8,8 @@ import { SidePanel } from './SidePanel/SidePanel';
 import { GraphicsPanel } from './SidePanel/GraphicsPanel';
 import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
-import { MainPage } from './mainPanel/MainPage';
-import { MainSpread } from './mainPanel/MainSpread';
+// import { MainPage } from './mainPanel/MainPage';
+import SpreadCanvas from './mainPanel/MainSpread';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
 
 const BookPage: React.FC = () => {
@@ -33,16 +33,8 @@ const BookPage: React.FC = () => {
         <SideToolbar />
       </SidePanel>
       <main className="flex flex-1 bg-slate-900 flex-col">
-        <div
-          data-name="spread-container"
-          className="flex-1 flex justify-center items-center p-10 snap-x overflow-x-auto"
-        >
-          <MainSpread className="h-full ">
-            <MainPage idx={1} />
-            <MainPage idx={2} />
-          </MainSpread>
-        </div>
-        <SpreadToolbar></SpreadToolbar>
+        <SpreadCanvas />
+        <SpreadToolbar />
       </main>
     </Layout>
   );
