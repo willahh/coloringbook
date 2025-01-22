@@ -13,7 +13,6 @@ import TriangleIcon from '@assets/icons/icon_triangle.svg?react';
 import TextIcon from '@assets/icons/icon_text.svg?react';
 
 // import { Flex, Text, Button } from '@radix-ui/themes';
-import * as Slider from '@radix-ui/react-slider';
 import * as HoverCard from '@radix-ui/react-hover-card';
 
 import { PageToolbar } from './PageToolbar';
