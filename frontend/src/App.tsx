@@ -1,22 +1,19 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router';
-import BookPage from './pages/Book/BookPage';
-import HomePage from './pages/Home/Home';
+import { BrowserRouter } from 'react-router-dom';
 import './main.css';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
+import AppRoutes from './AppRoutes';
 
-
-createRoot(document.getElementById('root')!).render(
+const renderApp = () => (
   <StrictMode>
     <Theme appearance="dark" hasBackground={false}>
       <BrowserRouter>
-        <Routes>
-          <Route index element={<HomePage />}></Route>
-          <Route path="book/:id" element={<BookPage />}></Route>
-        </Routes>
+        <AppRoutes />
       </BrowserRouter>
     </Theme>
   </StrictMode>
 );
+
+createRoot(document.getElementById('root')!).render(renderApp());
