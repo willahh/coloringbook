@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 import * as Slider from '@radix-ui/react-slider';
-// import * as fabric from 'fabric';
-// import jsPDF from 'jspdf';
 import {
   ArrowDownOnSquareStackIcon,
   MagnifyingGlassIcon,

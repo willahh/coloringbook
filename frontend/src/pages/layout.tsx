@@ -1,8 +1,7 @@
-import motionConfig from '@/shared/shared'; // FIXME/ import from '@shared/shared' doesn't work
+import motionConfig from '@/shared/shared';
 import { motion } from 'motion/react';
 import Header from '@/components/Header';
 import { GridDebug, DebugButton } from './Debug';
-import { useEffect } from 'react';
 
 interface LayoutProps {
   className?: string;
@@ -19,8 +18,6 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   const urlParams = new URLSearchParams(window.location.search);
   const griddDebug = urlParams.get('griddebug') === '1';
-
-  useEffect(() => {});
 
   return (
     <>
