@@ -19,7 +19,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 800 });
-  const { setCanvas } = useContext(CanvasContext);
+  const { setCanvas, bookData } = useContext(CanvasContext);
 
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
