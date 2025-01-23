@@ -4,10 +4,12 @@ import { Tooltip } from '@radix-ui/themes';
 export const ToolbarButton: React.FC<{
   children?: React.ReactNode;
   tooltipContent?: string;
-}> = ({ children, tooltipContent }) => {
+  onClick?: () => void;
+}> = ({ children, tooltipContent, onClick }) => {
   const button = (
     <button
       type="button"
+      onClick={onClick}
       className="rounded-lg w-12 h-12 p-1 flex items-center justify-center transition-all
 text-white group border border-transparent
 hover:bg-primary-900  hover:border-primary-500

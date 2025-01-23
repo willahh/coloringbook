@@ -5,7 +5,7 @@ interface PageProps {
 
 const Page: React.FC<PageProps> = ({ pageNumber }) => {
   const transitionDelay = pageNumber / 10;
-  console.log('transitionDelay', transitionDelay);
+  
   return (
     <motion.div
       className="flex flex-col 

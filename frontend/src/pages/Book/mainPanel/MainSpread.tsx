@@ -1,10 +1,17 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useCallback,
+  useContext,
+} from 'react';
 import * as fabric from 'fabric'; // Import the entire fabric library
-import jsPDF from 'jspdf';
+import { CanvasContext } from '../BookPage';
 
 interface SpreadCanvasProps {
   width?: number;
   height?: number;
+  // onCanvasReady: (canvas: fabric.Canvas) => fabric.Canvas;
 }
 
 const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
@@ -12,16 +19,20 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 800 });
+  const { setCanvas } = useContext(CanvasContext);
 
   const initCanvas = useCallback(
-    (canvasElement: HTMLCanvasElement) =>
-      new fabric.Canvas(canvasElement, {
+    (canvasElement: HTMLCanvasElement) => {
+      const canvas = new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
         // backgroundColor: 'pink',
         selection: false,
         renderOnAddRemove: true,
-      }),
+      });
+      // onCanvasReady(canvas);
+      return canvas;
+    },
     [dimensions]
   );
 
@@ -51,6 +62,8 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
 
       const canvas = fabricCanvasRef.current; // Alias to make it like most examples on the web!
+      console.log('#1 setCanvas ', canvas)
+      setCanvas(canvas);
 
       canvas.on('mouse:over', () => {
         console.log('hello');
@@ -96,27 +109,16 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       canvas.centerObject(text);
       canvas.setActiveObject(text);
 
+      // Example: Get image data
+      const imgData = canvas.toDataURL();
+      console.log('imgData', imgData);
+
       return () => {
         canvas.dispose();
         fabricCanvasRef.current = null;
       };
     }
-  }, [dimensions, initCanvas]);
-
-  const exportToPDF = () => {
-    const canvas = fabricCanvasRef.current;
-    if (canvas) {
-      const pdf = new jsPDF('p', 'px', [dimensions.width, dimensions.height]);
-      const imgData = canvas.toDataURL({
-        format: 'png',
-        multiplier: 0,
-      });
-
-      // Les dimensions du PDF doivent correspondre à celles du canvas
-      pdf.addImage(imgData, 'PNG', 0, 0, dimensions.width, dimensions.height);
-      pdf.save('canvas.pdf');
-    }
-  };
+  }, [dimensions, initCanvas, setCanvas]);
 
   return (
     <div ref={containerRef} className="flex-1">
@@ -126,3 +128,4 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
 };
 
 export default SpreadCanvas;
+
