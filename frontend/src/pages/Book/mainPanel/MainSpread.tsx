@@ -30,6 +30,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         // backgroundColor: 'pink',
         selection: false,
         renderOnAddRemove: true,
+        allowTouchScrolling: true,
       });
       // onCanvasReady(canvas);
       return canvas;
@@ -43,7 +44,6 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         document.documentElement.clientHeight,
         window.innerHeight || 0
       );
-      console.log('#1 viewportHeight', viewportHeight);
       const { clientWidth } = containerRef.current;
       const height = viewportHeight - 150;
       setDimensions({ width: clientWidth, height: height });
@@ -63,26 +63,64 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
 
       const canvas = fabricCanvasRef.current; // Alias to make it like most examples on the web!
-      console.log('#1 setCanvas ', canvas);
       setCanvas(canvas);
 
-      canvas.on('mouse:over', () => {
-        console.log('hello');
+      canvas.on('mouse:wheel', function (opt) {
+        const delta = opt.e.deltaY;
+        let zoom = canvas.getZoom();
+        zoom *= 0.998 ** delta;
+        if (zoom > 20) zoom = 20;
+        if (zoom < 0.01) zoom = 0.01;
+        canvas.zoomToPoint({ x: opt.e.offsetX, y: opt.e.offsetY }, zoom);
+        opt.e.preventDefault();
+        opt.e.stopPropagation();
+
+        // const vpt = this.viewportTransform;
+        // if (zoom < 400 / 1000) {
+        //   vpt[4] = 200 - (1000 * zoom) / 2;
+        //   vpt[5] = 200 - (1000 * zoom) / 2;
+        // } else {
+        //   if (vpt[4] >= 0) {
+        //     vpt[4] = 0;
+        //   } else if (vpt[4] < canvas.getWidth() - 1000 * zoom) {
+        //     vpt[4] = canvas.getWidth() - 1000 * zoom;
+        //   }
+        //   if (vpt[5] >= 0) {
+        //     vpt[5] = 0;
+        //   } else if (vpt[5] < canvas.getHeight() - 1000 * zoom) {
+        //     vpt[5] = canvas.getHeight() - 1000 * zoom;
+        //   }
+        // }
       });
 
-      const text = new fabric.Text('Fabric.JS', {
-        cornerStrokeColor: 'blue',
-        cornerColor: 'lightblue',
-        padding: 10,
-        transparentCorners: false,
-        cornerDashArray: [2, 2],
-        borderColor: 'orange',
-        borderDashArray: [3, 1, 3],
-        borderScaleFactor: 2,
+      // Pan canvas with alt key
+      canvas.on('mouse:down', function (opt) {
+        const evt = opt.e;
+        // if (evt.altKey === true) {
+        this.isDragging = true;
+        this.selection = false;
+        this.lastPosX = evt.clientX;
+        this.lastPosY = evt.clientY;
+        // }
       });
-      canvas.add(text);
-      canvas.centerObject(text);
-      canvas.setActiveObject(text);
+      canvas.on('mouse:move', function (opt) {
+        if (this.isDragging) {
+          const e = opt.e;
+          const vpt = this.viewportTransform;
+          vpt[4] += e.clientX - this.lastPosX;
+          vpt[5] += e.clientY - this.lastPosY;
+          this.requestRenderAll();
+          this.lastPosX = e.clientX;
+          this.lastPosY = e.clientY;
+        }
+      });
+      canvas.on('mouse:up', function () {
+        // on mouse up we want to recalculate new interaction
+        // for all objects, so we call setViewportTransform
+        this.setViewportTransform(this.viewportTransform);
+        this.isDragging = false;
+        this.selection = true;
+      });
 
       // Add elements from bookData to the canvas
       const pageGroups = bookData.pages.map((page, index) => {
@@ -182,7 +220,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
 
       const allPagesGroup = new fabric.Group(pageGroups, {
         selectable: false,
-        evented: true,
+        evented: false,
         left: 10,
         scaleX: 0.5,
         scaleY: 0.5,
@@ -199,6 +237,40 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       };
     }
   }, [dimensions, initCanvas, setCanvas]);
+
+  // useEffect(() => {
+  //   const handleWheel = (event) => {
+  //     console.log('handleWheel');
+  //     if (event.ctrlKey) {
+  //       event.preventDefault();
+  //       const delta = event.deltaY;
+  //       const zoomFactor = 1.1;
+  //       const canvas = fabricCanvasRef.current;
+
+  //       if (canvas) {
+  //         let zoom = canvas.getZoom();
+  //         zoom *= delta > 0 ? 1 / zoomFactor : zoomFactor;
+  //         canvas.zoomToPoint({ x: event.offsetX, y: event.offsetY }, zoom);
+  //       }
+  //     }
+  //   };
+
+  //   const canvasElement = canvasRef.current;
+  //   console.log('canvasElement', canvasElement);
+  //   console.log('canvasElement.nextElementSibling', canvasElement.nextElementSibling)
+  //   if (canvasElement) {
+  //     const upperCanvas = canvasElement.nextElementSibling; // Assuming upper-canvas is the next sibling
+  //     if (upperCanvas) {
+  //       upperCanvas.addEventListener('wheel', handleWheel);
+  //     }
+  //   }
+
+  //   return () => {
+  //     if (canvasElement && canvasElement.nextElementSibling) {
+  //       canvasElement.nextElementSibling.removeEventListener('wheel', handleWheel);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div ref={containerRef} className="flex-1">
