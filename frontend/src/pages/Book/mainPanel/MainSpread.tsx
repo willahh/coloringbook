@@ -62,7 +62,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
 
       const canvas = fabricCanvasRef.current; // Alias to make it like most examples on the web!
-      console.log('#1 setCanvas ', canvas)
+      console.log('#1 setCanvas ', canvas);
       setCanvas(canvas);
 
       canvas.on('mouse:over', () => {
@@ -124,4 +124,3 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
 };
 
 export default SpreadCanvas;
-
