@@ -109,10 +109,6 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       canvas.centerObject(text);
       canvas.setActiveObject(text);
 
-      // Example: Get image data
-      const imgData = canvas.toDataURL();
-      console.log('imgData', imgData);
-
       return () => {
         canvas.dispose();
         fabricCanvasRef.current = null;

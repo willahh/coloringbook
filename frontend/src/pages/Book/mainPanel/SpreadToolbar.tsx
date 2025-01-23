@@ -1,5 +1,7 @@
+import React, { useContext } from 'react';
 import * as Slider from '@radix-ui/react-slider';
-import * as fabric from 'fabric';
+// import * as fabric from 'fabric';
+// import jsPDF from 'jspdf';
 import {
   ArrowDownOnSquareStackIcon,
   MagnifyingGlassIcon,
@@ -9,57 +11,12 @@ import {
   PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from './ToolbarButton';
-import React, { useContext } from 'react';
 import { CanvasContext } from '../BookPage';
-import jsPDF from 'jspdf';
+import { bookService } from '@/services/BookService';
 
 const iconProps = {
   className: 'w-12 h-12',
   strokeWidth: 0.5,
-};
-
-const exportToPDF = ({
-  canvas,
-  dimensions,
-}: {
-  canvas: fabric.Canvas;
-  dimensions: { width: number; height: number };
-}) => {
-  // const canvas = canvas.current;
-  if (canvas) {
-    const pdf = new jsPDF('p', 'px', [dimensions.width, dimensions.height]);
-
-    const imgData = canvas.toDataURL({
-      format: 'png',
-      quality: 1,
-      multiplier: 1,
-    });
-
-    // Les dimensions du PDF doivent correspondre à celles du canvas
-    pdf.addImage(imgData, 'PNG', 0, 0, dimensions.width, dimensions.height);
-    pdf.save('canvas.pdf');
-  }
-};
-
-export const printPDF = ({
-  canvas,
-}: // dimensions,
-{
-  canvas: fabric.Canvas;
-  // dimensions: { width: number; height: number };
-}) => {
-  const dataUrl = canvas.toDataURL({
-    format: 'png',
-    quality: 1,
-    multiplier: 2,
-  });
-
-  const printWindow = window.open('', '_blank');
-  if (printWindow) {
-    printWindow.document.write(
-      `<img src='${dataUrl}' onload='window.print();window.close()' />`
-    );
-  }
 };
 
 export const SpreadToolbar: React.FC<{
@@ -99,7 +56,7 @@ export const SpreadToolbar: React.FC<{
           tooltipContent="Download"
           onClick={() => {
             if (canvas) {
-              exportToPDF({
+              bookService.exportToPDF({
                 canvas: canvas,
                 dimensions: { width: 640, height: 480 },
               });
@@ -112,7 +69,7 @@ export const SpreadToolbar: React.FC<{
           tooltipContent="Print"
           onClick={() => {
             if (canvas) {
-              printPDF({
+              bookService.printPDF({
                 canvas: canvas,
               });
             }
