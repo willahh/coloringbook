@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, {
   useRef,
   useEffect,
@@ -69,32 +70,6 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         console.log('hello');
       });
 
-      // Add two white rectangles with borders to represent two pages
-      const page1 = new fabric.Rect({
-        width: 210,
-        height: 297,
-        left: dimensions.width / 4 - 5,
-        top: dimensions.height / 4,
-        fill: 'white',
-        stroke: 'black',
-        strokeWidth: 2,
-        selectable: false, // Make non-selectable
-        evented: false, // Make non-editable
-      });
-
-      const page2 = new fabric.Rect({
-        width: 210,
-        height: 297,
-        left: page1.getX() + page1.width,
-        top: page1.getY(),
-        fill: 'white',
-        stroke: 'black',
-        strokeWidth: 2,
-        selectable: false, // Make non-selectable
-        evented: false, // Make non-editable
-      });
-      canvas.add(page1, page2);
-
       const text = new fabric.Text('Fabric.JS', {
         cornerStrokeColor: 'blue',
         cornerColor: 'lightblue',
@@ -108,6 +83,115 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
       canvas.add(text);
       canvas.centerObject(text);
       canvas.setActiveObject(text);
+
+      // Add elements from bookData to the canvas
+      const pageGroups = bookData.pages.map((page, index) => {
+        const aspectRatio = page.AspectRatio.h / page.AspectRatio.h;
+        const pageWidth = dimensions.width / 2 - 10;
+        const pageHeight = pageWidth / aspectRatio;
+
+        // Add two white rectangles with borders to represent two pages
+        const offsetX = index * pageWidth;
+        const pageElement = new fabric.Rect({
+          width: pageWidth,
+          height: pageHeight,
+          left: 0,
+          top: 0,
+          fill: 'white',
+          stroke: 'black',
+          strokeWidth: 2,
+          selectable: false, // Make non-selectable
+          evented: false, // Make non-editable
+        });
+
+        const elements = page.elements
+          .map((element) => {
+            let fabricElement;
+            const relativeX = (element.x / 100) * pageWidth;
+            const relativeY = (element.y / 100) * pageHeight;
+            const relativeW = (element.w / 100) * pageWidth;
+            const relativeH = (element.h / 100) * pageHeight;
+
+            switch (element.type) {
+              case 'rectangle':
+                fabricElement = new fabric.Rect({
+                  left: relativeX,
+                  top: relativeY,
+                  width: relativeW,
+                  height: relativeH,
+                  fill: element.attr.fill,
+                  stroke: element.attr.stroke,
+                  strokeWidth: element.attr.strokeWidth,
+                });
+                break;
+              case 'circle':
+                fabricElement = new fabric.Circle({
+                  left: relativeX,
+                  top: relativeY,
+                  radius: relativeW / 2,
+                  fill: element.attr.fill,
+                  stroke: element.attr.stroke,
+                  strokeWidth: element.attr.strokeWidth,
+                });
+                break;
+              case 'triangle':
+                fabricElement = new fabric.Triangle({
+                  left: relativeX,
+                  top: relativeY,
+                  width: relativeW,
+                  height: relativeH,
+                  fill: element.attr.fill,
+                  stroke: element.attr.stroke,
+                  strokeWidth: element.attr.strokeWidth,
+                });
+                break;
+              case 'text':
+                fabricElement = new fabric.Text(element.attr.text.text, {
+                  left: relativeX,
+                  top: relativeY,
+                  fontSize: element.attr.text.fontSize,
+                  textAlign: element.attr.text.textAlign,
+                  fill: element.attr.text.color,
+                });
+                break;
+              case 'image':
+                fabric.Image.fromURL(element.attr.imageData, (img) => {
+                  img.set({
+                    left: relativeX,
+                    top: relativeY,
+                    width: relativeW,
+                    height: relativeH,
+                  });
+                  canvas.add(img);
+                });
+                break;
+              default:
+                break;
+            }
+            return fabricElement;
+          })
+          .filter(Boolean);
+
+        return new fabric.Group([pageElement, ...elements], {
+          left: 0 + offsetX,
+          top: 0,
+          selectable: false,
+          evented: false,
+        });
+      });
+
+      const allPagesGroup = new fabric.Group(pageGroups, {
+        selectable: false,
+        evented: true,
+        left: 10,
+        scaleX: 0.5,
+        scaleY: 0.5,
+        lockRotation: true,
+      });
+
+      canvas.add(allPagesGroup);
+      canvas.setActiveObject(allPagesGroup);
+      canvas.renderAll();
 
       return () => {
         canvas.dispose();

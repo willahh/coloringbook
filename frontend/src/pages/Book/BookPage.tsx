@@ -95,6 +95,63 @@ const BookPage: React.FC = () => {
           },
         ],
       },
+      {
+        pageNumber: 1,
+        AspectRatio: { w: 210, h: 297 },
+        elements: [
+          { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
+          {
+            type: 'rectangle',
+            x: 21,
+            y: 0,
+            w: 20,
+            h: 20,
+            attr: { fill: 'red', stroke: 'transparent', strokeWidth: 0 },
+          },
+          {
+            type: 'rectangle',
+            x: 41,
+            y: 0,
+            w: 20,
+            h: 20,
+            attr: { fill: 'blue', stroke: 'transparent', strokeWidth: 0 },
+          },
+          {
+            type: 'circle',
+            x: 61,
+            y: 0,
+            w: 20,
+            h: 20,
+            attr: { fill: 'transparent', stroke: '#000', strokeWidth: 1 },
+          },
+          {
+            type: 'triangle',
+            x: 0,
+            y: 21,
+            w: 20,
+            h: 20,
+            attr: { fill: 'transparent', stroke: '#000', strokeWidth: 1 },
+          },
+          {
+            type: 'text',
+            x: 0,
+            y: 41,
+            w: 50,
+            h: 10,
+            attr: {
+              fill: 'transparent',
+              stroke: '#000',
+              strokeWidth: 1,
+              text: {
+                text: 'Hello',
+                fontSize: 12,
+                textAlign: 'left',
+                color: 'black',
+              },
+            },
+          },
+        ],
+      },
     ],
   };
 
