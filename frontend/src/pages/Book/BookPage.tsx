@@ -16,6 +16,8 @@ import { IBook } from '@/domain/book';
 // import { AspectRatio } from '@radix-ui/themes';
 // import { text } from 'stream/consumers';
 
+// TODO: Rename BookPage.tsx to page.tsx
+
 // Create a context for the canvas
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
