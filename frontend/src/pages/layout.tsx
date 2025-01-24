@@ -1,7 +1,7 @@
 import motionConfig from '@/shared/shared';
 import { motion } from 'motion/react';
 import Header from '@/components/Header';
-import { GridDebug, DebugButton } from './Debug';
+import { GridDebug, DebugButton } from '../components/Debug';
 
 interface LayoutProps {
   className?: string;

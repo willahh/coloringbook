@@ -72,6 +72,9 @@ export function isShapeObject(
 export function isTextObject(attr: ObjectAttributes): attr is TextElement {
   return 'text' in attr;
 }
+export function isSVGObject(attr: ObjectAttributes): attr is SVGAttributes {
+  return 'svg' in attr;
+}
 
 export function isImageObject(attr: ObjectAttributes): attr is ImageElement {
   return 'imageData' in attr;

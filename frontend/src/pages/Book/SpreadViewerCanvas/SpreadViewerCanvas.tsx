@@ -32,7 +32,7 @@ import React, {
   useContext,
 } from 'react';
 import * as fabric from 'fabric';
-import { CanvasContext } from '../BookPage';
+import { CanvasContext } from '../page';
 import {
   handleMouseWheel,
   handleMouseOver,

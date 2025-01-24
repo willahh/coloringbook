@@ -7,7 +7,7 @@ import React, {
   useContext,
 } from 'react';
 import * as fabric from 'fabric'; // Import the entire fabric library
-import { CanvasContext } from '../BookPage';
+import { CanvasContext } from '../page';
 
 interface SpreadCanvasProps {
   width?: number;

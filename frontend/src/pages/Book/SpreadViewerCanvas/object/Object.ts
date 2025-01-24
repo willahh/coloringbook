@@ -1,4 +1,15 @@
-import { isShapeObject, isTextObject, Object } from '@/domain/book';
+/**
+ * TODO:
+ *  - [ ] Refactor this file to use the new Object model
+ *  - [ ] One object class by type
+ *  - [ ] Object interface with common methods like, `draw`, `update`, `delete`
+ */
+import {
+  isShapeObject,
+  isSVGObject,
+  isTextObject,
+  Object,
+} from '@/domain/book';
 import * as fabric from 'fabric';
 
 // Helper function for creating individual elements
@@ -66,6 +77,33 @@ export const createObject = (
       }
       break;
 
+    case 'svg':
+      if (isSVGObject(element.attr)) {
+        // const svgString ='';
+
+        // fabric.loadSVGFromString(svgString, (results, options) => {
+        //   const svgGroup = fabric.util.groupSVGElements(results, options);
+
+        //   svgGroup.set({
+        //     left: 100,
+        //     top: 100
+        //   });
+
+        //   canvas.add(svgGroup);
+        //   canvas.renderAll();
+        // });
+        return new fabric.Triangle({
+          left: 1,
+          top: 1,
+          width: 10,
+          height: 10,
+          fill: '#000',
+          // stroke: element.attr.stroke,
+          // strokeWidth: element.attr.strokeWidth,
+        });
+      }
+      break;
+
       // case 'image':
       //   if (isImageElement(element.attr) && canvasRef.current) {
       //     fabric.Image.fromURL(element.attr.imageData, (img) => {
@@ -81,7 +119,5 @@ export const createObject = (
       //   break;
 
       return null; // Return null as the image is added asynchronously
-    default:
-      return null;
   }
 };

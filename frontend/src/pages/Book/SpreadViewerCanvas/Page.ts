@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
 import { Page, Object } from '@/domain/book';
-import { createObject } from './Object';
+import { createObject } from './object/Object';
 
 export const createPageGroup = (
   page: Page,

@@ -3,22 +3,16 @@ import Layout from '../layout';
 import * as fabric from 'fabric';
 
 import { BookFormat } from '@/domain/book.enum';
-import { SpreadToolbar } from './SpreadViewerCanvas/layout/SpreadToolbar';
-import { SideToolbar } from './SidePanel/SideToolbar';
-import { ColorPanel } from './SidePanel/ColorPanel';
-import { SidePanel } from './SidePanel/SidePanel';
-import { GraphicsPanel } from './SidePanel/GraphicsPanel';
-import { TemplatePanel } from './SidePanel/TemplatePanel';
-import { PagesPanel } from './SidePanel/PagesPanel';
-import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
-import { VerticalSeparator } from './SidePanel/VerticalSeparator';
+import { SpreadToolbar } from './spreadViewerCanvas/ui/SpreadToolbar';
+import { SideToolbar } from './sidePanel/SideToolbar';
+import { ColorPanel } from './sidePanel/ColorPanel';
+import { SidePanel } from './sidePanel/SidePanel';
+import { GraphicsPanel } from './sidePanel/GraphicsPanel';
+import { TemplatePanel } from './sidePanel/TemplatePanel';
+import { PagesPanel } from './sidePanel/PagesPanel';
+import SpreadViewerCanvas from './spreadViewerCanvas/SpreadViewerCanvas';
+import { VerticalSeparator } from './sidePanel/VerticalSeparator';
 import { IBook } from '@/domain/book';
-// import { AspectRatio } from '@radix-ui/themes';
-// import { text } from 'stream/consumers';
-
-// TODO: Rename BookPage.tsx to page.tsx
-
-// Create a context for the canvas
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
@@ -31,7 +25,7 @@ export const CanvasContext = createContext<CanvasContextType>({
   bookData: null as unknown as IBook,
 });
 
-const BookPage: React.FC = () => {
+const Page: React.FC = () => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const bookData: IBook = {
     id: 89,
@@ -44,8 +38,13 @@ const BookPage: React.FC = () => {
         pageNumber: 1,
         AspectRatio: { w: 210, h: 297 },
         elements: [
-          { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
-          { type: 'svg', x: 0, y: 0, w: 30, h: 30, attr: { svgContent: '' } },
+          // { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
+          // { type: 'svg',
+          //   x: 21,
+          //   y: 0,
+          //   w: 20,
+          //   h: 20,
+          //   attr: { svgContent: '' } },
           {
             type: 'rectangle',
             x: 21,
@@ -102,7 +101,7 @@ const BookPage: React.FC = () => {
         pageNumber: 1,
         AspectRatio: { w: 210, h: 297 },
         elements: [
-          { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
+          // { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
           {
             type: 'rectangle',
             x: 21,
@@ -190,4 +189,4 @@ const BookPage: React.FC = () => {
   );
 };
 
-export default BookPage;
+export default Page;
