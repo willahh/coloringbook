@@ -15,7 +15,7 @@ interface SpreadCanvasProps {
   // onCanvasReady: (canvas: fabric.Canvas) => fabric.Canvas;
 }
 
-const InteractiveBookCanvas: React.FC<SpreadCanvasProps> = () => {
+const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -262,40 +262,6 @@ const InteractiveBookCanvas: React.FC<SpreadCanvasProps> = () => {
     }
   }, [dimensions, initCanvas, setCanvas]);
 
-  // useEffect(() => {
-  //   const handleWheel = (event) => {
-  //     console.log('handleWheel');
-  //     if (event.ctrlKey) {
-  //       event.preventDefault();
-  //       const delta = event.deltaY;
-  //       const zoomFactor = 1.1;
-  //       const canvas = fabricCanvasRef.current;
-
-  //       if (canvas) {
-  //         let zoom = canvas.getZoom();
-  //         zoom *= delta > 0 ? 1 / zoomFactor : zoomFactor;
-  //         canvas.zoomToPoint({ x: event.offsetX, y: event.offsetY }, zoom);
-  //       }
-  //     }
-  //   };
-
-  //   const canvasElement = canvasRef.current;
-  //   console.log('canvasElement', canvasElement);
-  //   console.log('canvasElement.nextElementSibling', canvasElement.nextElementSibling)
-  //   if (canvasElement) {
-  //     const upperCanvas = canvasElement.nextElementSibling; // Assuming upper-canvas is the next sibling
-  //     if (upperCanvas) {
-  //       upperCanvas.addEventListener('wheel', handleWheel);
-  //     }
-  //   }
-
-  //   return () => {
-  //     if (canvasElement && canvasElement.nextElementSibling) {
-  //       canvasElement.nextElementSibling.removeEventListener('wheel', handleWheel);
-  //     }
-  //   };
-  // }, []);
-
   return (
     <div ref={containerRef} className="flex-1">
       <canvas ref={canvasRef} />
@@ -303,4 +269,4 @@ const InteractiveBookCanvas: React.FC<SpreadCanvasProps> = () => {
   );
 };
 
-export default InteractiveBookCanvas;
+export default SpreadViewerCanvas;

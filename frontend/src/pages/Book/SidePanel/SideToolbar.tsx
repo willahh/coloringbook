@@ -1,4 +1,4 @@
-import { ToolbarButton } from '../mainPanel/ToolbarButton';
+import { ToolbarButton } from '../SpreadViewerCanvas/layout/ToolbarButton';
 import PointerIcon from '@assets/icons/icon_pointer.svg?react';
 import RectangleIcon from '@assets/icons/icon_rectangle.svg?react';
 import CircleIcon from '@assets/icons/icon_circle.svg?react';

@@ -3,14 +3,14 @@ import Layout from '../layout';
 import * as fabric from 'fabric';
 
 import { BookFormat } from '@/domain/book.enum';
-import { SpreadToolbar } from './mainPanel/SpreadToolbar';
+import { SpreadToolbar } from './SpreadViewerCanvas/layout/SpreadToolbar';
 import { SideToolbar } from './SidePanel/SideToolbar';
 import { ColorPanel } from './SidePanel/ColorPanel';
 import { SidePanel } from './SidePanel/SidePanel';
 import { GraphicsPanel } from './SidePanel/GraphicsPanel';
 import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
-import SpreadCanvas from './mainPanel/MainSpread';
+import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
 import { IBook } from '@/domain/book';
 // import { AspectRatio } from '@radix-ui/themes';
@@ -179,7 +179,7 @@ const BookPage: React.FC = () => {
           <SideToolbar />
         </SidePanel>
         <main className="flex flex-1 bg-slate-900 flex-col">
-          <SpreadCanvas />
+          <SpreadViewerCanvas />
           <SpreadToolbar />
         </main>
       </Layout>
