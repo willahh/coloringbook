@@ -26,6 +26,9 @@ interface TextElement extends ShapeAttributes {
 interface ImageElement {
   imageData: string;
 }
+interface SVGAttributes {
+  svgContent: string;
+}
 
 // Union type for all possible attribute types
 export type ElementAttributes =
@@ -33,10 +36,11 @@ export type ElementAttributes =
   | CircleAttributes
   | TriangleAttributes
   | TextElement
-  | ImageElement;
+  | ImageElement
+  | SVGAttributes;
 
 export interface Element {
-  type: 'image' | 'rectangle' | 'circle' | 'triangle' | 'text';
+  type: 'image' | 'rectangle' | 'circle' | 'triangle' | 'text' | 'svg';
   x: number;
   y: number;
   w: number;

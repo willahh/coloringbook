@@ -12,7 +12,7 @@ export const handleMouseWheel =
   (canvas: fabric.Canvas) => (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
     let zoom = canvas.getZoom();
-    zoom *= 0.998 ** delta;
+    zoom *= 0.988 ** delta;
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
@@ -85,4 +85,21 @@ export const handleMouseUp = (canvas: fabric.Canvas) => () => {
   canvas.isDragging = false;
   canvas.selection = true;
   canvas.defaultCursor = 'default';
+};
+
+export const handleDocumentKeyDown =
+  (canvas: fabric.Canvas) => (evt: { altKey: boolean; code: string }) => {
+    if (canvas.objSelected) {
+      if (evt.altKey === true || evt.code === 'Space') {
+        canvas.setCursor('grab');
+        canvas.defaultCursor = 'grab';
+      }
+    }
+  };
+
+export const handleDocumentKeyUp = (canvas: fabric.Canvas) => () => {
+  if (canvas.objSelected) {
+    canvas.setCursor('default');
+    canvas.defaultCursor = 'default';
+  }
 };

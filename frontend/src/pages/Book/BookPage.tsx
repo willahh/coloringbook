@@ -45,6 +45,7 @@ const BookPage: React.FC = () => {
         AspectRatio: { w: 210, h: 297 },
         elements: [
           { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
+          { type: 'svg', x: 0, y: 0, w: 30, h: 30, attr: { svgContent: '' } },
           {
             type: 'rectangle',
             x: 21,
