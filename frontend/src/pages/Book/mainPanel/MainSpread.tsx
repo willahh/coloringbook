@@ -93,16 +93,31 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
         // }
       });
 
+      let objSelected = null;
+
+      // Pan canvas with alt key
+      canvas.on('mouse:over', function (opt) {
+        if (opt.e.target) {
+          objSelected = opt.e.target;
+        }
+      });
+      canvas.on('mouse:out', function (opt) {
+        if (opt.e.target) {
+          objSelected = null;
+        }
+      });
+
       // Pan canvas with alt key
       canvas.on('mouse:down', function (opt) {
         const evt = opt.e;
-        // if (evt.altKey === true) {
-        this.isDragging = true;
-        this.selection = false;
-        this.lastPosX = evt.clientX;
-        this.lastPosY = evt.clientY;
-        // }
+        if (evt.altKey === true || evt.code === 'Space') {
+          this.isDragging = true;
+          this.selection = false;
+          this.lastPosX = evt.clientX;
+          this.lastPosY = evt.clientY;
+        }
       });
+
       canvas.on('mouse:move', function (opt) {
         if (this.isDragging) {
           const e = opt.e;
@@ -114,12 +129,38 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
           this.lastPosY = e.clientY;
         }
       });
+
       canvas.on('mouse:up', function () {
         // on mouse up we want to recalculate new interaction
         // for all objects, so we call setViewportTransform
         this.setViewportTransform(this.viewportTransform);
         this.isDragging = false;
         this.selection = true;
+        canvas.defaultCursor = 'default'; // Reset cursor to default
+      });
+
+
+      document.onkeydown = function (evt) {
+        if (objSelected) {
+          if (evt.altKey === true || evt.code === 'Space') {
+            canvas.setCursor('grab');
+            canvas.defaultCursor = 'grab';
+          }
+        }
+      };
+      document.onkeyup = function () {
+        if (objSelected) {
+          canvas.setCursor('default');
+          canvas.defaultCursor = 'default';
+        }
+      };
+
+      canvas.on('keydown', function (opt) {
+        console.log('keydown', opt);
+        const evt = opt.e;
+        if (evt.altKey === true  || evt.code === 'Space') {
+          canvas.defaultCursor = 'grab';
+        }
       });
 
       // Add elements from bookData to the canvas
@@ -160,6 +201,7 @@ const SpreadCanvas: React.FC<SpreadCanvasProps> = () => {
                   fill: element.attr.fill,
                   stroke: element.attr.stroke,
                   strokeWidth: element.attr.strokeWidth,
+                  // selectable: true
                 });
                 break;
               case 'circle':
