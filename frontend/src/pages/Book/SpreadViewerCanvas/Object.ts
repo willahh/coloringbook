@@ -1,9 +1,9 @@
-import { isShapeElement, isTextElement, Element } from '@/domain/book';
+import { isShapeObject, isTextObject, Object } from '@/domain/book';
 import * as fabric from 'fabric';
 
 // Helper function for creating individual elements
-export const createElement = (
-  element: Element,
+export const createObject = (
+  element: Object,
   pageWidth: number,
   pageHeight: number
 ) => {
@@ -14,7 +14,7 @@ export const createElement = (
 
   switch (element.type) {
     case 'rectangle':
-      if (isShapeElement(element.attr)) {
+      if (isShapeObject(element.attr)) {
         return new fabric.Rect({
           left: relativeX,
           top: relativeY,
@@ -28,7 +28,7 @@ export const createElement = (
       break;
 
     case 'circle':
-      if (isShapeElement(element.attr)) {
+      if (isShapeObject(element.attr)) {
         return new fabric.Circle({
           left: relativeX,
           top: relativeY,
@@ -41,7 +41,7 @@ export const createElement = (
       break;
 
     case 'triangle':
-      if (isShapeElement(element.attr)) {
+      if (isShapeObject(element.attr)) {
         return new fabric.Triangle({
           left: relativeX,
           top: relativeY,
@@ -55,7 +55,7 @@ export const createElement = (
       break;
 
     case 'text':
-      if (isTextElement(element.attr)) {
+      if (isTextObject(element.attr)) {
         return new fabric.Text(element.attr.text.text, {
           left: relativeX,
           top: relativeY,

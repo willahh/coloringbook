@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
-import { Page, Element } from '@/domain/book';
-import { createElement } from './Element';
+import { Page, Object } from '@/domain/book';
+import { createObject } from './Object';
 
 export const createPageGroup = (
   page: Page,
@@ -25,7 +25,7 @@ export const createPageGroup = (
   });
 
   const elements = page.elements
-    .map((element: Element) => createElement(element, pageWidth, pageHeight))
+    .map((element: Object) => createObject(element, pageWidth, pageHeight))
     .filter((el): el is fabric.Object => el !== null);
 
   return new fabric.Group([pageBackground, ...elements], {

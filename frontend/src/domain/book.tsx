@@ -30,8 +30,7 @@ interface SVGAttributes {
   svgContent: string;
 }
 
-// Union type for all possible attribute types
-export type ElementAttributes =
+export type ObjectAttributes =
   | RectAttributes
   | CircleAttributes
   | TriangleAttributes
@@ -39,19 +38,19 @@ export type ElementAttributes =
   | ImageElement
   | SVGAttributes;
 
-export interface Element {
+export interface Object {
   type: 'image' | 'rectangle' | 'circle' | 'triangle' | 'text' | 'svg';
   x: number;
   y: number;
   w: number;
   h: number;
-  attr: ElementAttributes;
+  attr: ObjectAttributes;
 }
 
 export interface Page {
   pageNumber: number;
   AspectRatio: { w: number; h: number };
-  elements: Element[];
+  elements: Object[];
 }
 
 export interface IBook {
@@ -64,16 +63,16 @@ export interface IBook {
 }
 
 // Type guards to check the type of element.attr
-export function isShapeElement(
-  attr: ElementAttributes
+export function isShapeObject(
+  attr: ObjectAttributes
 ): attr is RectAttributes | CircleAttributes | TriangleAttributes {
   return 'fill' in attr;
 }
 
-export function isTextElement(attr: ElementAttributes): attr is TextElement {
+export function isTextObject(attr: ObjectAttributes): attr is TextElement {
   return 'text' in attr;
 }
 
-export function isImageElement(attr: ElementAttributes): attr is ImageElement {
+export function isImageObject(attr: ObjectAttributes): attr is ImageElement {
   return 'imageData' in attr;
 }

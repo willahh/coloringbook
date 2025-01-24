@@ -1,3 +1,28 @@
+/**
+ * SpreadViewerCanvas component is responsible for rendering a fabric.js canvas
+ * within a resizable container. It initializes the canvas, sets up event handlers,
+ * and manages the dimensions of the canvas based on the container size.
+ *
+ * @component
+ * @example
+ * return (
+ *   <SpreadViewerCanvas width={800} height={600} />
+ * )
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.width] - Optional width of the canvas
+ * @param {number} [props.height] - Optional height of the canvas
+ *
+ * @returns {JSX.Element} The rendered SpreadViewerCanvas component
+ *
+ * @remarks
+ * This component uses the `fabric` library to create and manage the canvas.
+ * It also uses `lodash` for debouncing the resize event handler.
+ *
+ * @see {@link https://github.com/fabricjs/fabric.js/|fabric.js}
+ * @see {@link https://lodash.com/docs/4.17.15#debounce|lodash.debounce}
+ */
+
 import { debounce } from 'lodash';
 import React, {
   useRef,
@@ -99,9 +124,9 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       const allPagesGroup = new fabric.Group(pageGroups, {
         selectable: false,
         evented: false,
-        left: 10,
-        scaleX: 0.5,
-        scaleY: 0.5,
+        left: 0,
+        scaleX: 1,
+        scaleY: 1,
         lockRotation: true,
       });
 
