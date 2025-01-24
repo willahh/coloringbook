@@ -1,6 +1,7 @@
 import React from 'react';
 import { IBook } from '@/domain/book';
 import { UserBookItem } from './UserBook';
+import { BookFormat } from '@/domain/book.enum';
 
 interface UserBooksProps {
   minItems: number;
@@ -38,9 +39,10 @@ const UserBooks: React.FC<UserBooksProps> = ({
                 book={{
                   coverImage: '',
                   id: -1,
-                  image: '',
-                  name: '',
+                  format: BookFormat.CARRE,
+                  name: 'Aucun livre',
                   pageCount: 1,
+                  pages: [],
                 }}
               />
             ))}
