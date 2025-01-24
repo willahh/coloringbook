@@ -1,6 +1,7 @@
 import * as fabric from 'fabric';
-import { Page, Object } from '@/domain/book';
-import { createObject } from './object/Object';
+import { Page, Object as ElementType } from '@/domain/book';
+import { ObjectFactory } from './object/ObjectFactory';
+import { DrawableObject } from './object/DrawableObject';
 
 export const createPageGroup = (
   page: Page,
@@ -25,8 +26,11 @@ export const createPageGroup = (
   });
 
   const elements = page.elements
-    .map((element: Object) => createObject(element, pageWidth, pageHeight))
-    .filter((el): el is fabric.Object => el !== null);
+    .map((element: ElementType) =>
+      ObjectFactory.createObject(element, pageWidth, pageHeight)
+    )
+    .filter((obj): obj is DrawableObject => obj !== null)
+    .map((obj: DrawableObject) => obj.getObject());
 
   return new fabric.Group([pageBackground, ...elements], {
     left: offsetX,
