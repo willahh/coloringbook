@@ -1,18 +1,18 @@
 import { DrawableObject } from '../DrawableObject';
 import * as fabric from 'fabric';
-import { isTextObject, ObjectAttributes } from '@/domain/book';
+import { isTextObject, Obj } from '@/domain/book';
 
 export class Text implements DrawableObject {
   private text: fabric.Text;
 
-  constructor(attrs: ObjectAttributes, relativeX: number, relativeY: number) {
-    if (isTextObject(attrs)) {
-      this.text = new fabric.Text(attrs.text.text, {
+  constructor(obj: Obj, relativeX: number, relativeY: number) {
+    if (isTextObject(obj)) {
+      this.text = new fabric.Text(obj.attr.text, {
         left: relativeX,
         top: relativeY,
-        fontSize: attrs.text.fontSize,
-        textAlign: attrs.text.textAlign,
-        fill: attrs.text.color,
+        fontSize: obj.attr.fontSize,
+        textAlign: obj.attr.textAlign,
+        fill: obj.attr.color,
       });
     } else {
       throw new Error(
@@ -31,7 +31,7 @@ export class Text implements DrawableObject {
     return this.text;
   }
 
-  update(attrs: ObjectAttributes): void {
+  update(attrs: Obj): void {
     this.text.set(attrs);
   }
 

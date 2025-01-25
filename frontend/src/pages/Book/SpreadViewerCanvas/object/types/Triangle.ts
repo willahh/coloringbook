@@ -1,26 +1,26 @@
 import * as fabric from 'fabric';
 import { DrawableObject } from '../DrawableObject';
-import { isShapeObject, ObjectAttributes } from '@/domain/book';
+import { isShapeObject, Obj } from '@/domain/book';
 
 export class Triangle implements DrawableObject {
   private triangle: fabric.Triangle;
 
   constructor(
-    attrs: ObjectAttributes,
+    obj: Obj,
     relativeX: number,
     relativeY: number,
     relativeW: number,
     relativeH: number
   ) {
-    if (isShapeObject(attrs)) {
+    if (isShapeObject(obj)) {
       this.triangle = new fabric.Triangle({
         left: relativeX,
         top: relativeY,
         width: relativeW,
         height: relativeH,
-        fill: attrs.fill,
-        stroke: attrs.stroke,
-        strokeWidth: attrs.strokeWidth,
+        fill: obj.attr.fill,
+        stroke: obj.attr.stroke,
+        strokeWidth: obj.attr.strokeWidth,
       });
     } else {
       throw new Error(
@@ -39,7 +39,7 @@ export class Triangle implements DrawableObject {
     return this.triangle;
   }
 
-  update(attrs: ObjectAttributes): void {
+  update(attrs: Obj): void {
     this.triangle.set(attrs);
   }
 

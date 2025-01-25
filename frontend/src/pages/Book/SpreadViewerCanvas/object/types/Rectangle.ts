@@ -1,26 +1,26 @@
 import { DrawableObject } from '../DrawableObject';
 import * as fabric from 'fabric';
-import { isShapeObject, ObjectAttributes } from '@/domain/book';
+import { isShapeObject, RectangleObject } from '@/domain/book';
 
 export class Rectangle implements DrawableObject {
   private rect: fabric.Rect;
 
   constructor(
-    attrs: ObjectAttributes,
+    obj: RectangleObject,
     relativeX: number,
     relativeY: number,
     relativeW: number,
     relativeH: number
   ) {
-    if (isShapeObject(attrs)) {
+    if (isShapeObject(obj)) {
       this.rect = new fabric.Rect({
         left: relativeX,
         top: relativeY,
         width: relativeW,
         height: relativeH,
-        fill: attrs.fill,
-        stroke: attrs.stroke,
-        strokeWidth: attrs.strokeWidth,
+        fill: obj.attr.fill,
+        stroke: obj.attr.stroke,
+        strokeWidth: obj.attr.strokeWidth,
       });
     } else {
       throw new Error(
@@ -38,7 +38,7 @@ export class Rectangle implements DrawableObject {
     return this.rect;
   }
 
-  update(attrs: ObjectAttributes): void {
+  update(attrs: RectangleObject): void {
     this.rect.set(attrs);
   }
 

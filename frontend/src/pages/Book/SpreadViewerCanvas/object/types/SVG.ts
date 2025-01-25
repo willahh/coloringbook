@@ -1,46 +1,77 @@
-import { DrawableObject } from '../DrawableObject';
+import { DrawableObject } from '../DrawableObject'; // Adjust the path as needed
 import * as fabric from 'fabric';
-import { isShapeObject, ObjectAttributes } from '@/domain/book';
+import { SVGObject } from '@/domain/book';
 
 export class SVG implements DrawableObject {
-  private svg: fabric.Circle;
+  private svgGroup: fabric.Group | null = null;
 
   constructor(
-    attrs: ObjectAttributes,
-    relativeX: number,
-    relativeY: number,
-    radius: number
+    private obj: SVGObject,
+    private relativeX: number,
+    private relativeY: number,
+    private relativeW: number,
+    private relativeH: number
   ) {
-    if (isShapeObject(attrs)) {
-      this.svg = new fabric.Circle({
-        left: relativeX,
-        top: relativeY,
-        radius: radius,
-        fill: attrs.fill,
-        stroke: attrs.stroke,
-        strokeWidth: attrs.strokeWidth,
-      });
-    } else {
-      throw new Error(
-        'Attributes do not match expected shape object properties'
-      );
-    }
+    this.createSVG();
   }
 
-  getObject(): fabric.Object {
-    return this.svg;
+  private createSVG(): void {
+    fabric.loadSVGFromString(
+      this.obj.attr.svgContent,
+      (objects: unknown, options) => {
+        const fabricObjects = objects as unknown as fabric.Object[];
+        this.svgGroup = fabric.util.groupSVGElements(
+          fabricObjects,
+          options
+        ) as fabric.Group;
+        if (this.svgGroup) {
+          this.svgGroup.set({
+            left: this.relativeX,
+            top: this.relativeY,
+            scaleX: this.relativeW / this.svgGroup.width,
+            scaleY: this.relativeH / this.svgGroup.height,
+          });
+        }
+      }
+    );
   }
 
   draw(canvas: fabric.Canvas): fabric.Object {
     console.log('draw', canvas);
-    return this.svg;
+    if (this.svgGroup) {
+      canvas.add(this.svgGroup);
+      return this.svgGroup;
+    } else {
+      throw new Error('SVG group is not initialized yet');
+    }
   }
 
-  update(attrs: ObjectAttributes): void {
-    this.svg.set(attrs);
+  update(obj: SVGObject): void {
+    console.log('obj', obj);
+    // if ('svgContent' in obj && typeof obj.svgContent === 'string') {
+    //   this.attrs.svgContent = obj.svgContent;
+    //   this.createSVG();
+    // }
+    // if (this.svgGroup) {
+    //   this.svgGroup.set({
+    //     left: obj.x ?? this.svgGroup.left,
+    //     top: obj.y ?? this.svgGroup.top,
+    //     scaleX: obj.scaleX ?? this.svgGroup.scaleX,
+    //     scaleY: obj.scaleY ?? this.svgGroup.scaleY,
+    //   });
+    // }
   }
 
   delete(): void {
-    // this.circle.remove();
+    if (this.svgGroup) {
+      this.svgGroup.remove();
+    }
+  }
+
+  getObject(): fabric.Object {
+    if (!this.svgGroup) {
+      throw new Error('SVG has not been created yet');
+    }
+    return this.svgGroup;
   }
 }

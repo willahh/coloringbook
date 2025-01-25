@@ -1,24 +1,26 @@
 import { DrawableObject } from '../DrawableObject';
 import * as fabric from 'fabric';
-import { isShapeObject, ObjectAttributes } from '@/domain/book';
+import { isShapeObject, CircleObject } from '@/domain/book';
 
+// TODO: Il faut que le paramètre du constructeur
+// soit de type Object {x,y,w,h,attr}
 export class Circle implements DrawableObject {
   private circle: fabric.Circle;
 
   constructor(
-    attrs: ObjectAttributes,
+    obj: CircleObject,
     relativeX: number,
     relativeY: number,
     radius: number
   ) {
-    if (isShapeObject(attrs)) {
+    if (isShapeObject(obj)) {
       this.circle = new fabric.Circle({
         left: relativeX,
         top: relativeY,
         radius: radius,
-        fill: attrs.fill,
-        stroke: attrs.stroke,
-        strokeWidth: attrs.strokeWidth,
+        fill: obj.attr.fill,
+        stroke: obj.attr.stroke,
+        strokeWidth: obj.attr.strokeWidth,
       });
     } else {
       throw new Error(
@@ -37,7 +39,7 @@ export class Circle implements DrawableObject {
     return this.circle;
   }
 
-  update(attrs: ObjectAttributes): void {
+  update(attrs: CircleObject): void {
     this.circle.set(attrs);
   }
 

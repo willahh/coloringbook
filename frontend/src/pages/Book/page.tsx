@@ -36,7 +36,7 @@ const Page: React.FC = () => {
     pages: [
       {
         pageNumber: 1,
-        AspectRatio: { w: 210, h: 297 },
+        aspectRatio: { width: 210, height: 297 },
         elements: [
           // { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
           // { type: 'svg',
@@ -87,19 +87,17 @@ const Page: React.FC = () => {
               fill: 'transparent',
               stroke: '#000',
               strokeWidth: 1,
-              text: {
-                text: 'Hello',
-                fontSize: 12,
-                textAlign: 'left',
-                color: 'black',
-              },
+              text: 'Hello',
+              fontSize: 12,
+              textAlign: 'left',
+              color: 'black',
             },
           },
         ],
       },
       {
         pageNumber: 1,
-        AspectRatio: { w: 210, h: 297 },
+        aspectRatio: { width: 210, height: 297 },
         elements: [
           // { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
           {
@@ -144,12 +142,10 @@ const Page: React.FC = () => {
               fill: 'transparent',
               stroke: '#000',
               strokeWidth: 1,
-              text: {
-                text: 'Hello',
-                fontSize: 12,
-                textAlign: 'left',
-                color: 'black',
-              },
+              text: 'Hello',
+              fontSize: 12,
+              textAlign: 'left',
+              color: 'black',
             },
           },
         ],

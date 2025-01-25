@@ -1,5 +1,5 @@
 import * as fabric from 'fabric';
-import { Page, Object as ElementType } from '@/domain/book';
+import { Page, Obj as ElementType } from '@/domain/book';
 import { ObjectFactory } from './object/ObjectFactory';
 import { DrawableObject } from './object/DrawableObject';
 
@@ -8,7 +8,7 @@ export const createPageGroup = (
   index: number,
   dimensions: { width: number; height: number }
 ) => {
-  const aspectRatio = page.AspectRatio.h / page.AspectRatio.w;
+  const aspectRatio = page.aspectRatio.height / page.aspectRatio.width;
   const pageWidth = dimensions.width / 2 - 10;
   const pageHeight = pageWidth / aspectRatio;
   const offsetX = index * pageWidth;
