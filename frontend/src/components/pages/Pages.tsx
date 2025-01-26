@@ -1,38 +1,51 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
+import { useContext } from 'react';
+import { CanvasContext } from '@/pages/book/page';
+import { Link } from 'react-router-dom';
 
 interface PageComponentProps {
+  bookId: number;
   page: Page;
+  selected: boolean;
 }
 
 const PageComponent: React.FC<PageComponentProps> = ({
-  page: { pageNumber },
+  bookId,
+  page: { pageNumber, pageId },
+  selected,
 }) => {
   const transitionDelay = pageNumber / 10;
 
   return (
-    <motion.div
-      className="flex flex-col 
-      w-14 h-20
+    <Link to={`/book/${bookId}/pages/${pageId}`}>
+      <motion.div
+        className={`flex flex-col w-14 h-20 
+      border-2 border-indigo-500 rounded-sm overflow-hidden shadow-md shadow-black
       focus:outline-dashed focus:outline-2 focus:-outline-offset-4
-      border-2 border-indigo-500 rounded-md overflow-hidden shadow-md shadow-black
       transition duration-150 ease-in-out
-      "
-      initial={{ y: -20, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{
-        delay: transitionDelay,
-        duration: 1,
-        type: 'tween',
-      }}
-      tabIndex={0}
-      onFocus={() => {
-        console.log('on focus');
-      }}
-    >
-      <div className="flex flex-1 bg-white"></div>
-      <div className="bg-indigo-500 text-xs p-0.5 text-right">{pageNumber}</div>
-    </motion.div>
+      ${selected ? 'border-indigo-200' : ''}`}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{
+          delay: transitionDelay,
+          duration: 1,
+          type: 'tween',
+        }}
+        tabIndex={0}
+        onFocus={() => {
+          console.log('on focus');
+        }}
+      >
+        <div className="flex flex-1 bg-white"></div>
+        <div
+          className={`bg-indigo-500 text-xs p-0.5 text-right
+        ${selected ? 'bg-indigo-200 text-black' : ''}`}
+        >
+          {pageNumber}
+        </div>
+      </motion.div>
+    </Link>
   );
 };
 
@@ -42,14 +55,24 @@ interface PagesProps {
 }
 
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
+  const {
+    pageParams: { pageId, bookId },
+  } = useContext(CanvasContext);
+  const selectedPageId = pageId ? Number(pageId) : -1;
+  const iBookId = bookId ? Number(bookId) : -1;
+
   const renderPages = () => {
     const renderedPages = [];
 
     // First page always alone on its row
     renderedPages.push(
-      <div key="first" className="flex justify-center mb-4">
+      <div key="page-first" className="flex justify-center mb-4">
         <div className="w-14 h-20"></div>
-        <PageComponent page={pages[0]} />
+        <PageComponent
+          bookId={iBookId}
+          page={pages[0]}
+          selected={pages[0].pageId === selectedPageId}
+        />
       </div>
     );
 
@@ -57,9 +80,19 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
     for (let i = 1; i < pages.length - 1; i++) {
       renderedPages.push(
         <>
-          <div key={i} className="flex justify-center mb-4">
-            <PageComponent page={pages[i]} />
-            {i + 1 < pages.length && <PageComponent page={pages[i + 1]} />}
+          <div key={`page-${i}`} className="flex justify-center mb-4">
+            <PageComponent
+              bookId={iBookId}
+              page={pages[i]}
+              selected={pages[i].pageId === selectedPageId}
+            />
+            {i + 1 < pages.length && (
+              <PageComponent
+                bookId={iBookId}
+                page={pages[i + 1]}
+                selected={pages[i + 1].pageId === selectedPageId}
+              />
+            )}
           </div>
         </>
       );
@@ -67,9 +100,13 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
     // Last page always alone on its row
     renderedPages.push(
-      <div key="last" className="flex justify-center mb-4">
+      <div key="page-last" className="flex justify-center mb-4">
         <div className="w-14 h-20"></div>
-        <PageComponent page={pages[pages.length - 1]} />
+        <PageComponent
+          bookId={iBookId}
+          page={pages[pages.length - 1]}
+          selected={pages[pages.length - 1].pageId === selectedPageId}
+        />
       </div>
     );
 

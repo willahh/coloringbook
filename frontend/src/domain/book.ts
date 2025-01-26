@@ -10,9 +10,7 @@ interface CircleAttributes extends BaseShapeAttributes {
   radius?: number;
 }
 
-
 interface TextAttributes extends BaseShapeAttributes {
-  
   text: string;
   fontSize: number;
   textAlign: 'left' | 'center' | 'right';
@@ -83,6 +81,7 @@ export type Obj =
   | SVGObject;
 
 export interface Page {
+  pageId: number;
   pageNumber: number;
   aspectRatio: { width: number; height: number };
   elements: Obj[];
@@ -100,7 +99,9 @@ export interface IBook {
 export function isShapeObject(
   obj: Obj
 ): obj is RectangleObject | CircleObject | TriangleObject {
-  return 'fill' in obj.attr && 'stroke' in obj.attr && 'strokeWidth' in obj.attr;
+  return (
+    'fill' in obj.attr && 'stroke' in obj.attr && 'strokeWidth' in obj.attr
+  );
 }
 
 export function isTextObject(obj: Obj): obj is TextObject {

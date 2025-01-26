@@ -5,7 +5,8 @@ import HomePage from './pages/home/Home';
 const AppRoutes: React.FC = () => (
   <Routes>
     <Route index element={<HomePage />} />
-    <Route path="book/:id" element={<Page />} />
+    <Route path="book/:bookId" element={<Page />} />
+    <Route path="book/:bookId/pages/:pageId" element={<Page />} />
   </Routes>
 );
 

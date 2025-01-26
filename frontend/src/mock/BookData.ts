@@ -9,6 +9,7 @@ export const bookData: IBook = {
   pageCount: 12,
   pages: [
     {
+      pageId: 1,
       pageNumber: 1,
       aspectRatio: { width: 210, height: 297 },
       elements: [
@@ -75,6 +76,7 @@ export const bookData: IBook = {
       ],
     },
     {
+      pageId: 2,
       pageNumber: 2,
       aspectRatio: { width: 210, height: 297 },
       elements: [
@@ -130,6 +132,7 @@ export const bookData: IBook = {
       ],
     },
     {
+      pageId: 3,
       pageNumber: 3,
       aspectRatio: { width: 210, height: 297 },
       elements: [

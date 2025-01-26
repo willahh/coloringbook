@@ -30,6 +30,7 @@ import React, {
   useState,
   useCallback,
   useContext,
+  useMemo,
 } from 'react';
 import * as fabric from 'fabric';
 import { CanvasContext } from '../page';
@@ -45,6 +46,7 @@ import {
 } from './utils/canvasEvents';
 
 import { createPageGroup } from './Page';
+import { BookService } from '@/services/BookService';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -56,8 +58,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
-  const { setCanvas, bookData } = useContext(CanvasContext);
+  const { setCanvas, bookData, pageParams } = useContext(CanvasContext);
   const [localPages, setLocalPages] = useState(bookData.pages);
+  const currentPageId = Number(pageParams.pageId) || 0;
+  const pageSpread = useMemo(() => {
+    return BookService.getSpreadForPage(localPages, currentPageId);
+  }, [localPages, currentPageId]);
 
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
@@ -94,10 +100,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (JSON.stringify(localPages) !== JSON.stringify(bookData.pages)) {
+    if (JSON.stringify(pageSpread) !== JSON.stringify(bookData.pages)) {
       setLocalPages(bookData.pages);
     }
-  }, [localPages, bookData.pages]);
+  }, [pageSpread, bookData.pages]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -118,12 +124,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
 
       const createGroups = async () => {
         const pageGroups = await Promise.all(
-          localPages.map((page, index) =>
+          pageSpread.map((page, index) =>
             createPageGroup(page, index, dimensions)
           )
         );
 
-        const allPagesGroup = new fabric.Group(pageGroups, {
+        const spreadPages = new fabric.Group(pageGroups, {
           selectable: false,
           evented: false,
           left: 0,
@@ -132,8 +138,18 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
           lockRotation: true,
         });
 
-        canvas.add(allPagesGroup);
-        canvas.setActiveObject(allPagesGroup);
+        const mask = new fabric.Rect({
+          width: 400,
+          height: 300,
+          left: 0,
+          top: 0,
+          fill: 'rgba(0,0,0,0)', // Transparent
+          stroke: 'black', // Optional, for debugging
+          strokeWidth: 1, // Optional
+        });
+        canvas.add(spreadPages);
+        canvas.setActiveObject(spreadPages);
+        canvas.clipPath = mask;
         canvas.renderAll();
       };
 
@@ -144,7 +160,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
         fabricCanvasRef.current = null;
       };
     }
-  }, [dimensions, initCanvas, setCanvas, localPages]);
+  }, [dimensions, initCanvas, setCanvas, localPages, pageSpread]);
 
   return (
     <div ref={containerRef} className="flex-1">

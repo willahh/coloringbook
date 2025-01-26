@@ -1,7 +1,53 @@
+import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
+import { Page } from '@/domain/book';
 
-class BookService {
+export class BookService {
+  static transformPagesToSpread(pages: Page[]): Page[][] {
+    return [
+      // First page is alone
+      [_.head(pages)],
+
+      // Middle pages, grouped by two
+      ..._.chunk(_.dropRight(_.drop(pages), 1), 2),
+
+      // Last page is alone
+      [_.last(pages)],
+    ] as Page[][];
+  }
+
+  static getSpreadForPage(pages: Page[], pageId: number): Page[] {
+    const spreadPages = this.transformPagesToSpread(pages);
+    const flatPages = spreadPages.flat();
+
+    console.log('# getSpreadForPage pageId', pageId)
+    console.log('# flatPages', flatPages);
+
+    // Find the index of the page in the flattened array
+    const flatIndex = flatPages.findIndex((page) => {
+      console.log('# flatIndx', page);
+      return page?.pageId === pageId;
+    });
+
+    if (flatIndex === -1) {
+      throw new Error(`Page with ID ${pageId} not found`);
+    }
+
+    // Determine which spread contains the page
+    let currentSpreadIndex = 0;
+    let pagesInCurrentSpread = 0;
+    for (let i = 0; i < spreadPages.length; i++) {
+      pagesInCurrentSpread += spreadPages[i].length;
+      if (flatIndex < pagesInCurrentSpread) {
+        currentSpreadIndex = i;
+        break;
+      }
+    }
+
+    return spreadPages[currentSpreadIndex];
+  }
+
   private getPDF(
     canvas: fabric.Canvas,
     dimensions: { width: number; height: number }

@@ -1,6 +1,7 @@
 import React, { useState, createContext } from 'react';
 import Layout from '../layout';
 import * as fabric from 'fabric';
+import { useParams } from 'react-router-dom';
 
 import { SpreadToolbar } from './spreadViewerCanvas/ui/SpreadToolbar';
 import { SideToolbar } from './sidePanel/SideToolbar';
@@ -18,19 +19,31 @@ interface CanvasContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
   bookData: IBook;
+  pageParams: {
+    bookId: string;
+    pageId?: string;
+  };
 }
 
 export const CanvasContext = createContext<CanvasContextType>({
   canvas: null,
   setCanvas: () => {},
   bookData: null as unknown as IBook,
+  pageParams: {
+    bookId: '',
+  },
 });
 
 const Page: React.FC = () => {
+  console.log('Page');
+  const { bookId = '', pageId = '1' } = useParams<{
+    bookId: string;
+    pageId?: string;
+  }>();
+  const pageParams = { bookId, pageId };
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-
   return (
-    <CanvasContext.Provider value={{ canvas, setCanvas, bookData }}>
+    <CanvasContext.Provider value={{ canvas, setCanvas, bookData, pageParams }}>
       <Layout className={`w-full flex`} showHeader={true}>
         <SidePanel
           className="flex flex-row bg-primary-900 w-72 shadow-black z-10
