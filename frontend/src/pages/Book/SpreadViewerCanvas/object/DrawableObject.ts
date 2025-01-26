@@ -4,5 +4,5 @@ export interface DrawableObject {
   draw(canvas: fabric.Canvas): void;
   update(attrs: Obj): void;
   delete(): void;
-  getObject(): fabric.Object;
+  getObject(): Promise<fabric.FabricObject>;
 }

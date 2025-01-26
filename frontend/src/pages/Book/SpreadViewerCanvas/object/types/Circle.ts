@@ -29,7 +29,7 @@ export class Circle implements DrawableObject {
     }
   }
 
-  getObject(): fabric.Object {
+  async getObject(): Promise<fabric.Object> {
     return this.circle;
   }
 

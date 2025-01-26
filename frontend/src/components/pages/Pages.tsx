@@ -1,11 +1,14 @@
 import { motion } from 'motion/react';
-interface PageProps {
-  pageNumber: number;
-}
+import type { Page } from '@/domain/book';
 
-const Page: React.FC<PageProps> = ({ pageNumber }) => {
+interface PageComponentProps {
+  page: Page;
+}
+const PageComponent: React.FC<PageComponentProps> = ({
+  page: { pageNumber },
+}) => {
   const transitionDelay = pageNumber / 10;
-  
+
   return (
     <motion.div
       className="flex flex-col 
@@ -21,7 +24,6 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
         duration: 1,
         type: 'tween',
       }}
-
       tabIndex={0}
       onFocus={() => {
         console.log('on focus');
@@ -35,22 +37,23 @@ const Page: React.FC<PageProps> = ({ pageNumber }) => {
 
 interface PagesProps {
   className?: string;
+  pages: Page[];
 }
-const Pages: React.FC<PagesProps> = ({ className }) => {
+
+
+
+const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   return (
     <div>
       <motion.div
-        className={`grid grid-cols-2 gap-4 p-4 ${className}`}
+        className={`grid grid-cols-2 ${className}`}
         // initial={{ y: -200, opacity: 0 }}
         // animate={{ y: 0, opacity: 100}}
         // transition={{delay: 3}}
       >
-        <Page pageNumber={1} />
-        <Page pageNumber={2} />
-        <Page pageNumber={3} />
-        <Page pageNumber={4} />
-        <Page pageNumber={5} />
-        <Page pageNumber={6} />
+        {pages.map((page) => (
+          <PageComponent page={page} />
+        ))}
       </motion.div>
     </div>
   );

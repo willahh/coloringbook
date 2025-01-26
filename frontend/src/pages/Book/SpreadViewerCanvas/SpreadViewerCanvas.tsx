@@ -64,7 +64,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       const canvas = new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
-        // backgroundColor: 'pink',
         selection: false,
         renderOnAddRemove: true,
         allowTouchScrolling: true,

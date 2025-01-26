@@ -6,12 +6,16 @@ export class SVG implements DrawableObject {
   private svgObjects: Promise<fabric.FabricObject> | null;
 
   constructor(
-    private obj: SVGObject,
-    private relativeX: number,
-    private relativeY: number,
-    private relativeW: number,
-    private relativeH: number
+    obj: SVGObject,
+    relativeX: number,
+    relativeY: number,
+    relativeW: number,
+    relativeH: number
   ) {
+    obj.w = relativeW;
+    obj.h = relativeH;
+    obj.x = relativeX;
+    obj.y = relativeY;
     this.svgObjects = this.createSVG(obj);
   }
 
@@ -58,12 +62,12 @@ export class SVG implements DrawableObject {
     // }
   }
 
-  getObject(): fabric.Object {
+  async getObject(): Promise<fabric.Object> {
     console.log('getObject');
 
     if (!this.svgObjects) {
       throw new Error('SVG has not been created yet');
     }
-    return this.svgObjects;
+    return await this.svgObjects;
   }
 }
