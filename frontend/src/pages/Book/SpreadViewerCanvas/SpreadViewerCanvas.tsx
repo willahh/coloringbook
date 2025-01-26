@@ -70,7 +70,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       const canvas = new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
-        selection: false,
+        selection: true,
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
@@ -117,6 +117,15 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       canvas.on('mouse:down', handleMouseDown(canvas));
       canvas.on('mouse:move', handleMouseMove(canvas));
       canvas.on('mouse:up', handleMouseUp(canvas));
+      canvas.on('selection:created', function (e) {
+        console.log('Selected:', e.selected);
+      });
+      canvas.on('selection:updated', function (e) {
+        console.log('Selection Updated:', e.selected);
+      });
+      canvas.on('selection:cleared', function (e) {
+        console.log('Selection Cleared', e);
+      });
 
       // fixme: remove on unmount
       document.onkeydown = handleDocumentKeyDown(canvas);
@@ -138,9 +147,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
           lockRotation: true,
         });
 
+        // FIXME: Spread mask
         const mask = new fabric.Rect({
-          width: 400,
-          height: 300,
+          width: dimensions.width,
+          height: dimensions.height,
           left: 0,
           top: 0,
           fill: 'rgba(0,0,0,0)', // Transparent

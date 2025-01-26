@@ -21,6 +21,10 @@ export class Rectangle implements DrawableObject {
         fill: obj.attr.fill,
         stroke: obj.attr.stroke,
         strokeWidth: obj.attr.strokeWidth,
+        
+        
+        selectable: true,
+        hasControls: true
       });
     } else {
       throw new Error(
