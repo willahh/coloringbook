@@ -129,5 +129,27 @@ export const bookData: IBook = {
         },
       ],
     },
+    {
+      pageNumber: 3,
+      aspectRatio: { width: 210, height: 297 },
+      elements: [
+        {
+          type: 'rectangle',
+          x: 21,
+          y: 0,
+          w: 20,
+          h: 20,
+          attr: { fill: 'red', stroke: 'transparent', strokeWidth: 0 },
+        },
+        {
+          type: 'rectangle',
+          x: 41,
+          y: 0,
+          w: 20,
+          h: 20,
+          attr: { fill: 'blue', stroke: 'transparent', strokeWidth: 0 },
+        }
+      ],
+    },
   ],
 };
