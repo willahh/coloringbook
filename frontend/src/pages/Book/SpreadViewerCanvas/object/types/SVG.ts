@@ -3,7 +3,7 @@ import * as fabric from 'fabric';
 import { SVGObject } from '@/domain/book';
 
 export class SVG implements DrawableObject {
-  private svgGroup: fabric.Group | null = null;
+  private svgObjects: Promise<fabric.FabricObject> | null;
 
   constructor(
     private obj: SVGObject,
@@ -12,38 +12,28 @@ export class SVG implements DrawableObject {
     private relativeW: number,
     private relativeH: number
   ) {
-    this.createSVG();
+    this.svgObjects = this.createSVG();
   }
 
-  private createSVG(): void {
-    fabric.loadSVGFromString(
-      this.obj.attr.svgContent,
-      (objects: unknown, options) => {
-        const fabricObjects = objects as unknown as fabric.Object[];
-        this.svgGroup = fabric.util.groupSVGElements(
-          fabricObjects,
-          options
-        ) as fabric.Group;
-        if (this.svgGroup) {
-          this.svgGroup.set({
-            left: this.relativeX,
-            top: this.relativeY,
-            scaleX: this.relativeW / this.svgGroup.width,
-            scaleY: this.relativeH / this.svgGroup.height,
-          });
-        }
-      }
-    );
+  private async createSVG(): Promise<fabric.FabricObject> {
+    const svgString = `<svg viewBox="0 0 240 80" xmlns="http://www.w3.org/2000/svg"> <style> .small { font: italic 13px sans-serif; } .heavy { font: bold 30px sans-serif; } /* Note that the color of the text is set with the    * * fill property, the color property is for HTML only */ .Rrrrr { font: italic 40px serif; fill: red; } </style> <text x="20" y="35" class="small">My</text> <text x="40" y="35" class="heavy">cat</text> <text x="55" y="55" class="small">is</text> <text x="65" y="55" class="Rrrrr">Grumpy!</text> </svg>`;
+    const svgGroup = await fabric.loadSVGFromString(svgString);
+    const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
+    const groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
+
+    // this.svgObjects = svgFabricObject;
+    return groupSVGElements;
   }
 
-  draw(canvas: fabric.Canvas): fabric.Object {
+  draw(canvas: fabric.Canvas): void {
     console.log('draw', canvas);
-    if (this.svgGroup) {
-      canvas.add(this.svgGroup);
-      return this.svgGroup;
-    } else {
-      throw new Error('SVG group is not initialized yet');
-    }
+    // if (this.svgObjects) {
+    //   this.svgObjects.forEach((obj) => canvas.add(obj));
+    //   return this.svgObjects;
+    // } else {
+    //   console.error('SVG group is not initialized yet');
+    //   return null;
+    // }
   }
 
   update(obj: SVGObject): void {
@@ -63,15 +53,17 @@ export class SVG implements DrawableObject {
   }
 
   delete(): void {
-    if (this.svgGroup) {
-      this.svgGroup.remove();
-    }
+    // if (this.svgObjects) {
+    //   this.svgObjects.remove();
+    // }
   }
 
   getObject(): fabric.Object {
-    if (!this.svgGroup) {
+    console.log('getObject');
+
+    if (!this.svgObjects) {
       throw new Error('SVG has not been created yet');
     }
-    return this.svgGroup;
+    return this.svgObjects;
   }
 }

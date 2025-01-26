@@ -19,7 +19,7 @@ interface TextAttributes extends BaseShapeAttributes {
   color: string;
 }
 
-export interface SVGAttributes extends BaseShapeAttributes {
+export interface SVGAttributes {
   svgContent: string;
 }
 

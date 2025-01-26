@@ -1,8 +1,8 @@
 import * as fabric from 'fabric';
-
+import { Obj } from '@/domain/book';
 export interface DrawableObject {
-  draw(canvas: fabric.Canvas): fabric.Object;
-  update(attrs: unknown): void; // Adjust the parameter type according to your needs
+  draw(canvas: fabric.Canvas): void;
+  update(attrs: Obj): void;
   delete(): void;
-  getObject(): fabric.Object; // New method to get the fabric object
+  getObject(): fabric.Object;
 }

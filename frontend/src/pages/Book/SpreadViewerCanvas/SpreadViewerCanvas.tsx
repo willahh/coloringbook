@@ -117,22 +117,28 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       document.onkeydown = handleDocumentKeyDown(canvas);
       document.onkeyup = handleDocumentKeyUp(canvas);
 
-      const pageGroups = localPages.map((page, index) =>
-        createPageGroup(page, index, dimensions)
-      );
+      const createGroups = async () => {
+        const pageGroups = await Promise.all(
+          localPages.map((page, index) =>
+            createPageGroup(page, index, dimensions)
+          )
+        );
 
-      const allPagesGroup = new fabric.Group(pageGroups, {
-        selectable: false,
-        evented: false,
-        left: 0,
-        scaleX: 1,
-        scaleY: 1,
-        lockRotation: true,
-      });
+        const allPagesGroup = new fabric.Group(pageGroups, {
+          selectable: false,
+          evented: false,
+          left: 0,
+          scaleX: 1,
+          scaleY: 1,
+          lockRotation: true,
+        });
 
-      canvas.add(allPagesGroup);
-      canvas.setActiveObject(allPagesGroup);
-      canvas.renderAll();
+        canvas.add(allPagesGroup);
+        canvas.setActiveObject(allPagesGroup);
+        canvas.renderAll();
+      };
+
+      createGroups();
 
       return () => {
         canvas.dispose();
