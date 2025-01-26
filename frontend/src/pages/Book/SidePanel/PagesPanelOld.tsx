@@ -1,3 +1,6 @@
+// import Pages from '@/pages/book/sidePanel/Pages';
+import { PanelHeader } from './PanelHeader';
+// import { Page } from '@/domain/book';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
@@ -20,6 +23,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
 
   return (
     <motion.div
+      className={``}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
@@ -27,22 +31,25 @@ const PageComponent: React.FC<PageComponentProps> = ({
         duration: 0.1,
         type: 'tween',
       }}
+      // tabIndex={0}
+      // onFocus={() => {
+      //   console.log('on focus');
+      // }}
     >
       <Link
-        className={`flex flex-col w-14 h-20 rounded-sm 
-        border-2 border-indigo-500 roverflow-hidden shadow-sm shadow-black
+        className={`border-2 border-indigo-500 rounded-sm overflow-hidden shadow-sm shadow-black
         focus:outline-dashed focus:outline-2 focus:-outline-offset-4
-        transition-all duration-150 ease-in-out
-      
-      ${selected ? ' border-4 border-primary-200 ' : ''}
-      
+      transition-all duration-150 ease-in-out
+      ${selected ? 'border-indigo-200' : ''}
+
+      flex flex-col w-14 h-20
       `}
         to={`/book/${bookId}/pages/${pageId}`}
       >
         <div className="flex flex-1 bg-white"></div>
         <div
           className={`bg-indigo-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-indigo-200 text-primary-800 font-extrabold' : ''}`}
+        ${selected ? 'bg-indigo-200 text-black' : ''}`}
         >
           {pageNumber}
         </div>
@@ -61,7 +68,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
     pageParams: { pageId, bookId },
   } = useContext(CanvasContext);
   const selectedPageId = pageId ? Number(pageId) : -1;
-  const useSpread = false;
+  const useSpread = true;
   let spreads: Page[][] = [];
 
   if (useSpread) {
@@ -73,12 +80,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   const renderSpreads = () => {
     return spreads.map((spread, index) => (
       <>
-        <div
-          key={`spread-${index}`}
-          className={`flex gap-4 ${
-            useSpread ? 'flex-row' : 'flex-col'
-          } justify-center`}
-        >
+        <div key={`spread-${index}`} className="flex justify-center mb-4">
           {spread.map((page) => (
             <PageComponent
               key={page.pageId}
@@ -98,12 +100,24 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
 export default Pages;
 
+
+
+
+
+
+
+
+
+
+
+
+
 export const PagesPanel: React.FC<{ className?: string; pages: Page[] }> = ({
-  className,
-  pages,
+  className, pages
 }) => {
   return (
-    <div className={`${className} p-4`}>
+    <div className={`${className}`}>
+      <PanelHeader>[icon] PagesPanel</PanelHeader>
       <Pages pages={pages} />
     </div>
   );

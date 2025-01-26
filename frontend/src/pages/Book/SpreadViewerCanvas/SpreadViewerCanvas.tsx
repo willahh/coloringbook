@@ -24,6 +24,8 @@
  */
 
 import { debounce } from 'lodash';
+import { Tooltip } from '@radix-ui/themes';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import React, {
   useRef,
   useEffect,
@@ -147,19 +149,33 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
           lockRotation: true,
         });
 
+        console.log(
+          '#1 spreadPages.getScaledWidth()',
+          spreadPages.getScaledWidth()
+        );
+        console.log(
+          '#1 spreadPages.getScaledHeight()',
+          spreadPages.getScaledHeight()
+        );
+
+        // TODO: Center the spread in viewport
+        // Spread dimensions in pixel
+        // const spreadDimensions = { width: 1280, height: 1024 };
+        canvas.zoomToPoint(new fabric.Point(100, 100), 0.5);
+
         // FIXME: Spread mask
-        const mask = new fabric.Rect({
-          width: dimensions.width,
-          height: dimensions.height,
-          left: 0,
-          top: 0,
-          fill: 'rgba(0,0,0,0)', // Transparent
-          stroke: 'black', // Optional, for debugging
-          strokeWidth: 1, // Optional
-        });
+        // const mask = new fabric.Rect({
+        //   width: dimensions.width,
+        //   height: dimensions.height,
+        //   left: 0,
+        //   top: 0,
+        //   fill: 'rgba(0,0,0,0)', // Transparent
+        //   stroke: 'black', // Optional, for debugging
+        //   strokeWidth: 1, // Optional
+        // });
         canvas.add(spreadPages);
         canvas.setActiveObject(spreadPages);
-        canvas.clipPath = mask;
+        // canvas.clipPath = mask;
         canvas.renderAll();
       };
 
@@ -173,7 +189,34 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   }, [dimensions, initCanvas, setCanvas, localPages, pageSpread]);
 
   return (
-    <div ref={containerRef} className="flex-1">
+    <div ref={containerRef} className="relative flex-1">
+      <div className="absolute flex items-center justify-between w-full h-full p-8">
+      <Tooltip content="Page précédente">
+          <button
+            className={`w-12 h-12 rounded-full z-10 rounded-full p-2 
+          text-primary-200
+           transition-all duration-400
+         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
+         active:ring-primary-50
+          `}
+          >
+            <ArrowLeftIcon />
+          </button>
+        </Tooltip>
+        <Tooltip content="Page suivante">
+          <button
+            className={`w-12 h-12 rounded-full z-10 rounded-full p-2 
+          text-primary-200
+           transition-all duration-400
+         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
+         active:ring-primary-50
+          `}
+          >
+            <ArrowRightIcon />
+          </button>
+        </Tooltip>
+      </div>
+
       <canvas ref={canvasRef} />
     </div>
   );

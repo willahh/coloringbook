@@ -46,7 +46,7 @@ const Page: React.FC = () => {
     <CanvasContext.Provider value={{ canvas, setCanvas, bookData, pageParams }}>
       <Layout className={`w-full flex`} showHeader={true}>
         <SidePanel
-          className="flex flex-row bg-primary-900 w-72 shadow-black z-10
+          className="flex flex-row bg-primary-900 w-80 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
         >
           <div
@@ -55,14 +55,13 @@ const Page: React.FC = () => {
             `}
             style={{ height: 'calc(100vh - 4rem)' }}
           >
-            <PagesPanel pages={bookData.pages} />
-            <VerticalSeparator />
             <TemplatePanel className="" />
             <VerticalSeparator />
             <GraphicsPanel className="" />
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>
+          <PagesPanel pages={bookData.pages} />
           <SideToolbar />
         </SidePanel>
         <main className="flex flex-1 bg-slate-900 flex-col">

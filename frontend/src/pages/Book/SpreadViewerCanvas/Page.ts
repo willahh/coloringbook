@@ -8,9 +8,10 @@ export const createPageGroup = async (
   index: number,
   dimensions: { width: number; height: number }
 ): Promise<fabric.Group> => {
+  // const size = { width: 1920, height: 1080 };
   const aspectRatio = page.aspectRatio.height / page.aspectRatio.width;
-  const pageWidth = dimensions.width / 2 - 10;
-  const pageHeight = pageWidth / aspectRatio;
+  const pageWidth = dimensions.width / 2;
+  const pageHeight = pageWidth * aspectRatio;
   const offsetX = index * pageWidth;
 
   const pageBackground = new fabric.Rect({
@@ -21,9 +22,11 @@ export const createPageGroup = async (
     fill: 'white',
     stroke: 'black',
     strokeWidth: 2,
-    selectable: false,
-    evented: false,
+    // selectable: false,
+    // evented: false,
   });
+
+  // ADD PAGE PREVIEW JPG in page list
 
   const elementPromises = page.elements.map((element: ElementType) =>
     ObjectFactory.createObject(element, pageWidth, pageHeight)
@@ -39,7 +42,7 @@ export const createPageGroup = async (
   return new fabric.Group([pageBackground, ...elements], {
     left: offsetX,
     top: 0,
-    selectable: false,
-    evented: false,
+    // selectable: false,
+    // evented: false,
   });
 };
