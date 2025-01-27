@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite && tailwind",
     "build": "tsc -b && vite build",
-    "build:prod": "npm install && tsc -b && vite build --mode production",
+    "build:prod": "tsc -b && vite build --mode production",
     "lint": "eslint .",
     "preview": "vite preview",
     "tailwind": "tailwindcss -i ./src/main.css -o ./public/output.css --watch",
