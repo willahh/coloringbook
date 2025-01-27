@@ -38,7 +38,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       <Link
         className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
         border-2 border-indigo-500 roverflow-hidden 
-        active:ring active:ring-2 active:-ring-offset-4
+        active:ring-2 active:-ring-offset-4
         transition-all duration-150 ease-in-out
       
       ${selected ? ' border-2 border-primary-200 ' : ''}

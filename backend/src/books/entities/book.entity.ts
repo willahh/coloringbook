@@ -7,7 +7,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { BookFormat } from './book.enum';
+import { BookFormat } from '@/book.enum';
 import { User } from 'src/users/entities/user.entity';
 
 @Entity()

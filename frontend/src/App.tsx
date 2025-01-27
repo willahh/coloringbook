@@ -1,10 +1,10 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import './main.css';
+import '@/main.css';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
-import AppRoutes from './AppRoutes';
+import AppRoutes from '@/AppRoutes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
 const renderApp = () => (

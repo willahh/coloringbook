@@ -199,7 +199,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
   return (
     <div ref={containerRef} className="relative flex-1">
-      <div className="absolute flex items-center justify-between w-full h-full p-8 z-10">
+      <div className="absolute left-0 flex items-center justify-between h-full p-8 ">
         <Tooltip content="Page précédente">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 
@@ -212,6 +212,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
             <ArrowLeftIcon />
           </button>
         </Tooltip>
+      </div>
+      <div className="absolute right-0 flex items-center justify-between h-full p-8 ">
         <Tooltip content="Page suivante">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 

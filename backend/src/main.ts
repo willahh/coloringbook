@@ -1,7 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-import { delayMiddleware } from './middlewares/delay.middleware';
+import { AppModule } from '@/app.module';
+import { delayMiddleware } from '@/middlewares/delay.middleware';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
 

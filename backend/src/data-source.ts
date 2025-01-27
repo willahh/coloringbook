@@ -1,10 +1,10 @@
 import * as dotenv from 'dotenv';
 import 'reflect-metadata';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { User } from './users/entities/user.entity';
-import { Book } from './books/entities/book.entity';
-import { Init1736932735124 } from './migrations/1736932735124-init';
-import { BookAddColumnCoverImage1737027990891 } from './migrations/1737027990891-book-add-column-coverImage';
+import { User } from '@/users/entities/user.entity';
+import { Book } from '@/books/entities/book.entity';
+import { Init1736932735124 } from '@/migrations/1736932735124-init';
+import { BookAddColumnCoverImage1737027990891 } from '@/migrations/1737027990891-book-add-column-coverImage';
 
 // Load environment variables based on the environment
 let envFile =

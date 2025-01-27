@@ -1,6 +1,4 @@
-// import Pages from '@/pages/book/sidePanel/Pages';
 import { PanelHeader } from './PanelHeader';
-// import { Page } from '@/domain/book';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
@@ -100,20 +98,9 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
 export default Pages;
 
-
-
-
-
-
-
-
-
-
-
-
-
 export const PagesPanel: React.FC<{ className?: string; pages: Page[] }> = ({
-  className, pages
+  className,
+  pages,
 }) => {
   return (
     <div className={`${className}`}>

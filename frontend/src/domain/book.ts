@@ -1,4 +1,4 @@
-import { BookFormat } from './book.enum';
+import { BookFormat } from '@/domain/book.enum';
 
 interface BaseShapeAttributes {
   fill: string;

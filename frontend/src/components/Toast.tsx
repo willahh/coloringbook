@@ -32,7 +32,7 @@ interface ToastProps {
  * @example
  * // Exemple 1 : Notification de succès
  * import { useState } from 'react';
- * import Toast from './Toast';
+ * import Toast from '@/Toast';
  *
  * function App() {
  *   const [showToast, setShowToast] = useState(true);
@@ -54,7 +54,7 @@ interface ToastProps {
  * @example
  * // Exemple 2 : Notification d'erreur
  * import { useState } from 'react';
- * import Toast from './Toast';
+ * import Toast from '@/Toast';
  *
  * function App() {
  *   const [showToast, setShowToast] = useState(true);
@@ -76,7 +76,7 @@ interface ToastProps {
  * @example
  * // Exemple 3 : Notification d'information
  * import { useState } from 'react';
- * import Toast from './Toast';
+ * import Toast from '@/Toast';
  *
  * function App() {
  *   const [showToast, setShowToast] = useState(true);
