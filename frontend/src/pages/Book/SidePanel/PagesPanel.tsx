@@ -38,10 +38,10 @@ const PageComponent: React.FC<PageComponentProps> = ({
       <Link
         className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
         border-2 border-indigo-500 roverflow-hidden 
-        active:outline active:outline-2 active:-outline-offset-4
+        active:ring active:ring-2 active:-ring-offset-4
         transition-all duration-150 ease-in-out
       
-      ${selected ? ' outline-4 outline-white ' : ''}
+      ${selected ? ' border-2 border-primary-200 ' : ''}
       
       `}
         to={`/book/${bookId}/pages/${pageId}`}
@@ -51,18 +51,18 @@ const PageComponent: React.FC<PageComponentProps> = ({
           className={`flex justify-end items-center gap-2 
             transition-all duration-500
            bg-indigo-500 text-xs p-0.5 text-right
-        ${
-          selected
-            ? 'bg-indigo-200 text-primary-800 font-extrabold '
-            : ''
-        }`}
+        ${selected ? 'bg-indigo-200 text-primary-800 font-extrabold ' : ''}`}
         >
           <Tooltip content={'Supprimer la page'}>
             <button
               className={`hidden 
                 p-xs rounded-sm transition-all
                 
-               ${selected ? 'group-hover:block group-focus:block hover:bg-primary-400 focus:bg-primary-400' : ''}`}
+               ${
+                 selected
+                   ? 'group-hover:block group-focus:block group-active:block hover:bg-primary-400 focus:bg-primary-400'
+                   : ''
+               }`}
               onClick={(event) => {
                 if (onDeleteButtonClick) {
                   onDeleteButtonClick(event, pageId);
