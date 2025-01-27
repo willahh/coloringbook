@@ -64,6 +64,15 @@ const BookPage: React.FC = () => {
     const book: IBook = PageService.addPage(bookData, newPage);
     setPages(book.pages);
   };
+  const handleDeleteButtonClick = (event: React.MouseEvent, pageId: number) => {
+    console.log('handleDeleteButtonClick', pageId);
+    event.preventDefault();
+
+    if (window.confirm('Confirmer la suppression de la page ?')) {
+      const book: IBook = PageService.deletePage(bookData, pageId);
+      setPages(book.pages);
+    }
+  };
 
   return (
     <BookPageContext.Provider
@@ -89,6 +98,7 @@ const BookPage: React.FC = () => {
           <PagesPanel
             pages={pages}
             addPageButtonClick={handleAddPageButtonClick}
+            onDeleteButtonClick={handleDeleteButtonClick}
           />
           <SideToolbar />
         </SidePanel>

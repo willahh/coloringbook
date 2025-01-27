@@ -37,7 +37,7 @@ export class PageService {
   }
 
   public static deletePage(p_oBookData: IBook, p_nPageId: number): IBook {
-    const newPages = p_oBookData.pages.filter(
+    const newPages = [...p_oBookData.pages].filter(
       (page) => page.pageId !== p_nPageId
     );
     p_oBookData.pages = newPages;

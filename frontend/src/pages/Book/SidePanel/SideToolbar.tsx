@@ -8,7 +8,7 @@ import TextIcon from '@assets/icons/icon_text.svg?react';
 export const SideToolbar: React.FC = () => {
   return (
     <div className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-800">
-      <ToolbarButton>
+      <ToolbarButton tooltipContent='Pointer'>
         <PointerIcon
           aria-hidden="true"
           className="size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
@@ -18,7 +18,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton>
+      <ToolbarButton tooltipContent='Rectangle'>
         <RectangleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -27,7 +27,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton>
+      <ToolbarButton tooltipContent='Cercle'>
         <CircleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -36,7 +36,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton>
+      <ToolbarButton tooltipContent='Triangle'>
         <TriangleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -45,7 +45,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton>
+      <ToolbarButton tooltipContent='Texte'>
         <TextIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"

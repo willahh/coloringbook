@@ -5,20 +5,24 @@ import { BookPageContext } from '@/pages/book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+// import { Tooltip } from '@radix-ui/themes';
+import { Tooltip } from '@components/Tooltip';
 
 interface PageComponentProps {
   bookId: number;
   page: Page;
   selected: boolean;
+  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
 }
 
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
   page: { pageNumber, pageId },
+  onDeleteButtonClick,
   selected,
 }) => {
-  const transitionDelay = pageNumber / 12;
+  // const transitionDelay = pageNumber / 12;
 
   return (
     <motion.div
@@ -32,22 +36,43 @@ const PageComponent: React.FC<PageComponentProps> = ({
       }}
     >
       <Link
-        className={`flex flex-col w-14 h-20 rounded-sm 
-        border-2 border-indigo-500 roverflow-hidden shadow-sm shadow-black
-        focus:outline-dashed focus:outline-2 focus:-outline-offset-4
+        className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
+        border-2 border-indigo-500 roverflow-hidden 
+        active:outline active:outline-2 active:-outline-offset-4
         transition-all duration-150 ease-in-out
       
-      ${selected ? ' border-4 border-primary-200 ' : ''}
+      ${selected ? ' outline-4 outline-white ' : ''}
       
       `}
         to={`/book/${bookId}/pages/${pageId}`}
       >
         <div className="flex flex-1 bg-white"></div>
         <div
-          className={`bg-indigo-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-indigo-200 text-primary-800 font-extrabold' : ''}`}
+          className={`flex justify-end items-center gap-2 
+            transition-all duration-500
+           bg-indigo-500 text-xs p-0.5 text-right
+        ${
+          selected
+            ? 'bg-indigo-200 text-primary-800 font-extrabold '
+            : ''
+        }`}
         >
-          {pageNumber}
+          <Tooltip content={'Supprimer la page'}>
+            <button
+              className={`hidden 
+                p-xs rounded-sm transition-all
+                
+               ${selected ? 'group-hover:block group-focus:block hover:bg-primary-400 focus:bg-primary-400' : ''}`}
+              onClick={(event) => {
+                if (onDeleteButtonClick) {
+                  onDeleteButtonClick(event, pageId);
+                }
+              }}
+            >
+              <TrashIcon className="w-4 h-4" />
+            </button>
+          </Tooltip>
+          <div>{pageNumber}</div>
         </div>
       </Link>
     </motion.div>
@@ -57,9 +82,14 @@ const PageComponent: React.FC<PageComponentProps> = ({
 interface PagesProps {
   className?: string;
   pages: Page[];
+  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
 }
 
-const Pages: React.FC<PagesProps> = ({ className, pages }) => {
+const Pages: React.FC<PagesProps> = ({
+  className,
+  pages,
+  onDeleteButtonClick,
+}) => {
   console.log('Pages', pages);
   const {
     pageParams: { pageId, bookId },
@@ -88,6 +118,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
             bookId={Number(bookId)}
             page={page}
             selected={page.pageId === selectedPageId}
+            onDeleteButtonClick={onDeleteButtonClick}
           />
         ))}
         {index === 1 ? <div className="w-14 h-20 "></div> : null}
@@ -95,10 +126,17 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
     ));
   };
 
-  return <div className={`flex flex-col ${className || ''} rounded-md 
- overflow-y-scroll scrollbar scrollbar-thumb-primary-700 scrollbar-track-primary-900 overflow-y-scroll scrollbar-track-rounded-full`} style={{
-    maxHeight: 'calc(100vh - 10em)' // FIXME: magic number 10em
-  }}>{renderSpreads()}</div>;
+  return (
+    <div
+      className={`flex flex-col ${className || ''} rounded-md 
+ overflow-y-scroll scrollbar scrollbar-thumb-primary-700 scrollbar-track-primary-900 scrollbar-track-rounded-full`}
+      style={{
+        maxHeight: 'calc(100vh - 10em)', // FIXME: magic number 10em
+      }}
+    >
+      {renderSpreads()}
+    </div>
+  );
 };
 
 export default Pages;
@@ -107,12 +145,18 @@ export const PagesPanel: React.FC<{
   className?: string;
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
-}> = ({ className, pages, addPageButtonClick }) => {
+  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
+}> = ({ className, pages, addPageButtonClick, onDeleteButtonClick }) => {
   console.log('PagesPanel', pages);
   return (
-    <div className={`${className || ''} flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}>
-      <Pages pages={pages} />
+    <div
+      className={`${
+        className || ''
+      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}
+    >
+      <Pages pages={pages} onDeleteButtonClick={onDeleteButtonClick} />
       <ToolbarButton
+        className="!rounded-full"
         tooltipContent="Ajouter une page"
         onClick={addPageButtonClick}
       >

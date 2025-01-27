@@ -190,6 +190,28 @@
   @apply grid grid-cols-1 md:grid-cols-12 gap-4;
 }
 
+
+
+
+/* —————————————————————————————————————————————————————————————————————————————
+  radix-ui configuration
+  ———————————————————————————————————————————————————————————————————————————— */
+.TooltipContent {
+	transform-origin: var(--radix-tooltip-content-transform-origin);
+	animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+	from {
+		opacity: 0;
+		transform: scale(0);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
 /* —————————————————————————————————————————————————————————————————————————————
   Base
   ———————————————————————————————————————————————————————————————————————————— */

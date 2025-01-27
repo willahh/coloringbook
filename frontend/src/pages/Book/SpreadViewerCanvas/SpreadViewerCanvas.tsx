@@ -24,7 +24,7 @@
  */
 
 import { debounce } from 'lodash';
-import { Tooltip } from '@radix-ui/themes';
+import { Tooltip } from '@components/Tooltip';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import React, {
   useRef,
@@ -199,7 +199,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
   return (
     <div ref={containerRef} className="relative flex-1">
-      <div className="absolute flex items-center justify-between w-full h-full p-8">
+      <div className="absolute flex items-center justify-between w-full h-full p-8 z-10">
         <Tooltip content="Page précédente">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 

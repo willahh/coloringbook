@@ -5,12 +5,15 @@ import './main.css';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import AppRoutes from './AppRoutes';
+import * as Tooltip from '@radix-ui/react-tooltip';
 
 const renderApp = () => (
   <StrictMode>
     <Theme appearance="dark" hasBackground={false}>
       <BrowserRouter>
-        <AppRoutes />
+        <Tooltip.Provider delayDuration={0}>
+          <AppRoutes />
+        </Tooltip.Provider>
       </BrowserRouter>
     </Theme>
   </StrictMode>
