@@ -9,7 +9,7 @@ import {
   PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from './ToolbarButton';
-import { CanvasContext } from '../../page';
+import { BookPageContext } from '../../page';
 import { bookService } from '@/services/BookService';
 
 const iconProps = {
@@ -21,7 +21,7 @@ export const SpreadToolbar: React.FC<{
   className?: string;
   children?: React.ReactNode;
 }> = () => {
-  const { canvas } = useContext(CanvasContext);
+  const { canvas } = useContext(BookPageContext);
 
   return (
     <div className="flex justify-center  items-center gap-4 p-4">

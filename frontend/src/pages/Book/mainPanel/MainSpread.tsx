@@ -7,7 +7,7 @@ import React, {
   useContext,
 } from 'react';
 import * as fabric from 'fabric'; // Import the entire fabric library
-import { CanvasContext } from '../page';
+import { BookPageContext } from '../page';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -20,7 +20,7 @@ const InteractiveBookCanvas: React.FC<SpreadCanvasProps> = () => {
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const [dimensions, setDimensions] = useState({ width: 800, height: 800 });
-  const { setCanvas, bookData } = useContext(CanvasContext);
+  const { setCanvas, bookData } = useContext(BookPageContext);
 
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {

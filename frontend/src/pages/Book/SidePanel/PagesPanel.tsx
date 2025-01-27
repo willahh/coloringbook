@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { CanvasContext } from '@/pages/book/page';
+import { BookPageContext } from '@/pages/book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
@@ -22,10 +22,11 @@ const PageComponent: React.FC<PageComponentProps> = ({
 
   return (
     <motion.div
+      key={`pageCmp-${pageId}`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        delay: transitionDelay,
+        // delay: transitionDelay,
         duration: 0.1,
         type: 'tween',
       }}
@@ -59,9 +60,10 @@ interface PagesProps {
 }
 
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
+  console.log('Pages', pages);
   const {
     pageParams: { pageId, bookId },
-  } = useContext(CanvasContext);
+  } = useContext(BookPageContext);
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
   let spreads: Page[][] = [];
@@ -74,28 +76,29 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
   const renderSpreads = () => {
     return spreads.map((spread, index) => (
-      <>
-        <div
-          key={`spread-${index}`}
-          className={`flex gap-4 ${
-            useSpread ? 'flex-row' : 'flex-col'
-          } justify-center`}
-        >
-          {spread.map((page) => (
-            <PageComponent
-              key={page.pageId}
-              bookId={Number(bookId)}
-              page={page}
-              selected={page.pageId === selectedPageId}
-            />
-          ))}
-          {index === 1 ? <div className="w-14 h-20 "></div> : null}
-        </div>
-      </>
+      <div
+        key={`spread-${index}`}
+        className={`flex gap-4 ${
+          useSpread ? 'flex-row' : 'flex-col'
+        } justify-center`}
+      >
+        {spread.map((page) => (
+          <PageComponent
+            key={page.pageId} // Ajoutez cette ligne
+            bookId={Number(bookId)}
+            page={page}
+            selected={page.pageId === selectedPageId}
+          />
+        ))}
+        {index === 1 ? <div className="w-14 h-20 "></div> : null}
+      </div>
     ));
   };
 
-  return <div className={`flex flex-col ${className}`}>{renderSpreads()}</div>;
+  return <div className={`flex flex-col ${className || ''} rounded-md 
+ overflow-y-scroll scrollbar scrollbar-thumb-primary-700 scrollbar-track-primary-900 overflow-y-scroll scrollbar-track-rounded-full`} style={{
+    maxHeight: 'calc(100vh - 10em)' // FIXME: magic number 10em
+  }}>{renderSpreads()}</div>;
 };
 
 export default Pages;
@@ -105,8 +108,9 @@ export const PagesPanel: React.FC<{
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, pages, addPageButtonClick }) => {
+  console.log('PagesPanel', pages);
   return (
-    <div className={`${className} flex flex-col p-4 gap-4`}>
+    <div className={`${className || ''} flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}>
       <Pages pages={pages} />
       <ToolbarButton
         tooltipContent="Ajouter une page"

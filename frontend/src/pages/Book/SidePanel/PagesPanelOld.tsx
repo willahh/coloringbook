@@ -4,7 +4,7 @@ import { PanelHeader } from './PanelHeader';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { CanvasContext } from '@/pages/book/page';
+import { BookPageContext } from '@/pages/book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 
@@ -66,7 +66,7 @@ interface PagesProps {
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   const {
     pageParams: { pageId, bookId },
-  } = useContext(CanvasContext);
+  } = useContext(BookPageContext);
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = true;
   let spreads: Page[][] = [];

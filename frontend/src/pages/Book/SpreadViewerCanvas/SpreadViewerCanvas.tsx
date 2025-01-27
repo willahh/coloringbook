@@ -35,7 +35,7 @@ import React, {
   useMemo,
 } from 'react';
 import * as fabric from 'fabric';
-import { CanvasContext } from '../page';
+import { BookPageContext } from '../page';
 import {
   handleMouseWheel,
   handleMouseOver,
@@ -49,24 +49,33 @@ import {
 
 import { createPageGroup } from './Page';
 import { BookService } from '@/services/BookService';
+import { Page } from '@/domain/book';
 
 interface SpreadCanvasProps {
   width?: number;
   height?: number;
+  pages: Page[];
 }
 
-const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
+const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
+  // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const { setCanvas, bookData, pageParams } = useContext(CanvasContext);
+
+  // Context
+  const { setCanvas, pageParams, setPages } = useContext(BookPageContext);
+
+  // State
   const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
-  const [localPages, setLocalPages] = useState(bookData.pages);
+
+  // Process
   const currentPageId = Number(pageParams.pageId) || 0;
   const pageSpread = useMemo(() => {
-    return BookService.getSpreadForPage(localPages, currentPageId);
-  }, [localPages, currentPageId]);
+    return BookService.getSpreadForPage(pages, currentPageId);
+  }, [pages, currentPageId]);
 
+  // Init
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
       const canvas = new fabric.Canvas(canvasElement, {
@@ -102,10 +111,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (JSON.stringify(pageSpread) !== JSON.stringify(bookData.pages)) {
-      setLocalPages(bookData.pages);
+    if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
+      setPages(pages);
     }
-  }, [pageSpread, bookData.pages]);
+  }, [pageSpread, pages, setPages]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -186,12 +195,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
         fabricCanvasRef.current = null;
       };
     }
-  }, [dimensions, initCanvas, setCanvas, localPages, pageSpread]);
+  }, [dimensions, initCanvas, setCanvas, pageSpread]);
 
   return (
     <div ref={containerRef} className="relative flex-1">
       <div className="absolute flex items-center justify-between w-full h-full p-8">
-      <Tooltip content="Page précédente">
+        <Tooltip content="Page précédente">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 
           text-primary-200

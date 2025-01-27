@@ -126,5 +126,5 @@ export default {
       slideLeftAndFade: 'slideLeftAndFade 300ms cubic-bezier(0.16, 0, 0.13, 1)',
     },
   },
-  plugins: [],
+  plugins: [require('tailwind-scrollbar')],
 };

@@ -18,10 +18,15 @@ export class BookService {
   }
 
   static getSpreadForPage(pages: Page[], pageId: number): Page[] {
+    if (pages.length === 0) {
+      console.warn('No pages available');
+      return []; // Return an empty array if there are no pages
+    }
+
     const spreadPages = this.transformPagesToSpread(pages);
     const flatPages = spreadPages.flat();
 
-    console.log('# getSpreadForPage pageId', pageId)
+    console.log('# getSpreadForPage pageId', pageId, 'pages:', pages);
     console.log('# flatPages', flatPages);
 
     // Find the index of the page in the flattened array
@@ -31,7 +36,7 @@ export class BookService {
     });
 
     if (flatIndex === -1) {
-      throw new Error(`Page with ID ${pageId} not found`);
+      console.warn(`Page with ID ${pageId} not found`);
     }
 
     // Determine which spread contains the page
