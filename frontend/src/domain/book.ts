@@ -85,6 +85,7 @@ export interface Page {
   pageNumber: number;
   aspectRatio: { width: number; height: number };
   elements: Obj[];
+  thumbImageData?: string;
 }
 
 export interface IBook {

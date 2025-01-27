@@ -50,6 +50,7 @@ import {
 import { createPageGroup } from './Page';
 import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
+// import { PageService } from '@/services/PageService';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -90,6 +91,15 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     },
     [dimensions]
   );
+
+  // const updatePageThumbs = useCallback(
+  //   (fabricCanvas: fabric.Canvas) => {
+  //     if (fabricCanvas) {
+  //       PageService.updateThumbImageData(pages, fabricCanvas, 1, setPages);
+  //     }
+  //   },
+  //   []
+  // );
 
   const updateDimensions = debounce(() => {
     if (containerRef.current) {
@@ -190,12 +200,32 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
       createGroups();
 
+      // TODO:
+      // - [ ] Create a new button updateCoverImageBackground
+      // - [ ] Expand the update of the page preview for all pages
+      // - [ ] Find a way to update all thumb covers without crash
+      // updatePageThumbs(canvas);
+
       return () => {
         canvas.dispose();
         fabricCanvasRef.current = null;
       };
     }
-  }, [dimensions, initCanvas, setCanvas, pageSpread]);
+  }, [dimensions, initCanvas, setCanvas, pageSpread, pages, setPages]);
+
+  // TODO: mutation
+  setTimeout(() => {
+    console.log('## timeout');
+
+    if (fabricCanvasRef.current) {
+      // PageService.updateThumbImageData(
+      //   pages,
+      //   fabricCanvasRef.current,
+      //   1,
+      //   setPages
+      // );
+    }
+  }, 1000);
 
   return (
     <div ref={containerRef} className="relative flex-1">

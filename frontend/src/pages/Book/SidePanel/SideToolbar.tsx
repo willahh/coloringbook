@@ -5,10 +5,16 @@ import CircleIcon from '@assets/icons/icon_circle.svg?react';
 import TriangleIcon from '@assets/icons/icon_triangle.svg?react';
 import TextIcon from '@assets/icons/icon_text.svg?react';
 
-export const SideToolbar: React.FC = () => {
+interface SideToolbarProps {
+  onRectangleClick: () => void;
+}
+
+export const SideToolbar: React.FC<SideToolbarProps> = ({
+  onRectangleClick,
+}) => {
   return (
     <div className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-800">
-      <ToolbarButton tooltipContent='Pointer'>
+      <ToolbarButton tooltipContent="Pointer">
         <PointerIcon
           aria-hidden="true"
           className="size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
@@ -18,7 +24,12 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton tooltipContent='Rectangle'>
+      <ToolbarButton
+        tooltipContent="Rectangle"
+        onClick={() => {
+          onRectangleClick();
+        }}
+      >
         <RectangleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -27,7 +38,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton tooltipContent='Cercle'>
+      <ToolbarButton tooltipContent="Cercle">
         <CircleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -36,7 +47,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton tooltipContent='Triangle'>
+      <ToolbarButton tooltipContent="Triangle">
         <TriangleIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
@@ -45,7 +56,7 @@ export const SideToolbar: React.FC = () => {
           }}
         />
       </ToolbarButton>
-      <ToolbarButton tooltipContent='Texte'>
+      <ToolbarButton tooltipContent="Texte">
         <TextIcon
           aria-hidden="true"
           className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"

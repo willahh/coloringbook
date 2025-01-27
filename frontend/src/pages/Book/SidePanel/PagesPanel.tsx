@@ -18,7 +18,7 @@ interface PageComponentProps {
 
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
-  page: { pageNumber, pageId },
+  page: { pageNumber, pageId, thumbImageData },
   onDeleteButtonClick,
   selected,
 }) => {
@@ -46,7 +46,14 @@ const PageComponent: React.FC<PageComponentProps> = ({
       `}
         to={`/book/${bookId}/pages/${pageId}`}
       >
-        <div className="flex flex-1 bg-white"></div>
+        <div
+          className="flex flex-1 bg-white"
+          style={{
+            backgroundImage: `url(${thumbImageData})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'contain',
+          }}
+        ></div>
         <div
           className={`flex justify-end items-center gap-2 
             transition-all duration-500
