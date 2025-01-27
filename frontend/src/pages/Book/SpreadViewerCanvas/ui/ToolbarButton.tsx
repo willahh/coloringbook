@@ -4,7 +4,7 @@ import { Tooltip } from '@radix-ui/themes';
 export const ToolbarButton: React.FC<{
   children?: React.ReactNode;
   tooltipContent?: string;
-  onClick?: () => void;
+  onClick?: (event: React.MouseEvent) => void;
 }> = ({ children, tooltipContent, onClick }) => {
   const button = (
     <button

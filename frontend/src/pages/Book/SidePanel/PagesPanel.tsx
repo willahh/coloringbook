@@ -4,6 +4,8 @@ import { useContext } from 'react';
 import { CanvasContext } from '@/pages/book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
+import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 interface PageComponentProps {
   bookId: number;
@@ -98,13 +100,23 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
 export default Pages;
 
-export const PagesPanel: React.FC<{ className?: string; pages: Page[] }> = ({
-  className,
-  pages,
-}) => {
+export const PagesPanel: React.FC<{
+  className?: string;
+  pages: Page[];
+  addPageButtonClick: (event: React.MouseEvent) => void;
+}> = ({ className, pages, addPageButtonClick }) => {
   return (
-    <div className={`${className} p-4`}>
+    <div className={`${className} flex flex-col p-4 gap-4`}>
       <Pages pages={pages} />
+      <ToolbarButton
+        tooltipContent="Ajouter une page"
+        onClick={addPageButtonClick}
+      >
+        <PlusIcon
+          className="w-full h-full size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
+          style={{ strokeWidth: '0.05em' }}
+        />
+      </ToolbarButton>
     </div>
   );
 };

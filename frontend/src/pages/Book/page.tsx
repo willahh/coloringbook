@@ -42,6 +42,11 @@ const Page: React.FC = () => {
   }>();
   const pageParams = { bookId, pageId };
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const handleAddPageButtonClick = (e: React.MouseEvent) => {
+    console.log('handlePageButtonClick', e);
+  };
+
+  
   return (
     <CanvasContext.Provider value={{ canvas, setCanvas, bookData, pageParams }}>
       <Layout className={`w-full flex`} showHeader={true}>
@@ -61,7 +66,10 @@ const Page: React.FC = () => {
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>
-          <PagesPanel pages={bookData.pages} />
+          <PagesPanel
+            pages={bookData.pages}
+            addPageButtonClick={handleAddPageButtonClick}
+          />
           <SideToolbar />
         </SidePanel>
         <main className="flex flex-1 bg-slate-900 flex-col">

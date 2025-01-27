@@ -59,8 +59,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
   const { setCanvas, bookData, pageParams } = useContext(CanvasContext);
+  const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
   const [localPages, setLocalPages] = useState(bookData.pages);
   const currentPageId = Number(pageParams.pageId) || 0;
   const pageSpread = useMemo(() => {
@@ -193,7 +193,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
       <div className="absolute flex items-center justify-between w-full h-full p-8">
       <Tooltip content="Page précédente">
           <button
-            className={`w-12 h-12 rounded-full z-10 rounded-full p-2 
+            className={`w-12 h-12 rounded-full z-10 p-2 
           text-primary-200
            transition-all duration-400
          hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
@@ -205,7 +205,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = () => {
         </Tooltip>
         <Tooltip content="Page suivante">
           <button
-            className={`w-12 h-12 rounded-full z-10 rounded-full p-2 
+            className={`w-12 h-12 rounded-full z-10 p-2 
           text-primary-200
            transition-all duration-400
          hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
