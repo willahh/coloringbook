@@ -36,7 +36,7 @@ export const SpreadToolbar: React.FC<{
           <Slider.Range className="absolute h-full rounded-full bg-white" />
         </Slider.Track>
         <Slider.Thumb
-          className="block size-5 rounded-[10px] bg-white shadow-[0_2px_10px] shadow-white hover:bg-violet300 focus:shadow-[0_0_0_5px] focus:shadow-black focus:outline-none transition-all"
+          className="block size-5 rounded-[10px] bg-white shadow-[0_2px_10px] shadow-white hover:bg-primary-300 focus:shadow-[0_0_0_5px] focus:shadow-black focus:outline-none transition-all"
           aria-label="Volume"
         />
       </Slider.Root>

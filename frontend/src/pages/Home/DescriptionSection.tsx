@@ -38,7 +38,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           </p>
         </AnimatedText>
         <AnimatedText enterClassName="delay-500">
-          <p className="text-base mb-4 text-indigo-300">
+          <p className="text-base mb-4 text-primary-300">
             Lancez-vous dès aujourd'hui :
           </p>
         </AnimatedText>

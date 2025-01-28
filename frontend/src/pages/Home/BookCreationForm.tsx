@@ -145,7 +145,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 value={field.value ?? ''}
                 disabled={isLoading}
                 placeholder="Nom du livre"
-                className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                className="w-full p-2 border border-gray-600 rounded bg-primary-800 text-white"
                 ref={bookNameInput}
               />
             )}
@@ -182,7 +182,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="format"
                 value={field.value ?? ''}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                className="w-full p-2 border border-gray-600 rounded bg-primary-800 text-white"
               >
                 {formatOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -216,7 +216,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="pageCount"
                 value={field.value ?? '12'}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-gray-600 rounded bg-gray-800 text-white"
+                className="w-full p-2 border border-gray-600 rounded bg-primary-800 text-white"
               />
             )}
           />
@@ -279,7 +279,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 {!coverImage && (
                   <label
                     htmlFor="coverImage"
-                    className="px-4 py-2 rounded-md bg-indigo-600 text-white cursor-pointer hover:bg-indigo-700 transition-colors duration-200 select-none"
+                    className="px-4 py-2 rounded-md bg-primary-600 text-white cursor-pointer hover:bg-primary-700 transition-colors duration-200 select-none"
                   >
                     Choisir une image
                   </label>

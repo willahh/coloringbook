@@ -36,7 +36,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
     >
       <Link
         className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
-        border-2 border-indigo-500 roverflow-hidden 
+        border-2 border-primary-500 roverflow-hidden 
         active:ring-2 active:-ring-offset-4
         transition-all duration-150 ease-in-out
       
@@ -57,8 +57,8 @@ const PageComponent: React.FC<PageComponentProps> = ({
         <div
           className={`flex justify-end items-center gap-2 
             transition-all duration-500
-           bg-indigo-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-indigo-200 text-primary-800 font-extrabold ' : ''}`}
+           bg-primary-500 text-xs p-0.5 text-right
+        ${selected ? 'bg-primary-200 text-primary-800 font-extrabold ' : ''}`}
         >
           <Tooltip content={'Supprimer la page'}>
             <button

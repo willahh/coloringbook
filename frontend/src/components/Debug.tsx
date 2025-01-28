@@ -14,13 +14,13 @@ export const GridDebug = () => (
   >
     <div className="col-span-1 bg-yellow-500  border border-black pt-6">1</div>
     <div className="col-span-1 bg-red-500     border border-black pt-6">2</div>
-    <div className="col-span-1 bg-gray-500    border border-black pt-6">3</div>
+    <div className="col-span-1 bg-primary-500    border border-black pt-6">3</div>
     <div className="col-span-1 bg-lime-500    border border-black pt-6">4</div>
     <div className="col-span-1 bg-cyan-500    border border-black pt-6">5</div>
     <div className="col-span-1 bg-rose-500    border border-black pt-6">6</div>
     <div className="col-span-1 bg-yellow-500  border border-black pt-6">7</div>
     <div className="col-span-1 bg-red-500     border border-black pt-6">8</div>
-    <div className="col-span-1 bg-gray-500    border border-black pt-6">9</div>
+    <div className="col-span-1 bg-primary-500    border border-black pt-6">9</div>
     <div className="col-span-1 bg-lime-500    border border-black pt-6">10</div>
     <div className="col-span-1 bg-cyan-500    border border-black pt-6">11</div>
     <div className="col-span-1 bg-rose-500    border border-black pt-6">12</div>
@@ -36,9 +36,9 @@ export const DebugButton = () => {
         <Popover className="absolute top-0 right-0">
           {/* <Tooltip text="Préférences" isVisible={isTooltipVisible}> */}
             <PopoverButton
-              className="rounded-full bg-indigo-900 text-white shadow-sm p-3 outline outline-offset-2 outline-transparent
-            hover:bg-indigo-500 hover:scale-110
-            focus-visible:outline focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600
+              className="rounded-full bg-primary-900 text-white shadow-sm p-3 outline outline-offset-2 outline-transparent
+            hover:bg-primary-500 hover:scale-110
+            focus-visible:outline focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600
             transition-all duration-300 "
               onClick={() => {
                 // setTooltipVisible(false);

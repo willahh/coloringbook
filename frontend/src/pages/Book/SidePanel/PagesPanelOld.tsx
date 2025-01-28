@@ -35,10 +35,10 @@ const PageComponent: React.FC<PageComponentProps> = ({
       // }}
     >
       <Link
-        className={`border-2 border-indigo-500 rounded-sm overflow-hidden shadow-sm shadow-black
+        className={`border-2 border-primary-500 rounded-sm overflow-hidden shadow-sm shadow-black
         focus:outline-dashed focus:outline-2 focus:-outline-offset-4
       transition-all duration-150 ease-in-out
-      ${selected ? 'border-indigo-200' : ''}
+      ${selected ? 'border-primary-200' : ''}
 
       flex flex-col w-14 h-20
       `}
@@ -46,8 +46,8 @@ const PageComponent: React.FC<PageComponentProps> = ({
       >
         <div className="flex flex-1 bg-white"></div>
         <div
-          className={`bg-indigo-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-indigo-200 text-black' : ''}`}
+          className={`bg-primary-500 text-xs p-0.5 text-right
+        ${selected ? 'bg-primary-200 text-black' : ''}`}
         >
           {pageNumber}
         </div>

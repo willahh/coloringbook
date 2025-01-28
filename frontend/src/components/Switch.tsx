@@ -15,7 +15,7 @@ const Switch: React.FC<SwitchProps> = ({ checked, onChange, className }) => {
     <HeadlessSwitch
       checked={checked}
       onChange={onChange}
-      className={`group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 data-[checked]:bg-indigo-600 ${className}`}
+      className={`group relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-primary-200 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-primary-600 focus:ring-offset-2 data-[checked]:bg-primary-600 ${className}`}
     >
       <span className="sr-only">Use setting</span>
       <span className="pointer-events-none relative inline-block size-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5">
@@ -40,7 +40,7 @@ const Switch: React.FC<SwitchProps> = ({ checked, onChange, className }) => {
           <svg
             fill="currentColor"
             viewBox="0 0 12 12"
-            className="size-3 text-indigo-600"
+            className="size-3 text-primary-600"
           >
             <path d="M3.707 5.293a1 1 0 00-1.414 1.414l1.414-1.414zM5 8l-.707.707a1 1 0 001.414 0L5 8zm4.707-3.293a1 1 0 00-1.414-1.414l1.414 1.414zm-7.414 2l2 2 1.414-1.414-2-2-1.414 1.414zm3.414 2l4-4-1.414-1.414-4 4 1.414 1.414z" />
           </svg>

@@ -130,7 +130,7 @@ const BookPage: React.FC = () => {
           />
           <SideToolbar onRectangleClick={onRectangleClick} />
         </SidePanel>
-        <main className="flex flex-1 bg-slate-900 flex-col">
+        <main className="flex flex-1 bg-primary-950 flex-col">
           <SpreadViewerCanvas pages={pages} />
           <SpreadToolbar />
         </main>
