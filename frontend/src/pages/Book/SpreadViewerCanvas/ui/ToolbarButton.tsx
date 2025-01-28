@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Tooltip } from '@radix-ui/themes';
 import { Tooltip } from '@components/Tooltip';
 
 export const ToolbarButtonClassName = (className?: string) => {

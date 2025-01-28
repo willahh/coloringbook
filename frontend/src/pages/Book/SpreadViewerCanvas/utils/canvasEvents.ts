@@ -5,6 +5,7 @@ declare module 'fabric' {
     objSelected?: fabric.Object | null;
     lastPosX?: number;
     lastPosY?: number;
+    isDragging?: boolean;
   }
 }
 

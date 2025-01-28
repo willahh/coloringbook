@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "debug:deploy": "echo '=> pwd:' && pwd && echo '=> ls:' && ls && echo '=> ls src/' && ls src/",
     "build": "tsc -b && vite build && npm run build:css-light && npm run build:css-dark",
-    "build:prod": "tsc -b && vite build --mode production && npm run build:css-light && npm run build:css-dark",
+    "build:prod": "npm run debug:deploy && tsc -p tsconfig.render.json && vite build --mode production && npm run build:css-light && npm run build:css-dark",
     "build:css-light": "tailwindcss -i ./src/main.light.css -o ./dist/main.light.css --mode=production",
     "build:css-dark": "tailwindcss -i ./src/main.dark.css -o ./dist/main.dark.css --mode=production",
     "lint": "eslint .",
@@ -54,6 +55,7 @@
     "@types/react-dom": "^18.3.1",
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@types/fabric": "^5.3.9",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
     "eslint-plugin-react-hooks": "^5.0.0",

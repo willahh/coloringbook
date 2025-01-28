@@ -21,6 +21,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     setAppearance(newAppearance);
     localStorage.setItem('theme', newAppearance);
   };
+  
 
   return (
     <ThemeContext.Provider

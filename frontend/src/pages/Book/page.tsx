@@ -1,20 +1,21 @@
 import React, { useState, createContext } from 'react';
-import Layout from '../layout';
-import * as fabric from 'fabric';
 import { useParams } from 'react-router-dom';
+import * as fabric from 'fabric';
 
-import { SpreadToolbar } from '@/pages/book/spreadViewerCanvas/ui/SpreadToolbar';
-import { SideToolbar } from '@/pages/book/sidePanel/SideToolbar';
-import { ColorPanel } from '@/pages/book/sidePanel/ColorPanel';
-import { SidePanel } from '@/pages/book/sidePanel/SidePanel';
-import { GraphicsPanel } from '@/pages/book/sidePanel/GraphicsPanel';
-import { TemplatePanel } from '@/pages/book/sidePanel/TemplatePanel';
-import { PagesPanel } from '@/pages/book/sidePanel/PagesPanel';
-import SpreadViewerCanvas from '@/pages/book/spreadViewerCanvas/SpreadViewerCanvas';
-import { VerticalSeparator } from '@/pages/book/sidePanel/VerticalSeparator';
 import { IBook, Page } from '@/domain/book';
 import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
+
+import Layout from '../layout';
+import { SpreadToolbar } from './spreadViewerCanvas/ui/SpreadToolbar';
+import { SideToolbar } from './sidePanel/SideToolbar';
+import { ColorPanel } from './sidePanel/ColorPanel';
+import { SidePanel } from './sidePanel/SidePanel';
+import { GraphicsPanel } from './sidePanel/GraphicsPanel';
+import { TemplatePanel } from './sidePanel/TemplatePanel';
+import { PagesPanel } from './sidePanel/PagesPanel';
+import SpreadViewerCanvas from './spreadViewerCanvas/SpreadViewerCanvas';
+import { VerticalSeparator } from './sidePanel/VerticalSeparator';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;

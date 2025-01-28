@@ -33,7 +33,7 @@ import React, {
   useMemo,
 } from 'react';
 import * as fabric from 'fabric';
-import { BookPageContext } from '../page';
+import { BookPageContext } from '../Page';
 import {
   handleMouseWheel,
   handleMouseOver,
@@ -43,7 +43,7 @@ import {
   handleMouseUp,
   handleDocumentKeyDown,
   handleDocumentKeyUp,
-} from './utils/canvasEvents';
+} from './utils/CanvasEvents';
 
 import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
@@ -124,7 +124,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   useEffect(() => {
     if (canvasRef.current) {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
-      const canvas = fabricCanvasRef.current;
+      const canvas = fabricCanvasRef.current as fabric.Canvas & { lastPosX?: number; lastPosY?: number };
       setCanvas(canvas);
 
       canvas.on('mouse:wheel', handleMouseWheel(canvas));

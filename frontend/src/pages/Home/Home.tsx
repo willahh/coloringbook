@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import Layout from '../layout';
+
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import AnimatedText from '@/components/AnimatedText';
-import BookCreationForm from '@/pages/home/BookCreationForm';
-import DescriptionSection from '@/pages/home/DescriptionSection';
-import UserBooks from '@/pages/home/UserBooks';
 import Toast from '@/components/Toast';
 import { IBook } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
+
+import Layout from '../layout';
+import BookCreationForm from './BookCreationForm';
+import DescriptionSection from './DescriptionSection';
+import UserBooks from './UserBooks';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: IBook) => void;
@@ -102,9 +104,7 @@ const HomePage: React.FC = () => {
 
   return (
     <Layout showHeader={false}>
-      <div
-        className="w-full h-screen items-center"
-      >
+      <div className="w-full h-screen items-center">
         <div className="flex items-center h-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">
             <div

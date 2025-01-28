@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import '@radix-ui/themes/styles.css';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Theme } from '@radix-ui/themes';
-import AppRoutes from '@/AppRoutes';
+import AppRoutes from './AppRoutes.tsx';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'; // Décommentez cette ligne
 
 const defaultAppearance = 'dark';
-import(`@/main.${defaultAppearance}.css`);
+import(`./main.${defaultAppearance}.css`);
 
 function RenderApp() {
   const { appearance } = useTheme();

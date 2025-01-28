@@ -1,8 +1,9 @@
-import { IBook } from '@/domain/book';
-import { getMediaUrl } from '@/utils/api';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { IBook } from '@/domain/book';
+import { getMediaUrl } from '@/utils/api';
 
 interface BookItemProps {
   index: number;
@@ -98,7 +99,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
           <div
             className={`bg-transparent border-none dark:text-white w-full cursor-default select-none
             font-serif font-semibold leading-1 lg:leading-4 md:text-xs lg:text-lg `}
-            style={{  padding: '1px 1px 1px 0' }}
+            style={{ padding: '1px 1px 1px 0' }}
           >
             {book.name}
           </div>

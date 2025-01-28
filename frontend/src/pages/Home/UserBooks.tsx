@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBook } from '@/domain/book';
-import { UserBookItem } from './UserBook';
 import { BookFormat } from '@/domain/book.enum';
+import { UserBookItem } from './UserBook';
 
 interface UserBooksProps {
   minItems: number;
