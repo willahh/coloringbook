@@ -227,15 +227,11 @@ body {
 
 @layer base {
   body {
+   
     background: radial-gradient(
       circle at top left,
-      theme('colors.secondary.900') 3%,
+      theme('colors.secondary.800') 2%,
       theme('colors.primary.950') 50%
-    );
-    background: radial-gradient(
-      circle at top left,
-      theme('colors.secondary.950') 3%,
-      theme('colors.primary.900') 50%
     );
   }
 }
