@@ -47,10 +47,9 @@ import {
   handleDocumentKeyUp,
 } from './utils/canvasEvents';
 
-import { createPageGroup } from './Page';
 import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
-// import { PageService } from '@/services/PageService';
+import { ObjectFactory } from './object/ObjectFactory';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -91,15 +90,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     },
     [dimensions]
   );
-
-  // const updatePageThumbs = useCallback(
-  //   (fabricCanvas: fabric.Canvas) => {
-  //     if (fabricCanvas) {
-  //       PageService.updateThumbImageData(pages, fabricCanvas, 1, setPages);
-  //     }
-  //   },
-  //   []
-  // );
 
   const updateDimensions = debounce(() => {
     if (containerRef.current) {
@@ -152,59 +142,61 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       document.onkeydown = handleDocumentKeyDown(canvas);
       document.onkeyup = handleDocumentKeyUp(canvas);
 
-      const createGroups = async () => {
-        const pageGroups = await Promise.all(
-          pageSpread.map((page, index) =>
-            createPageGroup(page, index, dimensions)
-          )
-        );
+      // Create pages
+      const fabricObjects: fabric.Object[] = [];
+      const spreadSize = { width: 0, height: 0 };
 
-        const spreadPages = new fabric.Group(pageGroups, {
+      pageSpread.forEach((page, index) => {
+        const aspectRatio = page.aspectRatio.height / page.aspectRatio.width;
+        const pageWidth = dimensions.width / 2;
+        const pageHeight = pageWidth * aspectRatio;
+        const offsetX = index * pageWidth;
+        spreadSize.width += pageWidth;
+        spreadSize.height = Math.max(spreadSize.height, pageHeight);
+
+        const rect = new fabric.Rect({
+          width: pageWidth,
+          height: pageHeight,
+          left: offsetX,
+          top: 0,
+          fill: 'white',
+          stroke: 'black',
+          strokeWidth: 2,
           selectable: false,
-          evented: false,
-          left: 0,
-          scaleX: 1,
-          scaleY: 1,
-          lockRotation: true,
+          // evented: false,
         });
+        canvas.add(rect);
+        // fabricObjects.push(rect);
 
-        console.log(
-          '#1 spreadPages.getScaledWidth()',
-          spreadPages.getScaledWidth()
-        );
-        console.log(
-          '#1 spreadPages.getScaledHeight()',
-          spreadPages.getScaledHeight()
-        );
+        // Create objects
+        page.elements.forEach(async (element) => {
+          const object = ObjectFactory.createObject(
+            element,
+            offsetX,
+            pageWidth,
+            pageHeight
+          );
+          const fabricObject = await object?.getObject();
 
-        // TODO: Center the spread in viewport
-        // Spread dimensions in pixel
-        // const spreadDimensions = { width: 1280, height: 1024 };
-        canvas.zoomToPoint(new fabric.Point(100, 100), 0.5);
+          if (fabricObject) {
+            fabricObject.set('objet', element);
+            canvas.add(fabricObject);
+            // fabricObjects.push(fabricObject);
+          }
+        });
+      });
 
-        // FIXME: Spread mask
-        // const mask = new fabric.Rect({
-        //   width: dimensions.width,
-        //   height: dimensions.height,
-        //   left: 0,
-        //   top: 0,
-        //   fill: 'rgba(0,0,0,0)', // Transparent
-        //   stroke: 'black', // Optional, for debugging
-        //   strokeWidth: 1, // Optional
-        // });
-        canvas.add(spreadPages);
-        canvas.setActiveObject(spreadPages);
-        // canvas.clipPath = mask;
-        canvas.renderAll();
-      };
+      // const group = new fabric.Group();
 
-      createGroups();
+      console.log('fabricObjects', fabricObjects.length, fabricObjects);
 
-      // TODO:
-      // - [ ] Create a new button updateCoverImageBackground
-      // - [ ] Expand the update of the page preview for all pages
-      // - [ ] Find a way to update all thumb covers without crash
-      // updatePageThumbs(canvas);
+      const mask = new fabric.Rect({
+        width: spreadSize.width,
+        height: spreadSize.height,
+        left: 0,
+        top: 0,
+      });
+      canvas.clipPath = mask;
 
       return () => {
         canvas.dispose();
@@ -213,19 +205,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     }
   }, [dimensions, initCanvas, setCanvas, pageSpread, pages, setPages]);
 
-  // TODO: mutation
-  setTimeout(() => {
-    console.log('## timeout');
-
-    if (fabricCanvasRef.current) {
-      // PageService.updateThumbImageData(
-      //   pages,
-      //   fabricCanvasRef.current,
-      //   1,
-      //   setPages
-      // );
-    }
-  }, 1000);
 
   return (
     <div ref={containerRef} className="relative flex-1">

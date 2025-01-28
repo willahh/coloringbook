@@ -9,10 +9,11 @@ import { Obj } from '@/domain/book'; // Assuming `Object` is renamed to avoid co
 export class ObjectFactory {
   public static createObject(
     obj: Obj,
+    offsetX: number,
     pageWidth: number,
     pageHeight: number
   ): DrawableObject | null {
-    const relativeX = (obj.x / 100) * pageWidth;
+    const relativeX = offsetX + ((obj.x / 100) * pageWidth);
     const relativeY = (obj.y / 100) * pageHeight;
     const relativeW = (obj.w / 100) * pageWidth;
     const relativeH = (obj.h / 100) * pageHeight;

@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
-// import { Tooltip } from '@radix-ui/themes';
 import { Tooltip } from '@components/Tooltip';
 
 interface PageComponentProps {
@@ -50,6 +49,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
           className="flex flex-1 bg-white"
           style={{
             backgroundImage: `url(${thumbImageData})`,
+            backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
             backgroundSize: 'contain',
           }}
