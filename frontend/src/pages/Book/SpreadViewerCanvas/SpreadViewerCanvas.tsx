@@ -48,7 +48,6 @@ import {
 import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
 import { ObjectFactory } from './object/ObjectFactory';
-import { SpreadNavigation } from './ui/SpreadNavigation';
 
 interface SpreadCanvasProps {
   width?: number;

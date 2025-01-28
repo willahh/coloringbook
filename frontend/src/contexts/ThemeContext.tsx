@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
+import DynamicCSSLoader from '../components/DynamicCSSLoader';
 
 type Appearance = 'dark' | 'light';
 type ThemeContextType = {
@@ -24,17 +25,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     localStorage.setItem('theme', newAppearance);
   };
 
-  useEffect(() => {
-    console.log('#5 useEffect')
-    // Vous pouvez ajouter ici le chargement dynamique du CSS si nécessaire
-    console.log('#5 import css : ', `@/main.${appearance}.css`);
-    import(`@/main.${appearance}.css`);
-  }, [appearance]);
-
   return (
     <ThemeContext.Provider
       value={{ appearance, switchAppearance: switchTheme }}
     >
+      <DynamicCSSLoader theme={appearance} />
       {children}
     </ThemeContext.Provider>
   );

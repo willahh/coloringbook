@@ -1,4 +1,3 @@
-import React from 'react';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
@@ -8,22 +7,11 @@ import { Theme } from '@radix-ui/themes';
 import AppRoutes from '@/AppRoutes';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'; // Décommentez cette ligne
 
-
 const defaultAppearance = 'dark';
 import(`@/main.${defaultAppearance}.css`);
-// import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
 function RenderApp() {
-  console.log('#5 RenderApp')
-  const { appearance, switchAppearance } = useTheme();
-  // const { appearance, switchAppearance } = useTheme();
-  console.log('#5 appearance', appearance)
-
-  // // // Utiliser useEffect pour gérer les effets secondaires comme le changement de thème
-  // React.useEffect(() => {
-  //   switchAppearance('dark');
-  // }, [switchAppearance]);
-
+  const { appearance } = useTheme();
   return (
     <StrictMode>
       <Theme appearance={appearance} hasBackground={false}>

@@ -12,7 +12,24 @@ export default defineConfig(() => {
     plugins: [react(), svgr({})],
     envDir: './env',
     publicDir: './public',
-    build: { outDir: './dist', copyPublicDir: true },
+    build: {
+      outDir: './dist',
+      copyPublicDir: true,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            // Si c'est un fichier CSS spécifique pour un thème, le placer dans un chunk séparé
+            if (id.includes('main.light.css') || id.includes('main.dark.css')) {
+              const parts = id.split('/');
+              const lastPart = parts.pop();
+              if (lastPart) {
+                return lastPart.split('.')[1];
+              }
+            }
+          },
+        },
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),

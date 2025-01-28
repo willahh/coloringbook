@@ -1,9 +1,5 @@
 import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
-import {
-  MoonIcon,
-  SunIcon,
-  ComputerDesktopIcon,
-} from '@heroicons/react/24/outline';
+import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import Switch from '@/components/Switch';
 import { Tooltip } from '@components/Tooltip';
@@ -12,9 +8,28 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ToolbarButtonClassName } from '@/pages/book/spreadViewerCanvas/ui/ToolbarButton';
 import { useTheme } from '@/contexts/ThemeContext';
 
+type ThemeAppearance = 'light' | 'dark';
+
 export default function Example() {
   const { appearance, switchAppearance } = useTheme();
 
+  const getMenuItemClassName = (
+    appearance: ThemeAppearance,
+    appearanceMenu: ThemeAppearance
+  ) => {
+    return `flex items-center gap-2 p-3 text-sm
+               
+    ${
+      appearance === appearanceMenu
+        ? 'bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-100 font-bold text:black dark:text:white'
+        : 'text-gray-500 dark:text-gray-500'
+    }
+     data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none
+     
+     `;
+  };
+
+  console.log('#5 Example appearance:', appearance);
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Tooltip content="Apparence">
@@ -43,7 +58,7 @@ export default function Example() {
               console.log('click', e);
               switchAppearance('light');
             }}
-            className="flex items-center gap-2 p-3 text-sm text-gray-700 dark:text-gray-300 data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none"
+            className={getMenuItemClassName(appearance, 'light')}
           >
             <SunIcon className="w-5 h-5" />
             Light
@@ -56,21 +71,18 @@ export default function Example() {
               console.log('click', e);
               switchAppearance('dark');
             }}
-            className="flex items-center gap-2 p-3 text-sm text-gray-700 dark:text-gray-300 data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none"
+            className={getMenuItemClassName(appearance, 'dark')}
           >
             <MoonIcon className="w-5 h-5" />
             Dark
           </a>
         </MenuItem>
-        <MenuItem>
-          <a
-            href="#"
-            className="flex items-center gap-2 p-3 text-sm text-gray-700 dark:text-gray-300 data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none"
-          >
+        {/* <MenuItem>
+          <a href="#" className={itemCls(appearance, 'dark')}>
             <ComputerDesktopIcon className="w-5 h-5" />
             Système
           </a>
-        </MenuItem>
+        </MenuItem> */}
       </MenuItems>
     </Menu>
   );
