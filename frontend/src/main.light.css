@@ -4,8 +4,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* @config "./../tailwind.config.js";  */
-@config "./../tailwind.dark.config.js"; 
+@config "./../tailwind.config.js"; 
 
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts

@@ -10,8 +10,11 @@ import { Tooltip } from '@components/Tooltip';
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { ToolbarButtonClassName } from '@/pages/book/spreadViewerCanvas/ui/ToolbarButton';
+import { useTheme } from '@/contexts/ThemeContext';
 
 export default function Example() {
+  const { appearance, switchAppearance } = useTheme();
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Tooltip content="Apparence">
@@ -36,6 +39,10 @@ export default function Example() {
         <MenuItem>
           <a
             href="#"
+            onClick={(e) => {
+              console.log('click', e);
+              switchAppearance('light');
+            }}
             className="flex items-center gap-2 p-3 text-sm text-gray-700 dark:text-gray-300 data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none"
           >
             <SunIcon className="w-5 h-5" />
@@ -45,6 +52,10 @@ export default function Example() {
         <MenuItem>
           <a
             href="#"
+            onClick={(e) => {
+              console.log('click', e);
+              switchAppearance('dark');
+            }}
             className="flex items-center gap-2 p-3 text-sm text-gray-700 dark:text-gray-300 data-[focus]:bg-gray-100 dark:data-[focus]:bg-gray-900 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-100 data-[focus]:outline-none"
           >
             <MoonIcon className="w-5 h-5" />

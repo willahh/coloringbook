@@ -43,7 +43,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       
       ${
         selected
-          ? ' border-2 border-secondary-200 dark:border-secondary-800 '
+          ? ' border-2 border-secondary-200 dark:border-secondary-500 '
           : ''
       }
       
@@ -52,8 +52,8 @@ const PageComponent: React.FC<PageComponentProps> = ({
       >
         <div
           data-id="page-bg"
-          className={`flex flex-1 bg-primary-500 dark:bg-primary-500 hover:bg-primary-100  dark:hover:bg-primary-900
-            ${selected ? ' bg-secondary-100 ' : ''}`}
+          className={`flex flex-1 bg-primary-100 dark:bg-primary-900 hover:bg-primary-100  dark:hover:bg-primary-300
+            ${selected ? ' bg-secondary-100 dark:bg-primary-300 ' : ''}`}
           style={{
             backgroundImage: `url(${thumbImageData})`,
             backgroundRepeat: 'no-repeat',
@@ -68,7 +68,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
            bg-primary-200 dark:bg-primary-800 text-xs p-0.5 text-right
         ${
           selected
-            ? 'bg-secondary-300 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 font-extrabold'
+            ? 'bg-secondary-300 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300 font-extrabold'
             : ''
         }`}
         >
