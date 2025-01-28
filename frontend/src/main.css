@@ -8,6 +8,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@config "./tailwind.config.js"; 
 
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts
@@ -165,7 +166,7 @@
   * Tailwind CSS utilities
   * prefix "cb-" ([c]oloring[b]ook) for custom classes
   * ——————————————————————————————————————————————————————————————————————————*/
-@config "./../tailwind.config.js"; 
+
 @layer base {
   .heading-1 {
     @apply roboto-thin text-4xl font-bold mb-2 dark:text-white;
