@@ -40,7 +40,6 @@ export const BookPageContext = createContext<CanvasContextType>({
 });
 
 const BookPage: React.FC = () => {
-  console.log('BookPage');
   const { bookId = '', pageId = '1' } = useParams<{
     bookId: string;
     pageId?: string;
@@ -53,8 +52,6 @@ const BookPage: React.FC = () => {
 
   // Handlers
   const handleAddPageButtonClick = (e: React.MouseEvent) => {
-    console.log('handlePageButtonClick', e);
-
     const newPage: Page = {
       pageId: 10,
       pageNumber: 10,
@@ -65,7 +62,6 @@ const BookPage: React.FC = () => {
     setPages(book.pages);
   };
   const handleDeleteButtonClick = (event: React.MouseEvent, pageId: number) => {
-    console.log('handleDeleteButtonClick', pageId);
     event.preventDefault();
 
     if (window.confirm('Confirmer la suppression de la page ?')) {

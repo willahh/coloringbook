@@ -63,7 +63,6 @@ export class SVG implements DrawableObject {
   }
 
   async getObject(): Promise<fabric.Object> {
-    console.log('getObject');
 
     if (!this.svgObjects) {
       throw new Error('SVG has not been created yet');

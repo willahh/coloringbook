@@ -29,7 +29,6 @@ export default function Example() {
      `;
   };
 
-  console.log('#5 Example appearance:', appearance);
   return (
     <Menu as="div" className="relative inline-block text-left">
       <Tooltip content="Apparence">
@@ -54,8 +53,7 @@ export default function Example() {
         <MenuItem>
           <a
             href="#"
-            onClick={(e) => {
-              console.log('click', e);
+            onClick={() => {
               switchAppearance('light');
             }}
             className={getMenuItemClassName(appearance, 'light')}
@@ -67,8 +65,7 @@ export default function Example() {
         <MenuItem>
           <a
             href="#"
-            onClick={(e) => {
-              console.log('click', e);
+            onClick={() => {
               switchAppearance('dark');
             }}
             className={getMenuItemClassName(appearance, 'dark')}

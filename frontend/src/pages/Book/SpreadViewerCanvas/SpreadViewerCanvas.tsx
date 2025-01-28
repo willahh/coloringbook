@@ -100,7 +100,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         height: viewportHeight - 150,
       };
 
-      console.log('#2 updateDimensions', dimensions);
       setDimensions({ width: dimensions.width, height: dimensions.height });
     }
   }, 200);
@@ -160,8 +159,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           dimensions.width > dimensions.height;
         let pageWidth = 0;
         let pageHeight = 0;
-        console.log('\n#2 ---------');
-        console.log('#2 fitPageHeight', fitPageHeight);
+        // console.log('\n#2 ---------');
+        // console.log('#2 fitPageHeight', fitPageHeight);
         if (fitPageHeight) {
           pageHeight = dimensions.height - canvasBorder * 2;
           pageWidth =
@@ -173,8 +172,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
             pageWidth * (page.aspectRatio.height / page.aspectRatio.width) -
             canvasBorder * 2;
         }
-        console.log('#2 pageWidth', pageWidth);
-        console.log('#2 pageHeight', pageHeight);
+        // console.log('#2 pageWidth', pageWidth);
+        // console.log('#2 pageHeight', pageHeight);
         const offsetX = index * pageWidth;
         spreadSize.width += pageWidth;
         spreadSize.height = Math.max(spreadSize.height, pageHeight);
@@ -220,14 +219,14 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
       // Center spread
       // Calculate the scale to fit the spread within the canvas dimensions
-      console.log('#2 center spread');
+      // console.log('#2 center spread');
       const scale = 0.9;
       const scaleX = scale;
       const scaleY = scale;
       const x = dimensions.width / 2 - (spreadSize.width * scaleX) / 2;
       const y = dimensions.height / 2 - (spreadSize.height * scaleY) / 2;
-      console.log('#2 dimensions: ', dimensions);
-      console.log('#2 x: ', x, 'y: ', y);
+      // console.log('#2 dimensions: ', dimensions);
+      // console.log('#2 x: ', x, 'y: ', y);
       canvas.lastPosX = x;
       canvas.lastPosY = y;
       canvas.viewportTransform = [scaleX, 0, 0, scaleY, x, y];

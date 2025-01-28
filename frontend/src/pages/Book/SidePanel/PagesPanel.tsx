@@ -109,7 +109,6 @@ const Pages: React.FC<PagesProps> = ({
   pages,
   onDeleteButtonClick,
 }) => {
-  //console.log('Pages', pages);
   const {
     pageParams: { pageId, bookId },
   } = useContext(BookPageContext);
@@ -166,7 +165,6 @@ export const PagesPanel: React.FC<{
   addPageButtonClick: (event: React.MouseEvent) => void;
   onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
 }> = ({ className, pages, addPageButtonClick, onDeleteButtonClick }) => {
-  //console.log('PagesPanel', pages);
   return (
     <div
       className={`${

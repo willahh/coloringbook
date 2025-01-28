@@ -66,7 +66,6 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
   });
 
   const onSubmit = async (data: BookFormData) => {
-    console.log('onSubmit', data);
     setIsLoading(true);
 
     const formData = new FormData();

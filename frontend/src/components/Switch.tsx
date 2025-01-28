@@ -9,8 +9,6 @@ interface SwitchProps {
 }
 
 const Switch: React.FC<SwitchProps> = ({ checked, onChange, className }) => {
-  console.log('Switch', checked);
-
   return (
     <HeadlessSwitch
       checked={checked}

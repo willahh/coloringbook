@@ -15,13 +15,11 @@ interface ContentDivProps {
 }
 
 const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
-  console.log('ContentDiv');
   const [showForm, setShowForm] = useState(false);
   const handleCreateBookClick = () => {
     setShowForm(true);
   };
   const handleCancelClick = () => {
-    console.log('handleCancelClick');
     setShowForm(false);
   };
 
@@ -31,7 +29,6 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   const [toastType, setToastType] = useState<'success' | 'error'>('success');
 
   const handleShowToast = (message: string, type: 'success' | 'error') => {
-    console.log('handleShowToast', message, type);
     setToastMessage(message);
     setToastType(type);
     setShowToast(true);
@@ -72,8 +69,6 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
 };
 
 const HomePage: React.FC = () => {
-  console.log('HomePage');
-
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const gridDebug = params.get('griddebug') === '1';
@@ -101,7 +96,6 @@ const HomePage: React.FC = () => {
   }, []);
 
   const onBookCreationSuccess = (book: IBook) => {
-    console.log('onBookCreationSuccess', book);
     setHighlightBookId(book.id);
     fetchBooks();
   };

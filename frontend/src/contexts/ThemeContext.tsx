@@ -13,14 +13,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [appearance, setAppearance] = useState<Appearance>(() => {
-    console.log('#5 useState');
     const savedTheme = localStorage.getItem('theme');
-    console.log('#5 savedTheme from localStorage: ', savedTheme);
     return savedTheme === 'light' ? 'light' : 'dark';
   });
 
   const switchTheme = (newAppearance: Appearance) => {
-    console.log('#5 switchTheme', newAppearance);
     setAppearance(newAppearance);
     localStorage.setItem('theme', newAppearance);
   };

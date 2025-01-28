@@ -26,12 +26,8 @@ export class BookService {
     const spreadPages = this.transformPagesToSpread(pages);
     const flatPages = spreadPages.flat();
 
-    console.log('# getSpreadForPage pageId', pageId, 'pages:', pages);
-    console.log('# flatPages', flatPages);
-
     // Find the index of the page in the flattened array
     const flatIndex = flatPages.findIndex((page) => {
-      console.log('# flatIndx', page);
       return page?.pageId === pageId;
     });
 
