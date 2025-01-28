@@ -9,7 +9,7 @@ function FormLayout() {
   return (
     <form>
       <div className="space-y-12">
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="border-b border-primary-900/10 pb-12">
           <h2 className="text-base/7 font-semibold text-gray-900">Profile</h2>
           <p className="mt-1 text-sm/6 text-gray-600">
             This information will be displayed publicly so be careful what you
@@ -84,7 +84,7 @@ function FormLayout() {
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="border-b border-primary-900/10 pb-12">
           <h2 className="text-base/7 font-semibold text-gray-900">
             Personal Information
           </h2>
@@ -246,7 +246,7 @@ function FormLayout() {
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-12">
+        <div className="border-b border-primary-900/10 pb-12">
           <h2 className="text-base/7 font-semibold text-gray-900">
             Notifications
           </h2>
@@ -270,7 +270,7 @@ function FormLayout() {
                         name="comments"
                         type="checkbox"
                         aria-describedby="comments-description"
-                        className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
+                        className="col-start-1 row-start-1 appearance-none rounded border border-primary-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
                       />
                       <svg
                         fill="none"
@@ -314,7 +314,7 @@ function FormLayout() {
                         name="candidates"
                         type="checkbox"
                         aria-describedby="candidates-description"
-                        className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
+                        className="col-start-1 row-start-1 appearance-none rounded border border-primary-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
                       />
                       <svg
                         fill="none"
@@ -358,7 +358,7 @@ function FormLayout() {
                         name="offers"
                         type="checkbox"
                         aria-describedby="offers-description"
-                        className="col-start-1 row-start-1 appearance-none rounded border border-gray-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
+                        className="col-start-1 row-start-1 appearance-none rounded border border-primary-300 bg-white checked:border-primary-600 checked:bg-primary-600 indeterminate:border-primary-600 indeterminate:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:checked:bg-primary-100 forced-colors:appearance-auto"
                       />
                       <svg
                         fill="none"
@@ -411,7 +411,7 @@ function FormLayout() {
                     id="push-everything"
                     name="push-notifications"
                     type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
+                    className="relative size-4 appearance-none rounded-full border border-primary-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
                   />
                   <label
                     htmlFor="push-everything"
@@ -425,7 +425,7 @@ function FormLayout() {
                     id="push-email"
                     name="push-notifications"
                     type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
+                    className="relative size-4 appearance-none rounded-full border border-primary-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
                   />
                   <label
                     htmlFor="push-email"
@@ -439,7 +439,7 @@ function FormLayout() {
                     id="push-nothing"
                     name="push-notifications"
                     type="radio"
-                    className="relative size-4 appearance-none rounded-full border border-gray-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-gray-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
+                    className="relative size-4 appearance-none rounded-full border border-primary-300 bg-white before:absolute before:inset-1 before:rounded-full before:bg-white checked:border-primary-600 checked:bg-primary-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 disabled:border-primary-300 disabled:bg-primary-100 disabled:before:bg-primary-400 forced-colors:appearance-auto forced-colors:before:hidden [&:not(:checked)]:before:hidden"
                   />
                   <label
                     htmlFor="push-nothing"
