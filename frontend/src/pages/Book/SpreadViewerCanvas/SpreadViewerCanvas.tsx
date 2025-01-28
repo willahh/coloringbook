@@ -24,8 +24,6 @@
  */
 
 import { debounce } from 'lodash';
-import { Tooltip } from '@components/Tooltip';
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import React, {
   useRef,
   useEffect,
@@ -50,6 +48,7 @@ import {
 import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
 import { ObjectFactory } from './object/ObjectFactory';
+import { SpreadNavigation } from './ui/SpreadNavigation';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -67,7 +66,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const { setCanvas, pageParams, setPages } = useContext(BookPageContext);
 
   // State
-  const [dimensions, setDimensions] = useState({ width: 500, height: 400 });
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Process
   const currentPageId = Number(pageParams.pageId) || 0;
@@ -85,7 +84,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
-      // onCanvasReady(canvas);
       return canvas;
     },
     [dimensions]
@@ -93,17 +91,26 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
   const updateDimensions = debounce(() => {
     if (containerRef.current) {
-      const viewportHeight = Math.max(
+      const viewportHeight = Math.min(
         document.documentElement.clientHeight,
         window.innerHeight || 0
       );
-      const { clientWidth } = containerRef.current;
-      setDimensions({ width: clientWidth, height: viewportHeight - 150 });
+      const dimensions = {
+        width:
+          window.innerWidth - containerRef.current.getBoundingClientRect().x,
+        height: viewportHeight - 150,
+      };
+
+      console.log('#2 updateDimensions', dimensions);
+      setDimensions({ width: dimensions.width, height: dimensions.height });
     }
   }, 200);
 
   useEffect(() => {
     updateDimensions();
+    setTimeout(() => {
+      updateDimensions();
+    }, 300); // FIXME: need another, maybe waiting the initial animations to finish
     window.addEventListener('resize', updateDimensions);
     return () => {
       window.removeEventListener('resize', updateDimensions);
@@ -143,13 +150,32 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       document.onkeyup = handleDocumentKeyUp(canvas);
 
       // Create pages
-      const fabricObjects: fabric.Object[] = [];
+      const canvasBorder = 8;
       const spreadSize = { width: 0, height: 0 };
 
       pageSpread.forEach((page, index) => {
-        const aspectRatio = page.aspectRatio.height / page.aspectRatio.width;
-        const pageWidth = dimensions.width / 2;
-        const pageHeight = pageWidth * aspectRatio;
+        // const paysage = dimensions.width > dimensions.height;
+        // const fitPageHeight = dimensions.width > dimensions.height;
+        const fitPageHeight =
+          page.aspectRatio.width > page.aspectRatio.height ||
+          dimensions.width > dimensions.height;
+        let pageWidth = 0;
+        let pageHeight = 0;
+        console.log('\n#2 ---------');
+        console.log('#2 fitPageHeight', fitPageHeight);
+        if (fitPageHeight) {
+          pageHeight = dimensions.height - canvasBorder * 2;
+          pageWidth =
+            pageHeight * (page.aspectRatio.width / page.aspectRatio.height) -
+            canvasBorder * 2;
+        } else {
+          pageWidth = dimensions.width - canvasBorder * 2;
+          pageHeight =
+            pageWidth * (page.aspectRatio.height / page.aspectRatio.width) -
+            canvasBorder * 2;
+        }
+        console.log('#2 pageWidth', pageWidth);
+        console.log('#2 pageHeight', pageHeight);
         const offsetX = index * pageWidth;
         spreadSize.width += pageWidth;
         spreadSize.height = Math.max(spreadSize.height, pageHeight);
@@ -160,10 +186,9 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           left: offsetX,
           top: 0,
           fill: 'white',
-          stroke: 'black',
-          strokeWidth: 2,
+          stroke: 'green',
+          strokeWidth: 4,
           selectable: false,
-          // evented: false,
         });
         canvas.add(rect);
         // fabricObjects.push(rect);
@@ -186,17 +211,27 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         });
       });
 
-      // const group = new fabric.Group();
-
-      console.log('fabricObjects', fabricObjects.length, fabricObjects);
-
       const mask = new fabric.Rect({
-        width: spreadSize.width,
-        height: spreadSize.height,
+        width: spreadSize.width + canvasBorder,
+        height: spreadSize.height + canvasBorder,
         left: 0,
         top: 0,
       });
       canvas.clipPath = mask;
+
+      // Center spread
+      // Calculate the scale to fit the spread within the canvas dimensions
+      console.log('#2 center spread');
+      const scale = 0.9;
+      const scaleX = scale;
+      const scaleY = scale;
+      const x = dimensions.width / 2 - (spreadSize.width * scaleX) / 2;
+      const y = dimensions.height / 2 - (spreadSize.height * scaleY) / 2;
+      console.log('#2 dimensions: ', dimensions);
+      console.log('#2 x: ', x, 'y: ', y);
+      canvas.lastPosX = x;
+      canvas.lastPosY = y;
+      canvas.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
 
       return () => {
         canvas.dispose();
@@ -205,38 +240,9 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     }
   }, [dimensions, initCanvas, setCanvas, pageSpread, pages, setPages]);
 
-
   return (
     <div ref={containerRef} className="relative flex-1">
-      <div className="absolute left-0 flex items-center justify-between h-full p-8 ">
-        <Tooltip content="Page précédente">
-          <button
-            className={`w-12 h-12 rounded-full z-10 p-2 
-          text-primary-200
-           transition-all duration-400
-         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
-         active:ring-primary-50
-          `}
-          >
-            <ArrowLeftIcon />
-          </button>
-        </Tooltip>
-      </div>
-      <div className="absolute right-0 flex items-center justify-between h-full p-8 ">
-        <Tooltip content="Page suivante">
-          <button
-            className={`w-12 h-12 rounded-full z-10 p-2 
-          text-primary-200
-           transition-all duration-400
-         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
-         active:ring-primary-50
-          `}
-          >
-            <ArrowRightIcon />
-          </button>
-        </Tooltip>
-      </div>
-
+      {/* <SpreadNavigation /> */}
       <canvas ref={canvasRef} />
     </div>
   );
