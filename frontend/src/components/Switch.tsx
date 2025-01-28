@@ -23,7 +23,7 @@ const Switch: React.FC<SwitchProps> = ({ checked, onChange, className }) => {
           aria-hidden="true"
           className="absolute inset-0 flex size-full items-center justify-center transition-opacity duration-200 ease-in group-data-[checked]:opacity-0 group-data-[checked]:duration-100 group-data-[checked]:ease-out"
         >
-          <svg fill="none" viewBox="0 0 12 12" className="size-3 text-gray-400">
+          <svg fill="none" viewBox="0 0 12 12" className="size-3 text-primary-400">
             <path
               d="M4 8l2-2m0 0l2-2M6 6L4 4m2 2l2 2"
               stroke="currentColor"

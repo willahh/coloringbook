@@ -159,11 +159,11 @@ export default function Toast({
                 <div className="flex items-start">
                   <div className="shrink-0">{getIcon()}</div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-primary-900">
                       {message}
                     </p>
                     {description && (
-                      <p className="mt-1 text-sm text-gray-500">
+                      <p className="mt-1 text-sm text-primary-500">
                         {description}
                       </p>
                     )}
@@ -175,7 +175,7 @@ export default function Toast({
                         setIsVisible(false);
                         onClose();
                       }}
-                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                      className="inline-flex rounded-md bg-white text-primary-400 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                     >
                       <span className="sr-only">Close</span>
                       <XMarkIcon aria-hidden="true" className="size-5" />

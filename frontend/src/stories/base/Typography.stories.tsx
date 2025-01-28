@@ -16,10 +16,10 @@ const ContentHtml = ({ className }: { className?: string }) => {
     <div
       className={`${className} grid grid-cols-1 md:grid-cols-2 space-y-4 divide-y dark:divide-gray-700`}
     >
-      <div className="col-span-2 dark:text-gray-300">
+      <div className="col-span-2 dark:text-primary-300">
         <h1 className={headingCls}>Font</h1>
         <div>
-          <code className="text-gray-500 text-xs">roboto-thin</code>
+          <code className="text-primary-500 text-xs">roboto-thin</code>
           <h1 className="heading-1 roboto-thin">
             Titre Principal
           </h1>
@@ -44,16 +44,16 @@ const ContentHtml = ({ className }: { className?: string }) => {
 
       <div className="pt-4">
         <h1 className={headingCls}>Titres</h1>
-        <code className="text-gray-500 text-xs">head-1</code>
+        <code className="text-primary-500 text-xs">head-1</code>
         <h1 className="heading-1">Titre de niveau 1</h1>
 
-        <code className="text-gray-500 text-xs">head-2</code>
+        <code className="text-primary-500 text-xs">head-2</code>
         <h1 className="heading-2">Titre de niveau 2</h1>
 
-        <code className="text-gray-500 text-xs">head-3</code>
+        <code className="text-primary-500 text-xs">head-3</code>
         <h1 className="heading-3">Titre de niveau 3</h1>
 
-        <code className="text-gray-500 text-xs">head-4</code>
+        <code className="text-primary-500 text-xs">head-4</code>
         <h1 className="heading-4">Titre de niveau 4</h1>
       </div>
 
