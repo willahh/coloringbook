@@ -145,7 +145,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 value={field.value ?? ''}
                 disabled={isLoading}
                 placeholder="Nom du livre"
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
+                className="w-full p-2 border border-primary-400 dark:border-primary-600 rounded bg-primary-200 dark:bg-primary-800 dark:text-white"
                 ref={bookNameInput}
               />
             )}
@@ -182,7 +182,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="format"
                 value={field.value ?? ''}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
+                className="w-full p-2 border border-primary-400 dark:border-primary-600 rounded bg-primary-200 dark:bg-primary-800 dark:text-white"
               >
                 {formatOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -216,7 +216,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="pageCount"
                 value={field.value ?? '12'}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
+                className="w-full p-2 border border-primary-400 dark:border-primary-600 rounded bg-primary-400 dark:bg-primary-800 dark:text-white"
               />
             )}
           />

@@ -36,17 +36,24 @@ const PageComponent: React.FC<PageComponentProps> = ({
     >
       <Link
         className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
-        border-2 border-primary-500 roverflow-hidden 
-        active:ring-2 active:-ring-offset-4
+        border-2 border-primary-200 dark:border-primary-800 
+        hover:border-secondary-500
+        active:ring-2 active:-ring-offset-4 ring-secondary-500
         transition-all duration-150 ease-in-out
       
-      ${selected ? ' border-2 border-primary-200 ' : ''}
+      ${
+        selected
+          ? ' border-2 border-secondary-200 dark:border-secondary-800 '
+          : ''
+      }
       
       `}
         to={`/book/${bookId}/pages/${pageId}`}
       >
         <div
-          className="flex flex-1 bg-white"
+          data-id="page-bg"
+          className={`flex flex-1 bg-primary-500 dark:bg-primary-500 hover:bg-primary-100  dark:hover:bg-primary-900
+            ${selected ? ' bg-secondary-100 ' : ''}`}
           style={{
             backgroundImage: `url(${thumbImageData})`,
             backgroundRepeat: 'no-repeat',
@@ -55,10 +62,15 @@ const PageComponent: React.FC<PageComponentProps> = ({
           }}
         ></div>
         <div
+          data-id="page-option"
           className={`flex justify-end items-center gap-2 
-            transition-all duration-500
-           bg-primary-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-primary-200 text-primary-800 font-extrabold ' : ''}`}
+            transition-all duration-200
+           bg-primary-200 dark:bg-primary-800 text-xs p-0.5 text-right
+        ${
+          selected
+            ? 'bg-secondary-300 dark:bg-secondary-700 text-secondary-700 dark:text-secondary-300 font-extrabold'
+            : ''
+        }`}
         >
           <Tooltip content={'Supprimer la page'}>
             <button
@@ -67,7 +79,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
                 
                ${
                  selected
-                   ? 'group-hover:block group-focus:block group-active:block hover:bg-primary-400 focus:bg-primary-400'
+                   ? 'group-hover:block group-focus:block group-active:block hover:bg-secondary-400 focus:bg-secondary-400'
                    : ''
                }`}
               onClick={(event) => {
@@ -136,7 +148,7 @@ const Pages: React.FC<PagesProps> = ({
   return (
     <div
       className={`flex flex-col ${className || ''} rounded-md 
- overflow-y-scroll scrollbar scrollbar-thumb-primary-700 scrollbar-track-primary-900 scrollbar-track-rounded-full`}
+ overflow-y-scroll scrollbar scrollbar-thumb-primary-300 dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
       style={{
         maxHeight: 'calc(100vh - 10em)', // FIXME: magic number 10em
       }}

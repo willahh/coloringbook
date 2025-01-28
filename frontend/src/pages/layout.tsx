@@ -1,4 +1,3 @@
-
 import motionConfig from '@/shared/shared';
 import { motion } from 'motion/react';
 import Header from '@/components/Header';
@@ -22,12 +21,11 @@ const Layout: React.FC<LayoutProps> = ({
 
   return (
     <>
-      
       <div
         id="focus-trap"
         tabIndex={0}
         aria-hidden="true"
-        className="absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10 dark:text-white focus:border focus:border-white"
+        className="absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10 dark:text-white focus:border focus:border-black dark:focus:border-white"
       ></div>
 
       <DebugButton />

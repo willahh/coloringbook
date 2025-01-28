@@ -73,10 +73,7 @@ This project is built with the following technologies and tools:
 - CI/CD: [Render CI/CD](https://dashboard.render.com)
 - Database : [neon/dashboard](https://console.neon.tech/app/projects/icy-butterfly-57903853/branches/br-orange-art-a2b2bsgu/tables?database=neondb)
 - Assets : [Supabase Storage](https://supabase.com/)
-
-### External resources
-- [Pixabay](https://pixabay.com/fr/) Images libres de droits & gratuites à télécharger 
-- [Uicolors](https://uicolors.app/create) Tailwind CSS Color Generator
+tps://coolors.co/) Tailwind CSS Color Generator
 
 
 

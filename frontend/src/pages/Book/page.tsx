@@ -108,11 +108,11 @@ const BookPage: React.FC = () => {
     >
       <Layout className={`w-full flex`} showHeader={true}>
         <SidePanel
-          className="flex flex-row bg-primary-900 w-80 shadow-black z-10
+          className="flex flex-row bg-primary-100 dark:bg-primary-900 w-80 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
         >
           <div
-            className={`flex-1 border-r border-primary-950 
+            className={`flex-1 border-r border-primary-200 dark:border-primary-800
             overflow-x-hidden overflow-y-auto
             `}
             style={{ height: 'calc(100vh - 4rem)' }}
@@ -130,7 +130,7 @@ const BookPage: React.FC = () => {
           />
           <SideToolbar onRectangleClick={onRectangleClick} />
         </SidePanel>
-        <main className="flex flex-1 bg-primary-950 flex-col">
+        <main className="flex flex-1 bg-primary-50 dark:bg-primary-950 flex-col">
           <SpreadViewerCanvas pages={pages} />
           <SpreadToolbar />
         </main>

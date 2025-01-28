@@ -31,10 +31,10 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   if (bookExist) {
     cls += ` cursor-pointer transition-all
       focus-visible:outline-2 focus-visible:outline focus-visible:scale-110 
-      focus:border-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500
+      focus:border-primary-300 dark:focus:border-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500
       
       border-2 border-transparent
-      hover:border-white
+      hover:border-black dark:hover:border-white
       `;
   }
   const highlightBook = book.id === highlightBookId;

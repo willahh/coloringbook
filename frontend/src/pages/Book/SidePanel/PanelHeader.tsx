@@ -7,7 +7,7 @@ export const PanelHeader: React.FC<{
 }> = ({ className, children }) => {
   return (
     <div
-      className={`${className || ''} p-2 text-xs bg-primary-950 font-medium text-primary-500 select-none`}
+      className={`${className || ''} p-2 text-xs bg-primary-50 dark:bg-primary-950 font-medium text-primary-500 select-none`}
     >
       {children}
     </div>

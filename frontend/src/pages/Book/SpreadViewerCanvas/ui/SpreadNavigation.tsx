@@ -8,10 +8,12 @@ export const SpreadNavigation: React.FC = () => {
         <Tooltip content="Page précédente">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 
-          text-primary-200
+          text-primary-800 dark:text-primary-200
            transition-all duration-400
-         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
-         active:ring-primary-50
+         hover:ring-1 
+         hover:bg-primary-50  hover:ring-primary-200
+         dark:hover:bg-primary-950  dark:hover:ring-primary-800 
+         active:ring-primary-950 dark:active:ring-primary-50
           `}
           >
             <ArrowLeftIcon />
@@ -22,11 +24,13 @@ export const SpreadNavigation: React.FC = () => {
         <Tooltip content="Page suivante">
           <button
             className={`w-12 h-12 rounded-full z-10 p-2 
-          text-primary-200
-           transition-all duration-400
-         hover:bg-primary-950 hover:ring-1 hover:ring-primary-800 
-         active:ring-primary-50
-          `}
+              text-primary-800 dark:text-primary-200
+               transition-all duration-400
+             hover:ring-1 
+             hover:bg-primary-50  hover:ring-primary-200
+             dark:hover:bg-primary-950  dark:hover:ring-primary-800 
+             active:ring-primary-950 dark:active:ring-primary-50
+              `}
           >
             <ArrowRightIcon />
           </button>

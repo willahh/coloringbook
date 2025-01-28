@@ -13,11 +13,12 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
   onRectangleClick,
 }) => {
   return (
-    <div className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-800">
+    <div className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-200 dark:border-primary-800">
       <ToolbarButton tooltipContent="Pointer">
         <PointerIcon
           aria-hidden="true"
-          className="size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
+          className={`size-6 fill-secondary-800 group-hover:fill-black group-focus:fill-black
+            dark:fill-secondary-200 dark:group-hover:fill-white dark:group-focus:fill-white`}
           style={{
             position: 'relative',
             left: '2px',
@@ -32,7 +33,9 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
       >
         <RectangleIcon
           aria-hidden="true"
-          className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
+          className={`size-6 
+            stroke-secondary-800 group-hover:stroke-secondary-950 group-focus:stroke-secondary-950
+            dark:stroke-secondary-200 dark:group-hover:stroke-white dark:group-focus:stroke-white`}
           style={{
             fillOpacity: '0',
           }}
@@ -41,7 +44,9 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
       <ToolbarButton tooltipContent="Cercle">
         <CircleIcon
           aria-hidden="true"
-          className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
+          className={`size-6 
+            stroke-secondary-800 group-hover:stroke-secondary-950 group-focus:stroke-secondary-950
+            dark:stroke-secondary-200 dark:group-hover:stroke-white dark:group-focus:stroke-white`}
           style={{
             fillOpacity: '0',
           }}
@@ -50,7 +55,9 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
       <ToolbarButton tooltipContent="Triangle">
         <TriangleIcon
           aria-hidden="true"
-          className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
+          className={`size-6 
+            stroke-secondary-800 group-hover:stroke-secondary-950 group-focus:stroke-secondary-950
+            dark:stroke-secondary-200 dark:group-hover:stroke-white dark:group-focus:stroke-white`}
           style={{
             fillOpacity: '0',
           }}
@@ -59,7 +66,9 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
       <ToolbarButton tooltipContent="Texte">
         <TextIcon
           aria-hidden="true"
-          className="size-6 stroke-primary-200 group-hover:stroke-white group-focus:stroke-white"
+          className={`size-6 
+            stroke-secondary-800 group-hover:stroke-secondary-950 group-focus:stroke-secondary-950
+            dark:stroke-secondary-200 dark:group-hover:stroke-white dark:group-focus:stroke-white`}
           style={{
             fillOpacity: '0',
           }}

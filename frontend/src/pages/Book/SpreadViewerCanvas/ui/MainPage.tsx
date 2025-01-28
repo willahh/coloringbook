@@ -17,7 +17,7 @@ export const MainPage: React.FC<{ className?: string; idx: number; }> = ({
         data-name="bg"
         className={`flex-1 bg-white border border-primary-500
           rounded-lg overflow-hidden
-          ring-2 ring-inset ring-gray-300 
+          ring-2 ring-inset ring-gray-700 dark:ring-gray-300 
            snap-center`}
       ></div>
       <div data-name="pageCount" className="dark:text-white text-sm select-none">
