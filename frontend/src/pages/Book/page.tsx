@@ -73,22 +73,22 @@ const BookPage: React.FC = () => {
     console.log('onRectangleClick');
 
     if (canvas) {
-      /* 
-      * [TODO]
-      *  - GO TO PAGE 1
-      *  Screen => save to page 1 thumb
-      *  - GO TO PAGE 2
-      *  Screen ...
-      *  ... 
-      * 
-      * ------------------------------------------------------------------------
-      * 
-      * Ou alors : 
-      *  - Faire un nouveau div qui prend tout l'écran.
-      *  - Faire un rendu du canva
-      *  - Faire la capture depuis ce div en plein écran.
-      *  - Le div peut être en opacité 0 le temps de l'opération ?
-      * */
+      /*
+       * [TODO]
+       *  - GO TO PAGE 1
+       *  Screen => save to page 1 thumb
+       *  - GO TO PAGE 2
+       *  Screen ...
+       *  ...
+       *
+       * ------------------------------------------------------------------------
+       *
+       * Ou alors :
+       *  - Faire un nouveau div qui prend tout l'écran.
+       *  - Faire un rendu du canva
+       *  - Faire la capture depuis ce div en plein écran.
+       *  - Le div peut être en opacité 0 le temps de l'opération ?
+       * */
       const pagesNew = PageService.updateThumbImageData(
         pages,
         canvas,
