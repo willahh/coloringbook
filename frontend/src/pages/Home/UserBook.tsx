@@ -68,6 +68,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
         className={cls}
         style={{
           background: `linear-gradient(to right, rgb(60, 13, 20) 3px, rgba(255, 255, 255, 0.5) 5px, rgba(255, 255, 255, 0.25) 7px, rgba(255, 255, 255, 0.25) 10px, transparent 12px, transparent 16px, rgba(255, 255, 255, 0.25) 17px, transparent 22px), center center / cover url(${imageUrl})`,
+          backgroundRepeat: 'no-repeat',
           boxShadow:
             '0 0 5px -1px black, inset -1px 1px 2px rgba(255, 255, 255, 0.5)',
           margin: 'auto',
@@ -93,11 +94,11 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
           type: 'tween',
         }}
       >
-        <div className="book-info absolute w-full bottom-0 left-0 text-white p-2 pointer-events-none">
+        <div className="book-info absolute w-full bottom-0 left-0 dark:text-white p-2 pointer-events-none">
           <div
-            className={`bg-transparent border-none text-white w-full cursor-default select-none
+            className={`bg-transparent border-none dark:text-white w-full cursor-default select-none
             font-serif font-semibold leading-1 lg:leading-4 md:text-xs lg:text-lg `}
-            style={{ textShadow: '1px 1px 2px #000', padding: '1px 1px 1px 0' }}
+            style={{  padding: '1px 1px 1px 0' }}
           >
             {book.name}
           </div>

@@ -20,7 +20,7 @@ export const MainPage: React.FC<{ className?: string; idx: number; }> = ({
           ring-2 ring-inset ring-gray-300 
            snap-center`}
       ></div>
-      <div data-name="pageCount" className="text-white text-sm select-none">
+      <div data-name="pageCount" className="dark:text-white text-sm select-none">
         Page {idx} / 12
       </div>
     </div>

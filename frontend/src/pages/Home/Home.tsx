@@ -40,7 +40,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   console.log('showForm', showForm);
 
   return (
-    <div className=" text-white">
+    <div className=" dark:text-white">
       <Toast
         message={toastMessage}
         type={toastType}
@@ -51,7 +51,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
       <AnimatedText enterClassName="delay-200">
         <div className="flex mb-4 gap-2 items-center text-md font-extralight select-none">
           <span className="">Create</span>
-          <span className="text-primary-200 bg-primary-900 p-1 px-2 rounded-md shadow-xl border border-primary-800">
+          <span className="text-primary-200 bg-primary-900 p-1 px-2 rounded-md dark:shadow-xl border border-primary-800">
             color
           </span>
           <span className="">share</span>

@@ -47,7 +47,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
         <div className="flex flex-1 bg-white"></div>
         <div
           className={`bg-primary-500 text-xs p-0.5 text-right
-        ${selected ? 'bg-primary-200 text-black' : ''}`}
+        ${selected ? 'bg-primary-200' : ''}`}
         >
           {pageNumber}
         </div>

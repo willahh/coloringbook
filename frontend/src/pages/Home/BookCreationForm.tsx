@@ -130,7 +130,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         <div>
           <label
             htmlFor="name"
-            className="block text-sm md:text-base font-medium text-white mb-1"
+            className="block text-sm md:text-base font-medium dark:text-white mb-1"
           >
             Nom
           </label>
@@ -145,7 +145,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 value={field.value ?? ''}
                 disabled={isLoading}
                 placeholder="Nom du livre"
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 text-white"
+                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
                 ref={bookNameInput}
               />
             )}
@@ -168,7 +168,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
           <label
             // className="col-span-2"
             htmlFor="format"
-            className=" self-center text-sm md:text-base font-medium text-white"
+            className=" self-center text-sm md:text-base font-medium dark:text-white"
           >
             Format
           </label>
@@ -182,7 +182,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="format"
                 value={field.value ?? ''}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 text-white"
+                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
               >
                 {formatOptions.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -200,7 +200,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
 
           <label
             htmlFor="pageCount"
-            className="  self-center text-sm md:text-base font-medium text-white"
+            className="  self-center text-sm md:text-base font-medium dark:text-white"
           >
             Nombre de pages
           </label>
@@ -216,7 +216,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="pageCount"
                 value={field.value ?? '12'}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-primary-600 rounded bg-primary-800 text-white"
+                className="w-full p-2 border border-primary-600 rounded bg-primary-800 dark:text-white"
               />
             )}
           />
@@ -230,7 +230,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         <div className="grid grid-cols-2 gap-4">
           <label
             htmlFor="image"
-            className="block text-sm md:text-base font-medium text-white mb-1"
+            className="block text-sm md:text-base font-medium dark:text-white mb-1"
           >
             Couverture
           </label>
@@ -261,7 +261,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                     <div
                       className="absolute w-5 h-5 flex items-center justify-center
                       cursor-pointer top-1 right-1 shadow-sm rounded-md
-                       bg-white text-black font-mono font-bold text-md
+                       dark:bg-white dark:text-black font-mono font-bold text-md
                        "
                       onClick={() => setCoverImage(null)}
                     >
@@ -279,7 +279,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 {!coverImage && (
                   <label
                     htmlFor="coverImage"
-                    className="px-4 py-2 rounded-md bg-primary-600 text-white cursor-pointer hover:bg-primary-700 transition-colors duration-200 select-none"
+                    className="px-4 py-2 rounded-md bg-primary-600 dark:text-white cursor-pointer hover:bg-primary-700 transition-colors duration-200 select-none"
                   >
                     Choisir une image
                   </label>

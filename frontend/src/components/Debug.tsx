@@ -10,7 +10,7 @@ import Switch from '@/components/Switch';
 export const GridDebug = () => (
   <div data-id="grid-debug"
     className="absolute w-full h-full grid grid-cols-12 gap-4 opacity-10 z-10 
-  pointer-events-none text-white text-center"
+  pointer-events-none dark:text-white text-center"
   >
     <div className="col-span-1 bg-yellow-500  border border-black pt-6">1</div>
     <div className="col-span-1 bg-red-500     border border-black pt-6">2</div>
@@ -36,7 +36,7 @@ export const DebugButton = () => {
         <Popover className="absolute top-0 right-0">
           {/* <Tooltip text="Préférences" isVisible={isTooltipVisible}> */}
             <PopoverButton
-              className="rounded-full bg-primary-900 text-white shadow-sm p-3 outline outline-offset-2 outline-transparent
+              className="rounded-full bg-primary-900 dark:text-white shadow-sm p-3 outline outline-offset-2 outline-transparent
             hover:bg-primary-500 hover:scale-110
             focus-visible:outline focus-visible:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600
             transition-all duration-300 "
