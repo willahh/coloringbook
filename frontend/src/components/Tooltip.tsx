@@ -2,11 +2,11 @@ import React from 'react';
 import * as RadixTooltip from '@radix-ui/react-tooltip';
 
 export const Tooltip = ({
-  className,
+  // className,
   children,
   content,
 }: {
-  className?: string;
+  // className?: string;
   children: React.ReactNode;
   content: string;
 }) => {

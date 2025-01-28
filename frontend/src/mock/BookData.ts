@@ -13,7 +13,7 @@ export const bookData: IBook = {
       pageNumber: 1,
       aspectRatio: { width: 210, height: 297 },
       elements: [
-        { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
+        // { type: 'image', x: 0, y: 0, w: 30, h: 30, attr: { imageData: '' } },
         {
           type: 'svg',
           x: 21,

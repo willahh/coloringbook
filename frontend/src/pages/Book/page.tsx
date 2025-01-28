@@ -51,7 +51,7 @@ const BookPage: React.FC = () => {
   const [pages, setPages] = useState(bookData.pages);
 
   // Handlers
-  const handleAddPageButtonClick = (e: React.MouseEvent) => {
+  const handleAddPageButtonClick = () => {
     const newPage: Page = {
       pageId: 10,
       pageNumber: 10,
