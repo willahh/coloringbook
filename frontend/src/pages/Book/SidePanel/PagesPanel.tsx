@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { BookPageContext } from '@/pages/book/Page';
+import { BookPageContext } from '@/pages/book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
