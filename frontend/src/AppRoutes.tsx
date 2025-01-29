@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import BookPage from './pages/book/page';
+import BookPage from './pages/book/Page';
 import HomePage from './pages/home/Home';
 
 const AppRoutes: React.FC = () => (

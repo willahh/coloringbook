@@ -33,7 +33,7 @@ import React, {
   useMemo,
 } from 'react';
 import * as fabric from 'fabric';
-import { BookPageContext } from '../page';
+import { BookPageContext } from '../Page';
 import {
   handleMouseWheel,
   handleMouseOver,
