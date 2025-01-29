@@ -13,12 +13,12 @@ import {
   MaxFileSizeValidator,
   FileTypeValidator,
 } from '@nestjs/common';
-import { multerOptions } from '@/../config/multer.config'; // Mise à jour du chemin
-import { BooksService } from '@/books.service';
-import { CreateBookDto } from '@/dto/create-book.dto';
-import { UpdateBookDto } from '@/dto/update-book.dto';
+import { SupabaseService } from '@/supabase.service';
+import { multerOptions } from '@/config/multer.config';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { SupabaseService } from 'src/supabase.service';
+import { BooksService } from './books.service';
+import { CreateBookDto } from './dto/create-book.dto';
+import { UpdateBookDto } from './dto/update-book.dto';
 import { createReadStream } from 'fs';
 import { unlink } from 'fs/promises';
 import * as sharp from 'sharp';
