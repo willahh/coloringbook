@@ -7,9 +7,9 @@
     "skipLibCheck": true,
 
     // Testing production deployment error fixe
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
+    // "allowSyntheticDefaultImports": true,
+    // "resolveJsonModule": true,
+    // "esModuleInterop": true,
     // </>
 
     "baseUrl": "src/",
@@ -21,7 +21,7 @@
     },
 
     /* Bundler mode */
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
