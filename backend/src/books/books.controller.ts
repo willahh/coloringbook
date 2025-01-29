@@ -40,15 +40,16 @@ export class BooksController {
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 5 }), // 5 MB
           new FileTypeValidator({ fileType: '.(png|jpeg|jpg)' }),
         ],
+        fileIsRequired: false,
       }),
     )
     coverImage?: Express.Multer.File, // Rendre le paramètre optionnel
   ) {
     let supabaseFilePath = '';
-    const prefix = 'cover_';
-    const newFileName = `${prefix}${coverImage.filename}`;
 
     if (coverImage) {
+      const prefix = 'cover_';
+      const newFileName = `${prefix}${coverImage.filename}`;
       // Resize the image
       const resizedImagePath = join(
         __dirname,
