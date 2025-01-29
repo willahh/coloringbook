@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "debug:deploy": "echo '=> pwd:' && pwd && echo '=> ls:' && ls && echo '=> ls src/' && ls src/",
+    "debug:deploy": "echo '=> files and dirs:' && find . \\( -path ./node_modules -o -path ./dist \\) -prune -o -type d -o -type f -print",
     "build": "tsc -b && vite build && npm run build:css-light && npm run build:css-dark",
     "build:prod": "npm run debug:deploy && tsc -p tsconfig.json && vite build --mode production && npm run build:css-light && npm run build:css-dark",
     "build:css-light": "tailwindcss -i ./src/main.light.css -o ./dist/main.light.css --mode=production",

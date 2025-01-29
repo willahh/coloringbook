@@ -9,7 +9,7 @@ import {
   PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { bookService } from '@/services/BookService';
-import { BookPageContext } from '../../Page';
+import { BookPageContext } from '../../page';
 import { ToolbarButton } from './ToolbarButton';
 
 const iconProps = {

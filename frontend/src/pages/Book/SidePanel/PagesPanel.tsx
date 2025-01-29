@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { BookPageContext } from '@/pages/book/Page';
+import { BookPageContext } from '@/pages/Book/page';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
-import { ToolbarButton } from '../spreadViewerCanvas/ui/ToolbarButton';
+import { ToolbarButton } from '../SpreadViewerCanvas/ui/ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 

@@ -7,15 +7,15 @@ import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
 
 import Layout from '../layout';
-import { SpreadToolbar } from './spreadViewerCanvas/ui/SpreadToolbar';
-import { SideToolbar } from './sidePanel/SideToolbar';
-import { ColorPanel } from './sidePanel/ColorPanel';
-import { SidePanel } from './sidePanel/SidePanel';
-import { GraphicsPanel } from './sidePanel/GraphicsPanel';
-import { TemplatePanel } from './sidePanel/TemplatePanel';
-import { PagesPanel } from './sidePanel/PagesPanel';
-import SpreadViewerCanvas from './spreadViewerCanvas/SpreadViewerCanvas';
-import { VerticalSeparator } from './sidePanel/VerticalSeparator';
+import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
+import { SideToolbar } from './SidePanel/SideToolbar';
+import { ColorPanel } from './SidePanel/ColorPanel';
+import { SidePanel } from './SidePanel/SidePanel';
+import { GraphicsPanel } from './SidePanel/GraphicsPanel';
+import { TemplatePanel } from './SidePanel/TemplatePanel';
+import { PagesPanel } from './SidePanel/PagesPanel';
+import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
+import { VerticalSeparator } from './SidePanel/VerticalSeparator';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
