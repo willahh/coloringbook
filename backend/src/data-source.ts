@@ -5,6 +5,10 @@ import { User } from '@/users/entities/user.entity';
 import { Book } from '@/books/entities/book.entity';
 import { Init1736932735124 } from '@/migrations/1736932735124-init';
 import { BookAddColumnCoverImage1737027990891 } from '@/migrations/1737027990891-book-add-column-coverImage';
+import { UpdateBookTable1738267032267 } from './migrations/1738267032267-update-book-table';
+import { AddGraphicAssetsTable1738268290034 } from './migrations/1738268290034-add-graphic-assets-table';
+import { GraphicAsset } from './graphic-assets/entities/graphic-asset.entity';
+import { UpdateGraphicTable1738268956723 } from './migrations/1738268956723-update-graphic-table';
 
 // Load environment variables based on the environment
 let envFile =
@@ -55,8 +59,15 @@ export const options: DataSourceOptions = {
   username: user,
   password: password,
   database: database,
-  entities: [User, Book],
-  migrations: [Init1736932735124, BookAddColumnCoverImage1737027990891],
+  entities: [User, Book, GraphicAsset],
+  // entities: ['src/**/entities/*.entity.ts'],
+  migrations: [
+    Init1736932735124,
+    BookAddColumnCoverImage1737027990891,
+    UpdateBookTable1738267032267,
+    AddGraphicAssetsTable1738268290034,
+    UpdateGraphicTable1738268956723,
+  ],
   synchronize: false,
   logging: true,
   ...(ssl ? optionsWithSSL : {}),

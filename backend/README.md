@@ -103,6 +103,7 @@ https://typeorm.io/migrations
 SQL migrations is managed with typeorm.  
 
 ```sh
+
 # 1. Generate the migration script
 npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/init
 
@@ -125,6 +126,24 @@ npm run start
 npx typeorm migration:run -d ./public/data-source.js
 ```
 
+## Add a new migration script :
+1. `data-source.ts`, add the new entity in the migraitons list.
+2. Compile with `npm run start` to generate .js files
+2. Run the migration script
+`npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/myNewMigrationScript`
+
+3. Add the migration file to the datasource
+```sh
+`data-source.ts` : 
+export const options: DataSourceOptions = {
+  ...
+  migrations: [Init1736932735124, BookAddColumnCoverImage1737027990891],
+  ...
+};
+```
+4. Compile with `npm run start` to generate .js files
+5. Run the migration script
+`npx typeorm migration:run -d ./public/data-source.js`
 
 
 ## Run the migrations script on production database

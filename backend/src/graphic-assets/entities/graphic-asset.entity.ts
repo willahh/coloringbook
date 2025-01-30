@@ -15,7 +15,11 @@ export class GraphicAsset {
   @Column()
   name: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: GraphicAssetType,
+    default: GraphicAssetType.SVG,
+  })
   type: GraphicAssetType;
 
   @Column()
