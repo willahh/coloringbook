@@ -1,7 +1,6 @@
 import React, { useState, createContext, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
-
 import { IBook, Page } from '@/domain/book';
 import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
@@ -51,8 +50,13 @@ const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
     <Header>
       <BreadCrumb
         pages={[
-          { current: false, href: '/books', name: 'Livres' },
-          ...(book
+          {
+            current: false,
+            href: '/books',
+            name: 'Livres',
+            description: 'Accéder à ma bibliothèque de livres',
+          },
+          ...(book // TODO: Book.name EditableField => Ajouter un composant EditableField
             ? [
                 {
                   current: true,
