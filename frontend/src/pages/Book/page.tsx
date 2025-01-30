@@ -1,10 +1,11 @@
-import React, { useState, createContext } from 'react';
+import React, { useState, createContext, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 
 import { IBook, Page } from '@/domain/book';
 import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
+import ButtonLink from '@components/ButtonLink';
 
 import Layout from '../layout';
 import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
@@ -16,6 +17,9 @@ import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
+import Toast from '@/components/Toast';
+import { getBooksUrl } from '@/utils/api';
+import { BookService } from '@/services/BookService';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -26,6 +30,7 @@ interface CanvasContextType {
     bookId: string;
     pageId?: string;
   };
+  isModified: boolean;
 }
 
 export const BookPageContext = createContext<CanvasContextType>({
@@ -38,9 +43,11 @@ export const BookPageContext = createContext<CanvasContextType>({
   setPages: function (pages: React.SetStateAction<Page[]>): void {
     throw new Error(`Function not implemented. ${pages}`);
   },
+  isModified: false,
 });
 
 const BookPage: React.FC = () => {
+  console.log('BookPage');
   const { bookId = '', pageId = '1' } = useParams<{
     bookId: string;
     pageId?: string;
@@ -50,6 +57,15 @@ const BookPage: React.FC = () => {
   // States
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [pages, setPages] = useState(bookData.pages);
+  const [isModified, setIsModified] = useState(false);
+  const [, setShowToast] = useState(false);
+
+  console.log('pages', pages);
+  useEffect(() => {
+    console.log('useEffect');
+    setIsModified(true);
+    setShowToast(true);
+  }, [pages]);
 
   // Handlers
   const handleAddPageButtonClick = () => {
@@ -70,6 +86,23 @@ const BookPage: React.FC = () => {
       setPages(book.pages);
     }
   };
+
+  const handleSave = useCallback(async () => {
+    console.log('handleSave');
+    try {
+      const data = await BookService.updateBook(bookId, { pages: pages });
+      if (!data.error) {
+        console.log('Book saved successfully:', data);
+        setIsModified(false);
+        setShowToast(false);
+      } else {
+        alert('Erreur lors du retour serveur');
+      }
+    } catch (error) {
+      console.error('Error saving book:', error);
+    }
+  }, [bookId, pages]);
+
   const onRectangleClick = () => {
     console.log('onRectangleClick');
 
@@ -101,7 +134,7 @@ const BookPage: React.FC = () => {
 
   return (
     <BookPageContext.Provider
-      value={{ canvas, setCanvas, bookData, pageParams, setPages }}
+      value={{ canvas, setCanvas, bookData, pageParams, setPages, isModified }}
     >
       <Layout className={`w-full flex`} showHeader={true}>
         <SidePanel
@@ -132,6 +165,24 @@ const BookPage: React.FC = () => {
           <SpreadToolbar />
         </main>
       </Layout>
+      {isModified && (
+        <Toast
+          autoClose={false}
+          message={
+            <div>
+              <div>Les modifications ne sont pas enregistrées</div>
+              <div>
+                <ButtonLink onClick={handleSave}>Enregistrer</ButtonLink>
+              </div>
+            </div>
+          }
+          type="info"
+          show={true}
+          onClose={() => {
+            setShowToast(false);
+          }}
+        />
+      )}
     </BookPageContext.Provider>
   );
 };

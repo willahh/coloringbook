@@ -11,6 +11,7 @@ import Layout from '../layout';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
+import { useToast } from '@/hooks/useToast';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: IBook) => void;
@@ -18,6 +19,9 @@ interface ContentDivProps {
 
 const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   const [showForm, setShowForm] = useState(false);
+  const { showToast, toastMessage, toastType, showToastFunc, hideToast } =
+    useToast();
+
   const handleCreateBookClick = () => {
     setShowForm(true);
   };
@@ -25,26 +29,13 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
     setShowForm(false);
   };
 
-  // toast
-  const [showToast, setShowToast] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState<'success' | 'error'>('success');
-
-  const handleShowToast = (message: string, type: 'success' | 'error') => {
-    setToastMessage(message);
-    setToastType(type);
-    setShowToast(true);
-  };
-
-  console.log('showForm', showForm);
-
   return (
     <div className=" dark:text-white">
       <Toast
         message={toastMessage}
         type={toastType}
         show={showToast}
-        onClose={() => setShowToast(false)}
+        onClose={hideToast}
       />
       <Logo className="mb-4 md:-ml-16 max-w-xs" />
       <AnimatedText enterClassName="delay-200">
@@ -59,7 +50,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
       <BookCreationForm
         isVisible={showForm}
         onCancelClick={handleCancelClick}
-        showToast={handleShowToast}
+        showToast={showToastFunc}
         onBookCreationSuccess={onBookCreationSuccess}
       />
       <DescriptionSection

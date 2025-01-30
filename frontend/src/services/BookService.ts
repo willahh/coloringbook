@@ -1,9 +1,23 @@
 import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
-import { Page } from '@/domain/book';
+import { IBook, Page } from '@/domain/book';
+import { getBooksUrl } from '@/utils/api';
 
 export class BookService {
+  static async getBook(bookId: string) {
+    const response = await fetch(`${getBooksUrl()}/${bookId}`);
+    return await response.json();
+  }
+  static async updateBook(bookId: string, book: Partial<IBook>) {
+    const response = await fetch(`${getBooksUrl()}/${bookId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pages: book.pages }),
+    });
+    return await response.json();
+  }
+
   static transformPagesToSpread(pages: Page[]): Page[][] {
     return [
       // First page is alone

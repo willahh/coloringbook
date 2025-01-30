@@ -10,19 +10,19 @@ import {
 import { XMarkIcon } from '@heroicons/react/20/solid';
 
 interface ToastProps {
-  message: string;
+  message: string | React.ReactNode; // Change message type to string or React element
   description?: string;
   type: 'success' | 'error' | 'info';
   show: boolean;
   onClose: () => void;
-  autoClose?: number;
+  autoClose?: number | boolean;
 }
 
 /**
  * Le composant `Toast` est utilisé pour afficher des notifications temporaires à l'utilisateur.
  * Il peut afficher différents types de messages : succès, erreur et information.
  *
- * @param {string} message - Le message principal à afficher.
+ * @param {string | React.ReactNode} message - Le message principal à afficher.
  * @param {string} [description] - Une description supplémentaire pour le message.
  * @param {'success' | 'error' | 'info'} type - Le type de notification.
  * @param {boolean} show - Détermine si la notification est visible.
@@ -111,7 +111,7 @@ export default function Toast({
       const timer = setTimeout(() => {
         setIsVisible(false);
         onClose();
-      }, autoClose * 1000);
+      }, (typeof autoClose === 'number' ? autoClose : 8) * 1000);
       return () => clearTimeout(timer);
     }
   }, [show, autoClose, onClose]);
@@ -149,7 +149,7 @@ export default function Toast({
       {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live="assertive"
-        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
+        className="pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6 z-40"
       >
         <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
@@ -163,9 +163,9 @@ export default function Toast({
                       {message}
                     </p>
                     {description && (
-                      <p className="mt-1 text-sm text-primary-500">
+                      <div className="mt-1 text-sm text-primary-500">
                         {description}
-                      </p>
+                      </div>
                     )}
                   </div>
                   <div className="ml-4 flex shrink-0">

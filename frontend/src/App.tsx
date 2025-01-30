@@ -7,7 +7,7 @@ import { Theme } from '@radix-ui/themes';
 import AppRoutes from './AppRoutes.tsx';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext'; // Décommentez cette ligne
 
-const defaultAppearance = 'dark';
+const defaultAppearance = 'light';
 import(`./main.${defaultAppearance}.css`);
 
 function RenderApp() {
