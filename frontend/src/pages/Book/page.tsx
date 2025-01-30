@@ -18,6 +18,8 @@ import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
 import { BookService } from '@/services/BookService';
 import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsToast';
+import Header from '@/components/Header';
+import BreadCrumb from '@/components/BreadCrumb';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -44,6 +46,27 @@ export const BookPageContext = createContext<CanvasContextType>({
   isModified: false,
 });
 
+const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
+  return (
+    <Header>
+      <BreadCrumb
+        pages={[
+          { current: false, href: '/books', name: 'Livres' },
+          ...(book
+            ? [
+                {
+                  current: true,
+                  href: '/books/' + book.id,
+                  name: book.name,
+                },
+              ]
+            : []),
+        ]}
+      />
+    </Header>
+  );
+};
+
 const BookPage: React.FC = () => {
   console.log('BookPage');
   const { bookId = '', pageId = '1' } = useParams<{
@@ -54,7 +77,7 @@ const BookPage: React.FC = () => {
 
   // States
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [, setBook] = useState<IBook | null>(null);
+  const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
   const [, setIsLoading] = useState(true);
@@ -149,7 +172,7 @@ const BookPage: React.FC = () => {
     <BookPageContext.Provider
       value={{ canvas, setCanvas, bookData, pageParams, setPages, isModified }}
     >
-      <Layout className={`w-full flex`} showHeader={true}>
+      <Layout className={`w-full flex`} header={<BookHeader book={book} />}>
         <SidePanel
           className="flex flex-row bg-primary-100 dark:bg-primary-900 w-80 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
@@ -178,11 +201,7 @@ const BookPage: React.FC = () => {
           <SpreadToolbar />
         </main>
       </Layout>
-      <UnsavedChangesToast
-        isVisible={isModified}
-        onSave={handleSave}
-        onClose={() => setIsModified(false)}
-      />
+      <UnsavedChangesToast isVisible={isModified} onSave={handleSave} />
     </BookPageContext.Provider>
   );
 };

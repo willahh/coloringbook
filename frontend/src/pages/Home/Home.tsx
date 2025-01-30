@@ -94,7 +94,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Layout showHeader={false}>
+    <Layout>
       <div className="w-full h-screen items-center">
         <div className="flex items-center h-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">

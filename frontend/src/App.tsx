@@ -5,10 +5,10 @@ import '@radix-ui/themes/styles.css';
 import * as Tooltip from '@radix-ui/react-tooltip';
 import { Theme } from '@radix-ui/themes';
 import AppRoutes from './AppRoutes.tsx';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext'; // Décommentez cette ligne
+import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
-// const defaultAppearance = 'light';
-// import(`./main.${defaultAppearance}.css`);
+const defaultAppearance = localStorage.getItem('theme') || 'dark';
+import(`./main.${defaultAppearance}.css`);
 
 function RenderApp() {
   const { appearance } = useTheme();

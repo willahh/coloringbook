@@ -14,7 +14,7 @@ interface ToastProps {
   description?: string;
   type: 'success' | 'error' | 'info';
   show: boolean;
-  onClose: () => void;
+  onClose?: () => void;
   autoClose?: number | boolean;
 }
 
@@ -110,7 +110,7 @@ export default function Toast({
     if (show && autoClose) {
       const timer = setTimeout(() => {
         setIsVisible(false);
-        onClose();
+        onClose?.();
       }, (typeof autoClose === 'number' ? autoClose : 8) * 1000);
       return () => clearTimeout(timer);
     }
@@ -173,7 +173,7 @@ export default function Toast({
                       type="button"
                       onClick={() => {
                         setIsVisible(false);
-                        onClose();
+                        onClose?.();
                       }}
                       className="inline-flex rounded-md bg-white text-primary-400 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                     >

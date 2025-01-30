@@ -1,20 +1,27 @@
 import { motion } from 'motion/react';
 import motionConfig from '@shared/shared';
-import Header from '@components/Header';
 import { GridDebug, DebugButton } from '@components/Debug';
 
+/**
+ * Props for the Layout component.
+ *
+ * @property {string} [className] - Optional CSS class name to apply to the layout.
+ * @property {React.ReactNode} [aside] - Optional aside content to be displayed in the layout.
+ * @property {React.ReactNode} [children] - Optional children elements to be rendered within the layout.
+ * @property {React.ReactNode} [header] - Optional custom header content to be displayed in the layout.
+ */
 interface LayoutProps {
   className?: string;
   aside?: React.ReactNode;
   children?: React.ReactNode;
-  showHeader?: boolean;
+  header?: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   className,
   aside,
   children,
-  showHeader,
+  header,
 }) => {
   const urlParams = new URLSearchParams(window.location.search);
   const griddDebug = urlParams.get('griddebug') === '1';
@@ -46,7 +53,7 @@ const Layout: React.FC<LayoutProps> = ({
           {aside}
           {children}
         </motion.div>
-        {showHeader && <Header />}
+        {header}
       </div>
     </>
   );
