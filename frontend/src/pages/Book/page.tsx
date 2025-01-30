@@ -14,10 +14,11 @@ import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
-import { BookService } from '@/services/BookService';
+import { bookService, BookService } from '@/services/BookService';
 import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsToast';
 import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
+import InlineEdit from '@/components/InlineEdit';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -44,7 +45,10 @@ export const BookPageContext = createContext<CanvasContextType>({
   isModified: false,
 });
 
-const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
+const BookHeader: React.FC<{
+  book: IBook | null;
+  onBookNameEdit: (newName: string) => void;
+}> = ({ book, onBookNameEdit }) => {
   return (
     <Header>
       <BreadCrumb
@@ -52,7 +56,7 @@ const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
           {
             current: false,
             href: '/books',
-            name: 'Livres',
+            content: 'Bibliothèque',
             description: 'Accéder à ma bibliothèque de livres',
           },
           ...(book // TODO: Book.name EditableField => Ajouter un composant EditableField
@@ -60,7 +64,9 @@ const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
                 {
                   current: true,
                   href: '/books/' + book.id,
-                  name: book.name,
+                  content: (
+                    <InlineEdit value={book.name} onEdit={onBookNameEdit} />
+                  ),
                 },
               ]
             : []),
@@ -72,6 +78,8 @@ const BookHeader: React.FC<{ book: IBook | null }> = ({ book }) => {
 
 const BookPage: React.FC = () => {
   console.log('BookPage');
+
+  // Page params
   const { bookId = '', pageId = '1' } = useParams<{
     bookId: string;
     pageId?: string;
@@ -83,10 +91,11 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
-  console.log('#2 isModified', isModified)
+  console.log('#2 isModified', isModified);
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
+  // Effects
   useEffect(() => {
     const fetchBook = async () => {
       try {
@@ -107,6 +116,29 @@ const BookPage: React.FC = () => {
   }, [bookId]);
 
   // Handlers
+  const handleOnEdit = async (book: IBook | null, newValue: string) => {
+    console.log('onEdit', newValue);
+
+    if (book) {
+      const newBook = {
+        ...book,
+        name: newValue,
+      };
+      const responseData = await BookService.updateBook(
+        String(book.id),
+        newBook
+      );
+      if (!responseData.error) {
+        setIsModified(false);
+        setBook(newBook);
+      } else {
+        if (responseData.message) {
+          alert(responseData.message);
+        }
+      }
+    }
+  };
+
   const handleAddPageButtonClick = () => {
     const newPage: Page = {
       pageId: 10,
@@ -180,7 +212,17 @@ const BookPage: React.FC = () => {
     <BookPageContext.Provider
       value={{ canvas, setCanvas, book, pageParams, setPages, isModified }}
     >
-      <Layout className={`w-full flex`} header={<BookHeader book={book} />}>
+      <Layout
+        className={`w-full flex`}
+        header={
+          <BookHeader
+            book={book}
+            onBookNameEdit={(newName) => {
+              handleOnEdit(book, newName);
+            }}
+          />
+        }
+      >
         <SidePanel
           className="flex flex-row bg-primary-100 dark:bg-primary-900 w-80 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"

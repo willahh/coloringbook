@@ -14,7 +14,7 @@ export class BookService {
     const response = await fetch(`${getBooksUrl()}/${bookId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ pages: book.pages }),
+      body: JSON.stringify(book),
     });
     return await response.json();
   }
@@ -24,7 +24,7 @@ export class BookService {
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {
       const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
-      console.log('aspectRatio', aspectRatio)
+      console.log('aspectRatio', aspectRatio);
       const defaultPages = Array.from(
         { length: 3 },
         (_, i): Page => ({
