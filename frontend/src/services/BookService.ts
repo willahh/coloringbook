@@ -3,9 +3,10 @@ import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pou
 import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
+import { BookFormatHelper } from '@/utils/BookUtils';
 
 export class BookService {
-  static async getBook(bookId: string) {
+  static async getBook(bookId: string): Promise<IBook> {
     const response = await fetch(`${getBooksUrl()}/${bookId}`);
     return await response.json();
   }
@@ -18,17 +19,43 @@ export class BookService {
     return await response.json();
   }
 
+  static prepareBookData(book: IBook): { book: IBook; isModified: boolean } {
+    // Si le livre n'a pas de pages, ajoutons-en 3 par défaut
+    let isModified = false;
+    if (!book.pages || book.pages.length === 0) {
+      const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
+      console.log('aspectRatio', aspectRatio)
+      const defaultPages = Array.from(
+        { length: 3 },
+        (_, i): Page => ({
+          pageId: i + 1,
+          pageNumber: i + 1,
+          aspectRatio: aspectRatio,
+          elements: [],
+        })
+      );
+      isModified = true;
+      book.pages = defaultPages;
+    }
+
+    return { book: book, isModified: isModified };
+  }
+
   static transformPagesToSpread(pages: Page[]): Page[][] {
-    return [
-      // First page is alone
-      [_.head(pages)],
+    if (pages.length > 0) {
+      return [
+        // First page is alone
+        [_.head(pages)],
 
-      // Middle pages, grouped by two
-      ..._.chunk(_.dropRight(_.drop(pages), 1), 2),
+        // Middle pages, grouped by two
+        ..._.chunk(_.dropRight(_.drop(pages), 1), 2),
 
-      // Last page is alone
-      [_.last(pages)],
-    ] as Page[][];
+        // Last page is alone
+        [_.last(pages)],
+      ] as Page[][];
+    } else {
+      return [];
+    }
   }
 
   static getSpreadForPage(pages: Page[], pageId: number): Page[] {

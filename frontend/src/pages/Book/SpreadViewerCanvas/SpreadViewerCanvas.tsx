@@ -153,7 +153,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       // Create pages
       const canvasBorder = 8;
       const spreadSize = { width: 0, height: 0 };
-
       pageSpread.forEach((page, index) => {
         // const paysage = dimensions.width > dimensions.height;
         // const fitPageHeight = dimensions.width > dimensions.height;
@@ -162,8 +161,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           dimensions.width > dimensions.height;
         let pageWidth = 0;
         let pageHeight = 0;
-        // console.log('\n#2 ---------');
-        // console.log('#2 fitPageHeight', fitPageHeight);
         if (fitPageHeight) {
           pageHeight = dimensions.height - canvasBorder * 2;
           pageWidth =

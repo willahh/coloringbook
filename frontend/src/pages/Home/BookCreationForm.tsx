@@ -215,7 +215,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 name="pageCount"
                 value={field.value ?? '12'}
                 disabled={!isVisible || isLoading}
-                className="w-full p-2 border border-primary-400 dark:border-primary-600 rounded bg-primary-400 dark:bg-primary-800 dark:text-white"
+                className="w-full p-2 border border-primary-400 dark:border-primary-600 rounded bg-primary-200 dark:bg-primary-800 dark:text-white"
               />
             )}
           />
@@ -278,7 +278,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                 {!coverImage && (
                   <label
                     htmlFor="coverImage"
-                    className="px-4 py-2 rounded-md bg-primary-600 dark:text-white cursor-pointer hover:bg-primary-700 transition-colors duration-200 select-none"
+                    className="px-4 py-2 rounded-md bg-primary-200 dark:bg-primary-800 dark:text-white cursor-pointer hover:bg-primary-700 transition-colors duration-200 select-none"
                   >
                     Choisir une image
                   </label>

@@ -159,9 +159,9 @@ export default function Toast({
                 <div className="flex items-start">
                   <div className="shrink-0">{getIcon()}</div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className="text-sm font-medium text-primary-900">
+                    <div className="text-sm font-medium text-primary-900">
                       {message}
-                    </p>
+                    </div>
                     {description && (
                       <div className="mt-1 text-sm text-primary-500">
                         {description}

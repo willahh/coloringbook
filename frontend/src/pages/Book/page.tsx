@@ -5,7 +5,6 @@ import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
 import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
-import ButtonLink from '@components/ButtonLink';
 
 import Layout from '../layout';
 import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
@@ -17,9 +16,8 @@ import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
-import Toast from '@/components/Toast';
-import { getBooksUrl } from '@/utils/api';
 import { BookService } from '@/services/BookService';
+import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsToast';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -56,16 +54,30 @@ const BookPage: React.FC = () => {
 
   // States
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [pages, setPages] = useState(bookData.pages);
+  const [, setBook] = useState<IBook | null>(null);
+  const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
-  const [, setShowToast] = useState(false);
+  const [, setIsLoading] = useState(true);
+  const [, setError] = useState<string | null>(null);
 
-  console.log('pages', pages);
   useEffect(() => {
-    console.log('useEffect');
-    setIsModified(true);
-    setShowToast(true);
-  }, [pages]);
+    const fetchBook = async () => {
+      try {
+        const book = await BookService.getBook(bookId);
+        const { book: newBook, isModified } = BookService.prepareBookData(book);
+
+        setIsLoading(true);
+        setBook(newBook);
+        setPages(newBook.pages);
+        setIsModified(isModified);
+      } catch (err) {
+        setError(`Erreur lors du chargement du livre ${err}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBook();
+  }, [bookId]);
 
   // Handlers
   const handleAddPageButtonClick = () => {
@@ -77,6 +89,7 @@ const BookPage: React.FC = () => {
     };
     const book: IBook = PageService.addPage(bookData, newPage);
     setPages(book.pages);
+    setIsModified(true);
   };
   const handleDeleteButtonClick = (event: React.MouseEvent, pageId: number) => {
     event.preventDefault();
@@ -84,6 +97,7 @@ const BookPage: React.FC = () => {
     if (window.confirm('Confirmer la suppression de la page ?')) {
       const book: IBook = PageService.deletePage(bookData, pageId);
       setPages(book.pages);
+      setIsModified(true);
     }
   };
 
@@ -94,7 +108,6 @@ const BookPage: React.FC = () => {
       if (!data.error) {
         console.log('Book saved successfully:', data);
         setIsModified(false);
-        setShowToast(false);
       } else {
         alert('Erreur lors du retour serveur');
       }
@@ -165,24 +178,11 @@ const BookPage: React.FC = () => {
           <SpreadToolbar />
         </main>
       </Layout>
-      {isModified && (
-        <Toast
-          autoClose={false}
-          message={
-            <div>
-              <div>Les modifications ne sont pas enregistrées</div>
-              <div>
-                <ButtonLink onClick={handleSave}>Enregistrer</ButtonLink>
-              </div>
-            </div>
-          }
-          type="info"
-          show={true}
-          onClose={() => {
-            setShowToast(false);
-          }}
-        />
-      )}
+      <UnsavedChangesToast
+        isVisible={isModified}
+        onSave={handleSave}
+        onClose={() => setIsModified(false)}
+      />
     </BookPageContext.Provider>
   );
 };

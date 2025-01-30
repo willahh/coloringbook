@@ -116,10 +116,12 @@ const Pages: React.FC<PagesProps> = ({
   const useSpread = false;
   let spreads: Page[][] = [];
 
-  if (useSpread) {
-    spreads = BookService.transformPagesToSpread(pages);
-  } else {
-    spreads = [pages];
+  if (pages.length > 0) {
+    if (useSpread) {
+      spreads = BookService.transformPagesToSpread(pages);
+    } else {
+      spreads = [pages];
+    }
   }
 
   const renderSpreads = () => {
