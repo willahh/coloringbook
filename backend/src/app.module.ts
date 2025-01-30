@@ -5,9 +5,15 @@ import { AppService } from '@/app.service';
 import { UsersModule } from '@/users/users.module';
 import { BooksModule } from '@/books/books.module';
 import { options } from '@/data-source';
+import { GraphicAssetsModule } from './graphic-assets/graphic-assets.module';
 
 @Module({
-  imports: [UsersModule, BooksModule, TypeOrmModule.forRoot(options)],
+  imports: [
+    UsersModule,
+    BooksModule,
+    GraphicAssetsModule,
+    TypeOrmModule.forRoot(options),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
