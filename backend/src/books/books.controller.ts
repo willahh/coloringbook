@@ -12,6 +12,7 @@ import {
   ParseFilePipe,
   MaxFileSizeValidator,
   FileTypeValidator,
+  BadRequestException,
 } from '@nestjs/common';
 import { SupabaseService } from '@/supabase.service';
 import { multerOptions } from '@/config/multer.config';
@@ -104,6 +105,11 @@ export class BooksController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
+    if (!updateBookDto.name || updateBookDto.name.length < 3) {
+      throw new BadRequestException(
+        'Book name must be at least 3 characters long',
+      );
+    }
     return this.booksService.update(+id, updateBookDto);
   }
 
