@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 
 interface LinkProps {
+  className?: string;
   href?: string;
   children: ReactNode;
   onClick?: (event: React.MouseEvent) => void;
@@ -8,6 +9,7 @@ interface LinkProps {
 }
 
 const ButtonLink: React.FC<LinkProps> = ({
+  className,
   href,
   children,
   onClick,
@@ -18,15 +20,12 @@ const ButtonLink: React.FC<LinkProps> = ({
       ? 'text-secondary-600 hover:text-secondary-800'
       : 'text-gray-600 hover:text-gray-800';
   return href ? (
-    <a
-      href={href}
-      className={`${cls} hover:underline`}
-    >
+    <a href={href} className={`${cls} hover:underline ${className || ''}`}>
       {children}
     </a>
   ) : (
     <button
-      className={`${cls} hover:underline`}
+      className={`${cls} hover:underline ${className || ''}`}
       onClick={onClick}
     >
       {children}

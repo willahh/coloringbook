@@ -172,8 +172,11 @@ export default function Toast({
                     <button
                       type="button"
                       onClick={() => {
-                        setIsVisible(false);
-                        onClose?.();
+                        if (onClose) {
+                          onClose?.();
+                        } else {
+                          setIsVisible(false);
+                        }
                       }}
                       className="inline-flex rounded-md bg-white text-primary-400 hover:text-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
                     >

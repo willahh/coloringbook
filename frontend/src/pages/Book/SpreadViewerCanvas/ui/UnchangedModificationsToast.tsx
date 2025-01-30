@@ -1,26 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import ButtonLink from '@components/ButtonLink';
 import Toast from '@components/Toast';
+import KeyboardShortcut from '@/components/KeyboardShortcut';
 
 interface UnsavedChangesToastProps {
-  isVisible: boolean;
+  isModified: boolean;
   onSave: () => void;
 }
 
 const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
-  isVisible,
+  isModified,
   onSave,
 }) => {
-  const [show, setIsShow] = useState(isVisible);
+  console.log('#2 UnsavedChangesToast');
+
+  const [show, setIsShow] = useState(isModified);
+  const [isClosed, setIsClosed] = useState(false);
   useEffect(() => {
-    setIsShow(isVisible);
-  }, [isVisible]);
+    setIsShow(isModified);
+    if (show) {
+      setIsClosed(false);
+    }
+  }, [isModified, show]);
+  console.log(
+    '#2 isModified:',
+    isModified,
+    'show: ',
+    show,
+    'isClosed:',
+    isClosed
+  );
 
   const onDontShowAgain = () => {
     console.log('onDontShowAgain');
   };
 
-  if (!isVisible) return null;
+  // if (!isVisible) return null;
 
   return (
     <Toast
@@ -28,8 +43,11 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
       message={
         <div>
           <div>Les modifications ne sont pas enregistrées</div>
-          <div className="flex gap-2">
-            <ButtonLink onClick={onSave}>Enregistrer</ButtonLink>
+          <div className="flex gap-4">
+            <ButtonLink className="flex items-center gap-1" onClick={onSave}>
+              <span>Enregistrer</span>
+              <KeyboardShortcut keys={['Ctrl', 'S']} />
+            </ButtonLink>
             <ButtonLink onClick={onDontShowAgain} color="gray">
               Ne plus afficher
             </ButtonLink>
@@ -37,8 +55,12 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
         </div>
       }
       type="info"
-      show={show}
-      // onClose={handleClose}
+      // show={!isClosed && show}
+      show={!isClosed && show}
+      onClose={() => {
+        setIsClosed(true);
+        setIsShow(true);
+      }}
     />
   );
 };

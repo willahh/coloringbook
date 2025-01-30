@@ -2,7 +2,6 @@ import React, { useState, createContext, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
-import { bookData } from '@/mock/BookData';
 import { PageService } from '@/services/PageService';
 
 import Layout from '../layout';
@@ -24,7 +23,7 @@ interface CanvasContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
   setPages: React.Dispatch<React.SetStateAction<Page[]>>;
-  bookData: IBook;
+  book?: IBook | null;
   pageParams: {
     bookId: string;
     pageId?: string;
@@ -35,7 +34,7 @@ interface CanvasContextType {
 export const BookPageContext = createContext<CanvasContextType>({
   canvas: null,
   setCanvas: () => {},
-  bookData: null as unknown as IBook,
+  book: null,
   pageParams: {
     bookId: '',
   },
@@ -84,6 +83,7 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
+  console.log('#2 isModified', isModified)
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
@@ -114,17 +114,21 @@ const BookPage: React.FC = () => {
       aspectRatio: { width: 1, height: 1 },
       elements: [],
     };
-    const book: IBook = PageService.addPage(bookData, newPage);
-    setPages(book.pages);
-    setIsModified(true);
+    if (book) {
+      const bookNew: IBook = PageService.addPage(book, newPage);
+      setPages(bookNew.pages);
+      setIsModified(true);
+    }
   };
   const handleDeleteButtonClick = (event: React.MouseEvent, pageId: number) => {
     event.preventDefault();
 
     if (window.confirm('Confirmer la suppression de la page ?')) {
-      const book: IBook = PageService.deletePage(bookData, pageId);
-      setPages(book.pages);
-      setIsModified(true);
+      if (book) {
+        const bookNew: IBook = PageService.deletePage(book, pageId);
+        setPages(bookNew.pages);
+        setIsModified(true);
+      }
     }
   };
 
@@ -174,7 +178,7 @@ const BookPage: React.FC = () => {
 
   return (
     <BookPageContext.Provider
-      value={{ canvas, setCanvas, bookData, pageParams, setPages, isModified }}
+      value={{ canvas, setCanvas, book, pageParams, setPages, isModified }}
     >
       <Layout className={`w-full flex`} header={<BookHeader book={book} />}>
         <SidePanel
@@ -205,7 +209,7 @@ const BookPage: React.FC = () => {
           <SpreadToolbar />
         </main>
       </Layout>
-      <UnsavedChangesToast isVisible={isModified} onSave={handleSave} />
+      <UnsavedChangesToast isModified={isModified} onSave={handleSave} />
     </BookPageContext.Provider>
   );
 };
