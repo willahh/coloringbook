@@ -45,7 +45,9 @@ export const HoverCardDemo = () => (
   </HoverCard.Root>
 );
 
-export const TemplatePanel: React.FC<{ className?: string; }> = ({ className }) => {
+export const TemplatePanel: React.FC<{ className?: string }> = ({
+  className,
+}) => {
   return (
     <div className={`${className}`}>
       <PanelHeader>[icon] TemplatePanel</PanelHeader>

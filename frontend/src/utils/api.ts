@@ -6,6 +6,10 @@ export const getPublicURI = (): string => {
   return PUBLIC_URI;
 };
 
+export const getAPIURL = (): string => {
+  return API_URL;
+};
+
 export const getMediaUrl = (): string => {
   return MEDIA_URL;
 };

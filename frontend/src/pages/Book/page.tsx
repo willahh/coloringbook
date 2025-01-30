@@ -4,12 +4,18 @@ import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
 import { PageService } from '@/services/PageService';
 
+/* 
+ FIXME: Export default !!
+ import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
+ => 
+ import SpreadToolbar from './SpreadViewerCanvas/ui/SpreadToolbar';
+*/
 import Layout from '../layout';
 import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
 import { SideToolbar } from './SidePanel/SideToolbar';
 import { ColorPanel } from './SidePanel/ColorPanel';
 import { SidePanel } from './SidePanel/SidePanel';
-import { GraphicsPanel } from './SidePanel/GraphicsPanel';
+import GraphicsPanel from './SidePanel/GraphicsPanel';
 import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
@@ -59,7 +65,7 @@ const BookHeader: React.FC<{
             content: 'Bibliothèque',
             description: 'Accéder à ma bibliothèque de livres',
           },
-          ...(book // TODO: Book.name EditableField => Ajouter un composant EditableField
+          ...(book
             ? [
                 {
                   current: true,
@@ -226,7 +232,7 @@ const BookPage: React.FC = () => {
         }
       >
         <SidePanel
-          className="flex flex-row bg-primary-100 dark:bg-primary-900 w-80 shadow-black z-10
+          className="flex flex-row w-3/12 min-w-96 max-w-[500px] bg-primary-100 dark:bg-primary-900 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
         >
           <div
@@ -237,7 +243,7 @@ const BookPage: React.FC = () => {
           >
             <TemplatePanel className="" />
             <VerticalSeparator />
-            <GraphicsPanel className="" />
+            <GraphicsPanel />
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>

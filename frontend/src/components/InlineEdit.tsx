@@ -55,7 +55,7 @@ const InlineEdit: React.FC<InlineEditProps> = ({
     return (
       <span
         onClick={() => setEditing(true)}
-        className={`inline-block cursor-pointer ${className}`}
+        className={`inline-block cursor-text transition-all hover:text-black dark:hover:text-white ${className}`}
       >
         {value}
       </span>

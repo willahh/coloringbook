@@ -184,8 +184,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           left: offsetX,
           top: 0,
           fill: 'white',
-          stroke: 'green',
-          strokeWidth: 4,
+          stroke: '#ccc',
+          strokeWidth: 2,
           selectable: false,
         });
         canvas.add(rect);

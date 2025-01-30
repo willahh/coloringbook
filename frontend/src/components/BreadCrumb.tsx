@@ -14,7 +14,7 @@ interface BreadCrumbProps {
 
 const BreadCrumb: React.FC<BreadCrumbProps> = function ({ pages }) {
   return (
-    <nav aria-label="Breadcrumb" className="flex">
+    <nav data-id="BreadCrumb" aria-label="Breadcrumb" className="flex">
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <Tooltip content="Accueil">
