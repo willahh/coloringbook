@@ -21,7 +21,7 @@ export class BooksService {
   }
 
   findAll(): Promise<Book[]> {
-    return this.bookRepository.find();
+    return this.bookRepository.find({ order: { updatedAt: 'ASC' } });
   }
 
   async findOne(id: number): Promise<Book> {
