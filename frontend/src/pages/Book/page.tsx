@@ -14,7 +14,7 @@ import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
-import { bookService, BookService } from '@/services/BookService';
+import { BookService } from '@/services/BookService';
 import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsToast';
 import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
@@ -172,7 +172,9 @@ const BookPage: React.FC = () => {
         console.log('Book saved successfully:', data);
         setIsModified(false);
       } else {
-        alert('Erreur lors du retour serveur');
+        if (data.message) {
+          alert(data.message);
+        }
       }
     } catch (error) {
       console.error('Error saving book:', error);
