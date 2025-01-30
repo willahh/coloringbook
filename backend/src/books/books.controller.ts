@@ -105,7 +105,7 @@ export class BooksController {
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBookDto: UpdateBookDto) {
-    if (!updateBookDto.name || updateBookDto.name.length < 3) {
+    if (updateBookDto.name != undefined && updateBookDto.name.length < 3) {
       throw new BadRequestException(
         'Book name must be at least 3 characters long',
       );
