@@ -16,38 +16,49 @@ const UserBooks: React.FC<UserBooksProps> = ({
   books,
   loading,
   highlightBookId,
+  minItems,
 }) => {
+  const itemsToShow = Math.max(minItems, books.length);
+
   return (
     <>
-      {Array.from({
-        length: 20,
-      }).map((_, index) => (
-        <div key={index} className={itemClassName}>
-          {!loading &&
-            (books[index] ? (
-              // Book
-              <UserBookItem
-                index={index}
-                highlightBookId={highlightBookId}
-                book={books[index]}
-              />
-            ) : (
-              // No book
-              <UserBookItem
-                index={index}
-                highlightBookId={highlightBookId}
-                book={{
-                  coverImage: '',
-                  id: -1,
-                  format: BookFormat.CARRE,
-                  name: 'Aucun livre',
-                  pageCount: 1,
-                  pages: [],
-                }}
-              />
-            ))}
-        </div>
-      ))}
+      {Array.from({ length: itemsToShow }).map((_, index) => {
+        let cls = 'hidden';
+
+        if ([19, 18, 17, 16].includes(index)) {
+          cls += ' md:hidden xl:block';
+        } else {
+          cls += ' md:block';
+        }
+
+        return (
+          <div key={index} className={`${itemClassName} ${cls}`}>
+            {!loading &&
+              (books[index] ? (
+                // Livre existant
+                <UserBookItem
+                  index={index}
+                  highlightBookId={highlightBookId}
+                  book={books[index]}
+                />
+              ) : (
+                // Livre par défaut
+                <UserBookItem
+                  index={index}
+                  highlightBookId={highlightBookId}
+                  book={{
+                    coverImage: '',
+                    id: -1,
+                    format: BookFormat.CARRE,
+                    name: 'Aucun livre',
+                    pageCount: 1,
+                    pages: [],
+                  }}
+                />
+              ))}
+          </div>
+        );
+      })}
     </>
   );
 };

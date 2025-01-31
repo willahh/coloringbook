@@ -99,18 +99,18 @@ const HomePage: React.FC = () => {
         <div className="flex items-center h-full">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">
             <div
-              className={`md:col-span-3 xl:col-span-3  ${
+              className={`md:col-span-2 xl:col-span-3  ${
                 gridDebug ? gridBorderDebugCls : ''
               }`}
             ></div>
             <div
-              className={`md:col-span-6 xl:col-span-6 w-full flex items-center  ${
+              className={`md:col-span-8 xl:col-span-6 w-full flex items-center  ${
                 gridDebug ? gridBorderDebugCls : ''
               }`}
             >
               <div
                 className="grid grid-cols-1 
-              md:grid-cols-6 md:grid-rows-3 
+              md:grid-cols-8 md:grid-rows-2
               xl:grid-cols-6 xl:grid-rows-3 gap-4 w-full"
               >
                 <UserBooks
@@ -118,19 +118,19 @@ const HomePage: React.FC = () => {
                   loading={loading}
                   minItems={20}
                   highlightBookId={highlightBookId}
-                  itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414] hidden md:block px-2
+                  itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
       ${gridDebug ? 'border border-primary-500' : ''}`}
                 />
                 <div
                   className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
-                             md:col-span-4 md:row-span-3 md:row-start-2 md:col-start-2"
+                             md:col-span-4 md:row-span-4 md:row-start-1 md:col-start-3 md:flex md:self-center"
                 >
                   <ContentDiv onBookCreationSuccess={onBookCreationSuccess} />
                 </div>
               </div>
             </div>
             <div
-              className={`md:col-span-3 xl:col-span-3 w-full ${
+              className={`md:col-span-2 xl:col-span-3 w-full ${
                 gridDebug ? gridBorderDebugCls : ''
               }`}
             ></div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-// import { useDrag } from 'react-dnd';
+import { useDrag } from 'react-dnd';
 import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
 
@@ -15,7 +15,7 @@ const GraphicAssetItem: React.FC<{
   asset: GraphicAsset;
   onClick: (asset: GraphicAsset) => void;
 }> = ({ asset, onClick }) => {
-  // const [{ isDragging }, drag] = useDrag(() => ({
+  // const [{ isDragging, drag }] = useDrag(() => ({
   //   type: 'GRAPHIC_ASSET',
   //   item: { id: asset.id, path: asset.path },
   //   collect: (monitor) => ({

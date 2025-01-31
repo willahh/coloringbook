@@ -36,18 +36,18 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
       focus:border-primary-300 dark:focus:border-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500
       
       border-2 border-transparent
-      hover:border-black dark:hover:border-white
-      `;
+      hover:border-black dark:hover:border-white `;
   }
   const highlightBook = book.id === highlightBookId;
 
   if (index === 7) {
-    // Layout specificity
     cls += ' xl:hidden';
   }
 
-  if (index === 6 || index === 18 || index === 19) {
+  if ([1, 5].includes(index)) {
     cls += ' md:hidden xl:block';
+  } else {
+    cls += ' md:show'
   }
 
   let imageUrl = '';

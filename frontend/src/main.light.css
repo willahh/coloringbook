@@ -7,6 +7,11 @@
 @config "./../tailwind.config.js"; 
 
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts

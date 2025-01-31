@@ -6,6 +6,10 @@
 @tailwind utilities;
 @config "./../tailwind.dark.config.js"; 
 
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts
   https://fonts.google.com/selection/embed
