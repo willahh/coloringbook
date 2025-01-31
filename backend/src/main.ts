@@ -11,7 +11,11 @@ async function bootstrap() {
   app.use(delayMiddleware);
 
   app.enableCors({
-    origin: process.env.FRONTEND_URL ?? 'http://localhost:3001',
+    origin: [
+      process.env.FRONTEND_URL ?? 'http://localhost:3001',
+      'http://192.168.1.67:3001',
+      'http://192.168.1.67:5173',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
