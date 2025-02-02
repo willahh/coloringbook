@@ -3,7 +3,7 @@ import { diskStorage } from 'multer';
 
 export const multerOptions: MulterOptions = {
   storage: diskStorage({
-    destination: '@/uploads', // Dossier où les fichiers seront stockés
+    destination: './uploads', // Dossier où les fichiers seront stockés
     filename: (req, file, cb) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
       const ext = file.originalname.split('.').pop();
@@ -19,4 +19,26 @@ export const multerOptions: MulterOptions = {
     }
     cb(null, true);
   },
+};
+
+export const getMulterOptions: (destination?: string) => MulterOptions = (
+  destination: string = './uploads',
+) => {
+  return {
+    storage: diskStorage({
+      destination: destination, // Dossier où les fichiers seront stockés
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = file.originalname.split('.').pop();
+        cb(null, `${uniqueSuffix}.${ext}`);
+      },
+    }),
+    limits: multerOptions.limits,
+    fileFilter: (req, file, cb) => {
+      if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+        return cb(new Error('Seuls les fichiers images sont autorisés'), false);
+      }
+      cb(null, true);
+    },
+  };
 };

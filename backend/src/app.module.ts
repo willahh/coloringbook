@@ -6,12 +6,13 @@ import { UsersModule } from '@/users/users.module';
 import { BooksModule } from '@/books/books.module';
 import { options } from '@/data-source';
 import { GraphicAssetsModule } from './graphic-assets/graphic-assets.module';
-
+import { ImageModule } from './image/image.module';
 @Module({
   imports: [
     UsersModule,
     BooksModule,
     GraphicAssetsModule,
+    ImageModule,
     TypeOrmModule.forRoot(options),
   ],
   controllers: [AppController],

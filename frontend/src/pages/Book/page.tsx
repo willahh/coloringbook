@@ -25,6 +25,7 @@ import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsT
 import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
 import InlineEdit from '@/components/InlineEdit';
+import ImageConverter from './SidePanel/ImageConverter';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -244,6 +245,7 @@ const BookPage: React.FC = () => {
             <TemplatePanel className="" />
             <VerticalSeparator />
             <GraphicsPanel />
+            <ImageConverter />
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>

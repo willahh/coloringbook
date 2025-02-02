@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDrag } from 'react-dnd';
 import axios from 'axios';
-import { getAPIURL } from '@/utils/api';
+import { getAPIURL, getMediaUrl } from '@/utils/api';
 
 interface GraphicAsset {
   id: number;
@@ -33,7 +33,7 @@ const GraphicAssetItem: React.FC<{
       <div className="w-16 h-16 flex items-center justify-center bg-gray-100">
         {asset.type === 'svg' ? (
           <img
-            src={asset.path}
+            src={`${getMediaUrl()}/${asset.path}`}
             alt={asset.name}
             className="w-full h-full object-contain"
           />
