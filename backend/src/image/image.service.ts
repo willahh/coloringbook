@@ -6,10 +6,38 @@ import { CreateGraphicAssetDto } from '@/graphic-assets/dto/create-graphic-asset
 import { GraphicAssetType } from '@/graphic-assets/entities/graphic-asset-type.enum';
 import { GraphicAssetsService } from '@/graphic-assets/graphic-assets.service';
 import * as sharp from 'sharp';
+import { SupabaseService } from '@/supabase.service';
 
 @Injectable()
 export class ImageService {
-  constructor(private readonly graphicAssetsService: GraphicAssetsService) {}
+  constructor(
+    private readonly graphicAssetsService: GraphicAssetsService,
+    private readonly supabaseService: SupabaseService,
+  ) {}
+
+  private async uploadToSupabase(
+    bucketName: string,
+    folder: string,
+    filePath: string,
+  ): Promise<string> {
+    const fileContent = fs.readFileSync(filePath);
+    const fileName = path.basename(filePath);
+    const supabase = this.supabaseService.getClient();
+    const { error } = await supabase.storage
+      .from(bucketName)
+      .upload(`${folder}/${fileName}`, fileContent);
+
+    if (error) {
+      throw new Error(`Failed to upload file to Supabase: ${error.message}`);
+    }
+
+    // Get public URL for the uploaded file
+    const { data } = supabase.storage
+      .from(bucketName)
+      .getPublicUrl(`${folder}/${fileName}`);
+
+    return data.publicUrl;
+  }
 
   async convertToVector(file: Express.Multer.File): Promise<string> {
     const pathToImage = file.path;
@@ -22,28 +50,24 @@ export class ImageService {
 
     const pathToFullImage = path.join(
       fullDir,
-      filenameWithoutExtension + '.jpg',
+      `${filenameWithoutExtension}.jpg`,
     );
     const pathToConvertedImage = path.join(
       convertedDir,
-      filenameWithoutExtension + '.svg',
+      `${filenameWithoutExtension}.svg`,
     );
     const pathToThumbnail = path.join(
       thumbnailDir,
-      filenameWithoutExtension + '.jpg',
+      `${filenameWithoutExtension}.jpg`,
     );
 
     // Create directories if they do not exist
     try {
-      if (!fs.existsSync(fullDir)) {
-        fs.mkdirSync(fullDir, { recursive: true });
-      }
-      if (!fs.existsSync(convertedDir)) {
-        fs.mkdirSync(convertedDir, { recursive: true });
-      }
-      if (!fs.existsSync(thumbnailDir)) {
-        fs.mkdirSync(thumbnailDir, { recursive: true });
-      }
+      [fullDir, convertedDir, thumbnailDir].forEach((dir) => {
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+      });
     } catch (error) {
       console.error('Error creating directories:', error);
       throw error;
@@ -80,13 +104,19 @@ export class ImageService {
         .resize(150, 150)
         .toFile(pathToThumbnail);
 
-      // TODO: Upload the 3 files into supabase storage
+      // Upload files to Supabase Storage
+      const bucketName = 'uploads/graphic_asset'; // Replace with your bucket name
+      await Promise.all([
+        this.uploadToSupabase(bucketName, 'full', pathToFullImage),
+        this.uploadToSupabase(bucketName, 'vect', pathToConvertedImage),
+        this.uploadToSupabase(bucketName, 'thumbnails', pathToThumbnail),
+      ]);
 
       // Create a new GraphicAsset with the svg file
       const graphicAssetDTO = new CreateGraphicAssetDto();
       graphicAssetDTO.type = GraphicAssetType.SVG;
       graphicAssetDTO.name = filenameWithoutExtension;
-      graphicAssetDTO.path = pathToConvertedImage;
+      graphicAssetDTO.path = pathToThumbnail;
       graphicAssetDTO.fullPath = pathToFullImage;
       graphicAssetDTO.vectPath = pathToConvertedImage;
 

@@ -21,7 +21,7 @@ let envFile =
       : '.env';
 
 envFile += '';
-envFile = 'production.env'; // Uncomment me to run production migration scripts
+// envFile = 'production.env'; // Uncomment me to run production migration scripts
 
 dotenv.config({ path: 'env/' + envFile });
 
