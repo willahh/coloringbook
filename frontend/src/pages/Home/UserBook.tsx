@@ -53,9 +53,9 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   let imageUrl = '';
   imageUrl += '';
   if (book.coverImage === '' || book.coverImage == null) {
-    imageUrl = `${getMediaUrl()}/cover/default/${++index}.jpg`;
+    imageUrl = `${getMediaUrl()}/uploads/cover/default/${++index}.jpg`;
   } else {
-    imageUrl = `${getMediaUrl()}/${book.coverImage}`;
+    imageUrl = `${getMediaUrl()}/uploads/${book.coverImage}`;
   }
 
   useEffect(() => {

@@ -8,6 +8,8 @@ interface GraphicAsset {
   name: string;
   type: string;
   path: string;
+  fullPath: string;
+  vecPath: string;
 }
 
 // Composant pour chaque élément graphique
@@ -26,7 +28,7 @@ const GraphicAssetItem: React.FC<{
   return (
     <div
       // ref={drag}
-      className="flex flex-col items-center p-2 border border-gray-200 rounded cursor-move"
+      className="flex flex-col items-center p-2 border border-gray-200 rounded cursor-pointer"
       onClick={() => onClick(asset)}
       // style={{ opacity: isDragging ? 0.5 : 1 }}
     >

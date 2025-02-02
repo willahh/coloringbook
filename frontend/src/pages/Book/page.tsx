@@ -242,8 +242,8 @@ const BookPage: React.FC = () => {
             `}
             style={{ height: 'calc(100vh - 4rem)' }}
           >
-            <TemplatePanel className="" />
-            <VerticalSeparator />
+            {/* <TemplatePanel className="" /> */}
+            {/* <VerticalSeparator /> */}
             <GraphicsPanel />
             <ImageConverter />
             <VerticalSeparator />

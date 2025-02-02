@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
+import { Tooltip } from '@/components/Tooltip';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const ImageConverter: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -41,10 +43,16 @@ const ImageConverter: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">
-        Convertisseur d'Image Bitmap à Vectoriel
-      </h1>
+    <div className="container mx-auto p-4 text-sm">
+      <p className="mb-4">
+        <span className="flex items-center gap-2">
+          <span>Convertir une image</span>
+          <Tooltip content="Convertir une image JPG / PNG au format vectoriel SVG">
+            <InformationCircleIcon className="w-4 h-4" />
+          </Tooltip>
+        </span>
+      </p>
+
       <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="file"
@@ -62,25 +70,23 @@ const ImageConverter: React.FC = () => {
 
       {previewImage && (
         <div>
-          <h2 className="text-lg font-semibold mb-2">
-            Aperçu de l'image originale:
-          </h2>
+          <div className="">Aperçu de l'image originale:</div>
           <img
             src={previewImage}
             alt="Original Image"
-            className="max-w-full h-auto mb-4"
+            className="max-w-full h-auto mb-4 overflow-hidden rounded-md"
           />
         </div>
       )}
 
-      {convertedImage && (
+      {/* {convertedImage && (
         <div>
           <h2 className="text-lg font-semibold mb-2">Image Convertie (SVG):</h2>
           <div className="border border-gray-300 p-2 mb-4">
             <div dangerouslySetInnerHTML={{ __html: convertedImage }} />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
