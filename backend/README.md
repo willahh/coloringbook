@@ -127,7 +127,7 @@ npx typeorm migration:run -d ./public/data-source.js
 ```
 
 ## Add a new migration script :
-1. `data-source.ts`, add the new entity in the migraitons list.
+1. `data-source.ts`, add the new entity in the migration list.
 2. Compile with `npm run start` to generate .js files
 2. Run the migration script
 `npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/myNewMigrationScript`

@@ -26,6 +26,12 @@ export class GraphicAsset {
   path: string;
 
   @Column({ nullable: true })
+  fullPath: string;
+
+  @Column({ nullable: true })
+  vectPath: string;
+
+  @Column({ nullable: true })
   description?: string;
 
   @CreateDateColumn()

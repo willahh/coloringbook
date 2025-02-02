@@ -9,6 +9,8 @@ import { UpdateBookTable1738267032267 } from './migrations/1738267032267-update-
 import { AddGraphicAssetsTable1738268290034 } from './migrations/1738268290034-add-graphic-assets-table';
 import { GraphicAsset } from './graphic-assets/entities/graphic-asset.entity';
 import { UpdateGraphicTable1738268956723 } from './migrations/1738268956723-update-graphic-table';
+import { UpdateGraphicTable1738520339796 } from './migrations/1738520339796-update-graphic-table';
+import { UpdateGraphicTable1738520517876 } from './migrations/1738520517876-update-graphic-table';
 
 // Load environment variables based on the environment
 let envFile =
@@ -19,7 +21,7 @@ let envFile =
       : '.env';
 
 envFile += '';
-// envFile = 'production.env'; // Uncomment me to run production migration scripts
+envFile = 'production.env'; // Uncomment me to run production migration scripts
 
 dotenv.config({ path: 'env/' + envFile });
 
@@ -67,6 +69,8 @@ export const options: DataSourceOptions = {
     UpdateBookTable1738267032267,
     AddGraphicAssetsTable1738268290034,
     UpdateGraphicTable1738268956723,
+    UpdateGraphicTable1738520339796,
+    UpdateGraphicTable1738520517876,
   ],
   synchronize: false,
   logging: true,

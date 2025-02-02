@@ -13,5 +13,13 @@ export class CreateGraphicAssetDto {
 
   @IsString()
   @IsOptional()
+  fullPath: string;
+
+  @IsString()
+  @IsOptional()
+  vectPath: string;
+
+  @IsString()
+  @IsOptional()
   description?: string;
 }

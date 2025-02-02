@@ -16,9 +16,14 @@ export class ImageService {
     const filenameWithoutExtension = path.parse(file.filename).name;
 
     // Define paths
+    const fullDir = path.join(file.destination, '/..', 'full');
     const convertedDir = path.join(file.destination, '/..', 'vect');
     const thumbnailDir = path.join(file.destination, '/..', 'thumbnails');
 
+    const pathToFullImage = path.join(
+      fullDir,
+      filenameWithoutExtension + '.jpg',
+    );
     const pathToConvertedImage = path.join(
       convertedDir,
       filenameWithoutExtension + '.svg',
@@ -30,6 +35,9 @@ export class ImageService {
 
     // Create directories if they do not exist
     try {
+      if (!fs.existsSync(fullDir)) {
+        fs.mkdirSync(fullDir, { recursive: true });
+      }
       if (!fs.existsSync(convertedDir)) {
         fs.mkdirSync(convertedDir, { recursive: true });
       }
@@ -72,11 +80,15 @@ export class ImageService {
         .resize(150, 150)
         .toFile(pathToThumbnail);
 
+      // TODO: Upload the 3 files into supabase storage
+
       // Create a new GraphicAsset with the svg file
       const graphicAssetDTO = new CreateGraphicAssetDto();
       graphicAssetDTO.type = GraphicAssetType.SVG;
       graphicAssetDTO.name = filenameWithoutExtension;
       graphicAssetDTO.path = pathToConvertedImage;
+      graphicAssetDTO.fullPath = pathToFullImage;
+      graphicAssetDTO.vectPath = pathToConvertedImage;
 
       await this.graphicAssetsService.create(graphicAssetDTO);
 
