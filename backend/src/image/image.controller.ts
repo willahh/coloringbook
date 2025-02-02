@@ -10,8 +10,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageService } from './image.service';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
-// import * as fs from 'fs';
-// import * as path from 'path';
 import { getMulterOptions } from '@/config/multer.config';
 
 @Controller('image')
@@ -43,7 +41,7 @@ export class ImageController {
       },
     },
   })
-  async convertImage(
+  async uploadImage(
     @UploadedFile(
       new ParseFilePipe({
         validators: [
@@ -55,7 +53,6 @@ export class ImageController {
     )
     file: Express.Multer.File,
   ) {
-    console.log('file', file);
     const svgPath = await this.imageService.convertToVector(file);
     return { message: 'Conversion réussie', svgPath };
   }
