@@ -1,16 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useDrag } from 'react-dnd';
+// import { useDrag } from 'react-dnd';
 import axios from 'axios';
 import { getAPIURL, getMediaUrl } from '@/utils/api';
-
-interface GraphicAsset {
-  id: number;
-  name: string;
-  type: string;
-  path: string;
-  fullPath: string;
-  vecPath: string;
-}
+// import { ElementService } from '@/services/ElementService';
+// import { Obj } from '@/domain/book';
+import { GraphicAsset } from '@/domain/graphic-asset.entity';
+// interface GraphicAsset {
+//   id: number;
+//   name: string;
+//   type: string;
+//   path: string;
+//   fullPath: string;
+//   vecPath: string;
+// }
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -48,7 +50,11 @@ const GraphicAssetItem: React.FC<{
   );
 };
 
-const GraphicsPanel: React.FC = () => {
+const GraphicsPanel: React.FC<{
+  onGraphicAssetItemClick: (asset: GraphicAsset) => void;
+}> = ({
+  onGraphicAssetItemClick
+}) => {
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
 
   useEffect(() => {
@@ -76,11 +82,6 @@ const GraphicsPanel: React.FC = () => {
     []
   );
 
-  const handleClick = (asset: GraphicAsset) => {
-    console.log('Asset added to the page:', asset);
-    // Ici, vous pourriez appeler une fonction de votre contexte ou état global pour ajouter l'élément à la page
-  };
-
   return (
     <div className="bg-primary-100 dark:bg-primary-900 p-4 w-80">
       <h2 className="text-black dark:text-white text-lg mb-4">GraphicsPanel</h2>
@@ -89,7 +90,7 @@ const GraphicsPanel: React.FC = () => {
           <GraphicAssetItem
             key={asset.id}
             asset={asset}
-            onClick={handleClick}
+            onClick={onGraphicAssetItemClick}
           />
         ))}
         <div
@@ -97,7 +98,7 @@ const GraphicsPanel: React.FC = () => {
           onClick={() =>
             addGraphicAsset({
               name: 'New Graphic',
-              type: 'svg',
+              // type: 'svg',
               path: '/path/to/new/graphic.svg',
             })
           }

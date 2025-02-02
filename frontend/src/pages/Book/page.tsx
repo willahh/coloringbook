@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
-import { IBook, Page } from '@/domain/book';
+import { IBook, Obj, Page } from '@/domain/book';
 import { PageService } from '@/services/PageService';
 
 /* 
@@ -16,7 +16,7 @@ import { SideToolbar } from './SidePanel/SideToolbar';
 import { ColorPanel } from './SidePanel/ColorPanel';
 import { SidePanel } from './SidePanel/SidePanel';
 import GraphicsPanel from './SidePanel/GraphicsPanel';
-import { TemplatePanel } from './SidePanel/TemplatePanel';
+// import { TemplatePanel } from './SidePanel/TemplatePanel';
 import { PagesPanel } from './SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './SidePanel/VerticalSeparator';
@@ -26,6 +26,8 @@ import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
 import InlineEdit from '@/components/InlineEdit';
 import ImageConverter from './SidePanel/ImageConverter';
+import { GraphicAsset } from '@/domain/graphic-asset.entity';
+import { ElementService } from '@/services/ElementService';
 
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
@@ -98,7 +100,7 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
-  console.log('#2 isModified', isModified);
+
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
@@ -188,6 +190,26 @@ const BookPage: React.FC = () => {
     }
   }, [bookId, pages]);
 
+  const handleGraphicAssetItemClick = (asset: GraphicAsset) => {
+    console.log('handleGraphicAssetItemClick', asset);
+    const element: Obj = ElementService.elementFromGraphicAsset(asset);
+
+    if (book && canvas) {
+      const updatedBook: IBook = { ...book };
+      updatedBook.pages = pages;
+
+      const updatedBook2 = ElementService.add(
+        updatedBook,
+        element,
+        Number(pageId)
+      );
+      console.log('updatedBook2', updatedBook2);
+      console.log('before setBook !');
+      setPages(updatedBook2.pages);
+      setIsModified(true);
+    }
+  };
+
   const onRectangleClick = () => {
     console.log('onRectangleClick');
 
@@ -214,6 +236,7 @@ const BookPage: React.FC = () => {
         Number(pageId)
       );
       setPages(pagesNew);
+      setIsModified(true);
     }
   };
 
@@ -244,7 +267,9 @@ const BookPage: React.FC = () => {
           >
             {/* <TemplatePanel className="" /> */}
             {/* <VerticalSeparator /> */}
-            <GraphicsPanel />
+            <GraphicsPanel
+              onGraphicAssetItemClick={handleGraphicAssetItemClick}
+            />
             <ImageConverter />
             <VerticalSeparator />
             <ColorPanel className="" />
