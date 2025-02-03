@@ -38,5 +38,6 @@ export class Book {
   pages: Array<object>;
 
   @Column()
+  @Column({ nullable: true })
   coverImage: string;
 }

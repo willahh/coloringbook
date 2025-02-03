@@ -11,6 +11,7 @@ import { GraphicAsset } from './graphic-assets/entities/graphic-asset.entity';
 import { UpdateGraphicTable1738268956723 } from './migrations/1738268956723-update-graphic-table';
 import { UpdateGraphicTable1738520339796 } from './migrations/1738520339796-update-graphic-table';
 import { UpdateGraphicTable1738520517876 } from './migrations/1738520517876-update-graphic-table';
+import { UpdateBookEntity1738581096732 } from './migrations/1738581096732-update-book-entity';
 
 // Load environment variables based on the environment
 let envFile =
@@ -71,6 +72,7 @@ export const options: DataSourceOptions = {
     UpdateGraphicTable1738268956723,
     UpdateGraphicTable1738520339796,
     UpdateGraphicTable1738520517876,
+    UpdateBookEntity1738581096732,
   ],
   synchronize: false,
   logging: true,
