@@ -39,6 +39,10 @@ interface CanvasContextType {
     pageId?: string;
   };
   isModified: boolean;
+
+  // graphics
+  refreshGraphics: boolean;
+  setRefreshGraphics: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const BookPageContext = createContext<CanvasContextType>({
@@ -52,6 +56,12 @@ export const BookPageContext = createContext<CanvasContextType>({
     throw new Error(`Function not implemented. ${pages}`);
   },
   isModified: false,
+
+  // graphics
+  refreshGraphics: false,
+  setRefreshGraphics: function (): void {
+    throw new Error('Function not implemented.');
+  },
 });
 
 const BookHeader: React.FC<{
@@ -100,6 +110,7 @@ const BookPage: React.FC = () => {
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
+  const [refreshGraphics, setRefreshGraphics] = useState(false);
 
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
@@ -207,8 +218,6 @@ const BookPage: React.FC = () => {
         element,
         Number(pageId)
       );
-      console.log('updatedBook2', updatedBook2);
-      console.log('before setBook !', 'pageId: ', pageId);
       setPages(updatedBook2.pages);
       setIsModified(true);
     }
@@ -246,7 +255,16 @@ const BookPage: React.FC = () => {
 
   return (
     <BookPageContext.Provider
-      value={{ canvas, setCanvas, book, pageParams, setPages, isModified }}
+      value={{
+        canvas,
+        setCanvas,
+        book,
+        pageParams,
+        setPages,
+        isModified,
+        refreshGraphics,
+        setRefreshGraphics,
+      }}
     >
       <Layout
         className={`w-full flex`}
@@ -260,7 +278,7 @@ const BookPage: React.FC = () => {
         }
       >
         <SidePanel
-          className="flex flex-row w-3/12 min-w-96 max-w-[500px] bg-primary-100 dark:bg-primary-900 shadow-black z-10
+          className="flex flex-row w-3/12 min-w-96 max-w-[500px] bg-primary-50 dark:bg-primary-900 shadow-black z-10
         shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
         >
           <div

@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
 import { Tooltip } from '@/components/Tooltip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
+import { BookPageContext } from '../page';
 
 const ImageConverter: React.FC = () => {
+  const { setRefreshGraphics } = useContext(BookPageContext);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [, setConvertedImage] = useState<string | null>(null);
@@ -13,7 +15,7 @@ const ImageConverter: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       setSelectedFile(e.target.files[0]);
       setPreviewImage(URL.createObjectURL(e.target.files[0]));
-      setConvertedImage(null); // Réinitialiser l'image convertie
+      setConvertedImage(null);
     }
   };
 
@@ -34,9 +36,11 @@ const ImageConverter: React.FC = () => {
           },
         }
       );
-      // Simulate reading the SVG file content. In real scenario, you might want to fetch this from the server response if it's provided directly.
+
       const svg = await fetch(response.data.svgPath).then((res) => res.text());
       setConvertedImage(svg);
+      console.log('#3 call setRefreshGraphics')
+      setRefreshGraphics(true);
     } catch (error) {
       console.error('Conversion error:', error);
     }
@@ -78,15 +82,6 @@ const ImageConverter: React.FC = () => {
           />
         </div>
       )}
-
-      {/* {convertedImage && (
-        <div>
-          <h2 className="text-lg font-semibold mb-2">Image Convertie (SVG):</h2>
-          <div className="border border-gray-300 p-2 mb-4">
-            <div dangerouslySetInnerHTML={{ __html: convertedImage }} />
-          </div>
-        </div>
-      )} */}
     </div>
   );
 };

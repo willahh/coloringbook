@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import { useDrag } from 'react-dnd';
 import axios from 'axios';
 import { getAPIURL, getMediaUrl } from '@/utils/api';
@@ -13,6 +13,7 @@ import { GraphicAsset } from '@/domain/graphic-asset.entity';
 //   fullPath: string;
 //   vecPath: string;
 // }
+import { BookPageContext } from '../page';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -30,31 +31,31 @@ const GraphicAssetItem: React.FC<{
   return (
     <div
       // ref={drag}
-      className="flex flex-col items-center p-2 border border-gray-200 rounded cursor-pointer"
+      className="flex flex-col items-center p-2 border border-primary-200 dark:border-primary-700 rounded cursor-pointer"
       onClick={() => onClick(asset)}
       // style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <div className="w-16 h-16 flex items-center justify-center bg-gray-100">
-        {asset.type === 'svg' ? (
+        {asset.type === 'svg' && (
           <img
             src={`${getMediaUrl()}/${asset.path}`}
             alt={asset.name}
             className="w-full h-full object-contain"
           />
-        ) : (
-          <div>{asset.type}</div>
         )}
       </div>
-      <span className="mt-2 text-xs text-center">{asset.name}</span>
+      <div>
+        <div>{asset.type}</div>
+        <span className="mt-2 text-xs text-center">{asset.name}</span>
+      </div>
     </div>
   );
 };
 
 const GraphicsPanel: React.FC<{
   onGraphicAssetItemClick: (asset: GraphicAsset) => void;
-}> = ({
-  onGraphicAssetItemClick
-}) => {
+}> = ({ onGraphicAssetItemClick }) => {
+  const { refreshGraphics } = useContext(BookPageContext);
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const GraphicsPanel: React.FC<{
     };
 
     fetchGraphicAssets();
-  }, []);
+  }, [refreshGraphics]);
 
   const addGraphicAsset = useCallback(
     async (newAsset: Partial<GraphicAsset>) => {
@@ -83,7 +84,7 @@ const GraphicsPanel: React.FC<{
   );
 
   return (
-    <div className="bg-primary-100 dark:bg-primary-900 p-4 w-80">
+    <div className="p-4">
       <h2 className="text-black dark:text-white text-lg mb-4">GraphicsPanel</h2>
       <div className="grid grid-cols-2 gap-4">
         {graphicAssets.map((asset) => (

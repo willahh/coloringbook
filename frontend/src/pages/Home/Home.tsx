@@ -136,7 +136,7 @@ const HomePage: React.FC = () => {
                       loading={loading}
                       minItems={20}
                       highlightBookId={highlightBookId}
-                      itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
+                      itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414] px-2
       ${gridDebug ? 'border border-primary-500' : ''}`}
                     />
 
@@ -155,9 +155,9 @@ const HomePage: React.FC = () => {
                     <Link
                       to={`/`}
                       tabIndex={-1}
-                      className="flex w-full h-full "
+                      className="flex items-center justify-center w-full h-full "
                     >
-                      <ToolbarButton className="w-full h-full items-center justify-center">
+                      <ToolbarButton className="w-full h-full ">
                         <ArrowLeftIcon className="w-8" />
                       </ToolbarButton>
                     </Link>
@@ -167,7 +167,8 @@ const HomePage: React.FC = () => {
                       loading={loading}
                       minItems={23}
                       highlightBookId={highlightBookId}
-                      itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
+                      itemClassName={`flex justify-center items-center col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
+                        
   ${gridDebug ? 'border border-primary-500' : ''}`}
                     />
                   </>

@@ -29,7 +29,7 @@ export class SVG implements DrawableObject {
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
     } else if (obj.attr.svgURL) {
       // Load from an url
-      const url = getAPIURL() + '/' + obj.attr.svgURL;
+      const url = getAPIURL() + '/image/' + obj.attr.svgURL;
       const svgGroup = await fabric.loadSVGFromURL(url);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
