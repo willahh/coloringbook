@@ -85,7 +85,7 @@ const GraphicsPanel: React.FC<{
   return (
     <div className="bg-primary-100 dark:bg-primary-900 p-4 w-80">
       <h2 className="text-black dark:text-white text-lg mb-4">GraphicsPanel</h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {graphicAssets.map((asset) => (
           <GraphicAssetItem
             key={asset.id}

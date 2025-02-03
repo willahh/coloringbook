@@ -204,7 +204,7 @@ const BookPage: React.FC = () => {
         Number(pageId)
       );
       console.log('updatedBook2', updatedBook2);
-      console.log('before setBook !');
+      console.log('before setBook !', 'pageId: ', pageId);
       setPages(updatedBook2.pages);
       setIsModified(true);
     }

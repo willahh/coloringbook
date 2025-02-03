@@ -217,6 +217,29 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       });
       canvas.clipPath = mask;
 
+      // test
+      // const url = 'http://localhost:5173/assets/SVG/MesaDeTrabajo.svg';
+      // console.log('url:', url);
+
+      // fabric.FabricImage.fromURL(url, { crossOrigin: 'anonymous' }).then(
+      //   (img) => {
+      //     console.log('#3 img', img);
+      //     img.set({
+      //       left: 10,
+      //       top: 10,
+      //       width: 100,
+      //       height: 100,
+      //       selectable: true,
+      //       hasControls: true,
+            
+      //     });
+      //     canvas.add(img);
+      //     canvas.renderAll();
+      //   }
+      // );
+      // // canvas.add(img);
+
+
       // Center spread
       // Calculate the scale to fit the spread within the canvas dimensions
       // console.log('#2 center spread');

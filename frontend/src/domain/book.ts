@@ -18,7 +18,8 @@ interface TextAttributes extends BaseShapeAttributes {
 }
 
 export interface SVGAttributes {
-  svgContent: string;
+  svgContent?: string;
+  svgURL?: string;
 }
 
 export interface ImageObject {
@@ -28,7 +29,8 @@ export interface ImageObject {
   w: number;
   h: number;
   attr: {
-    imageData: string;
+    // imageData: string;
+    src: string;
   };
 }
 export interface RectangleObject {
@@ -114,5 +116,5 @@ export function isSVGObject(obj: Obj): obj is SVGObject {
 }
 
 export function isImageObject(obj: Obj): obj is ImageObject {
-  return 'imageData' in obj.attr;
+  return 'src' in obj.attr;
 }
