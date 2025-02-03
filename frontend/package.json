@@ -18,8 +18,8 @@
     "release:major": "npm version major",
     "release:minor": "npm version minor",
     "release:patch": "npm version patch",
-    "serve": "serve dist -p 49665 --config ./../serve.json",
-    "serve:prod": "serve dist"
+    "serve": "serve dist --config ./../serve.json -p 49665",
+    "serve:prod": "serve dist --config ./../serve.json"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
