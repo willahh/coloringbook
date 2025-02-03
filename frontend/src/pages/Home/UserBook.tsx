@@ -8,12 +8,14 @@ import { Tooltip } from '@/components/Tooltip';
 
 interface BookItemProps {
   index: number;
+  pageName: 'home' | 'library';
   book: IBook;
   highlightBookId: number;
 }
 
 export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   index,
+  pageName,
   book,
   className,
   highlightBookId,
@@ -40,14 +42,16 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   }
   const highlightBook = book.id === highlightBookId;
 
-  if (index === 7) {
-    cls += ' xl:hidden';
-  }
+  if (pageName === 'home') {
+    if (index === 7) {
+      cls += ' xl:hidden';
+    }
 
-  if ([1, 5].includes(index)) {
-    cls += ' md:hidden xl:block';
-  } else {
-    cls += ' md:show';
+    if ([1, 5].includes(index)) {
+      cls += ' md:hidden xl:block';
+    } else {
+      cls += ' md:show';
+    }
   }
 
   let imageUrl = '';

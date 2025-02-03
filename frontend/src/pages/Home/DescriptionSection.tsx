@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import AnimatedText from '@/components/AnimatedText';
 import Button from '@components/Button';
@@ -44,22 +45,20 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
         </AnimatedText>
         <AnimatedText enterClassName="delay-1000">
           <div className="isolate flex rounded-md">
-            <Button
-              autoFocus={true}
-              onClick={onClick}
-              className="flex-1 rounded-tr-none rounded-br-none justify-center"
-            >
-              <span className="text-xs">Bibliothèque</span>
-              <QueueListIcon aria-hidden="true" className="size-6" />
-            </Button>
+            <Link autoFocus={true} to={`/library`}>
+              <Button tabIndex={-1} className="rounded-tr-none rounded-br-none">
+                <span className="text-md">Bibliothèque</span>
+                <QueueListIcon aria-hidden="true" className="size-6" />
+              </Button>
+            </Link>
             <Tooltip content="Ajouter un nouveau livre">
               <div>
                 <Button
                   autoFocus={true}
                   onClick={onClick}
-                  className=" border-l-0 rounded-tl-none rounded-bl-none"
+                  variant='secondary'
+                  className="border-l-0 rounded-tl-none rounded-bl-none"
                 >
-                  {/* <span className="text-xs">Nouveau livre</span> */}
                   <PlusIcon aria-hidden="true" className="size-6" />
                 </Button>
               </div>

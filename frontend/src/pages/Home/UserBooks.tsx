@@ -4,6 +4,7 @@ import { BookFormat } from '@/domain/book.enum';
 import { UserBookItem } from './UserBook';
 
 interface UserBooksProps {
+  pageName: 'home' | 'library';
   minItems: number;
   itemClassName: string;
   books: IBook[];
@@ -12,6 +13,7 @@ interface UserBooksProps {
 }
 
 const UserBooks: React.FC<UserBooksProps> = ({
+  pageName,
   itemClassName,
   books,
   loading,
@@ -23,12 +25,15 @@ const UserBooks: React.FC<UserBooksProps> = ({
   return (
     <>
       {Array.from({ length: itemsToShow }).map((_, index) => {
-        let cls = 'hidden';
+        let cls = '';
 
-        if ([19, 18, 17, 16].includes(index)) {
-          cls += ' md:hidden xl:block';
-        } else {
-          cls += ' md:block';
+        if (pageName === 'home') {
+          cls += 'hidden';
+          if ([19, 18, 17, 16].includes(index)) {
+            cls += ' md:hidden xl:block';
+          } else {
+            cls += ' md:block';
+          }
         }
 
         return (
@@ -38,6 +43,7 @@ const UserBooks: React.FC<UserBooksProps> = ({
                 // Livre existant
                 <UserBookItem
                   index={index}
+                  pageName={pageName}
                   highlightBookId={highlightBookId}
                   book={books[index]}
                 />
@@ -45,6 +51,7 @@ const UserBooks: React.FC<UserBooksProps> = ({
                 // Livre par défaut
                 <UserBookItem
                   index={index}
+                  pageName={pageName}
                   highlightBookId={highlightBookId}
                   book={{
                     coverImage: '',

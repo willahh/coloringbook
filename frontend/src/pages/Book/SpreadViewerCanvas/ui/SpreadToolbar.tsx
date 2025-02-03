@@ -24,7 +24,7 @@ export const SpreadToolbar: React.FC<{
   const { canvas } = useContext(BookPageContext);
 
   return (
-    <div className="flex justify-center  items-center gap-4 p-4">
+    <div className="flex justify-center items-center gap-4 p-4 ">
       <MagnifyingGlassIcon className="w-6 h-6" />
       <Slider.Root
         className="relative flex h-5 w-[200px] touch-none select-none items-center"

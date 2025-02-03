@@ -1,6 +1,7 @@
 import { DrawableObject } from '../DrawableObject'; // Adjust the path as needed
 import * as fabric from 'fabric';
 import { SVGObject } from '@/domain/book';
+import { getAPIURL } from '@/utils/api';
 
 export class SVG implements DrawableObject {
   private svgObjects: Promise<fabric.FabricObject> | null;
@@ -28,10 +29,7 @@ export class SVG implements DrawableObject {
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
     } else if (obj.attr.svgURL) {
       // Load from an url
-      // const url = obj.attr.svgURL;
-      // const url = 'http://localhost:3000/image/' + 'uploads/graphic_asset/vect/1738524784688-732857514.svg';
-      const url = 'http://localhost:3000/image/' + obj.attr.svgURL;
-      console.log('url', url)
+      const url = getAPIURL() + '/' + obj.attr.svgURL;
       const svgGroup = await fabric.loadSVGFromURL(url);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});

@@ -64,7 +64,7 @@ const BookHeader: React.FC<{
         pages={[
           {
             current: false,
-            href: '/books',
+            href: '/library',
             content: 'Bibliothèque',
             description: 'Accéder à ma bibliothèque de livres',
           },
@@ -285,7 +285,7 @@ const BookPage: React.FC = () => {
           />
           <SideToolbar onRectangleClick={onRectangleClick} />
         </SidePanel>
-        <main className="flex flex-1 bg-primary-50 dark:bg-primary-950 flex-col">
+        <main className="flex flex-1 bg-primary-100 dark:bg-primary-950 flex-col">
           <SpreadViewerCanvas pages={pages} />
           <SpreadToolbar />
         </main>
