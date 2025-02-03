@@ -206,7 +206,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
           <Controller
             name="pageCount"
             control={control}
-            defaultValue={'12'}
+            defaultValue={'6'}
             render={({ field }) => (
               <input
                 {...field}

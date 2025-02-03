@@ -2,7 +2,12 @@ import React from 'react';
 import { motion } from 'motion/react';
 import AnimatedText from '@/components/AnimatedText';
 import Button from '@components/Button';
-import { BookOpenIcon } from '@heroicons/react/24/solid';
+import {
+  QueueListIcon,
+  // BookOpenIcon,
+  PlusIcon,
+} from '@heroicons/react/24/outline';
+import { Tooltip } from '@/components/Tooltip';
 
 interface DescriptionSectionProps {
   onClick: () => void;
@@ -37,21 +42,28 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
             notre communauté.
           </p>
         </AnimatedText>
-        <AnimatedText enterClassName="delay-500">
-          <p className="text-base mb-4 text-primary-700 dark:text-primary-300">
-            Lancez-vous dès aujourd'hui :
-          </p>
-        </AnimatedText>
         <AnimatedText enterClassName="delay-1000">
-          <div>
+          <div className="isolate flex rounded-md">
             <Button
-              className="flex justify-center w-full rounded-xl py-1 px-2"
               autoFocus={true}
               onClick={onClick}
+              className="flex-1 rounded-tr-none rounded-br-none justify-center"
             >
-              <BookOpenIcon aria-hidden="true" className="size-8" />
-              <span className="whitespace-nowrap">Créer un nouveau livre</span>
+              <span className="text-xs">Bibliothèque</span>
+              <QueueListIcon aria-hidden="true" className="size-6" />
             </Button>
+            <Tooltip content="Ajouter un nouveau livre">
+              <div>
+                <Button
+                  autoFocus={true}
+                  onClick={onClick}
+                  className=" border-l-0 rounded-tl-none rounded-bl-none"
+                >
+                  {/* <span className="text-xs">Nouveau livre</span> */}
+                  <PlusIcon aria-hidden="true" className="size-6" />
+                </Button>
+              </div>
+            </Tooltip>
           </div>
         </AnimatedText>
       </div>

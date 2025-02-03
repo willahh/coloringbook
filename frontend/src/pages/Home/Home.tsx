@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
+import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import AnimatedText from '@/components/AnimatedText';
 import Toast from '@/components/Toast';
 import { IBook } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
+import { useTheme } from '@/contexts/ThemeContext';
 
 import Layout from '../layout';
 import BookCreationForm from './BookCreationForm';
@@ -21,6 +23,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   const [showForm, setShowForm] = useState(false);
   const { showToast, toastMessage, toastType, showToastFunc, hideToast } =
     useToast();
+  const { appearance } = useTheme();
 
   const handleCreateBookClick = () => {
     setShowForm(true);
@@ -30,14 +33,18 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   };
 
   return (
-    <div className=" dark:text-white">
+    <div className="dark:text-white">
       <Toast
         message={toastMessage}
         type={toastType}
         show={showToast}
         onClose={hideToast}
       />
-      <Logo className="mb-4 md:-ml-16 max-w-xs" />
+      {appearance === 'dark' ? (
+        <Logo className="mb-4 md:-ml-16 max-w-xs" />
+      ) : (
+        <LogoLight className="mb-4 md:-ml-16 max-w-xs" />
+      )}
       <AnimatedText enterClassName="delay-200">
         <div className="flex mb-4 gap-2 items-center text-md font-extralight select-none">
           <span className="">Create</span>
