@@ -47,7 +47,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   if ([1, 5].includes(index)) {
     cls += ' md:hidden xl:block';
   } else {
-    cls += ' md:show'
+    cls += ' md:show';
   }
 
   let imageUrl = '';
@@ -67,7 +67,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
   return (
     imageLoaded && (
       <Tooltip content={book.name}>
-        <motion.div
+        <motion.button
           className={cls}
           style={{
             background: `linear-gradient(to right, rgb(60, 13, 20) 3px, rgba(255, 255, 255, 0.5) 5px, rgba(255, 255, 255, 0.25) 7px, rgba(255, 255, 255, 0.25) 10px, transparent 12px, transparent 16px, rgba(255, 255, 255, 0.25) 17px, transparent 22px), center center / cover url(${imageUrl})`,
@@ -106,7 +106,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
               {book.name}
             </div>
           </div>
-        </motion.div>
+        </motion.button>
       </Tooltip>
     )
   );
