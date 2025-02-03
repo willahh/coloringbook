@@ -6,18 +6,19 @@
   "scripts": {
     "dev": "vite --host",
     "debug:deploy": "echo '=> files and dirs:' && find . \\( -path ./node_modules -o -path ./dist \\) -prune -o -type d -o -type f -print",
-    "build": "tsc -b && vite build && npm run build:css-light && npm run build:css-dark",
-    "build:prod": "npm run debug:deploy && tsc -p tsconfig.json && vite build --mode production && npm run build:css-light && npm run build:css-dark",
+    "build": "npm run build:css && tsc -b && vite build",
+    "build:prod": "npm run build:css && tsc -p tsconfig.json && vite build --mode production",
+    "build:css": "npm run build:css-light && npm run build:css-dark",
     "build:css-light": "tailwindcss -i ./src/main.light.css -o ./public/main.light.css --mode=production",
     "build:css-dark": "tailwindcss -i ./src/main.dark.css -o ./public/main.dark.css --mode=production",
     "lint": "eslint .",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate-full-css": "tailwindcss -i ./src/main.css -o ./public/tailwind.full.css --full",
     "release:major": "npm version major",
     "release:minor": "npm version minor",
     "release:patch": "npm version patch",
+    "serve": "serve dist -p 49665 --config ./../serve.json",
     "serve:prod": "serve dist"
   },
   "dependencies": {
