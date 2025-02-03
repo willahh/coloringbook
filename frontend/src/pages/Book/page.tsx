@@ -192,7 +192,11 @@ const BookPage: React.FC = () => {
 
   const handleGraphicAssetItemClick = (asset: GraphicAsset) => {
     console.log('handleGraphicAssetItemClick', asset);
-    const element: Obj = ElementService.elementFromGraphicAsset(asset);
+    const element: Obj | null = ElementService.elementFromGraphicAsset(asset);
+    if (!element) {
+      console.error('Failed to create element from graphic asset');
+      return;
+    }
 
     if (book && canvas) {
       const updatedBook: IBook = { ...book };

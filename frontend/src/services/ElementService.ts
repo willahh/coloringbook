@@ -1,6 +1,6 @@
-import fabric from 'fabric';
+// import fabric from 'fabric';
 import { IBook, Obj } from '@/domain/book';
-import { PageService } from './PageService';
+// import { PageService } from './PageService';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
 import { GraphicAssetType } from '@/domain/graphic-asset-type.enum';
 

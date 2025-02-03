@@ -151,7 +151,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       document.onkeyup = handleDocumentKeyUp(canvas);
 
       // Create pages
-      const canvasBorder = 8;
+      const canvasBorder = 12; // Border or shadow pixels
       const spreadSize = { width: 0, height: 0 };
       pageSpread.forEach((page, index) => {
         // const paysage = dimensions.width > dimensions.height;
@@ -184,9 +184,14 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           left: offsetX,
           top: 0,
           fill: 'white',
-          stroke: '#ccc',
-          strokeWidth: 2,
           selectable: false,
+          shadow: new fabric.Shadow({
+            color: 'rgba(0, 0, 0, .2)',
+            nonScaling: true,
+            blur: 4,
+            offsetX: 2,
+            offsetY: 2,
+          }),
         });
         canvas.add(rect);
         // fabricObjects.push(rect);
@@ -212,33 +217,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       const mask = new fabric.Rect({
         width: spreadSize.width + canvasBorder,
         height: spreadSize.height + canvasBorder,
-        left: 0,
-        top: 0,
+        left: -(canvasBorder / 2),
+        top: -(canvasBorder / 2),
       });
       canvas.clipPath = mask;
-
-      // test
-      // const url = 'http://localhost:5173/assets/SVG/MesaDeTrabajo.svg';
-      // console.log('url:', url);
-
-      // fabric.FabricImage.fromURL(url, { crossOrigin: 'anonymous' }).then(
-      //   (img) => {
-      //     console.log('#3 img', img);
-      //     img.set({
-      //       left: 10,
-      //       top: 10,
-      //       width: 100,
-      //       height: 100,
-      //       selectable: true,
-      //       hasControls: true,
-            
-      //     });
-      //     canvas.add(img);
-      //     canvas.renderAll();
-      //   }
-      // );
-      // // canvas.add(img);
-
 
       // Center spread
       // Calculate the scale to fit the spread within the canvas dimensions

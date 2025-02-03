@@ -13,7 +13,10 @@ export const SideToolbar: React.FC<SideToolbarProps> = ({
   onRectangleClick,
 }) => {
   return (
-    <div className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-200 dark:border-primary-800">
+    <div
+      data-id="side-toolbar"
+      className="w-20 flex flex-col items-center pt-4 gap-4 border-l border-r border-primary-200 dark:border-primary-800"
+    >
       <ToolbarButton tooltipContent="Pointer">
         <PointerIcon
           aria-hidden="true"
