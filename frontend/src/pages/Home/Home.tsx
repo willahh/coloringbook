@@ -16,7 +16,7 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import { useToast } from '@/hooks/useToast';
-import { ToolbarButton } from '../Book/SpreadViewerCanvas/ui/ToolbarButton';
+import { ToolbarButton } from '../Book/ui/ToolbarButton';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: IBook) => void;

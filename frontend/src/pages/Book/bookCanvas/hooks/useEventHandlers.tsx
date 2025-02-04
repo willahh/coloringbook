@@ -10,7 +10,7 @@ import {
   handleMouseUp,
   handleDocumentKeyDown,
   handleDocumentKeyUp,
-} from '../utils/canvasEvents';
+} from '../canvas.events';
 
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   useEffect(() => {

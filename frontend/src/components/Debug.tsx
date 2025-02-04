@@ -5,7 +5,7 @@ import Switch from '@/components/Switch';
 import { Tooltip } from '@components/Tooltip';
 
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { ToolbarButtonClassName } from '@/pages/Book/SpreadViewerCanvas/ui/ToolbarButton';
+import { ToolbarButtonClassName } from '@/pages/Book/ui/ToolbarButton';
 import { useTheme } from '@/contexts/ThemeContext';
 
 type ThemeAppearance = 'light' | 'dark';
