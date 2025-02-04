@@ -22,47 +22,14 @@ import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import { BookService } from '@/services/book.service';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
-import Header from '@/components/Header';
-import BreadCrumb from '@/components/BreadCrumb';
-import InlineEdit from '@/components/InlineEdit';
 import ImageConverter from './ui/SidePanel/ImageConverter';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
 import { ElementService } from '@/services/element.service';
 import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
-import { useUIState } from './hooks/useUIState';
+// import { useUIState } from './hooks/useUIState';
 import { BookProvider } from './book.context';
-
-const BookHeader: React.FC<{
-  book: IBook | null;
-  onBookNameEdit: (newName: string) => void;
-}> = ({ book, onBookNameEdit }) => {
-  return (
-    <Header>
-      <BreadCrumb
-        pages={[
-          {
-            current: false,
-            href: '/library',
-            content: 'Bibliothèque',
-            description: 'Accéder à ma bibliothèque de livres',
-          },
-          ...(book
-            ? [
-                {
-                  current: true,
-                  href: '/books/' + book.id,
-                  content: (
-                    <InlineEdit value={book.name} onEdit={onBookNameEdit} />
-                  ),
-                },
-              ]
-            : []),
-        ]}
-      />
-    </Header>
-  );
-};
+import BookHeader from './ui/BookHeader';
 
 const BookPage: React.FC = () => {
   console.log('BookPage');
@@ -72,23 +39,23 @@ const BookPage: React.FC = () => {
     bookId: string;
     pageId?: string;
   }>();
-  const pageParams = { bookId, pageId };
+  // const pageParams = { bookId, pageId };
 
   // States
   // const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
-  const [refreshGraphics] = useState(false);
+  // const [refreshGraphics] = useState(false);
 
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
 
-  const { state, dispatch, isLoading, error } = useBook(bookId);
-  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const { /*state,*/ dispatch, isLoading, error } = useBook(bookId);
+  const [canvas, /*setCanvas*/] = useState<fabric.Canvas | null>(null);
   const { handleSave, handleAddPageButtonClick, handleDeleteButtonClick } =
     usePageManagement(bookId, dispatch);
-  const { setModified, setRefreshGraphics } = useUIState(dispatch);
+  // const { setModified, setRefreshGraphics } = useUIState(dispatch);
 
   // Effects
   useEffect(() => {

@@ -69,11 +69,11 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     [dimensions]
   );
 
-  useEffect(() => {
-    if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
-      setPages(pages);
-    }
-  }, [pageSpread, pages, setPages]);
+  // useEffect(() => {
+  //   if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
+  //     setPages(pages);
+  //   }
+  // }, [pageSpread, pages, setPages]);
 
   useEventHandlers(fabricCanvasRef.current);
 

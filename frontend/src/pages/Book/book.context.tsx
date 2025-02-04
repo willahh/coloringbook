@@ -40,8 +40,8 @@ export const BookProvider: React.FC<{
   dispatch: React.Dispatch<BookAction>;
 }> = ({ children, dispatch }) => {
   const [canvas, setCanvas] = React.useState<fabric.Canvas | null>(null);
-  const [book, setBook] = React.useState<IBook | null>(null);
-  const [isModified, setIsModified] = React.useState<boolean>(false);
+  const [book /*, setBook*/] = React.useState<IBook | null>(null);
+  const [isModified /*, setIsModified*/] = React.useState<boolean>(false);
   const [refreshGraphics, setRefreshGraphics] = React.useState<boolean>(false);
 
   const pageParams = {

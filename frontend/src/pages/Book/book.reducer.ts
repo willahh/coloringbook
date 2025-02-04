@@ -1,11 +1,5 @@
 import { IBook, Page } from '@/domain/book';
-
-type BookState = {
-  book: IBook | null;
-  pages: Page[];
-  isModified: boolean;
-  refreshGraphics: boolean;
-};
+import BookState from './book.state';
 
 type BookAction =
   | { type: 'SET_BOOK'; payload: IBook }
@@ -49,4 +43,5 @@ const initialBookState: BookState = {
   refreshGraphics: false,
 };
 
-export { bookReducer, initialBookState, BookState, BookAction };
+export { bookReducer, initialBookState };
+export type { BookState, BookAction };
