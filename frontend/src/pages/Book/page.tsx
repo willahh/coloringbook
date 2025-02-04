@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 import { IBook, Obj, Page } from '@/domain/book';
-import { PageService } from '@/pages/Book/page.service';
+import { PageService } from '@/services/page.service';
 
 /* 
  FIXME: Export default !!
@@ -18,16 +18,16 @@ import { SidePanel } from './ui/SidePanel/SidePanel';
 import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
 // import { TemplatePanel } from './ui/SidePanel/TemplatePanel';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
-import SpreadViewerCanvas from './bookCanvas/SpreadViewerCanvas';
+import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
-import { BookService } from '@/pages/Book/book.service';
+import { BookService } from '@/services/book.service';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
 import InlineEdit from '@/components/InlineEdit';
 import ImageConverter from './ui/SidePanel/ImageConverter';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
-import { ElementService } from '@/pages/Book/element.service';
+import { ElementService } from '@/services/element.service';
 import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
 import { useUIState } from './hooks/useUIState';

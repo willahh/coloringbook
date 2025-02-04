@@ -3,7 +3,7 @@ import type { Page } from '@/domain/book';
 import { useContext } from 'react';
 import { BookContext } from '../../book.context';
 import { Link } from 'react-router-dom';
-import { BookService } from '@/pages/Book/book.service';
+import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';

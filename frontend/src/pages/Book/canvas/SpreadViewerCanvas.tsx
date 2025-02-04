@@ -27,11 +27,11 @@ import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
 import { BookContext } from '../book.context';
 import { Page } from '@/domain/book';
-import { useEventHandlers } from './hooks/useEventHandlers';
-import { useDimensions } from './hooks/useDimensions';
-import { usePageSpread } from './hooks/usePageSpread';
-import { usePageCreation } from './hooks/usePageCreation';
-import { useZoomControl } from './hooks/useZoomControl';
+import { useEventHandlers } from '../hooks/useEventHandlers';
+import { useDimensions } from '../hooks/useDimensions';
+import { usePageSpread } from '../hooks/usePageSpread';
+import { usePageCreation } from '../hooks/usePageCreation';
+import { useZoomControl } from '../hooks/useZoomControl';
 
 interface SpreadCanvasProps {
   width?: number;

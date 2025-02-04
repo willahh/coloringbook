@@ -2,7 +2,7 @@
 import { Page } from '@/domain/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { ObjectFactory } from '../object/ObjectFactory';
+import { ObjectFactory } from '../canvas/object/ObjectFactory';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,

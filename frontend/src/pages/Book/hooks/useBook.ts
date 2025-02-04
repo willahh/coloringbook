@@ -1,5 +1,5 @@
 import { useReducer, useEffect, useState } from 'react';
-import { BookService } from '@/pages/Book/book.service';
+import { BookService } from '@/services/book.service';
 import { bookReducer, initialBookState } from '../book.reducer';
 
 export const useBook = (bookId: string) => {
