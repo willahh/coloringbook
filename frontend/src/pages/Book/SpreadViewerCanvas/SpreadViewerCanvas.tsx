@@ -98,7 +98,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         fabricCanvasRef.current = null;
       };
     }
-  }, [dimensions, initCanvas, setCanvas, pageSpread, pages, setPages]);
+  }, [initCanvas, setCanvas]);
 
   return (
     <div ref={containerRef} className="relative flex-1">
