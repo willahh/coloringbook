@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { BookPageContext } from '@/pages/Book/page';
+import { BookPageContext } from '../BookPageContext';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/BookService';
 import { ToolbarButton } from '../SpreadViewerCanvas/ui/ToolbarButton';
@@ -12,7 +12,7 @@ interface PageComponentProps {
   bookId: number;
   page: Page;
   selected: boolean;
-  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
+  onDeleteButtonClick?: (pageId: number) => void;
 }
 
 const PageComponent: React.FC<PageComponentProps> = ({
@@ -82,9 +82,9 @@ const PageComponent: React.FC<PageComponentProps> = ({
                    ? 'group-hover:block group-focus:block group-active:block hover:bg-secondary-400 focus:bg-secondary-400'
                    : ''
                }`}
-              onClick={(event) => {
+              onClick={() => {
                 if (onDeleteButtonClick) {
-                  onDeleteButtonClick(event, pageId);
+                  onDeleteButtonClick(pageId);
                 }
               }}
             >
@@ -101,7 +101,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
 interface PagesProps {
   className?: string;
   pages: Page[];
-  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
+  onDeleteButtonClick?: (pageId: number) => void;
 }
 
 const Pages: React.FC<PagesProps> = ({
@@ -165,7 +165,7 @@ export const PagesPanel: React.FC<{
   className?: string;
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
-  onDeleteButtonClick?: (event: React.MouseEvent, pageId: number) => void;
+  onDeleteButtonClick?: (pageId: number) => void;
 }> = ({ className, pages, addPageButtonClick, onDeleteButtonClick }) => {
   return (
     <div

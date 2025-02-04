@@ -13,7 +13,7 @@ import { GraphicAsset } from '@/domain/graphic-asset.entity';
 //   fullPath: string;
 //   vecPath: string;
 // }
-import { BookPageContext } from '../page';
+import { BookPageContext } from '../BookPageContext';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{

@@ -25,7 +25,7 @@
 
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
-import { BookPageContext } from '../page';
+import { BookPageContext } from '../BookPageContext';
 import { Page } from '@/domain/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';

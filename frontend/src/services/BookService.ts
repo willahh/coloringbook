@@ -24,7 +24,6 @@ export class BookService {
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {
       const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
-      console.log('aspectRatio', aspectRatio);
       const defaultPages = Array.from(
         { length: 3 },
         (_, i): Page => ({

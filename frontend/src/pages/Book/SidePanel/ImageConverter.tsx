@@ -3,7 +3,7 @@ import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
 import { Tooltip } from '@/components/Tooltip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import { BookPageContext } from '../page';
+import { BookPageContext } from '../BookPageContext';
 
 const ImageConverter: React.FC = () => {
   const { setRefreshGraphics } = useContext(BookPageContext);

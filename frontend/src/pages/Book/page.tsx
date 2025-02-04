@@ -1,4 +1,4 @@
-import React, { useState, createContext, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 import { IBook, Obj, Page } from '@/domain/book';
@@ -28,41 +28,10 @@ import InlineEdit from '@/components/InlineEdit';
 import ImageConverter from './SidePanel/ImageConverter';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
 import { ElementService } from '@/services/ElementService';
-
-interface CanvasContextType {
-  canvas: fabric.Canvas | null;
-  setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
-  setPages: React.Dispatch<React.SetStateAction<Page[]>>;
-  book?: IBook | null;
-  pageParams: {
-    bookId: string;
-    pageId?: string;
-  };
-  isModified: boolean;
-
-  // graphics
-  refreshGraphics: boolean;
-  setRefreshGraphics: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export const BookPageContext = createContext<CanvasContextType>({
-  canvas: null,
-  setCanvas: () => {},
-  book: null,
-  pageParams: {
-    bookId: '',
-  },
-  setPages: function (pages: React.SetStateAction<Page[]>): void {
-    throw new Error(`Function not implemented. ${pages}`);
-  },
-  isModified: false,
-
-  // graphics
-  refreshGraphics: false,
-  setRefreshGraphics: function (): void {
-    throw new Error('Function not implemented.');
-  },
-});
+import { useBook } from './hooks/useBook';
+import { usePageManagement } from './hooks/usePageManagement';
+import { useUIState } from './hooks/useUIState';
+import { BookPageProvider } from './BookPageContext';
 
 const BookHeader: React.FC<{
   book: IBook | null;
@@ -106,14 +75,20 @@ const BookPage: React.FC = () => {
   const pageParams = { bookId, pageId };
 
   // States
-  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  // const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const [book, setBook] = useState<IBook | null>(null);
   const [pages, setPages] = useState<Page[]>([]);
   const [isModified, setIsModified] = useState(false);
-  const [refreshGraphics, setRefreshGraphics] = useState(false);
+  const [refreshGraphics] = useState(false);
 
   const [, setIsLoading] = useState(true);
   const [, setError] = useState<string | null>(null);
+
+  const { state, dispatch, isLoading, error } = useBook(bookId);
+  const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
+  const { handleSave, handleAddPageButtonClick, handleDeleteButtonClick } =
+    usePageManagement(bookId, dispatch);
+  const { setModified, setRefreshGraphics } = useUIState(dispatch);
 
   // Effects
   useEffect(() => {
@@ -158,48 +133,6 @@ const BookPage: React.FC = () => {
       }
     }
   };
-
-  const handleAddPageButtonClick = () => {
-    const newPage: Page = {
-      pageId: 10,
-      pageNumber: 10,
-      aspectRatio: { width: 1, height: 1 },
-      elements: [],
-    };
-    if (book) {
-      const bookNew: IBook = PageService.addPage(book, newPage);
-      setPages(bookNew.pages);
-      setIsModified(true);
-    }
-  };
-  const handleDeleteButtonClick = (event: React.MouseEvent, pageId: number) => {
-    event.preventDefault();
-
-    if (window.confirm('Confirmer la suppression de la page ?')) {
-      if (book) {
-        const bookNew: IBook = PageService.deletePage(book, pageId);
-        setPages(bookNew.pages);
-        setIsModified(true);
-      }
-    }
-  };
-
-  const handleSave = useCallback(async () => {
-    console.log('handleSave');
-    try {
-      const data = await BookService.updateBook(bookId, { pages: pages });
-      if (!data.error) {
-        console.log('Book saved successfully:', data);
-        setIsModified(false);
-      } else {
-        if (data.message) {
-          alert(data.message);
-        }
-      }
-    } catch (error) {
-      console.error('Error saving book:', error);
-    }
-  }, [bookId, pages]);
 
   const handleGraphicAssetItemClick = (asset: GraphicAsset) => {
     console.log('handleGraphicAssetItemClick', asset);
@@ -253,19 +186,11 @@ const BookPage: React.FC = () => {
     }
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
-    <BookPageContext.Provider
-      value={{
-        canvas,
-        setCanvas,
-        book,
-        pageParams,
-        setPages,
-        isModified,
-        refreshGraphics,
-        setRefreshGraphics,
-      }}
-    >
+    <BookPageProvider dispatch={dispatch}>
       <Layout
         className={`w-full flex`}
         header={
@@ -308,8 +233,13 @@ const BookPage: React.FC = () => {
           <SpreadToolbar />
         </main>
       </Layout>
-      <UnsavedChangesToast isModified={isModified} onSave={handleSave} />
-    </BookPageContext.Provider>
+      <UnsavedChangesToast
+        isModified={isModified}
+        onSave={() => {
+          handleSave(pages);
+        }}
+      />
+    </BookPageProvider>
   );
 };
 
