@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/domain/book';
 import { useContext } from 'react';
-import { BookPageContext } from '../BookPageContext';
+import { BookContext } from '../../book.context';
 import { Link } from 'react-router-dom';
-import { BookService } from '@/services/BookService';
-import { ToolbarButton } from '../SpreadViewerCanvas/ui/ToolbarButton';
+import { BookService } from '@/pages/Book/book.service';
+import { ToolbarButton } from '../../SpreadViewerCanvas/ui/ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 
@@ -111,7 +111,7 @@ const Pages: React.FC<PagesProps> = ({
 }) => {
   const {
     pageParams: { pageId, bookId },
-  } = useContext(BookPageContext);
+  } = useContext(BookContext);
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
   let spreads: Page[][] = [];

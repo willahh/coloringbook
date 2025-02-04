@@ -58,7 +58,7 @@ export class PageService {
   public static updateThumbImageData(
     pages: Page[],
     canvas: fabric.Canvas,
-    pageId: number,
+    pageId: number
   ): Page[] {
     const image = this.getImage(canvas);
     const newPages: Page[] = this.updatePage(pages, pageId, {

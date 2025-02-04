@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BookService } from '@/services/BookService';
+import { BookService } from '@/pages/Book/book.service';
 import { Page } from '@/domain/book';
 
 export const usePageSpread = (

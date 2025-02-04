@@ -3,7 +3,7 @@ import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pou
 import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
-import { BookFormatHelper } from '@/utils/BookUtils';
+import { BookFormatHelper } from '@/pages/Book/book.utils';
 
 export class BookService {
   static async getBook(bookId: string): Promise<IBook> {

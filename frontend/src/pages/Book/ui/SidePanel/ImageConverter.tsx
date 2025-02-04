@@ -3,10 +3,10 @@ import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
 import { Tooltip } from '@/components/Tooltip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import { BookPageContext } from '../BookPageContext';
+import { BookContext } from '../../book.context';
 
 const ImageConverter: React.FC = () => {
-  const { setRefreshGraphics } = useContext(BookPageContext);
+  const { setRefreshGraphics } = useContext(BookContext);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [, setConvertedImage] = useState<string | null>(null);

@@ -1,7 +1,7 @@
 // hooks/usePageManagement.ts
 import { useCallback } from 'react';
-import { BookService } from '@/services/BookService';
-import { BookAction } from '../reducers/bookReducer';
+import { BookService } from '@/pages/Book/book.service';
+import { BookAction } from '../book.reducer';
 import { Page } from '@/domain/book';
 
 export const usePageManagement = (

@@ -1,4 +1,3 @@
-// reducers/bookReducer.ts
 import { IBook, Page } from '@/domain/book';
 
 type BookState = {

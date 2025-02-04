@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 import { IBook, Obj, Page } from '@/domain/book';
-import { PageService } from '@/services/PageService';
+import { PageService } from '@/pages/Book/page.service';
 
 /* 
  FIXME: Export default !!
@@ -12,26 +12,26 @@ import { PageService } from '@/services/PageService';
 */
 import Layout from '../layout';
 import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
-import { SideToolbar } from './SidePanel/SideToolbar';
-import { ColorPanel } from './SidePanel/ColorPanel';
-import { SidePanel } from './SidePanel/SidePanel';
-import GraphicsPanel from './SidePanel/GraphicsPanel';
-// import { TemplatePanel } from './SidePanel/TemplatePanel';
-import { PagesPanel } from './SidePanel/PagesPanel';
+import { SideToolbar } from './ui/SidePanel/SideToolbar';
+import { ColorPanel } from './ui/SidePanel/ColorPanel';
+import { SidePanel } from './ui/SidePanel/SidePanel';
+import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
+// import { TemplatePanel } from './ui/SidePanel/TemplatePanel';
+import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import SpreadViewerCanvas from './SpreadViewerCanvas/SpreadViewerCanvas';
-import { VerticalSeparator } from './SidePanel/VerticalSeparator';
-import { BookService } from '@/services/BookService';
+import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
+import { BookService } from '@/pages/Book/book.service';
 import UnsavedChangesToast from './SpreadViewerCanvas/ui/UnchangedModificationsToast';
 import Header from '@/components/Header';
 import BreadCrumb from '@/components/BreadCrumb';
 import InlineEdit from '@/components/InlineEdit';
-import ImageConverter from './SidePanel/ImageConverter';
+import ImageConverter from './ui/SidePanel/ImageConverter';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
-import { ElementService } from '@/services/ElementService';
+import { ElementService } from '@/pages/Book/element.service';
 import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
 import { useUIState } from './hooks/useUIState';
-import { BookPageProvider } from './BookPageContext';
+import { BookProvider } from './book.context';
 
 const BookHeader: React.FC<{
   book: IBook | null;
@@ -190,7 +190,7 @@ const BookPage: React.FC = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <BookPageProvider dispatch={dispatch}>
+    <BookProvider dispatch={dispatch}>
       <Layout
         className={`w-full flex`}
         header={
@@ -239,7 +239,7 @@ const BookPage: React.FC = () => {
           handleSave(pages);
         }}
       />
-    </BookPageProvider>
+    </BookProvider>
   );
 };
 

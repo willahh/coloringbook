@@ -1,13 +1,10 @@
-// pages/Book/contexts/BookPageContext.tsx
 import React from 'react';
 import * as fabric from 'fabric';
 import { IBook, Page } from '@/domain/book';
-// import { divide } from 'lodash';
 
 type BookAction = { type: 'SET_PAGES'; payload: Page[] };
-// Ajoutez d'autres actions ici si nécessaire
 
-interface CanvasContextType {
+interface BookContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
   book?: IBook | null;
@@ -21,7 +18,7 @@ interface CanvasContextType {
   setRefreshGraphics: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const BookPageContext = React.createContext<CanvasContextType>({
+export const BookContext = React.createContext<BookContextType>({
   canvas: null,
   setCanvas: () => {},
   book: null,
@@ -38,7 +35,7 @@ export const BookPageContext = React.createContext<CanvasContextType>({
   },
 });
 
-export const BookPageProvider: React.FC<{
+export const BookProvider: React.FC<{
   children: React.ReactNode;
   dispatch: React.Dispatch<BookAction>;
 }> = ({ children, dispatch }) => {
@@ -57,7 +54,7 @@ export const BookPageProvider: React.FC<{
   };
 
   return (
-    <BookPageContext.Provider
+    <BookContext.Provider
       value={{
         canvas,
         setCanvas,
@@ -70,6 +67,6 @@ export const BookPageProvider: React.FC<{
       }}
     >
       {children}
-    </BookPageContext.Provider>
+    </BookContext.Provider>
   );
 };

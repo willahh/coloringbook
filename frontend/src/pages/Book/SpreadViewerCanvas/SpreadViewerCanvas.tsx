@@ -25,7 +25,7 @@
 
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
-import { BookPageContext } from '../BookPageContext';
+import { BookContext } from '../book.context';
 import { Page } from '@/domain/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
@@ -46,7 +46,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Context
-  const { setCanvas, pageParams, setPages } = useContext(BookPageContext);
+  const { setCanvas, pageParams, setPages } = useContext(BookContext);
 
   // State
   const dimensions = useDimensions(containerRef);

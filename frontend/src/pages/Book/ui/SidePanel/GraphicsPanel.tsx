@@ -13,7 +13,7 @@ import { GraphicAsset } from '@/domain/graphic-asset.entity';
 //   fullPath: string;
 //   vecPath: string;
 // }
-import { BookPageContext } from '../BookPageContext';
+import { BookContext } from '../../book.context';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -55,7 +55,7 @@ const GraphicAssetItem: React.FC<{
 const GraphicsPanel: React.FC<{
   onGraphicAssetItemClick: (asset: GraphicAsset) => void;
 }> = ({ onGraphicAssetItemClick }) => {
-  const { refreshGraphics } = useContext(BookPageContext);
+  const { refreshGraphics } = useContext(BookContext);
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
 
   useEffect(() => {
