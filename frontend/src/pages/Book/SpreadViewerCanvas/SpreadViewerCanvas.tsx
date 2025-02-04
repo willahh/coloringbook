@@ -23,31 +23,15 @@
  * @see {@link https://lodash.com/docs/4.17.15#debounce|lodash.debounce}
  */
 
-import { debounce } from 'lodash';
-import React, {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
-  useContext,
-  useMemo,
-} from 'react';
+import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
 import { BookPageContext } from '../page';
-import {
-  handleMouseWheel,
-  handleMouseOver,
-  handleMouseOut,
-  handleMouseDown,
-  handleMouseMove,
-  handleMouseUp,
-  handleDocumentKeyDown,
-  handleDocumentKeyUp,
-} from './utils/canvasEvents';
-
-import { BookService } from '@/services/BookService';
 import { Page } from '@/domain/book';
-import { ObjectFactory } from './object/ObjectFactory';
+import { useEventHandlers } from './hooks/useEventHandlers';
+import { useDimensions } from './hooks/useDimensions';
+import { usePageSpread } from './hooks/usePageSpread';
+import { usePageCreation } from './hooks/usePageCreation';
+import { useZoomControl } from './hooks/useZoomControl';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -65,13 +49,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const { setCanvas, pageParams, setPages } = useContext(BookPageContext);
 
   // State
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const dimensions = useDimensions(containerRef);
 
   // Process
-  const currentPageId = Number(pageParams.pageId) || 0;
-  const pageSpread = useMemo(() => {
-    return BookService.getSpreadForPage(pages, currentPageId);
-  }, [pages, currentPageId]);
+  const { pageSpread } = usePageSpread(pages, pageParams);
 
   // Init
   const initCanvas = useCallback(
@@ -88,38 +69,20 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     [dimensions]
   );
 
-  const updateDimensions = debounce(() => {
-    if (containerRef.current) {
-      const viewportHeight = Math.min(
-        document.documentElement.clientHeight,
-        window.innerHeight || 0
-      );
-      const dimensions = {
-        width:
-          window.innerWidth - containerRef.current.getBoundingClientRect().x,
-        height: viewportHeight - 150,
-      };
-
-      setDimensions({ width: dimensions.width, height: dimensions.height });
-    }
-  }, 200);
-
-  useEffect(() => {
-    updateDimensions();
-    setTimeout(() => {
-      updateDimensions();
-    }, 300); // FIXME: need another, maybe waiting the initial animations to finish
-    window.addEventListener('resize', updateDimensions);
-    return () => {
-      window.removeEventListener('resize', updateDimensions);
-    };
-  }, []);
-
   useEffect(() => {
     if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
       setPages(pages);
     }
   }, [pageSpread, pages, setPages]);
+
+  useEventHandlers(fabricCanvasRef.current);
+
+  const spreadSize = usePageCreation(
+    fabricCanvasRef.current,
+    pageSpread,
+    dimensions
+  );
+  useZoomControl(fabricCanvasRef.current, dimensions, spreadSize);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -129,112 +92,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         lastPosY?: number;
       };
       setCanvas(canvas);
-
-      canvas.on('mouse:wheel', handleMouseWheel(canvas));
-      canvas.on('mouse:over', handleMouseOver(canvas));
-      canvas.on('mouse:out', handleMouseOut(canvas));
-      canvas.on('mouse:down', handleMouseDown(canvas));
-      canvas.on('mouse:move', handleMouseMove(canvas));
-      canvas.on('mouse:up', handleMouseUp(canvas));
-      canvas.on('selection:created', function (e) {
-        console.log('Selected:', e.selected);
-      });
-      canvas.on('selection:updated', function (e) {
-        console.log('Selection Updated:', e.selected);
-      });
-      canvas.on('selection:cleared', function (e) {
-        console.log('Selection Cleared', e);
-      });
-
-      // fixme: remove on unmount
-      document.onkeydown = handleDocumentKeyDown(canvas);
-      document.onkeyup = handleDocumentKeyUp(canvas);
-
-      // Create pages
-      const canvasBorder = 12; // Border or shadow pixels
-      const spreadSize = { width: 0, height: 0 };
-      pageSpread.forEach((page, index) => {
-        // const paysage = dimensions.width > dimensions.height;
-        // const fitPageHeight = dimensions.width > dimensions.height;
-        const fitPageHeight =
-          page.aspectRatio.width > page.aspectRatio.height ||
-          dimensions.width > dimensions.height;
-        let pageWidth = 0;
-        let pageHeight = 0;
-        if (fitPageHeight) {
-          pageHeight = dimensions.height - canvasBorder * 2;
-          pageWidth =
-            pageHeight * (page.aspectRatio.width / page.aspectRatio.height) -
-            canvasBorder * 2;
-        } else {
-          pageWidth = dimensions.width - canvasBorder * 2;
-          pageHeight =
-            pageWidth * (page.aspectRatio.height / page.aspectRatio.width) -
-            canvasBorder * 2;
-        }
-        // console.log('#2 pageWidth', pageWidth);
-        // console.log('#2 pageHeight', pageHeight);
-        const offsetX = index * pageWidth;
-        spreadSize.width += pageWidth;
-        spreadSize.height = Math.max(spreadSize.height, pageHeight);
-
-        const rect = new fabric.Rect({
-          width: pageWidth,
-          height: pageHeight,
-          left: offsetX,
-          top: 0,
-          fill: 'white',
-          selectable: false,
-          shadow: new fabric.Shadow({
-            color: 'rgba(0, 0, 0, .2)',
-            nonScaling: true,
-            blur: 4,
-            offsetX: 2,
-            offsetY: 2,
-          }),
-        });
-        canvas.add(rect);
-        // fabricObjects.push(rect);
-
-        // Create objects
-        page.elements.forEach(async (element) => {
-          const object = ObjectFactory.createObject(
-            element,
-            offsetX,
-            pageWidth,
-            pageHeight
-          );
-          const fabricObject = await object?.getObject();
-
-          if (fabricObject) {
-            fabricObject.set('objet', element);
-            canvas.add(fabricObject);
-            // fabricObjects.push(fabricObject);
-          }
-        });
-      });
-
-      const mask = new fabric.Rect({
-        width: spreadSize.width + canvasBorder,
-        height: spreadSize.height + canvasBorder,
-        left: -(canvasBorder / 2),
-        top: -(canvasBorder / 2),
-      });
-      canvas.clipPath = mask;
-
-      // Center spread
-      // Calculate the scale to fit the spread within the canvas dimensions
-      // console.log('#2 center spread');
-      const scale = 0.9;
-      const scaleX = scale;
-      const scaleY = scale;
-      const x = dimensions.width / 2 - (spreadSize.width * scaleX) / 2;
-      const y = dimensions.height / 2 - (spreadSize.height * scaleY) / 2;
-      // console.log('#2 dimensions: ', dimensions);
-      // console.log('#2 x: ', x, 'y: ', y);
-      canvas.lastPosX = x;
-      canvas.lastPosY = y;
-      canvas.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
 
       return () => {
         canvas.dispose();
