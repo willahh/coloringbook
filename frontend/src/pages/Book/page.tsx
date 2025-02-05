@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
-import { IBook, Obj, Page } from '@/domain/book';
-import { PageService } from '@/services/page.service';
+import { IBook, Page } from '@/domain/book';
+// import { PageService } from '@/services/page.service';
 
 /* 
  FIXME: Export default !!
@@ -23,59 +23,49 @@ import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import { BookService } from '@/services/book.service';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
-import { GraphicAsset } from '@/domain/graphic-asset.entity';
-import { ElementService } from '@/services/element.service';
+// import { GraphicAsset } from '@/domain/graphic-asset.entity';
+// import { ElementService } from '@/services/element.service';
 import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
 // import { useUIState } from './hooks/useUIState';
 import { BookProvider } from './book.context';
 import BookHeader from './ui/BookHeader';
 
+import {
+  handleGraphicAssetItemClick,
+  handleRectangleClick,
+} from './canvas/canvas.events';
+
 const BookPage: React.FC = () => {
-  console.log('BookPage');
+  console.log('#4 BookPage');
 
   // Page params
   const { bookId = '', pageId = '1' } = useParams<{
     bookId: string;
     pageId?: string;
   }>();
+  console.log('#4 bookId', bookId);
+  console.log('#4 pageId', pageId);
   // const pageParams = { bookId, pageId };
 
   // States
   // const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const [book, setBook] = useState<IBook | null>(null);
-  const [pages, setPages] = useState<Page[]>([]);
-  const [isModified, setIsModified] = useState(false);
+  // const [pages, setPages] = useState<Page[]>([]);
   // const [refreshGraphics] = useState(false);
+  // const [, setIsLoading] = useState(true);
+  // const [, setError] = useState<string | null>(null);
+  const [book, setBook] = useState<IBook | null>(null);
+  const [isModified, setIsModified] = useState(false);
 
-  const [, setIsLoading] = useState(true);
-  const [, setError] = useState<string | null>(null);
-
-  const { /*state,*/ dispatch, isLoading, error } = useBook(bookId);
-  const [canvas, /*setCanvas*/] = useState<fabric.Canvas | null>(null);
+  const { state, dispatch, isLoading, error } = useBook(bookId);
+  console.log('#4 state', state);
+  const [, setPages] = useState<Page[]>(state.book.pages);
+  const [canvas] = useState<fabric.Canvas | null>(null);
   const { handleSave, handleAddPageButtonClick, handleDeleteButtonClick } =
     usePageManagement(bookId, dispatch);
   // const { setModified, setRefreshGraphics } = useUIState(dispatch);
 
-  // Effects
-  useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const book = await BookService.getBook(bookId);
-        const { book: newBook, isModified } = BookService.prepareBookData(book);
-
-        setIsLoading(true);
-        setBook(newBook);
-        setPages(newBook.pages);
-        setIsModified(isModified);
-      } catch (err) {
-        setError(`Erreur lors du chargement du livre ${err}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchBook();
-  }, [bookId]);
+  console.log('#4 state', state);
 
   // Handlers
   const handleOnEdit = async (book: IBook | null, newValue: string) => {
@@ -98,58 +88,6 @@ const BookPage: React.FC = () => {
           alert(responseData.message);
         }
       }
-    }
-  };
-
-  const handleGraphicAssetItemClick = (asset: GraphicAsset) => {
-    console.log('handleGraphicAssetItemClick', asset);
-    const element: Obj | null = ElementService.elementFromGraphicAsset(asset);
-    if (!element) {
-      console.error('Failed to create element from graphic asset');
-      return;
-    }
-
-    if (book && canvas) {
-      const updatedBook: IBook = { ...book };
-      updatedBook.pages = pages;
-
-      const updatedBook2 = ElementService.add(
-        updatedBook,
-        element,
-        Number(pageId)
-      );
-      setPages(updatedBook2.pages);
-      setIsModified(true);
-    }
-  };
-
-  const onRectangleClick = () => {
-    console.log('onRectangleClick');
-
-    if (canvas) {
-      /*
-       * [TODO]
-       *  - GO TO PAGE 1
-       *  Screen => save to page 1 thumb
-       *  - GO TO PAGE 2
-       *  Screen ...
-       *  ...
-       *
-       * ------------------------------------------------------------------------
-       *
-       * Ou alors :
-       *  - Faire un nouveau div qui prend tout l'écran.
-       *  - Faire un rendu du canva
-       *  - Faire la capture depuis ce div en plein écran.
-       *  - Le div peut être en opacité 0 le temps de l'opération ?
-       * */
-      const pagesNew = PageService.updateThumbImageData(
-        pages,
-        canvas,
-        Number(pageId)
-      );
-      setPages(pagesNew);
-      setIsModified(true);
     }
   };
 
@@ -182,28 +120,48 @@ const BookPage: React.FC = () => {
             {/* <TemplatePanel className="" /> */}
             {/* <VerticalSeparator /> */}
             <GraphicsPanel
-              onGraphicAssetItemClick={handleGraphicAssetItemClick}
+              onGraphicAssetItemClick={(asset) => {
+                handleGraphicAssetItemClick(
+                  asset,
+                  book,
+                  canvas,
+                  state.book.pages,
+                  pageId,
+                  setPages,
+                  setIsModified
+                );
+              }}
             />
             <ImageConverter />
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>
           <PagesPanel
-            pages={pages}
+            pages={state.book.pages}
             addPageButtonClick={handleAddPageButtonClick}
             onDeleteButtonClick={handleDeleteButtonClick}
           />
-          <SideToolbar onRectangleClick={onRectangleClick} />
+          <SideToolbar
+            onRectangleClick={() => {
+              handleRectangleClick(
+                canvas,
+                state.book.pages,
+                pageId,
+                setPages,
+                setIsModified
+              );
+            }}
+          />
         </SidePanel>
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-950 flex-col">
-          <SpreadViewerCanvas pages={pages} />
+          <SpreadViewerCanvas pages={state.book.pages} />
           <SpreadToolbar />
         </main>
       </Layout>
       <UnsavedChangesToast
         isModified={isModified}
         onSave={() => {
-          handleSave(pages);
+          handleSave(state.book.pages);
         }}
       />
     </BookProvider>

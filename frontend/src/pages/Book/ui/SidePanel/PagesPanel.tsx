@@ -112,6 +112,8 @@ const Pages: React.FC<PagesProps> = ({
   const {
     pageParams: { pageId, bookId },
   } = useContext(BookContext);
+  console.log('\n#4 Pages')
+  console.log('#4 pageParams', pageId, bookId)
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
   let spreads: Page[][] = [];

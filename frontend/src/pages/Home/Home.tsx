@@ -36,7 +36,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
   };
 
   return (
-    <div className="flex items-center justify-center items-center w-full">
+    <div className="flex items-center justify-center w-full">
       <div className="dark:text-white max-w-80">
         <Toast
           message={toastMessage}

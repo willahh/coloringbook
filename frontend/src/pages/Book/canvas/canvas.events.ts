@@ -1,5 +1,8 @@
 import * as fabric from 'fabric';
-
+import { GraphicAsset } from '@/domain/graphic-asset.entity';
+import { IBook, Obj, Page } from '@/domain/book';
+import { ElementService } from '@/services/element.service';
+import { PageService } from '@/services/page.service';
 declare module 'fabric' {
   interface Canvas {
     objSelected?: fabric.Object | null;
@@ -8,6 +11,45 @@ declare module 'fabric' {
     isDragging?: boolean;
   }
 }
+
+export const handleGraphicAssetItemClick = (
+  asset: GraphicAsset,
+  book: IBook | null,
+  canvas: fabric.Canvas | null,
+  pages: Page[],
+  pageId: string,
+  setPages: React.Dispatch<React.SetStateAction<Page[]>>,
+  setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  const element: Obj | null = ElementService.elementFromGraphicAsset(asset);
+  if (!element || !book || !canvas) return;
+
+  const updatedBook = ElementService.add(
+    { ...book, pages },
+    element,
+    Number(pageId)
+  );
+  setPages(updatedBook.pages);
+  setIsModified(true);
+};
+
+export const handleRectangleClick = (
+  canvas: fabric.Canvas | null,
+  pages: Page[],
+  pageId: string,
+  setPages: React.Dispatch<React.SetStateAction<Page[]>>,
+  setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+) => {
+  if (!canvas) return;
+
+  const pagesNew = PageService.updateThumbImageData(
+    pages,
+    canvas,
+    Number(pageId)
+  );
+  setPages(pagesNew);
+  setIsModified(true);
+};
 
 export const handleMouseWheel =
   (canvas: fabric.Canvas) => (opt: fabric.TEvent<WheelEvent>) => {

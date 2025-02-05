@@ -23,5 +23,5 @@ export const useBook = (bookId: string) => {
     fetchBook();
   }, [bookId]);
 
-  return { state, dispatch, isLoading, error };
+  return { state: state, dispatch, isLoading, error };
 };

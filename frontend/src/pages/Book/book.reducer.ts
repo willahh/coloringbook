@@ -1,5 +1,6 @@
 import { IBook, Page } from '@/domain/book';
 import BookState from './book.state';
+import { BookFormat } from '@/domain/book.enum';
 
 type BookAction =
   | { type: 'SET_BOOK'; payload: IBook }
@@ -10,23 +11,43 @@ type BookAction =
   | { type: 'REFRESH_GRAPHICS'; payload: boolean };
 
 const bookReducer = (state: BookState, action: BookAction): BookState => {
+  console.log('#4 bookReducer', action.type, state, action);
+
   switch (action.type) {
-    case 'SET_BOOK':
-      return { ...state, book: action.payload, pages: action.payload.pages };
-    case 'SET_PAGES':
-      return { ...state, pages: action.payload, isModified: true };
-    case 'ADD_PAGE':
+    case 'SET_BOOK': {
+      const book = action.payload;
+
       return {
         ...state,
-        pages: [...state.pages, action.payload],
-        isModified: true,
+        book: { ...book, pages: action.payload.pages },
       };
-    case 'DELETE_PAGE':
+    }
+    case 'SET_PAGES': {
+      const pages = action.payload;
       return {
         ...state,
-        pages: state.pages.filter((page) => page.pageId !== action.payload),
+        book: { ...state.book, pages: pages },
+      };
+    }
+    case 'ADD_PAGE': {
+      const page = action.payload;
+      return {
+        ...state,
+        book: { ...state.book, pages: [...state.book.pages, page] },
+      };
+    }
+    case 'DELETE_PAGE': {
+      const pageId = action.payload;
+
+      return {
+        ...state,
+        book: {
+          ...state.book,
+          pages: state.book.pages.filter((page) => page.pageId !== pageId),
+        },
         isModified: true,
       };
+    }
     case 'SET_MODIFIED':
       return { ...state, isModified: action.payload };
     case 'REFRESH_GRAPHICS':
@@ -37,8 +58,14 @@ const bookReducer = (state: BookState, action: BookAction): BookState => {
 };
 
 const initialBookState: BookState = {
-  book: null,
-  pages: [],
+  book: {
+    coverImage: '',
+    format: BookFormat.A4_PORTRAIT,
+    id: 0,
+    name: '',
+    pageCount: 0,
+    pages: [],
+  },
   isModified: false,
   refreshGraphics: false,
 };
