@@ -1,18 +1,18 @@
 import * as fabric from 'fabric';
 import { DrawableObject } from '../DrawableObject';
-import { isShapeObject, Obj } from '@/domain/book';
+import { isShape, Element } from '@/domain/book';
 
 export class Triangle implements DrawableObject {
   private triangle: fabric.Triangle;
 
   constructor(
-    obj: Obj,
+    obj: Element,
     relativeX: number,
     relativeY: number,
     relativeW: number,
     relativeH: number
   ) {
-    if (isShapeObject(obj)) {
+    if (isShape(obj)) {
       this.triangle = new fabric.Triangle({
         left: relativeX,
         top: relativeY,
@@ -39,7 +39,7 @@ export class Triangle implements DrawableObject {
     return this.triangle;
   }
 
-  update(attrs: Obj): void {
+  update(attrs: Element): void {
     this.triangle.set(attrs);
   }
 

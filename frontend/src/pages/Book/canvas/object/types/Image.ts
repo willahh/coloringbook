@@ -1,13 +1,13 @@
 import { DrawableObject } from '../DrawableObject';
 import * as fabric from 'fabric';
-import { ImageObject } from '@/domain/book';
+import { ImageElement } from '@/domain/book';
 // import { getMediaUrl } from '@/utils/api';
 
 export class Image implements DrawableObject {
   private img: Promise<fabric.FabricObject> | null;
 
   constructor(
-    obj: ImageObject,
+    obj: ImageElement,
     relativeX: number,
     relativeY: number,
     relativeW: number,
@@ -23,7 +23,7 @@ export class Image implements DrawableObject {
   }
 
   private async createImage(
-    obj: ImageObject,
+    obj: ImageElement,
     relativeX: number,
     relativeY: number,
     relativeW: number,
@@ -72,7 +72,7 @@ export class Image implements DrawableObject {
     // }
   }
 
-  update(obj: ImageObject): void {
+  update(obj: ImageElement): void {
     console.log('obj', obj);
     // if (this.img) {
     //   this.img.set(attrs);

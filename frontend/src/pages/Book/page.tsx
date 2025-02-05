@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
-import { IBook, Page } from '@/domain/book';
+import { Book, Page } from '@/domain/book';
 // import { PageService } from '@/services/page.service';
 
 /* 
@@ -54,7 +54,7 @@ const BookPage: React.FC = () => {
   // const [refreshGraphics] = useState(false);
   // const [, setIsLoading] = useState(true);
   // const [, setError] = useState<string | null>(null);
-  const [book, setBook] = useState<IBook | null>(null);
+  const [book, setBook] = useState<Book | null>(null);
   const [isModified, setIsModified] = useState(false);
 
   const { state, dispatch, isLoading, error } = useBook(bookId);
@@ -68,7 +68,7 @@ const BookPage: React.FC = () => {
   console.log('#4 state', state);
 
   // Handlers
-  const handleOnEdit = async (book: IBook | null, newValue: string) => {
+  const handleOnEdit = async (book: Book | null, newValue: string) => {
     console.log('onEdit', newValue);
 
     if (book) {

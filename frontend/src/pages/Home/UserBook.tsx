@@ -2,14 +2,14 @@ import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 import { getMediaUrl } from '@/utils/api';
 import { Tooltip } from '@/components/Tooltip';
 
 interface BookItemProps {
   index: number;
   pageName: 'home' | 'library';
-  book: IBook;
+  book: Book;
   highlightBookId: number;
 }
 

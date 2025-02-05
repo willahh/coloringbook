@@ -5,7 +5,7 @@ import { Page } from '@/domain/book';
 export const usePageSpread = (
   pages: Page[],
   pageParams: {
-    bookId: string;
+    bookId?: string;
     pageId?: string;
   }
 ) => {

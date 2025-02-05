@@ -1,12 +1,12 @@
 import { DrawableObject } from '../DrawableObject';
 import * as fabric from 'fabric';
-import { isTextObject, Obj } from '@/domain/book';
+import { isText, Element } from '@/domain/book';
 
 export class Text implements DrawableObject {
   private text: fabric.Text;
 
-  constructor(obj: Obj, relativeX: number, relativeY: number) {
-    if (isTextObject(obj)) {
+  constructor(obj: Element, relativeX: number, relativeY: number) {
+    if (isText(obj)) {
       this.text = new fabric.Text(obj.attr.text, {
         left: relativeX,
         top: relativeY,
@@ -31,7 +31,7 @@ export class Text implements DrawableObject {
     return this.text;
   }
 
-  update(attrs: Obj): void {
+  update(attrs: Element): void {
     this.text.set(attrs);
   }
 

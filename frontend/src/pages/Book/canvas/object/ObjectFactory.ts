@@ -5,11 +5,11 @@ import { Triangle } from './types/Triangle';
 import { Text } from './types/Text';
 import { SVG } from './types/SVG';
 import { Image } from './types/Image';
-import { Obj } from '@/domain/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
+import { Element } from '@/domain/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
 
 export class ObjectFactory {
   public static createObject(
-    obj: Obj,
+    obj: Element,
     offsetX: number,
     pageWidth: number,
     pageHeight: number

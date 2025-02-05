@@ -1,16 +1,16 @@
 import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
-import { IBook, Page } from '@/domain/book';
+import { Book, Page } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
 import { BookFormatHelper } from '@/utils/book.utils';
 
 export class BookService {
-  static async getBook(bookId: string): Promise<IBook> {
+  static async getBook(bookId: string): Promise<Book> {
     const response = await fetch(`${getBooksUrl()}/${bookId}`);
     return await response.json();
   }
-  static async updateBook(bookId: string, book: Partial<IBook>) {
+  static async updateBook(bookId: string, book: Partial<Book>) {
     const response = await fetch(`${getBooksUrl()}/${bookId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
@@ -19,7 +19,7 @@ export class BookService {
     return await response.json();
   }
 
-  static prepareBookData(book: IBook): { book: IBook; isModified: boolean } {
+  static prepareBookData(book: Book): { book: Book; isModified: boolean } {
     // Si le livre n'a pas de pages, ajoutons-en 3 par défaut
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {

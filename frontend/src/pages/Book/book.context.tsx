@@ -1,6 +1,6 @@
 import React from 'react';
 import * as fabric from 'fabric';
-import { IBook, Page } from '@/domain/book';
+import { Book, Page } from '@/domain/book';
 import { useParams } from 'react-router-dom';
 
 type BookAction = { type: 'SET_PAGES'; payload: Page[] };
@@ -8,7 +8,7 @@ type BookAction = { type: 'SET_PAGES'; payload: Page[] };
 interface BookContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
-  book?: IBook | null;
+  book?: Book | null;
   pageParams: {
     bookId?: string;
     pageId?: string;
@@ -41,7 +41,7 @@ export const BookProvider: React.FC<{
   dispatch: React.Dispatch<BookAction>;
 }> = ({ children, dispatch }) => {
   const [canvas, setCanvas] = React.useState<fabric.Canvas | null>(null);
-  const [book /*, setBook*/] = React.useState<IBook | null>(null);
+  const [book /*, setBook*/] = React.useState<Book | null>(null);
   const [isModified /*, setIsModified*/] = React.useState<boolean>(false);
   const [refreshGraphics, setRefreshGraphics] = React.useState<boolean>(false);
   const params = useParams();

@@ -7,7 +7,7 @@ import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import AnimatedText from '@/components/AnimatedText';
 import Toast from '@/components/Toast';
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 import { getBooksUrl } from '@/utils/api';
 import { useTheme } from '@/contexts/ThemeContext';
 
@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/useToast';
 import { ToolbarButton } from '../Book/ui/ToolbarButton';
 
 interface ContentDivProps {
-  onBookCreationSuccess: (book: IBook) => void;
+  onBookCreationSuccess: (book: Book) => void;
 }
 
 const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
   const pageName = location.pathname === '/' ? 'home' : 'library';
 
   // Books data
-  const [books, setBooks] = useState<IBook[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [highlightBookId, setHighlightBookId] = useState(0);
   const fetchBooks = async () => {
@@ -103,7 +103,7 @@ const HomePage: React.FC = () => {
     fetchBooks();
   }, []);
 
-  const onBookCreationSuccess = (book: IBook) => {
+  const onBookCreationSuccess = (book: Book) => {
     setHighlightBookId(book.id);
     fetchBooks();
   };

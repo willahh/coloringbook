@@ -1,7 +1,7 @@
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 
 type BookState = {
-  book: IBook;
+  book: Book;
   isModified: boolean;
   refreshGraphics: boolean;
 };

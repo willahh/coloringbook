@@ -1,8 +1,8 @@
-import { IBook, Page } from '@/domain/book';
+import { Book, Page } from '@/domain/book';
 import fabric from 'fabric';
 
 export class PageService {
-  public static addPage(p_oBookData: IBook, p_oPage: Page): IBook {
+  public static addPage(p_oBookData: Book, p_oPage: Page): Book {
     const page: Page = { ...p_oPage };
     p_oBookData.pages = [...p_oBookData.pages];
     page.pageId =
@@ -36,7 +36,7 @@ export class PageService {
     return pages;
   }
 
-  public static deletePage(p_oBookData: IBook, p_nPageId: number): IBook {
+  public static deletePage(p_oBookData: Book, p_nPageId: number): Book {
     const newPages = [...p_oBookData.pages].filter(
       (page) => page.pageId !== p_nPageId
     );

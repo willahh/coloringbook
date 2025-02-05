@@ -1,13 +1,13 @@
 import { DrawableObject } from '../DrawableObject'; // Adjust the path as needed
 import * as fabric from 'fabric';
-import { SVGObject } from '@/domain/book';
+import { SVGElement } from '@/domain/book';
 import { getAPIURL } from '@/utils/api';
 
 export class SVG implements DrawableObject {
   private svgObjects: Promise<fabric.FabricObject> | null;
 
   constructor(
-    obj: SVGObject,
+    obj: SVGElement,
     relativeX: number,
     relativeY: number,
     relativeW: number,
@@ -20,7 +20,7 @@ export class SVG implements DrawableObject {
     this.svgObjects = this.createSVG(obj);
   }
 
-  private async createSVG(obj: SVGObject): Promise<fabric.FabricObject> {
+  private async createSVG(obj: SVGElement): Promise<fabric.FabricObject> {
     let groupSVGElements: fabric.FabricObject | null = null;
     if (obj.attr.svgContent) {
       // Load from an inline svg
@@ -53,7 +53,7 @@ export class SVG implements DrawableObject {
     // }
   }
 
-  update(obj: SVGObject): void {
+  update(obj: SVGElement): void {
     console.log('obj', obj);
     // if ('svgContent' in obj && typeof obj.svgContent === 'string') {
     //   this.attrs.svgContent = obj.svgContent;

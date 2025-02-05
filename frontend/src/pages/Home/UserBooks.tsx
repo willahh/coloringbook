@@ -1,5 +1,5 @@
 import React from 'react';
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 import { BookFormat } from '@/domain/book.enum';
 import { UserBookItem } from './UserBook';
 
@@ -7,7 +7,7 @@ interface UserBooksProps {
   pageName: 'home' | 'library';
   minItems: number;
   itemClassName: string;
-  books: IBook[];
+  books: Book[];
   loading?: boolean;
   highlightBookId: number;
 }

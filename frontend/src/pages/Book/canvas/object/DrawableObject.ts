@@ -1,8 +1,8 @@
 import * as fabric from 'fabric';
-import { Obj } from '@/domain/book';
+import { Element } from '@/domain/book';
 export interface DrawableObject {
   draw(canvas: fabric.Canvas): void;
-  update(attrs: Obj): void;
+  update(attrs: Element): void;
   delete(): void;
   getObject(): Promise<fabric.FabricObject>;
 }

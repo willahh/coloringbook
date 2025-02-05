@@ -1,11 +1,11 @@
-import { IBook, Page } from '@/domain/book';
+import { Book, Page } from '@/domain/book';
 import BookState from './book.state';
 import { BookFormat } from '@/domain/book.enum';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
 import { ElementService } from '@/services/element.service';
 
 type BookAction =
-  | { type: 'SET_BOOK'; payload: IBook }
+  | { type: 'SET_BOOK'; payload: Book }
   | { type: 'SET_PAGES'; payload: Page[] }
   | { type: 'ADD_PAGE'; payload: Page }
   | { type: 'DELETE_PAGE'; payload: number }

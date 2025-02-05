@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
-import { IBook, Obj, Page } from '@/domain/book';
+import { Book, Element, Page } from '@/domain/book';
 import { ElementService } from '@/services/element.service';
 import { PageService } from '@/services/page.service';
 declare module 'fabric' {
@@ -14,14 +14,14 @@ declare module 'fabric' {
 
 export const handleGraphicAssetItemClick = (
   asset: GraphicAsset,
-  book: IBook | null,
+  book: Book | null,
   canvas: fabric.Canvas | null,
   pages: Page[],
   pageId: string,
   setPages: React.Dispatch<React.SetStateAction<Page[]>>,
   setIsModified: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
-  const element: Obj | null = ElementService.elementFromGraphicAsset(asset);
+  const element: Element | null = ElementService.elementFromGraphicAsset(asset);
   if (!element || !book || !canvas) return;
 
   const updatedBook = ElementService.add(

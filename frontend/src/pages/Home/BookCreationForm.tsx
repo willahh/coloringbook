@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 import Button from '@components/Button';
 import { getBooksUrl } from '@/utils/api';
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 import { TrashIcon } from '@heroicons/react/20/solid';
 
 const formatOptions = [
@@ -39,7 +39,7 @@ interface BookCreationFormProps {
   isVisible: boolean;
   onCancelClick: () => void;
   showToast: (message: string, type: 'success' | 'error') => void; // Add showToast prop
-  onBookCreationSuccess?: (book: IBook) => void;
+  onBookCreationSuccess?: (book: Book) => void;
 }
 
 const BookCreationForm: React.FC<BookCreationFormProps> = ({

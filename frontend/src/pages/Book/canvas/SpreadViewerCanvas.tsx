@@ -46,7 +46,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Context
-  const { setCanvas, pageParams, setPages } = useContext(BookContext);
+  const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
 
   // State
   const dimensions = useDimensions(containerRef);

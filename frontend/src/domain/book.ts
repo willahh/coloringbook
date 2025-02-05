@@ -22,7 +22,7 @@ export interface SVGAttributes {
   svgURL?: string;
 }
 
-export interface ImageObject {
+export interface ImageElement {
   type: 'image';
   x: number;
   y: number;
@@ -33,7 +33,7 @@ export interface ImageObject {
     src: string;
   };
 }
-export interface RectangleObject {
+export interface RectangleElement {
   type: 'rectangle';
   x: number;
   y: number;
@@ -41,7 +41,7 @@ export interface RectangleObject {
   h: number;
   attr: BaseShapeAttributes;
 }
-export interface TriangleObject {
+export interface TriangleElement {
   type: 'triangle';
   x: number;
   y: number;
@@ -49,7 +49,7 @@ export interface TriangleObject {
   h: number;
   attr: BaseShapeAttributes;
 }
-export interface CircleObject {
+export interface CircleElement {
   type: 'circle';
   x: number;
   y: number;
@@ -57,7 +57,7 @@ export interface CircleObject {
   h: number;
   attr: CircleAttributes;
 }
-export interface TextObject {
+export interface TextElement {
   type: 'text';
   x: number;
   y: number;
@@ -65,7 +65,7 @@ export interface TextObject {
   h: number;
   attr: TextAttributes;
 }
-export interface SVGObject {
+export interface SVGElement {
   type: 'svg';
   x: number;
   y: number;
@@ -74,23 +74,23 @@ export interface SVGObject {
   attr: SVGAttributes;
 }
 
-export type Obj =
-  | RectangleObject
-  | CircleObject
-  | TriangleObject
-  | TextObject
-  | ImageObject
-  | SVGObject;
+export type Element =
+  | RectangleElement
+  | CircleElement
+  | TriangleElement
+  | TextElement
+  | ImageElement
+  | SVGElement;
 
 export interface Page {
   pageId: number;
   pageNumber: number;
   aspectRatio: { width: number; height: number };
-  elements: Obj[];
+  elements: Element[];
   thumbImageData?: string;
 }
 
-export interface IBook {
+export interface Book {
   id: number;
   name: string;
   format: BookFormat;
@@ -99,22 +99,22 @@ export interface IBook {
   pages: Page[];
 }
 
-export function isShapeObject(
-  obj: Obj
-): obj is RectangleObject | CircleObject | TriangleObject {
+export function isShape(
+  obj: Element
+): obj is RectangleElement | CircleElement | TriangleElement {
   return (
     'fill' in obj.attr && 'stroke' in obj.attr && 'strokeWidth' in obj.attr
   );
 }
 
-export function isTextObject(obj: Obj): obj is TextObject {
+export function isText(obj: Element): obj is TextElement {
   return 'text' in obj.attr;
 }
 
-export function isSVGObject(obj: Obj): obj is SVGObject {
+export function isSVG(obj: Element): obj is SVGElement {
   return 'svgContent' in obj.attr;
 }
 
-export function isImageObject(obj: Obj): obj is ImageObject {
+export function isImage(obj: Element): obj is ImageElement {
   return 'src' in obj.attr;
 }

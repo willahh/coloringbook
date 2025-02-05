@@ -1,10 +1,10 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import Header from '@/components/Header';
 import InlineEdit from '@/components/InlineEdit';
-import { IBook } from '@/domain/book';
+import { Book } from '@/domain/book';
 
 const BookHeader: React.FC<{
-  book: IBook | null;
+  book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
   return (
