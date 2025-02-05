@@ -18,7 +18,6 @@ interface BookContextType {
   dispatch: DispatchType;
   canvas: fabric.Canvas | null;
 
-  
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>; // TODO: Use action/dispatch instead
   book?: Book | null;
   pageParams: {
@@ -26,34 +25,32 @@ interface BookContextType {
     pageId?: string;
   };
 
-  setPages: (action: BookAction) => void; // TODO: Use action/dispatch instead
-  isModified: boolean; // TODO: Use action/dispatch instead
-  refreshGraphics: boolean; // TODO: Use action/dispatch instead
-  setRefreshGraphics: React.Dispatch<React.SetStateAction<boolean>>; // TODO: Use action/dispatch instead
+  // setPages: (action: BookAction) => void; // TODO: Use action/dispatch instead
+  // isModified: boolean; // TODO: Use action/dispatch instead
+  // refreshGraphics: boolean; // TODO: Use action/dispatch instead
+  // setRefreshGraphics: React.Dispatch<React.SetStateAction<boolean>>; // TODO: Use action/dispatch instead
 }
 
 export const BookContext = React.createContext<BookContextType>({
   state: initialBookState,
   dispatch: () => {
-    console.log('#4 set dispatch from bookcontext')
+    console.log('#4 set dispatch from bookcontext');
   },
   canvas: null,
-
-
 
   setCanvas: () => {},
   book: null,
   pageParams: {
     bookId: '',
   },
-  setPages: function (action: BookAction): void {
-    throw new Error(`Function not implemented. ${action}`);
-  },
-  isModified: false,
-  refreshGraphics: false,
-  setRefreshGraphics: function (): void {
-    throw new Error('Function not implemented.');
-  },
+  // setPages: function (action: BookAction): void {
+  //   throw new Error(`Function not implemented. ${action}`);
+  // },
+  // isModified: false,
+  // refreshGraphics: false,
+  // setRefreshGraphics: function (): void {
+  //   throw new Error('Function not implemented.');
+  // },
 });
 
 export const BookProvider: React.FC<{
@@ -63,8 +60,8 @@ export const BookProvider: React.FC<{
 
   const [canvas, setCanvas] = React.useState<fabric.Canvas | null>(null);
   const [book /*, setBook*/] = React.useState<Book | null>(null);
-  const [isModified /*, setIsModified*/] = React.useState<boolean>(false);
-  const [refreshGraphics, setRefreshGraphics] = React.useState<boolean>(false);
+  // const [isModified /*, setIsModified*/] = React.useState<boolean>(false);
+  // const [refreshGraphics, setRefreshGraphics] = React.useState<boolean>(false);
   const params = useParams();
   const pageParams = {
     bookId: params.bookId,
@@ -80,9 +77,9 @@ export const BookProvider: React.FC<{
     }
   };
 
-  const setPages = (action: BookAction) => {
-    dispatch(action);
-  };
+  // const setPages = (action: BookAction) => {
+  //   dispatch(action);
+  // };
 
   return (
     <BookContext.Provider
@@ -94,10 +91,10 @@ export const BookProvider: React.FC<{
         setCanvas,
         book,
         pageParams,
-        setPages,
-        isModified,
-        refreshGraphics,
-        setRefreshGraphics,
+        // setPages,
+        // isModified,
+        // refreshGraphics,
+        // setRefreshGraphics,
       }}
     >
       {children}

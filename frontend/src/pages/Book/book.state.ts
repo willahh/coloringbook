@@ -18,6 +18,7 @@ export const initialBookState: BookState = {
     pageCount: 0,
     pages: [],
   },
+ 
   isModified: false,
   refreshGraphics: false,
   isLoading: false,

@@ -1,9 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import * as fabric from 'fabric';
-// import { Book, Page } from '@/domain/book';
-// import { PageService } from '@/services/page.service';
-
 /* 
  FIXME: Export default !!
  import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
@@ -16,19 +12,12 @@ import { SideToolbar } from './ui/SidePanel/SideToolbar';
 import { ColorPanel } from './ui/SidePanel/ColorPanel';
 import { SidePanel } from './ui/SidePanel/SidePanel';
 import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
-// import { TemplatePanel } from './ui/SidePanel/TemplatePanel';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
-// import { BookService } from '@/services/book.service';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
-// import { GraphicAsset } from '@/domain/graphic-asset.entity';
-// import { ElementService } from '@/services/element.service';
-// import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
-// import { useUIState } from './hooks/useUIState';
-// import { BookProvider } from './book.context';
 import BookHeader from './ui/BookHeader';
 
 import {

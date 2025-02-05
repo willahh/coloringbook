@@ -68,7 +68,6 @@ const bookReducer = (state: BookState, action: BookAction): BookState => {
       };
 
     case 'BOOK_UPDATE_ERROR':
-      // Here you might want to log the error or show it in UI
       console.error('Book Update Error:', action.payload);
       return {
         ...state,
