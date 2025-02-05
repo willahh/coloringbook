@@ -1,4 +1,4 @@
-import { Book, Page } from '@/domain/book';
+import { Book, Page } from '@/types/book';
 import fabric from 'fabric';
 
 export class PageService {

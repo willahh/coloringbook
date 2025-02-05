@@ -1,8 +1,8 @@
 // import fabric from 'fabric';
-import { Book, Element } from '@/domain/book';
+import { Book, Element } from '@/types/book';
 // import { PageService } from './PageService';
-import { GraphicAsset } from '@/domain/graphic-asset.entity';
-import { GraphicAssetType } from '@/domain/graphic-asset-type.enum';
+import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { GraphicAssetType } from '@/types/graphic-asset-type.enum';
 
 export class ElementService {
   public static elementFromGraphicAsset(asset: GraphicAsset): Element | null {

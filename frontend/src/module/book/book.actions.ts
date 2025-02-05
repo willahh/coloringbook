@@ -1,0 +1,75 @@
+// book.actions.ts
+import { BookService } from '@/services/book.service';
+import { Dispatch } from 'react'; // If you're using React's built-in hooks
+import { BookAction } from './book.reducer'; // Assuming you have exported BookAction type from your reducer
+import { Book, Page } from '@/types/book';
+
+export const editBookName = (bookId: number, newName: string) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    try {
+      dispatch({ type: 'EDIT_BOOK_NAME', payload: newName });
+
+      const book = await BookService.getBook(bookId); // Fetch current book state
+      if (book) {
+        const responseData = await BookService.updateBook(book.id, {
+          ...book,
+          name: newName,
+        });
+        if (responseData.error) {
+          // If there's an error, revert the optimistic update
+          dispatch({ type: 'EDIT_BOOK_NAME', payload: book.name });
+          console.error('Failed to update book name:', responseData.message);
+          dispatch({
+            type: 'BOOK_UPDATE_ERROR',
+            payload: responseData.message,
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Error updating book:', error);
+      dispatch({
+        type: 'BOOK_UPDATE_ERROR',
+        payload: 'An unexpected error occurred',
+      });
+    }
+  };
+};
+
+export const fetchBook = (bookId: number) => {
+  return async (dispatch: Dispatch<BookAction>) => {
+    dispatch({ type: 'FETCH_BOOK_START' });
+    try {
+      const book = await BookService.getBook(bookId);
+      const { book: newBook, isModified } = BookService.prepareBookData(book);
+      dispatch({ type: 'SET_BOOK', payload: newBook });
+      dispatch({ type: 'SET_MODIFIED', payload: isModified });
+      dispatch({ type: 'FETCH_BOOK_SUCCESS' });
+    } catch (err) {
+      dispatch({
+        type: 'FETCH_BOOK_ERROR',
+        payload: `Erreur lors du chargement du livre: ${err}`,
+      });
+    }
+  };
+};
+
+export const addPage = (newPage: Page) => {
+  // Replace 'any' with actual Page type
+  return (dispatch: Dispatch<BookAction>) => {
+    dispatch({ type: 'ADD_PAGE', payload: newPage });
+  };
+};
+
+export const deletePage = (pageId: number) => {
+  return (dispatch: Dispatch<BookAction>) => {
+    dispatch({ type: 'DELETE_PAGE', payload: pageId });
+  };
+};
+
+export const updateBook = (updatedBook: Book) => {
+  // Replace 'any' with your Book type
+  return (dispatch: Dispatch<BookAction>) => {
+    dispatch({ type: 'SET_BOOK', payload: updatedBook });
+    dispatch({ type: 'SET_MODIFIED', payload: true });
+  };
+};
