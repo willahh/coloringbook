@@ -6,11 +6,11 @@ import { getBooksUrl } from '@/utils/api';
 import { BookFormatHelper } from '@/utils/book.utils';
 
 export class BookService {
-  static async getBook(bookId: string): Promise<Book> {
+  static async getBook(bookId: number): Promise<Book> {
     const response = await fetch(`${getBooksUrl()}/${bookId}`);
     return await response.json();
   }
-  static async updateBook(bookId: string, book: Partial<Book>) {
+  static async updateBook(bookId: number, book: Partial<Book>) {
     const response = await fetch(`${getBooksUrl()}/${bookId}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },

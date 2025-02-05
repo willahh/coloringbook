@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
-import { Book, Page } from '@/domain/book';
+// import { Book, Page } from '@/domain/book';
 // import { PageService } from '@/services/page.service';
 
 /* 
@@ -20,89 +20,99 @@ import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
-import { BookService } from '@/services/book.service';
+// import { BookService } from '@/services/book.service';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
 // import { GraphicAsset } from '@/domain/graphic-asset.entity';
 // import { ElementService } from '@/services/element.service';
-import { useBook } from './hooks/useBook';
+// import { useBook } from './hooks/useBook';
 import { usePageManagement } from './hooks/usePageManagement';
 // import { useUIState } from './hooks/useUIState';
-import { BookProvider } from './book.context';
+// import { BookProvider } from './book.context';
 import BookHeader from './ui/BookHeader';
 
 import {
   handleGraphicAssetItemClick,
   handleRectangleClick,
 } from './canvas/canvas.events';
+import { editBookName } from './book.actions';
+import { BookContext } from './book.context';
+import { BookService } from '@/services/book.service';
 
 const BookPage: React.FC = () => {
   console.log('#4 BookPage');
 
   // Page params
-  const { bookId = '', pageId = '1' } = useParams<{
+  let { bookId = 0, pageId = 1 } = useParams<{
     bookId: string;
     pageId?: string;
   }>();
-  console.log('#4 bookId', bookId);
-  console.log('#4 pageId', pageId);
-  // const pageParams = { bookId, pageId };
+  bookId = Number(bookId) | 0;
+  pageId = Number(pageId) | 1;
+
+  // Use context for dispatch
+  const { state, dispatch, canvas } = useContext(BookContext);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // TODO: Move to an actionCreator
+  useEffect(() => {
+    const fetchBook = async () => {
+      try {
+        const book = await BookService.getBook(bookId);
+        const { book: newBook, isModified } = BookService.prepareBookData(book);
+        dispatch({ type: 'SET_BOOK', payload: newBook });
+        dispatch({ type: 'SET_MODIFIED', payload: isModified });
+      } catch (err) {
+        setError(`Erreur lors du chargement du livre ${err}`);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBook();
+  }, [bookId]); // Do not add dispatch in dependency to prevent infinite loop !
 
   // States
-  // const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  // const [pages, setPages] = useState<Page[]>([]);
-  // const [refreshGraphics] = useState(false);
-  // const [, setIsLoading] = useState(true);
-  // const [, setError] = useState<string | null>(null);
-  const [book, setBook] = useState<Book | null>(null);
-  const [isModified, setIsModified] = useState(false);
-
-  const { state, dispatch, isLoading, error } = useBook(bookId);
-  console.log('#4 state', state);
-  const [, setPages] = useState<Page[]>(state.book.pages);
-  const [canvas] = useState<fabric.Canvas | null>(null);
   const { handleSave, handleAddPageButtonClick, handleDeleteButtonClick } =
     usePageManagement(bookId, dispatch);
-  // const { setModified, setRefreshGraphics } = useUIState(dispatch);
 
   console.log('#4 state', state);
 
   // Handlers
-  const handleOnEdit = async (book: Book | null, newValue: string) => {
-    console.log('onEdit', newValue);
+  // TODO
+  // const handleOnEdit = async (book: Book | null, newValue: string) => {
+  //   console.log('onEdit', newValue);
 
-    if (book) {
-      const newBook = {
-        ...book,
-        name: newValue,
-      };
-      const responseData = await BookService.updateBook(
-        String(book.id),
-        newBook
-      );
-      if (!responseData.error) {
-        setIsModified(false);
-        setBook(newBook);
-      } else {
-        if (responseData.message) {
-          alert(responseData.message);
-        }
-      }
-    }
-  };
+  //   if (book) {
+  //     const newBook = {
+  //       ...book,
+  //       name: newValue,
+  //     };
+  //     const responseData = await BookService.updateBook(book.id, newBook);
+  //     if (!responseData.error) {
+  //       setIsModified(false);
+  //       // setBook(newBook); // TODO
+  //     } else {
+  //       if (responseData.message) {
+  //         alert(responseData.message);
+  //       }
+  //     }
+  //   }
+  // };
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <BookProvider dispatch={dispatch}>
+    <>
       <Layout
         className={`w-full flex`}
         header={
           <BookHeader
-            book={book}
+            book={state.book}
             onBookNameEdit={(newName) => {
-              handleOnEdit(book, newName);
+              dispatch(editBookName(bookId, newName));
             }}
           />
         }
@@ -122,13 +132,12 @@ const BookPage: React.FC = () => {
             <GraphicsPanel
               onGraphicAssetItemClick={(asset) => {
                 handleGraphicAssetItemClick(
+                  dispatch,
                   asset,
-                  book,
+                  state.book,
                   canvas,
                   state.book.pages,
-                  pageId,
-                  setPages,
-                  setIsModified
+                  pageId
                 );
               }}
             />
@@ -143,13 +152,7 @@ const BookPage: React.FC = () => {
           />
           <SideToolbar
             onRectangleClick={() => {
-              handleRectangleClick(
-                canvas,
-                state.book.pages,
-                pageId,
-                setPages,
-                setIsModified
-              );
+              handleRectangleClick(dispatch, canvas, state.book.pages, pageId);
             }}
           />
         </SidePanel>
@@ -159,12 +162,12 @@ const BookPage: React.FC = () => {
         </main>
       </Layout>
       <UnsavedChangesToast
-        isModified={isModified}
+        isModified={state.isModified}
         onSave={() => {
           handleSave(state.book.pages);
         }}
       />
-    </BookProvider>
+    </>
   );
 };
 

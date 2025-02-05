@@ -1,6 +1,5 @@
 import { Book, Page } from '@/domain/book';
-import BookState from './book.state';
-import { BookFormat } from '@/domain/book.enum';
+import BookState, { initialBookState } from './book.state';
 import { GraphicAsset } from '@/domain/graphic-asset.entity';
 import { ElementService } from '@/services/element.service';
 
@@ -14,7 +13,20 @@ type BookAction =
   | {
       type: 'ADD_GRAPHIC_ASSET';
       payload: { asset: GraphicAsset; pageId: number };
-    };
+    }
+  | { type: 'EDIT_BOOK_NAME'; payload: string }
+  | { type: 'FETCH_BOOK_START' }
+  | { type: 'FETCH_BOOK_SUCCESS' }
+  | { type: 'FETCH_BOOK_ERROR'; payload: string }
+  | { type: 'BOOK_UPDATE_ERROR'; payload: string };
+
+
+/**
+ * [TODO]
+ *  - action.pending
+ *  - action.fulfilled
+ *  - action.rejected
+ */
 
 const bookReducer = (state: BookState, action: BookAction): BookState => {
   console.log('#4 bookReducer', action.type, state, action);
@@ -22,12 +34,47 @@ const bookReducer = (state: BookState, action: BookAction): BookState => {
   switch (action.type) {
     case 'SET_BOOK': {
       const book = action.payload;
+      console.log('#4 SET_BOOK reducer')
 
       return {
         ...state,
         book: { ...book, pages: action.payload.pages },
       };
     }
+    case 'EDIT_BOOK_NAME':
+      return {
+        ...state,
+        book: { ...state.book, name: action.payload },
+        isModified: true,
+      };
+    case 'FETCH_BOOK_START':
+      return {
+        ...state,
+        isLoading: true,
+        error: null, // Clear any previous errors when starting a fetch
+      };
+
+    case 'FETCH_BOOK_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+      };
+
+    case 'FETCH_BOOK_ERROR':
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
+      };
+
+    case 'BOOK_UPDATE_ERROR':
+      // Here you might want to log the error or show it in UI
+      console.error('Book Update Error:', action.payload);
+      return {
+        ...state,
+        error: action.payload, // Optionally, you might want to store this error for UI display
+      };
+
     case 'SET_PAGES': {
       const pages = action.payload;
       return {
@@ -78,19 +125,6 @@ const bookReducer = (state: BookState, action: BookAction): BookState => {
     default:
       return state;
   }
-};
-
-const initialBookState: BookState = {
-  book: {
-    coverImage: '',
-    format: BookFormat.A4_PORTRAIT,
-    id: 0,
-    name: '',
-    pageCount: 0,
-    pages: [],
-  },
-  isModified: false,
-  refreshGraphics: false,
 };
 
 export { bookReducer, initialBookState };

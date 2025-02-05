@@ -4,7 +4,7 @@ import { BookAction } from '../book.reducer';
 import { Page } from '@/domain/book';
 
 export const usePageManagement = (
-  bookId: string,
+  bookId: number,
   dispatch: React.Dispatch<BookAction>
 ) => {
   const handleSave = useCallback(

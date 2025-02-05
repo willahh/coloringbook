@@ -7,6 +7,7 @@ const BookHeader: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
+  console.log('#5 Book', book);
   return (
     <Header>
       <BreadCrumb

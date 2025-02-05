@@ -1,4 +1,3 @@
-// hooks/useZoomControl.ts
 import * as fabric from 'fabric';
 import { useEffect } from 'react';
 
