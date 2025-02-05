@@ -1,6 +1,8 @@
 import { IBook, Page } from '@/domain/book';
 import BookState from './book.state';
 import { BookFormat } from '@/domain/book.enum';
+import { GraphicAsset } from '@/domain/graphic-asset.entity';
+import { ElementService } from '@/services/element.service';
 
 type BookAction =
   | { type: 'SET_BOOK'; payload: IBook }
@@ -8,7 +10,11 @@ type BookAction =
   | { type: 'ADD_PAGE'; payload: Page }
   | { type: 'DELETE_PAGE'; payload: number }
   | { type: 'SET_MODIFIED'; payload: boolean }
-  | { type: 'REFRESH_GRAPHICS'; payload: boolean };
+  | { type: 'REFRESH_GRAPHICS'; payload: boolean }
+  | {
+      type: 'ADD_GRAPHIC_ASSET';
+      payload: { asset: GraphicAsset; pageId: number };
+    };
 
 const bookReducer = (state: BookState, action: BookAction): BookState => {
   console.log('#4 bookReducer', action.type, state, action);
@@ -50,6 +56,23 @@ const bookReducer = (state: BookState, action: BookAction): BookState => {
     }
     case 'SET_MODIFIED':
       return { ...state, isModified: action.payload };
+
+    case 'ADD_GRAPHIC_ASSET': {
+      const { asset, pageId } = action.payload;
+      const element = ElementService.elementFromGraphicAsset(asset);
+      if (!element || !state.book) return state;
+
+      const updatedBook = ElementService.add(
+        { ...state.book, pages: state.book.pages },
+        element,
+        pageId
+      );
+      return {
+        ...state,
+        book: updatedBook,
+        isModified: true,
+      };
+    }
     case 'REFRESH_GRAPHICS':
       return { ...state, refreshGraphics: action.payload };
     default:
