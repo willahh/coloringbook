@@ -48,7 +48,9 @@ const BookPage: React.FC = () => {
 
   console.log('#4 book', book);
 
-  // if (error) return <div>Error: {error}</div>;
+  if (error) {
+    console.error('TODO: Display an error message', error)
+  }
 
   return (
     <>

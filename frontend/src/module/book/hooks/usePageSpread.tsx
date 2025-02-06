@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { BookService } from '@/services/book.service';
 import { Page } from '@/types/book';
 
+console.error('TODO: remove usePageSpread.tsx, use the Redux store')
 export const usePageSpread = (
   pages: Page[],
   pageParams: {
