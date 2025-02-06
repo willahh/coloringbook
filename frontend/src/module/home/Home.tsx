@@ -20,9 +20,13 @@ import { ToolbarButton } from '../book/ui/ToolbarButton';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;
+  books: Book[];
 }
 
-const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
+const ContentDiv: React.FC<ContentDivProps> = ({
+  onBookCreationSuccess,
+  books,
+}) => {
   const [showForm, setShowForm] = useState(false);
   const { showToast, toastMessage, toastType, showToastFunc, hideToast } =
     useToast();
@@ -66,6 +70,7 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
         />
         <DescriptionSection
           isVisible={!showForm}
+          books={books}
           onClick={handleCreateBookClick}
         />
       </div>
@@ -144,6 +149,7 @@ const HomePage: React.FC = () => {
                              md:col-span-4 md:row-span-4 md:row-start-1 md:col-start-3 md:flex md:self-center"
                     >
                       <ContentDiv
+                        books={books}
                         onBookCreationSuccess={onBookCreationSuccess}
                       />
                     </div>

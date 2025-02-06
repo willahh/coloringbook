@@ -9,21 +9,24 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import { Tooltip } from '@/components/Tooltip';
+import { Book } from '@/types/book';
 
 interface DescriptionSectionProps {
   onClick: () => void;
   className?: string;
   isVisible: boolean;
+  books: Book[];
 }
 
 const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   onClick,
   isVisible,
+  books,
 }) => {
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
-
+  console.log('#4 books.length', books.length);
   return (
     <motion.div
       initial={isVisible ? hiddenStyle : visibleStyle}
@@ -44,25 +47,42 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           </p>
         </AnimatedText>
         <AnimatedText enterClassName="delay-1000">
-          <div className="isolate flex rounded-md">
-            <Link autoFocus={true} to={`/library`}>
-              <Button tabIndex={-1} className="rounded-tr-none rounded-br-none">
-                <span className="text-md">Bibliothèque</span>
-                <QueueListIcon aria-hidden="true" className="size-6" />
-              </Button>
-            </Link>
-            <Tooltip content="Ajouter un nouveau livre">
-              <div>
+          <div>
+            {books.length > 0 ? (
+              <div className="isolate flex rounded-md">
+                <Link autoFocus={true} to={`/library`}>
+                  <Button
+                    tabIndex={-1}
+                    className="rounded-tr-none rounded-br-none"
+                  >
+                    <span className="text-md">Bibliothèque</span>
+                    <QueueListIcon aria-hidden="true" className="size-6" />
+                  </Button>
+                </Link>
+                <Tooltip content="Ajouter un nouveau livre">
+                  <div>
+                    <Button
+                      autoFocus={true}
+                      onClick={onClick}
+                      variant="secondary"
+                      className="border-l-0 rounded-tl-none rounded-bl-none"
+                    >
+                      <PlusIcon aria-hidden="true" className="size-6" />
+                    </Button>
+                  </div>
+                </Tooltip>
+              </div>
+            ) : (
                 <Button
                   autoFocus={true}
                   onClick={onClick}
-                  variant='secondary'
-                  className="border-l-0 rounded-tl-none rounded-bl-none"
+                  variant="secondary"
+                  className="w-full justify-center text-nowrap"
                 >
+                  <span>Ajouter un nouveau livre</span>
                   <PlusIcon aria-hidden="true" className="size-6" />
                 </Button>
-              </div>
-            </Tooltip>
+            )}
           </div>
         </AnimatedText>
       </div>
