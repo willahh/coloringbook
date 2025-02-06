@@ -18,7 +18,7 @@ import BookHeader from './ui/BookHeader';
 // import { handleRectangleClick } from './canvas/canvas.events';
 import { BookContext } from './book.context';
 import { RootState } from '@/store';
-import * as bookAction from './book.actions';
+import * as bookActions from './book.actions';
 import { Page } from '@/types/book';
 import { BookFormatHelper } from '@/utils/book.utils';
 import { BookFormat } from '@/types/book.enum';
@@ -36,19 +36,19 @@ const BookPage: React.FC = () => {
   pageId = Number(pageId) | 1;
 
   const dispatch = useAppDispatch();
-  const { book, error, isLoading, areLocalUpdatesSaved } = useAppSelector(
+  const { book, error, areLocalUpdatesSaved } = useAppSelector(
     (state: RootState) => state.book
   );
   const { canvas } = useContext(BookContext);
+  console.log('#2 areLocalUpdatesSaved', areLocalUpdatesSaved);
 
   useEffect(() => {
-    dispatch(bookAction.fetchBookByIdAction({ bookId: bookId }));
+    dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]); // Do not add dispatch in dependency to prevent infinite loop !
 
   console.log('#4 book', book);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  // if (error) return <div>Error: {error}</div>;
 
   return (
     <>
@@ -59,7 +59,7 @@ const BookPage: React.FC = () => {
             book={book}
             onBookNameEdit={(newName) => {
               dispatch(
-                bookAction.editBookNameAction({ bookId, bookName: newName })
+                bookActions.editBookNameAction({ bookId, bookName: newName })
               );
             }}
           />
@@ -107,16 +107,18 @@ const BookPage: React.FC = () => {
                 ),
                 elements: [],
               };
-              dispatch(bookAction.addPageAction({ book: book, page: newPage }));
+              dispatch(
+                bookActions.addPageAction({ book: book, page: newPage })
+              );
             }}
             onDeleteButtonClick={() => {
-              dispatch(bookAction.deletePageAction({ pageId: pageId }));
+              dispatch(bookActions.deletePageAction({ pageId: pageId }));
             }}
           />
           <SideToolbar
             onRectangleClick={() => {
               if (canvas) {
-                console.error('TODO: implement this handler')
+                console.error('TODO: implement this handler');
                 // const image = PageService.getImageData(canvas);
                 // dispatch(bookAction.updateBookAction({ book: {} }));
               }
@@ -138,12 +140,9 @@ const BookPage: React.FC = () => {
         </main>
       </Layout>
       <UnsavedChangesToast
-        isModified={areLocalUpdatesSaved}
+        isModified={!areLocalUpdatesSaved}
         onSave={() => {
-          console.error(
-            'TODO: dispatch action BOOK_SAVE_BOOK (patch book with : book.pages)'
-          );
-          // handleSave(book.pages);
+          dispatch(bookActions.saveBookAction({ bookId: bookId, book: book }));
         }}
       />
     </>

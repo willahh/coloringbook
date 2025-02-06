@@ -20,6 +20,22 @@ export const fetchBookByIdAction = createAsyncThunk<
 });
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * BOOKS_SAVE_BOOK
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface SaveBookActionPayload {
+  bookId: number;
+  book: Book;
+}
+export const saveBookAction = createAsyncThunk<Book, SaveBookActionPayload>(
+  'BOOKS/BOOKS_SAVE_BOOK',
+  async ({ bookId, book }) => {
+    const savedBook = await APIService.updateBook(bookId, book);
+
+    return savedBook;
+  }
+);
+
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * BOOKS_EDIT_BOOK_NAME
  *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
 export interface EditBookNamePayload {

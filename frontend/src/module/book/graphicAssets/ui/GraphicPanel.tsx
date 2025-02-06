@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
 // import { useDrag } from 'react-dnd';
-import axios from 'axios';
+// import axios from 'axios';
 import { getAPIURL, getMediaUrl } from '@/utils/api';
 // import { ElementService } from '@/services/ElementService';
 // import { Obj } from '@/domain/book';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { useAppSelector } from '@/hooks/useRedux';
+import { selectAllGraphicAssets } from './../graphicAssets.state';
 // interface GraphicAsset {
 //   id: number;
 //   name: string;
@@ -13,7 +15,7 @@ import { GraphicAsset } from '@/types/graphic-asset.entity';
 //   fullPath: string;
 //   vecPath: string;
 // }
-import { BookContext } from '../../book.context';
+// import { BookContext } from '../../book.context';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -51,12 +53,14 @@ const GraphicAssetItem: React.FC<{
     </div>
   );
 };
-// TODO: add graphics into a state chunk
+
 const GraphicsPanel: React.FC<{
   onGraphicAssetItemClick: (asset: GraphicAsset) => void;
 }> = ({ onGraphicAssetItemClick }) => {
-  const { refreshGraphics } = useContext(BookContext);
+  //   const { refreshGraphics } = useContext(BookContext);
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
+
+  const postStatus = useAppSelector(selectAllGraphicAssets);
 
   useEffect(() => {
     const fetchGraphicAssets = async () => {

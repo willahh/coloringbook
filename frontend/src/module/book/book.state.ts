@@ -1,3 +1,4 @@
+import { RootState } from '@/store';
 import { Book } from '@/types/book';
 import { BookFormat } from '@/types/book.enum';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
@@ -26,5 +27,7 @@ const initialState: BookState = {
   isLoading: false,
   error: null,
 };
+
+export const selectIsLoading = (state: RootState) => state.book.isLoading;
 
 export default initialState;

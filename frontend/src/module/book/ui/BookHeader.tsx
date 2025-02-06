@@ -1,15 +1,18 @@
 import BreadCrumb from '@/components/BreadCrumb';
 import Header from '@/components/Header';
 import InlineEdit from '@/components/InlineEdit';
+import { useAppSelector } from '@/hooks/useRedux';
 import { Book } from '@/types/book';
+import { selectIsLoading } from '../book.state';
 
 const BookHeader: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
-  console.log('#5 Book', book);
+  const isLoading = useAppSelector(selectIsLoading);
+
   return (
-    <Header>
+    <Header isLoading={isLoading}>
       <BreadCrumb
         pages={[
           {
