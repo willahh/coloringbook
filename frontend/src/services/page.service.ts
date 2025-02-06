@@ -45,7 +45,7 @@ export class PageService {
     return { ...p_oBookData };
   }
 
-  public static getImage(canvas: fabric.Canvas): string {
+  public static getImageData(canvas: fabric.Canvas): string {
     const imgData = canvas.toDataURL({
       format: 'png',
       quality: 1,
@@ -60,7 +60,7 @@ export class PageService {
     canvas: fabric.Canvas,
     pageId: number
   ): Page[] {
-    const image = this.getImage(canvas);
+    const image = this.getImageData(canvas);
     const newPages: Page[] = this.updatePage(pages, pageId, {
       thumbImageData: image,
     });

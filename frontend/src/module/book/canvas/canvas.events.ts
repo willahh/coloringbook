@@ -1,9 +1,9 @@
 import * as fabric from 'fabric';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
-import { Book, Element, Page } from '@/types/book';
-import { ElementService } from '@/services/element.service';
-import { PageService } from '@/services/page.service';
-import { BookAction } from '../book.reducer';
+// import { GraphicAsset } from '@/types/graphic-asset.entity';
+// import { Book, Element, Page } from '@/types/book';
+// import { ElementService } from '@/services/element.service';
+// import { PageService } from '@/services/page.service';
+// import { BookAction } from '../book.reducer.ts_';
 declare module 'fabric' {
   interface Canvas {
     objSelected?: fabric.Object | null;
@@ -13,59 +13,59 @@ declare module 'fabric' {
   }
 }
 
-export const handleGraphicAssetItemClick = (
-  dispatch: React.Dispatch<BookAction>,
-  asset: GraphicAsset,
-  book: Book | null,
-  canvas: fabric.Canvas | null,
-  // pages: Page[],
-  pageId: number
-  // setPages: React.Dispatch<React.SetStateAction<Page[]>>
-  // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-  const element: Element | null = ElementService.elementFromGraphicAsset(asset);
-  if (!element || !book || !canvas) return;
+// export const handleGraphicAssetItemClick = (
+//   // dispatch: React.Dispatch<BookAction>,
+//   asset: GraphicAsset,
+//   book: Book | null,
+//   canvas: fabric.Canvas | null,
+//   // pages: Page[],
+//   pageId: number
+//   // setPages: React.Dispatch<React.SetStateAction<Page[]>>
+//   // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+// ) => {
+//   const element: Element | null = ElementService.elementFromGraphicAsset(asset);
+//   if (!element || !book || !canvas) return;
 
-  const updatedBook = ElementService.add(
-    { ...book, pages: book.pages },
-    element,
-    pageId
-  );
-  dispatch({ type: 'SET_BOOK', payload: updatedBook }); // Assuming SET_BOOK updates the entire book
-  dispatch({ type: 'SET_MODIFIED', payload: true });
+//   const updatedBook = ElementService.add(
+//     { ...book, pages: book.pages },
+//     element,
+//     pageId
+//   );
+//   dispatch({ type: 'SET_BOOK', payload: updatedBook }); // Assuming SET_BOOK updates the entire book
+//   dispatch({ type: 'SET_MODIFIED', payload: true });
 
-  // const updatedBook = ElementService.add({ ...book, pages }, element, pageId);
-  // setPages(updatedBook.pages);
-  // setIsModified(true);
-};
+//   // const updatedBook = ElementService.add({ ...book, pages }, element, pageId);
+//   // setPages(updatedBook.pages);
+//   // setIsModified(true);
+// };
 
-export const handleRectangleClick = (
-  dispatch: React.Dispatch<BookAction>,
-  canvas: fabric.Canvas | null,
-  pages: Page[],
-  pageId: number
-  // setPages: React.Dispatch<React.SetStateAction<Page[]>>
-  // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
-) => {
-  console.log('#4 handleRectangleClick');
-  if (!canvas) {
-    console.error('!canvas');
-    return;
-  }
+// export const handleRectangleClick = (
+//   // dispatch: React.Dispatch<BookAction>,
+//   canvas: fabric.Canvas | null,
+//   pages: Page[],
+//   pageId: number
+//   // setPages: React.Dispatch<React.SetStateAction<Page[]>>
+//   // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
+// ) => {
+//   console.log('#4 handleRectangleClick');
+//   if (!canvas) {
+//     console.error('!canvas');
+//     return;
+//   }
 
-  // const pagesNew = PageService.updateThumbImageData(
-  //   pages,
-  //   canvas,
-  //   Number(pageId)
-  // );
-  // setPages(pagesNew);
-  // setIsModified(true);
-  const pagesNew = PageService.updateThumbImageData(pages, canvas, pageId);
-  console.log('#4 pagesNew:', pagesNew);
-  console.log('#4 call dispatch SET_PAGES');
-  dispatch({ type: 'SET_PAGES', payload: pagesNew });
-  dispatch({ type: 'SET_MODIFIED', payload: true });
-};
+//   // const pagesNew = PageService.updateThumbImageData(
+//   //   pages,
+//   //   canvas,
+//   //   Number(pageId)
+//   // );
+//   // setPages(pagesNew);
+//   // setIsModified(true);
+//   const pagesNew = PageService.updateThumbImageData(pages, canvas, pageId);
+//   console.log('#4 pagesNew:', pagesNew);
+//   console.log('#4 call dispatch SET_PAGES');
+//   dispatch({ type: 'SET_PAGES', payload: pagesNew });
+//   dispatch({ type: 'SET_MODIFIED', payload: true });
+// };
 
 export const handleMouseWheel =
   (canvas: fabric.Canvas) => (opt: fabric.TEvent<WheelEvent>) => {

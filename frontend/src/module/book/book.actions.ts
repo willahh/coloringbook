@@ -1,75 +1,63 @@
-// book.actions.ts
+import APIService from '@/services/api.service';
+import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { BookService } from '@/services/book.service';
-import { Dispatch } from 'react'; // If you're using React's built-in hooks
-import { BookAction } from './book.reducer'; // Assuming you have exported BookAction type from your reducer
 import { Book, Page } from '@/types/book';
 
-export const editBookName = (bookId: number, newName: string) => {
-  return async (dispatch: Dispatch<BookAction>) => {
-    try {
-      dispatch({ type: 'EDIT_BOOK_NAME', payload: newName });
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * BOOKS_FETCH_BOOK_BY_ID
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface FetchBookByIdActionPayload {
+  bookId: number;
+}
+export const fetchBookByIdAction = createAsyncThunk<
+  Book,
+  FetchBookByIdActionPayload
+>('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
+  const book = await APIService.fetchBook(bookId);
+  const { book: newBook } = BookService.prepareBookData(book);
 
-      const book = await BookService.getBook(bookId); // Fetch current book state
-      if (book) {
-        const responseData = await BookService.updateBook(book.id, {
-          ...book,
-          name: newName,
-        });
-        if (responseData.error) {
-          // If there's an error, revert the optimistic update
-          dispatch({ type: 'EDIT_BOOK_NAME', payload: book.name });
-          console.error('Failed to update book name:', responseData.message);
-          dispatch({
-            type: 'BOOK_UPDATE_ERROR',
-            payload: responseData.message,
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error updating book:', error);
-      dispatch({
-        type: 'BOOK_UPDATE_ERROR',
-        payload: 'An unexpected error occurred',
-      });
-    }
-  };
-};
+  return newBook;
+});
 
-export const fetchBook = (bookId: number) => {
-  return async (dispatch: Dispatch<BookAction>) => {
-    dispatch({ type: 'FETCH_BOOK_START' });
-    try {
-      const book = await BookService.getBook(bookId);
-      const { book: newBook, isModified } = BookService.prepareBookData(book);
-      dispatch({ type: 'SET_BOOK', payload: newBook });
-      dispatch({ type: 'SET_MODIFIED', payload: isModified });
-      dispatch({ type: 'FETCH_BOOK_SUCCESS' });
-    } catch (err) {
-      dispatch({
-        type: 'FETCH_BOOK_ERROR',
-        payload: `Erreur lors du chargement du livre: ${err}`,
-      });
-    }
-  };
-};
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * BOOKS_EDIT_BOOK_NAME
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface EditBookNamePayload {
+  bookId: number;
+  bookName: string;
+}
+export const editBookNameAction = createAsyncThunk<Book, EditBookNamePayload>(
+  'BOOKS/EDIT_BOOK_NAME',
+  async ({ bookId, bookName }) => {
+    const book = await APIService.updateBook(bookId, { name: bookName });
+    return book;
+  }
+);
 
-export const addPage = (newPage: Page) => {
-  // Replace 'any' with actual Page type
-  return (dispatch: Dispatch<BookAction>) => {
-    dispatch({ type: 'ADD_PAGE', payload: newPage });
-  };
-};
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * BOOKS_UPDATE_BOOK
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface UpdateBookPayload {
+  bookId: number;
+  book: Book;
+}
+export const updateBookAction =
+  createAction<UpdateBookPayload>('BOOKS/UPDATE_BOOK');
 
-export const deletePage = (pageId: number) => {
-  return (dispatch: Dispatch<BookAction>) => {
-    dispatch({ type: 'DELETE_PAGE', payload: pageId });
-  };
-};
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * PAGES_ADD_PAGE
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface AddPagePayload {
+  book: Book;
+  page: Page;
+}
+export const addPageAction = createAction<AddPagePayload>('PAGES/ADD_PAGE');
 
-export const updateBook = (updatedBook: Book) => {
-  // Replace 'any' with your Book type
-  return (dispatch: Dispatch<BookAction>) => {
-    dispatch({ type: 'SET_BOOK', payload: updatedBook });
-    dispatch({ type: 'SET_MODIFIED', payload: true });
-  };
-};
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * PAGES_DELETE_PAGE
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface DeletePagePayload {
+  pageId: number;
+}
+export const deletePageAction =
+  createAction<DeletePagePayload>('PAGES/DELETE_PAGE');

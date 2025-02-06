@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { BookAction } from '../book.reducer';
+import { BookAction } from '../book.reducer.ts_';
 
 export const useUIState = (dispatch: React.Dispatch<BookAction>) => {
   const setModified = useCallback(

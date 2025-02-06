@@ -1,11 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect /*, useState*/ } from 'react';
 import { useParams } from 'react-router-dom';
-/* 
- FIXME: Export default !!
- import { SpreadToolbar } from './SpreadViewerCanvas/ui/SpreadToolbar';
- => 
- import SpreadToolbar from './SpreadViewerCanvas/ui/SpreadToolbar';
-*/
+import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+
 import Layout from '../layout';
 import { SpreadToolbar } from './ui/SpreadToolbar';
 import { SideToolbar } from './ui/SidePanel/SideToolbar';
@@ -17,16 +13,16 @@ import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
-import { usePageManagement } from './hooks/usePageManagement';
 import BookHeader from './ui/BookHeader';
 
-import {
-  handleGraphicAssetItemClick,
-  handleRectangleClick,
-} from './canvas/canvas.events';
-import { editBookName } from './book.actions';
+// import { handleRectangleClick } from './canvas/canvas.events';
 import { BookContext } from './book.context';
-import { BookService } from '@/services/book.service';
+import { RootState } from '@/store';
+import * as bookAction from './book.actions';
+import { Page } from '@/types/book';
+import { BookFormatHelper } from '@/utils/book.utils';
+import { BookFormat } from '@/types/book.enum';
+// import { PageService } from '@/services/page.service';
 
 const BookPage: React.FC = () => {
   console.log('#4 BookPage');
@@ -39,56 +35,17 @@ const BookPage: React.FC = () => {
   bookId = Number(bookId) | 0;
   pageId = Number(pageId) | 1;
 
-  // Use context for dispatch
-  const { state, dispatch, canvas } = useContext(BookContext);
+  const dispatch = useAppDispatch();
+  const { book, error, isLoading, areLocalUpdatesSaved } = useAppSelector(
+    (state: RootState) => state.book
+  );
+  const { canvas } = useContext(BookContext);
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // TODO: Move to an actionCreator
   useEffect(() => {
-    const fetchBook = async () => {
-      try {
-        const book = await BookService.getBook(bookId);
-        const { book: newBook, isModified } = BookService.prepareBookData(book);
-        dispatch({ type: 'SET_BOOK', payload: newBook });
-        dispatch({ type: 'SET_MODIFIED', payload: isModified });
-      } catch (err) {
-        setError(`Erreur lors du chargement du livre ${err}`);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchBook();
+    dispatch(bookAction.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]); // Do not add dispatch in dependency to prevent infinite loop !
 
-  // States
-  const { handleSave, handleAddPageButtonClick, handleDeleteButtonClick } =
-    usePageManagement(bookId, dispatch);
-
-  console.log('#4 state', state);
-
-  // Handlers
-  // TODO
-  // const handleOnEdit = async (book: Book | null, newValue: string) => {
-  //   console.log('onEdit', newValue);
-
-  //   if (book) {
-  //     const newBook = {
-  //       ...book,
-  //       name: newValue,
-  //     };
-  //     const responseData = await BookService.updateBook(book.id, newBook);
-  //     if (!responseData.error) {
-  //       setIsModified(false);
-  //       // setBook(newBook); // TODO
-  //     } else {
-  //       if (responseData.message) {
-  //         alert(responseData.message);
-  //       }
-  //     }
-  //   }
-  // };
+  console.log('#4 book', book);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -99,9 +56,11 @@ const BookPage: React.FC = () => {
         className={`w-full flex`}
         header={
           <BookHeader
-            book={state.book}
+            book={book}
             onBookNameEdit={(newName) => {
-              dispatch(editBookName(bookId, newName));
+              dispatch(
+                bookAction.editBookNameAction({ bookId, bookName: newName })
+              );
             }}
           />
         }
@@ -119,41 +78,72 @@ const BookPage: React.FC = () => {
             {/* <TemplatePanel className="" /> */}
             {/* <VerticalSeparator /> */}
             <GraphicsPanel
-              onGraphicAssetItemClick={(asset) => {
-                handleGraphicAssetItemClick(
-                  dispatch,
-                  asset,
-                  state.book,
-                  canvas,
-                  state.book.pages,
-                  pageId
-                );
-              }}
+              onGraphicAssetItemClick={
+                (/*asset*/) => {
+                  console.error("TODO: dispatch: 'ADD_ELEMENT_TO_PAGE'");
+                  // handleGraphicAssetItemClick(
+                  //   dispatch,
+                  //   asset,
+                  //   book,
+                  //   canvas,
+                  //   book.pages
+                  //   // pageId
+                  // );
+                }
+              }
             />
             <ImageConverter />
             <VerticalSeparator />
             <ColorPanel className="" />
           </div>
           <PagesPanel
-            pages={state.book.pages}
-            addPageButtonClick={handleAddPageButtonClick}
-            onDeleteButtonClick={handleDeleteButtonClick}
+            pages={book.pages}
+            addPageButtonClick={() => {
+              const newPage: Page = {
+                pageId: 10,
+                pageNumber: 10,
+                aspectRatio: BookFormatHelper.getAspectRatio(
+                  BookFormat.A4_PAYSAGE
+                ),
+                elements: [],
+              };
+              dispatch(bookAction.addPageAction({ book: book, page: newPage }));
+            }}
+            onDeleteButtonClick={() => {
+              dispatch(bookAction.deletePageAction({ pageId: pageId }));
+            }}
           />
           <SideToolbar
             onRectangleClick={() => {
-              handleRectangleClick(dispatch, canvas, state.book.pages, pageId);
+              if (canvas) {
+                console.error('TODO: implement this handler')
+                // const image = PageService.getImageData(canvas);
+                // dispatch(bookAction.updateBookAction({ book: {} }));
+              }
+
+              // PageService.updateThumbImageData(pages, canvas, pageId);
+              // dispatch()
+              //  const pagesNew = PageService.updateThumbImageData(pages, canvas, pageId);
+              //   console.log('#4 pagesNew:', pagesNew);
+              //   console.log('#4 call dispatch SET_PAGES');
+              //   dispatch({ type: 'SET_PAGES', payload: pagesNew });
+              //   dispatch({ type: 'SET_MODIFIED', payload: true });
+              // handleRectangleClick(dispatch, canvas, book.pages, pageId);
             }}
           />
         </SidePanel>
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-950 flex-col">
-          <SpreadViewerCanvas pages={state.book.pages} />
+          <SpreadViewerCanvas pages={book.pages} />
           <SpreadToolbar />
         </main>
       </Layout>
       <UnsavedChangesToast
-        isModified={state.isModified}
+        isModified={areLocalUpdatesSaved}
         onSave={() => {
-          handleSave(state.book.pages);
+          console.error(
+            'TODO: dispatch action BOOK_SAVE_BOOK (patch book with : book.pages)'
+          );
+          // handleSave(book.pages);
         }}
       />
     </>

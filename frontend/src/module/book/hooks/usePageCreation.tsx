@@ -15,7 +15,8 @@ export const usePageCreation = (
   }>({ width: 0, height: 0 });
 
   useEffect(() => {
-    if (canvas) {
+    if (canvas && canvas.getWidth() > 400) {
+      // debugger;
       const canvasBorder = 12;
       const newSpreadSize = { width: 0, height: 0 };
 
@@ -83,7 +84,7 @@ export const usePageCreation = (
         top: -(canvasBorder / 2),
       });
       canvas.clipPath = mask;
-      console.log('#3 setSpreadSize')
+      console.log('#3 setSpreadSize', newSpreadSize)
       setSpreadSize(newSpreadSize);
     }
   }, [canvas, pageSpread, dimensions]);

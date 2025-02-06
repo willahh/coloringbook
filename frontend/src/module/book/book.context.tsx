@@ -1,25 +1,26 @@
-import React, { useReducer } from 'react';
+import React /*, { useReducer }*/ from 'react';
 import * as fabric from 'fabric';
-import { Book } from '@/types/book';
+
+// import { Book } from '@/types/book';
 import { useParams } from 'react-router-dom';
-import BookState from './book.state';
-import { initialBookState, BookAction, bookReducer } from './book.reducer';
+// import BookState from './book.state.ts';
+// import { initialBookState, BookAction, bookReducer } from './book.reducer.ts_';
 
 // Custom Thunk
 // Create a custom dispatch type that can handle both regular actions and thunks
-type ThunkAction = (dispatch: React.Dispatch<BookAction>) => void;
-type DispatchType = React.Dispatch<BookAction | ThunkAction>;
+// type ThunkAction = (dispatch: React.Dispatch<BookAction>) => void;
+// type DispatchType = React.Dispatch<BookAction | ThunkAction>;
 // </>
 
 // type BookAction = { type: 'SET_PAGES'; payload: Page[] };
 
 interface BookContextType {
-  state: BookState;
-  dispatch: DispatchType;
+  // state: BookState;
+  // dispatch: DispatchType;
   canvas: fabric.Canvas | null;
 
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>; // TODO: Use action/dispatch instead
-  book?: Book | null;
+  // book?: Book | null;
   pageParams: {
     bookId?: string;
     pageId?: string;
@@ -32,14 +33,13 @@ interface BookContextType {
 }
 
 export const BookContext = React.createContext<BookContextType>({
-  state: initialBookState,
-  dispatch: () => {
-    console.log('#4 set dispatch from bookcontext');
-  },
+  // state: initialBookState,
+  // dispatch: () => {
+  //   console.log('#4 set dispatch from bookcontext');
+  // },
   canvas: null,
-
   setCanvas: () => {},
-  book: null,
+  // book: null,
   pageParams: {
     bookId: '',
   },
@@ -56,10 +56,10 @@ export const BookContext = React.createContext<BookContextType>({
 export const BookProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const [state, regularDispatch] = useReducer(bookReducer, initialBookState);
+  // const [state, regularDispatch] = useReducer(bookReducer, initialBookState);
 
   const [canvas, setCanvas] = React.useState<fabric.Canvas | null>(null);
-  const [book /*, setBook*/] = React.useState<Book | null>(null);
+  // const [book /*, setBook*/] = React.useState<Book | null>(null);
   // const [isModified /*, setIsModified*/] = React.useState<boolean>(false);
   // const [refreshGraphics, setRefreshGraphics] = React.useState<boolean>(false);
   const params = useParams();
@@ -68,14 +68,14 @@ export const BookProvider: React.FC<{
     pageId: params.pageId,
   };
 
-  const dispatch: DispatchType = (action: BookAction | ThunkAction) => {
-    console.log('#4 call dispatch', action);
-    if (typeof action === 'function') {
-      action(regularDispatch);
-    } else {
-      regularDispatch(action);
-    }
-  };
+  // const dispatch: DispatchType = (action: BookAction | ThunkAction) => {
+  //   console.log('#4 call dispatch', action);
+  //   if (typeof action === 'function') {
+  //     action(regularDispatch);
+  //   } else {
+  //     regularDispatch(action);
+  //   }
+  // };
 
   // const setPages = (action: BookAction) => {
   //   dispatch(action);
@@ -84,12 +84,12 @@ export const BookProvider: React.FC<{
   return (
     <BookContext.Provider
       value={{
-        state,
-        dispatch,
+        // state,
+        // dispatch,
 
         canvas,
         setCanvas,
-        book,
+        // book,
         pageParams,
         // setPages,
         // isModified,

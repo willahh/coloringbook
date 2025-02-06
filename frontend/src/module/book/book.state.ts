@@ -1,15 +1,17 @@
 import { Book } from '@/types/book';
 import { BookFormat } from '@/types/book.enum';
+import { GraphicAsset } from '@/types/graphic-asset.entity';
 
-type BookState = {
+interface BookState {
   book: Book;
-  isModified: boolean;
+  areLocalUpdatesSaved: boolean;
   refreshGraphics: boolean;
+  graphicAssets: GraphicAsset[];
   isLoading: boolean;
   error: string | null;
-};
+}
 
-export const initialBookState: BookState = {
+const initialState: BookState = {
   book: {
     coverImage: '',
     format: BookFormat.A4_PORTRAIT,
@@ -18,11 +20,11 @@ export const initialBookState: BookState = {
     pageCount: 0,
     pages: [],
   },
- 
-  isModified: false,
+  areLocalUpdatesSaved: true,
   refreshGraphics: false,
+  graphicAssets: [],
   isLoading: false,
   error: null,
 };
 
-export default BookState;
+export default initialState;

@@ -75,7 +75,6 @@ const ContentDiv: React.FC<ContentDivProps> = ({ onBookCreationSuccess }) => {
 
 const HomePage: React.FC = () => {
   const location = useLocation();
-  console.log('location', location);
   const params = new URLSearchParams(location.search);
   const gridDebug = params.get('griddebug') === '1';
   const gridBorderDebugCls =

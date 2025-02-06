@@ -16,7 +16,9 @@ export class ObjectFactory {
   ): DrawableObject | null {
     const relativeX = offsetX + (obj.x / 100) * pageWidth;
     const relativeY = (obj.y / 100) * pageHeight;
+    console.log('#1 pageWidth', pageWidth)
     const relativeW = (obj.w / 100) * pageWidth;
+    console.log('#1 relativeW', relativeW)
     const relativeH = (obj.h / 100) * pageHeight;
 
     switch (obj.type) {

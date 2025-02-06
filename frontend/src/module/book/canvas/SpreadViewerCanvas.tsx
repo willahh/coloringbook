@@ -57,6 +57,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   // Init
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
+      console.log('#1 initCanvas')
       const canvas = new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
@@ -98,7 +99,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, setCanvas]);
+  }, [initCanvas, setCanvas, dimensions]);
 
   return (
     <div ref={containerRef} className="relative flex-1">

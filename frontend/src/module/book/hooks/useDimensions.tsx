@@ -11,6 +11,7 @@ export const useDimensions = (containerRef: RefObject<HTMLElement | null>) => {
           document.documentElement.clientHeight,
           window.innerHeight || 0
         );
+        console.log('#1 setDimensions', window.innerWidth - containerRef.current.getBoundingClientRect().x, viewportHeight - 150)
         setDimensions({
           width:
             window.innerWidth - containerRef.current.getBoundingClientRect().x,

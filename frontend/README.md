@@ -56,6 +56,7 @@ coloring-book-creator/
 ```sh
 npm create vite@latest # Install Vite, Typescript is setup automatically (config files)
 npm install redux
+npm install react-redux
 npm install @reduxjs/toolkit
 npm install -D tailwindcss postcss autoprefixer # Install tailwindcss, postcss and autoprefixer
 npm install -D @types/node # Install node types (fix an issue with a specific vite.config.ts)

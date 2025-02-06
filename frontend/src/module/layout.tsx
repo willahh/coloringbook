@@ -1,5 +1,5 @@
 import { motion } from 'motion/react';
-import motionConfig from '@shared/shared';
+import motionConfig from '@/utils/config.utils';
 import { GridDebug, DebugButton } from '@components/Debug';
 
 /**
