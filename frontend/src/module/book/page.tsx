@@ -14,16 +14,10 @@ import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
 import BookHeader from './ui/BookHeader';
-// import { handleRectangleClick } from './canvas/canvas.events';
 import { BookContext } from './book.context';
-import { RootState } from '@/store';
 import * as bookActions from './book.actions';
-// import { Page } from '@/types/book';
-// import { BookFormatHelper } from '@/utils/book.utils';
-// import { BookFormat } from '@/types/book.enum';
 import { PageService } from '@/services/page.service';
 import { selectBook } from './book.state';
-// import { PageService } from '@/services/page.service';
 
 const BookPage: React.FC = () => {
   // Page params

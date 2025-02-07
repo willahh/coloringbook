@@ -1,19 +1,7 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-// import { useDrag } from 'react-dnd';
+import React, { useState, useCallback } from 'react';
 import axios from 'axios';
-import { getAPIURL, getMediaUrl } from '@/utils/api';
-// import { ElementService } from '@/services/ElementService';
-// import { Obj } from '@/domain/book';
+import { getMediaUrl } from '@/utils/api';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
-// interface GraphicAsset {
-//   id: number;
-//   name: string;
-//   type: string;
-//   path: string;
-//   fullPath: string;
-//   vecPath: string;
-// }
-import { BookContext } from '../../book.context';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -51,25 +39,25 @@ const GraphicAssetItem: React.FC<{
     </div>
   );
 };
-// TODO: add graphics into a state chunk
+
 const GraphicsPanel: React.FC<{
   onGraphicAssetItemClick: (asset: GraphicAsset) => void;
 }> = ({ onGraphicAssetItemClick }) => {
-  const { refreshGraphics } = useContext(BookContext);
+  // const { refreshGraphics } = useContext(BookContext);
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
 
-  useEffect(() => {
-    const fetchGraphicAssets = async () => {
-      try {
-        const response = await axios.get(getAPIURL() + '/graphic-assets');
-        setGraphicAssets(response.data);
-      } catch (error) {
-        console.error('Error fetching graphic assets:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchGraphicAssets = async () => {
+  //     try {
+  //       const response = await axios.get(getAPIURL() + '/graphic-assets');
+  //       setGraphicAssets(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching graphic assets:', error);
+  //     }
+  //   };
 
-    fetchGraphicAssets();
-  }, [refreshGraphics]);
+  //   fetchGraphicAssets();
+  // }, [refreshGraphics]);
 
   const addGraphicAsset = useCallback(
     async (newAsset: Partial<GraphicAsset>) => {

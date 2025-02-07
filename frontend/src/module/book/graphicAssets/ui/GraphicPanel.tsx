@@ -60,7 +60,8 @@ const GraphicsPanel: React.FC<{
   //   const { refreshGraphics } = useContext(BookContext);
   const [graphicAssets, setGraphicAssets] = useState<GraphicAsset[]>([]);
 
-  const postStatus = useAppSelector(selectAllGraphicAssets);
+  // TODO: Put in Redux
+  // const {graphicAssets} = useAppSelector(selectAllGraphicAssets);
 
   useEffect(() => {
     const fetchGraphicAssets = async () => {
