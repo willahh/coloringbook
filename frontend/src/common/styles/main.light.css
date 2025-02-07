@@ -4,14 +4,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@config "./../../../tailwind.config.js"; 
-
+@config "./../../../tailwind.config.js";
 
 body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 /* —————————————————————————————————————————————————————————————————————————————
   Fonts
@@ -258,6 +256,28 @@ body {
 /* —————————————————————————————————————————————————————————————————————————————
   components
   ———————————————————————————————————————————————————————————————————————————— */
+
+/* Triangle */
+.rounded-angle-tl {
+  width: 200px; /* Taille de la boîte */
+  height: 200px; /* Taille de la boîte */
+  position: relative;
+  background-color: transparent; /* Assurez-vous que la boîte est transparente */
+}
+
+.rounded-angle-tl-item {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent; /* Ajustez la taille selon votre besoin */
+  border-right: 50px solid transparent; /* Ajustez la taille selon votre besoin */
+  border-bottom: 50px solid #3498db; /* Couleur du triangle */
+  top: 0;
+  left: 0;
+  /* Pour arrondir le coin du triangle, nous utilisons une transformation */
+  transform: rotate(45deg) skew(10deg, 10deg);
+  transform-origin: 0 0;
+}
 
 /* —————————————————————————————————————————————————————————————————————————————
   Transitions

@@ -1318,6 +1318,11 @@ div[data-is-root-theme].light {
   border-color: rgb(31 41 55 / var(--tw-divide-opacity, 1));
 }
 
+.divide-primary-100 > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(231 232 242 / var(--tw-divide-opacity, 1));
+}
+
 .self-center {
   align-self: center;
 }
@@ -1499,6 +1504,11 @@ div[data-is-root-theme].light {
 .border-b-primary-700 {
   --tw-border-opacity: 1;
   border-bottom-color: rgb(100 93 146 / var(--tw-border-opacity, 1));
+}
+
+.border-l-primary-500 {
+  --tw-border-opacity: 1;
+  border-left-color: rgb(126 125 180 / var(--tw-border-opacity, 1));
 }
 
 .border-t-primary-700 {
@@ -1700,6 +1710,10 @@ div[data-is-root-theme].light {
 
 .fill-primary-200 {
   fill: #d5d6e8;
+}
+
+.fill-primary-50 {
+  fill: #f5f5f9;
 }
 
 .fill-secondary-500 {
@@ -2241,6 +2255,11 @@ div[data-is-root-theme].light {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 
+.drop-shadow {
+  --tw-drop-shadow: drop-shadow(0 1px 2px rgb(0 0 0 / 0.1)) drop-shadow(0 1px 1px rgb(0 0 0 / 0.06));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
 .sepia {
   --tw-sepia: sepia(100%);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2667,6 +2686,35 @@ body {
   components
   ———————————————————————————————————————————————————————————————————————————— */
 
+/* Triangle */
+
+.rounded-angle-tl {
+  width: 200px;
+  /* Taille de la boîte */
+  height: 200px;
+  /* Taille de la boîte */
+  position: relative;
+  background-color: transparent;
+  /* Assurez-vous que la boîte est transparente */
+}
+
+.rounded-angle-tl-item {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  /* Ajustez la taille selon votre besoin */
+  border-right: 50px solid transparent;
+  /* Ajustez la taille selon votre besoin */
+  border-bottom: 50px solid #3498db;
+  /* Couleur du triangle */
+  top: 0;
+  left: 0;
+  /* Pour arrondir le coin du triangle, nous utilisons une transformation */
+  transform: rotate(45deg) skew(10deg, 10deg);
+  transform-origin: 0 0;
+}
+
 /* —————————————————————————————————————————————————————————————————————————————
   Transitions
   ———————————————————————————————————————————————————————————————————————————— */
@@ -2741,6 +2789,10 @@ body {
   content: var(--tw-content);
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.last\:rounded-br-xl:last-child {
+  border-bottom-right-radius: 0.75rem;
 }
 
 .checked\:border-primary-600:checked {
@@ -3511,6 +3563,11 @@ body {
   border-color: rgb(55 65 81 / var(--tw-divide-opacity, 1));
 }
 
+.dark\:divide-primary-900:where(.dark, .dark *) > :not([hidden]) ~ :not([hidden]) {
+  --tw-divide-opacity: 1;
+  border-color: rgb(73 68 100 / var(--tw-divide-opacity, 1));
+}
+
 .dark\:border-gray-500:where(.dark, .dark *) {
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity, 1));
@@ -3604,6 +3661,18 @@ body {
 .dark\:bg-white:where(.dark, .dark *) {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.dark\:fill-primary-200:where(.dark, .dark *) {
+  fill: #d5d6e8;
+}
+
+.dark\:fill-primary-800:where(.dark, .dark *) {
+  fill: #58517c;
+}
+
+.dark\:fill-primary-950:where(.dark, .dark *) {
+  fill: #302d3e;
 }
 
 .dark\:fill-secondary-200:where(.dark, .dark *) {

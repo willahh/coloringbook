@@ -4,23 +4,15 @@ import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 
 import Layout from '../layout';
 import { SpreadToolbar } from './ui/SpreadToolbar';
-import { SideToolbar } from './ui/SidePanel/SideToolbar';
-import { ColorPanel } from './ui/SidePanel/ColorPanel';
-import { SidePanel } from './ui/SidePanel/SidePanel';
-// import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
-import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
-import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
-import ImageConverter from './ui/SidePanel/ImageConverter';
+import SidePanel from './sidePanel/ui/SidePanel';
 import BookHeader from './ui/BookHeader';
 import { BookContext } from './book.context';
 import * as bookActions from './book.actions';
-import { PageService } from '@/services/page.service';
 import { selectBook } from './book.state';
 
 const BookPage: React.FC = () => {
-  // Page params
   let { bookId = 0, pageId = 1 } = useParams<{
     bookId: string;
     pageId?: string;
@@ -55,64 +47,8 @@ const BookPage: React.FC = () => {
           />
         }
       >
-        <SidePanel
-          className="flex flex-row w-3/12 min-w-96 max-w-[500px] bg-primary-50 dark:bg-primary-900 shadow-black z-10
-        shadow-[3px_0_10px_-4px_rgb aa(0,0,0,0.3)]"
-        >
-          <div
-            className={`flex-1 border-r border-primary-200 dark:border-primary-800
-            overflow-x-hidden overflow-y-auto
-            `}
-            style={{ height: 'calc(100vh - 4rem)' }}
-          >
-            {/* <TemplatePanel className="" /> */}
-            {/* <VerticalSeparator /> */}
-            {/* <GraphicsPanel
-              onGraphicAssetItemClick={(graphicAsset) => {
-                dispatch(
-                  bookActions.AddGraphicAssetToPageAction({
-                    graphicAsset: graphicAsset,
-                    pageId: pageId,
-                  })
-                );
-              }}
-            /> */}
-            <ImageConverter />
-            <VerticalSeparator />
-            <ColorPanel className="" />
-          </div>
-          <PagesPanel
-            pages={book.pages}
-            addPageButtonClick={() => {
-              const newPage = PageService.getNewPage(book.pages);
-              dispatch(
-                bookActions.addPageAction({ book: book, page: newPage })
-              );
-            }}
-            onDeleteButtonClick={() => {
-              dispatch(bookActions.deletePageAction({ pageId: pageId }));
-            }}
-          />
-          <SideToolbar
-            onRectangleClick={() => {
-              if (canvas) {
-                console.error('TODO: implement this handler');
-                // const image = PageService.getImageData(canvas);
-                // dispatch(bookAction.updateBookAction({ book: {} }));
-              }
-
-              // PageService.updateThumbImageData(pages, canvas, pageId);
-              // dispatch()
-              //  const pagesNew = PageService.updateThumbImageData(pages, canvas, pageId);
-              //   console.log('#4 pagesNew:', pagesNew);
-              //   console.log('#4 call dispatch SET_PAGES');
-              //   dispatch({ type: 'SET_PAGES', payload: pagesNew });
-              //   dispatch({ type: 'SET_MODIFIED', payload: true });
-              // handleRectangleClick(dispatch, canvas, book.pages, pageId);
-            }}
-          />
-        </SidePanel>
-        <main className="flex flex-1 bg-primary-100 dark:bg-primary-950 flex-col">
+        <SidePanel />
+        <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col">
           {book.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
           <SpreadToolbar />
         </main>

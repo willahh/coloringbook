@@ -12,7 +12,7 @@ import { appStore } from './common/store';
 import AppRoutes from './AppRoutes.tsx';
 
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
-import(`./main.${defaultAppearance}.css`);
+import(`./common/styles/main.${defaultAppearance}.css`);
 
 function RenderApp() {
   const { appearance } = useTheme();

@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/react';
 import { themes } from '@storybook/theming';
-import '../src/common/styles/main.css'; // Importing the main css!
+import '../src/common/styles/main.dark.css'; // Importing the main css!
 import './storybook.css'; // Override body background to white
 
 const preview: Preview = {
