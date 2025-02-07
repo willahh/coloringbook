@@ -1033,10 +1033,6 @@ div[data-is-root-theme].light {
   width: 2rem;
 }
 
-.w-80 {
-  width: 20rem;
-}
-
 .w-\[200px\] {
   width: 200px;
 }
@@ -1429,11 +1425,6 @@ div[data-is-root-theme].light {
 .border-black {
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity, 1));
-}
-
-.border-gray-200 {
-  --tw-border-opacity: 1;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
 }
 
 .border-gray-300 {

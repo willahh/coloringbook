@@ -1,13 +1,28 @@
 import { Routes, Route } from 'react-router-dom';
-import BookPage from './pages/Book/page';
-import HomePage from './pages/Home/Home';
+import BookPage from './module/book/page';
+import HomePage from './module/home/Home';
+import { BookProvider } from './module/book/book.context';
 
 const AppRoutes: React.FC = () => (
   <Routes>
     <Route index element={<HomePage />} />
     <Route path="library" element={<HomePage />} />
-    <Route path="book/:bookId" element={<BookPage />} />
-    <Route path="book/:bookId/pages/:pageId" element={<BookPage />} />
+    <Route
+      path="book/:bookId"
+      element={
+        <BookProvider>
+          <BookPage />
+        </BookProvider>
+      }
+    />
+    <Route
+      path="book/:bookId/pages/:pageId"
+      element={
+        <BookProvider>
+          <BookPage />
+        </BookProvider>
+      }
+    />
   </Routes>
 );
 
