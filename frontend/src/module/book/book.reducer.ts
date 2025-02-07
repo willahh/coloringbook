@@ -105,22 +105,27 @@ const bookSlice = createSlice({
     builder.addCase(
       bookActions.AddGraphicAssetToPageAction.fulfilled,
       (state, { payload: { element, pageId } }) => {
+        console.log('#5 AddGraphicAssetToPageAction');
         const pageIndex = state.book.pages.findIndex(
           (p) => p.pageId === pageId
         );
         console.log('#5 pageIndex', pageIndex);
+
         if (pageIndex !== -1) {
-          const pages = [...state.book.pages];
-          const page = pages[pageIndex];
-          const elements = [...page.elements, element];
-          console.log('#5 page', page);
-          console.log('#5 pages', pages);
-          console.log('#5 elements', elements);
-          // elements.push(element);
-          page.elements = elements;
-          state.book.pages[pageIndex] = page;
+          // Utilisez l'opérateur spread (...) pour créer une nouvelle copie de l'array et de l'objet page
+          state.book.pages = state.book.pages.map((page, index) => {
+            if (index === pageIndex) {
+              // Créez une nouvelle copie de la page avec le nouvel élément ajouté
+              return {
+                ...page,
+                elements: [...page.elements, element],
+              };
+            }
+            return page;
+          });
         }
         state.isLoading = false;
+        state.areLocalUpdatesSaved = false;
       }
     );
   },

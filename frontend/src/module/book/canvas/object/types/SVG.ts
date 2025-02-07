@@ -13,11 +13,13 @@ export class SVG implements DrawableObject {
     relativeW: number,
     relativeH: number
   ) {
-    obj.w = relativeW;
-    obj.h = relativeH;
-    obj.x = relativeX;
-    obj.y = relativeY;
-    this.svgObjects = this.createSVG(obj);
+    console.log('#0 relativeW', relativeW);
+    const newObj = { ...obj };
+    newObj.w = relativeW;
+    newObj.h = relativeH;
+    newObj.x = relativeX;
+    newObj.y = relativeY;
+    this.svgObjects = this.createSVG(newObj);
   }
 
   private async createSVG(obj: SVGElement): Promise<fabric.FabricObject> {
