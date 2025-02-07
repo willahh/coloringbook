@@ -1,12 +1,13 @@
 // import { RootState } from '@/common/store';
 
-enum Tab {
+export enum Tab {
   Draw,
   Text,
   Shape,
   Background,
   Import,
   Current,
+  Parameters,
 }
 interface SidePanelState {
   isOpen: true;
