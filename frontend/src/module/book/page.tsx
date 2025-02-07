@@ -14,19 +14,18 @@ import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import ImageConverter from './ui/SidePanel/ImageConverter';
 import BookHeader from './ui/BookHeader';
-
 // import { handleRectangleClick } from './canvas/canvas.events';
 import { BookContext } from './book.context';
 import { RootState } from '@/store';
 import * as bookActions from './book.actions';
-import { Page } from '@/types/book';
-import { BookFormatHelper } from '@/utils/book.utils';
-import { BookFormat } from '@/types/book.enum';
+// import { Page } from '@/types/book';
+// import { BookFormatHelper } from '@/utils/book.utils';
+// import { BookFormat } from '@/types/book.enum';
+import { PageService } from '@/services/page.service';
+import { selectBook } from './book.state';
 // import { PageService } from '@/services/page.service';
 
 const BookPage: React.FC = () => {
-  console.log('#4 BookPage');
-
   // Page params
   let { bookId = 0, pageId = 1 } = useParams<{
     bookId: string;
@@ -36,20 +35,15 @@ const BookPage: React.FC = () => {
   pageId = Number(pageId) | 1;
 
   const dispatch = useAppDispatch();
-  const { book, error, areLocalUpdatesSaved } = useAppSelector(
-    (state: RootState) => state.book
-  );
+  const { book, error, areLocalUpdatesSaved } = useAppSelector(selectBook);
   const { canvas } = useContext(BookContext);
-  console.log('#2 areLocalUpdatesSaved', areLocalUpdatesSaved);
 
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
-  }, [bookId]); // Do not add dispatch in dependency to prevent infinite loop !
-
-  console.log('#4 book', book);
+  }, [bookId]);
 
   if (error) {
-    console.error('TODO: Display an error message', error)
+    console.error('TODO: Display an error message', error);
   }
 
   return (
@@ -80,19 +74,14 @@ const BookPage: React.FC = () => {
             {/* <TemplatePanel className="" /> */}
             {/* <VerticalSeparator /> */}
             <GraphicsPanel
-              onGraphicAssetItemClick={
-                (/*asset*/) => {
-                  console.error("TODO: dispatch: 'ADD_ELEMENT_TO_PAGE'");
-                  // handleGraphicAssetItemClick(
-                  //   dispatch,
-                  //   asset,
-                  //   book,
-                  //   canvas,
-                  //   book.pages
-                  //   // pageId
-                  // );
-                }
-              }
+              onGraphicAssetItemClick={(graphicAsset) => {
+                dispatch(
+                  bookActions.AddGraphicAssetToPageAction({
+                    graphicAsset: graphicAsset,
+                    pageId: pageId,
+                  })
+                );
+              }}
             />
             <ImageConverter />
             <VerticalSeparator />
@@ -101,14 +90,7 @@ const BookPage: React.FC = () => {
           <PagesPanel
             pages={book.pages}
             addPageButtonClick={() => {
-              const newPage: Page = {
-                pageId: 10,
-                pageNumber: 10,
-                aspectRatio: BookFormatHelper.getAspectRatio(
-                  BookFormat.A4_PAYSAGE
-                ),
-                elements: [],
-              };
+              const newPage = PageService.getNewPage(book.pages);
               dispatch(
                 bookActions.addPageAction({ book: book, page: newPage })
               );
@@ -137,7 +119,7 @@ const BookPage: React.FC = () => {
           />
         </SidePanel>
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-950 flex-col">
-          <SpreadViewerCanvas pages={book.pages} />
+          {book.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
           <SpreadToolbar />
         </main>
       </Layout>

@@ -40,6 +40,7 @@ interface SpreadCanvasProps {
 }
 
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
+  console.log('#1 SpreadViewerCanvas', pages)
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -69,12 +70,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     },
     [dimensions]
   );
-
-  // useEffect(() => {
-  //   if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
-  //     setPages(pages);
-  //   }
-  // }, [pageSpread, pages, setPages]);
 
   useEventHandlers(fabricCanvasRef.current);
 

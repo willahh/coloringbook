@@ -9,13 +9,15 @@ import { Theme } from '@radix-ui/themes';
 import AppRoutes from './AppRoutes.tsx';
 import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
+console.log('#0 App.tsx')
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
 import(`./main.${defaultAppearance}.css`);
 
 function RenderApp() {
+  console.log('#0 RenderApp')
   const { appearance } = useTheme();
   return (
-    <StrictMode>
+    // <StrictMode>
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
@@ -25,7 +27,7 @@ function RenderApp() {
           </BrowserRouter>
         </Theme>
       </Provider>
-    </StrictMode>
+    // </StrictMode>
   );
 }
 

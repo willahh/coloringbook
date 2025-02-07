@@ -1,7 +1,29 @@
 import { Book, Page } from '@/types/book';
+import { BookFormat } from '@/types/book.enum';
+import { BookFormatHelper } from '@/utils/book.utils';
 import fabric from 'fabric';
 
+function getNewPageId(pages: Page[]) {
+  const maxId = Math.max(...pages.map((page) => page.pageId));
+  return maxId + 1;
+}
+
+function getNewPageNumber(pages: Page[]) {
+  const maxPageNumber = Math.max(...pages.map((page) => page.pageNumber));
+  return maxPageNumber + 1;
+}
+
 export class PageService {
+  public static getNewPage(pages: Page[]) {
+    const page: Page = {
+      pageId: getNewPageId(pages),
+      pageNumber: getNewPageNumber(pages),
+      aspectRatio: BookFormatHelper.getAspectRatio(BookFormat.A4_PAYSAGE),
+      elements: [],
+    };
+
+    return page;
+  }
   public static addPage(p_oBookData: Book, p_oPage: Page): Book {
     const page: Page = { ...p_oPage };
     p_oBookData.pages = [...p_oBookData.pages];

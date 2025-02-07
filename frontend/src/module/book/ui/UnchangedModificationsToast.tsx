@@ -12,8 +12,6 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
   isModified,
   onSave,
 }) => {
-  console.log('#2 UnsavedChangesToast');
-
   const [show, setIsShow] = useState(isModified);
   const [isClosed, setIsClosed] = useState(false);
   useEffect(() => {
@@ -22,15 +20,7 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
       setIsClosed(false);
     }
   }, [isModified, show]);
-  console.log(
-    '#2 isModified:',
-    isModified,
-    'show: ',
-    show,
-    'isClosed:',
-    isClosed
-  );
-
+  
   const onDontShowAgain = () => {
     console.log('onDontShowAgain');
   };

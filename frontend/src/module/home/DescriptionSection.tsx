@@ -73,15 +73,15 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
                 </Tooltip>
               </div>
             ) : (
-                <Button
-                  autoFocus={true}
-                  onClick={onClick}
-                  variant="secondary"
-                  className="w-full justify-center text-nowrap"
-                >
-                  <span>Ajouter un nouveau livre</span>
-                  <PlusIcon aria-hidden="true" className="size-6" />
-                </Button>
+              <Button
+                autoFocus={true}
+                onClick={onClick}
+                variant="secondary"
+                className="w-full justify-center text-nowrap"
+              >
+                <span>Ajouter un nouveau livre</span>
+                <PlusIcon aria-hidden="true" className="size-6" />
+              </Button>
             )}
           </div>
         </AnimatedText>

@@ -1,7 +1,10 @@
 import APIService from '@/services/api.service';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { BookService } from '@/services/book.service';
-import { Book, Page } from '@/types/book';
+import { Book, Page, Element } from '@/types/book';
+import { ElementService } from '@/services/element.service';
+import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { PageService } from '@/services/page.service';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * BOOKS_FETCH_BOOK_BY_ID
@@ -77,3 +80,22 @@ export interface DeletePagePayload {
 }
 export const deletePageAction =
   createAction<DeletePagePayload>('PAGES/DELETE_PAGE');
+
+/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+ * PAGES_ADD_GRAPHIC_ASSET_TO_PAGE
+ *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+export interface AddGraphicAssetToPagePayload {
+  graphicAsset: GraphicAsset;
+  pageId: number;
+}
+interface AddGraphicAssetToPageResponse {
+  pageId: number;
+  element: Element;
+}
+export const AddGraphicAssetToPageAction = createAsyncThunk<
+  AddGraphicAssetToPageResponse,
+  AddGraphicAssetToPagePayload
+>('PAGES_ADD_GRAPHIC_ASSET_TO_PAGE', ({ pageId, graphicAsset }) => {
+  const element = ElementService.getElementFromGraphicAsset(graphicAsset);
+  return { pageId: pageId, element: element };
+});

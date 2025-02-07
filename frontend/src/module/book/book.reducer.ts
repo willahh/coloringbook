@@ -92,6 +92,37 @@ const bookSlice = createSlice({
         state.areLocalUpdatesSaved = false;
       }
     );
+
+    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     * PAGES_ADD_GRAPHIC_ASSET_TO_PAGE
+     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    builder.addCase(
+      bookActions.AddGraphicAssetToPageAction.pending,
+      (state) => {
+        state.isLoading = true;
+      }
+    );
+    builder.addCase(
+      bookActions.AddGraphicAssetToPageAction.fulfilled,
+      (state, { payload: { element, pageId } }) => {
+        const pageIndex = state.book.pages.findIndex(
+          (p) => p.pageId === pageId
+        );
+        console.log('#5 pageIndex', pageIndex);
+        if (pageIndex !== -1) {
+          const pages = [...state.book.pages];
+          const page = pages[pageIndex];
+          const elements = [...page.elements, element];
+          console.log('#5 page', page);
+          console.log('#5 pages', pages);
+          console.log('#5 elements', elements);
+          // elements.push(element);
+          page.elements = elements;
+          state.book.pages[pageIndex] = page;
+        }
+        state.isLoading = false;
+      }
+    );
   },
 });
 
