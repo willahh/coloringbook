@@ -1,9 +1,9 @@
-import { DrawableObject } from '../DrawableObject';
+import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
 import { ImageElement } from '@/types/book';
 // import { getMediaUrl } from '@/utils/api';
 
-export class Image implements DrawableObject {
+export class Image implements DrawableElement {
   private img: Promise<fabric.FabricObject> | null;
 
   constructor(

@@ -1,21 +1,8 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
-// import { useDrag } from 'react-dnd';
-// import axios from 'axios';
+import React, { useState/*, useEffect, useCallback, useContext*/ } from 'react';
 import { getAPIURL, getMediaUrl } from '@/utils/api';
-// import { ElementService } from '@/services/ElementService';
-// import { Obj } from '@/domain/book';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
-import { useAppSelector } from '@/hooks/useRedux';
-import { selectAllGraphicAssets } from './../graphicAssets.state';
-// interface GraphicAsset {
-//   id: number;
-//   name: string;
-//   type: string;
-//   path: string;
-//   fullPath: string;
-//   vecPath: string;
-// }
-// import { BookContext } from '../../book.context';
+import { useAppSelector } from '@/common/hooks/useRedux';
+import { selectAllGraphicAssets } from '../graphicAssets.state';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{
@@ -63,30 +50,30 @@ const GraphicsPanel: React.FC<{
   // TODO: Put in Redux
   // const {graphicAssets} = useAppSelector(selectAllGraphicAssets);
 
-  useEffect(() => {
-    const fetchGraphicAssets = async () => {
-      try {
-        const response = await axios.get(getAPIURL() + '/graphic-assets');
-        setGraphicAssets(response.data);
-      } catch (error) {
-        console.error('Error fetching graphic assets:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchGraphicAssets = async () => {
+  //     try {
+  //       const response = await axios.get(getAPIURL() + '/graphic-assets');
+  //       setGraphicAssets(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching graphic assets:', error);
+  //     }
+  //   };
 
-    fetchGraphicAssets();
-  }, [refreshGraphics]);
+  //   fetchGraphicAssets();
+  // }, [refreshGraphics]);
 
-  const addGraphicAsset = useCallback(
-    async (newAsset: Partial<GraphicAsset>) => {
-      try {
-        const response = await axios.post('/api/graphic-assets', newAsset);
-        setGraphicAssets((prevAssets) => [...prevAssets, response.data]);
-      } catch (error) {
-        console.error('Error adding graphic asset:', error);
-      }
-    },
-    []
-  );
+  // const addGraphicAsset = useCallback(
+  //   async (newAsset: Partial<GraphicAsset>) => {
+  //     try {
+  //       const response = await axios.post('/api/graphic-assets', newAsset);
+  //       setGraphicAssets((prevAssets) => [...prevAssets, response.data]);
+  //     } catch (error) {
+  //       console.error('Error adding graphic asset:', error);
+  //     }
+  //   },
+  //   []
+  // );
 
   return (
     <div className="p-4">

@@ -1,8 +1,8 @@
 import * as fabric from 'fabric';
-import { DrawableObject } from '../DrawableObject';
+import { DrawableElement } from '../DrawableElement';
 import { isShape, Element } from '@/types/book';
 
-export class Triangle implements DrawableObject {
+export class Triangle implements DrawableElement {
   private triangle: fabric.Triangle;
 
   constructor(

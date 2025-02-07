@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import * as Slider from '@radix-ui/react-slider';
+
 import {
   ArrowDownOnSquareStackIcon,
   MagnifyingGlassIcon,

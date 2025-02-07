@@ -1,9 +1,9 @@
-import { DrawableObject } from '../DrawableObject'; // Adjust the path as needed
+import { DrawableElement } from '../DrawableElement'; // Adjust the path as needed
 import * as fabric from 'fabric';
 import { SVGElement } from '@/types/book';
 import { getAPIURL } from '@/utils/api';
 
-export class SVG implements DrawableObject {
+export class SVG implements DrawableElement {
   private svgObjects: Promise<fabric.FabricObject> | null;
 
   constructor(
@@ -13,7 +13,6 @@ export class SVG implements DrawableObject {
     relativeW: number,
     relativeH: number
   ) {
-    console.log('#0 relativeW', relativeW);
     const newObj = { ...obj };
     newObj.w = relativeW;
     newObj.h = relativeH;

@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import bookReducer from './module/book/book.reducer';
-import graphicAssetsReducer from './module/book/graphicAssets/graphicAssets.reducer';
+import bookReducer from '@/module/book/book.reducer';
+import graphicAssetsReducer from '@/module/book/graphicAssets/graphicAssets.reducer';
 
 const rootReducer = combineReducers({
   book: bookReducer,

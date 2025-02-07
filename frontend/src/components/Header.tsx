@@ -1,6 +1,6 @@
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme } from '@/common/contexts/ThemeContext';
 
 interface HeaderProps {
   className?: string;

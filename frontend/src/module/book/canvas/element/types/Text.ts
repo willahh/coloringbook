@@ -1,8 +1,8 @@
-import { DrawableObject } from '../DrawableObject';
+import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
 import { isText, Element } from '@/types/book';
 
-export class Text implements DrawableObject {
+export class Text implements DrawableElement {
   private text: fabric.Text;
 
   constructor(obj: Element, relativeX: number, relativeY: number) {

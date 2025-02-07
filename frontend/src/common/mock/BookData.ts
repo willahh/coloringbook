@@ -1,10 +1,10 @@
-import { IBook } from '../domain/book';
-import { BookFormat } from '../domain/book.enum';
+// import { IBook } from '../domain/book';
+// import { BookFormat } from '../domain/book.enum';
 
-export const bookData: IBook = {
+export const bookData: unknown = {
   id: 89,
   name: 'Book 1',
-  format: BookFormat.A4_PORTRAIT,
+  // format: BookFormat.A4_PORTRAIT,
   coverImage: 'cover_1737449702251-826030765.jpg',
   pageCount: 12,
   pages: [
@@ -143,6 +143,6 @@ export const bookData: IBook = {
           attr: { fill: 'pink', stroke: '#fff', strokeWidth: 3 },
         },
       ],
-    }
+    },
   ],
 };

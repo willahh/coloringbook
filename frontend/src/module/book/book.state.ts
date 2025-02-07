@@ -1,4 +1,4 @@
-import { RootState } from '@/store';
+import { RootState } from '@/common/store';
 import { Book } from '@/types/book';
 import { BookFormat } from '@/types/book.enum';
 import { GraphicAsset } from '@/types/graphic-asset.entity';

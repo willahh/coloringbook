@@ -2,7 +2,7 @@
 import { Page } from '@/types/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { ObjectFactory } from '../canvas/object/ObjectFactory';
+import { ElementFactory } from '../canvas/element/ElementFactory';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,
@@ -62,7 +62,7 @@ export const usePageCreation = (
 
         // Create objects
         page.elements.forEach(async (element) => {
-          const object = ObjectFactory.createObject(
+          const object = ElementFactory.createObject(
             element,
             offsetX,
             pageWidth,

@@ -1,4 +1,4 @@
-import { DrawableObject } from './DrawableObject';
+import { DrawableElement } from './DrawableElement';
 import { Rectangle } from './types/Rectangle';
 import { Circle } from './types/Circle';
 import { Triangle } from './types/Triangle';
@@ -7,13 +7,13 @@ import { SVG } from './types/SVG';
 import { Image } from './types/Image';
 import { Element } from '@/types/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
 
-export class ObjectFactory {
+export class ElementFactory {
   public static createObject(
     obj: Element,
     offsetX: number,
     pageWidth: number,
     pageHeight: number
-  ): DrawableObject | null {
+  ): DrawableElement | null {
     const relativeX = offsetX + (obj.x / 100) * pageWidth;
     const relativeY = (obj.y / 100) * pageHeight;
     const relativeW = (obj.w / 100) * pageWidth;

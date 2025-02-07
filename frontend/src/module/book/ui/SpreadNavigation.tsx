@@ -1,5 +1,5 @@
-import { Tooltip } from '@/components/Tooltip';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { Tooltip } from '@/components/Tooltip';
 
 export const SpreadNavigation: React.FC = () => {
   return (

@@ -9,13 +9,13 @@ import AnimatedText from '@/components/AnimatedText';
 import Toast from '@/components/Toast';
 import { Book } from '@/types/book';
 import { getBooksUrl } from '@/utils/api';
-import { useTheme } from '@/contexts/ThemeContext';
+import { useTheme } from '@/common/contexts/ThemeContext';
 
 import Layout from '../layout';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/common/hooks/useToast';
 import { ToolbarButton } from '../book/ui/ToolbarButton';
 
 interface ContentDivProps {

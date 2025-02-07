@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { /* useContext,*/ useState } from 'react';
 import axios from 'axios';
 import { getAPIURL } from '@/utils/api';
 import { Tooltip } from '@/components/Tooltip';
 import { InformationCircleIcon } from '@heroicons/react/24/outline';
-import { BookContext } from '../../book.context';
+// import { BookContext } from '../../book.context';
 
 const ImageConverter: React.FC = () => {
-  const { setRefreshGraphics } = useContext(BookContext);
+  // const { setRefreshGraphics } = useContext(BookContext);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [, setConvertedImage] = useState<string | null>(null);
@@ -39,8 +39,8 @@ const ImageConverter: React.FC = () => {
 
       const svg = await fetch(response.data.svgPath).then((res) => res.text());
       setConvertedImage(svg);
-      console.log('#3 call setRefreshGraphics')
-      setRefreshGraphics(true);
+      console.log('#3 call setRefreshGraphics');
+      // setRefreshGraphics(true);
     } catch (error) {
       console.error('Conversion error:', error);
     }

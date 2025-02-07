@@ -788,6 +788,10 @@ div[data-is-root-theme].light {
   margin-right: auto;
 }
 
+.-ml-1 {
+  margin-left: -0.25rem;
+}
+
 .mb-1 {
   margin-bottom: 0.25rem;
 }
@@ -810,6 +814,10 @@ div[data-is-root-theme].light {
 
 .mr-2 {
   margin-right: 0.5rem;
+}
+
+.mr-3 {
+  margin-right: 0.75rem;
 }
 
 .mt-1 {
@@ -1237,6 +1245,10 @@ div[data-is-root-theme].light {
   gap: 1rem;
 }
 
+.gap-6 {
+  gap: 1.5rem;
+}
+
 .gap-\[15px\] {
   gap: 15px;
 }
@@ -1336,6 +1348,10 @@ div[data-is-root-theme].light {
 
 .whitespace-nowrap {
   white-space: nowrap;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
 }
 
 .\!rounded-full {
@@ -1830,10 +1846,6 @@ div[data-is-root-theme].light {
   padding-left: 0.75rem;
 }
 
-.pl-6 {
-  padding-left: 1.5rem;
-}
-
 .pr-0 {
   padding-right: 0px;
 }
@@ -1844,10 +1856,6 @@ div[data-is-root-theme].light {
 
 .pr-4 {
   padding-right: 1rem;
-}
-
-.pr-6 {
-  padding-right: 1.5rem;
 }
 
 .pr-8 {
@@ -2121,6 +2129,14 @@ div[data-is-root-theme].light {
 
 .opacity-100 {
   opacity: 1;
+}
+
+.opacity-25 {
+  opacity: 0.25;
+}
+
+.opacity-75 {
+  opacity: 0.75;
 }
 
 .shadow {

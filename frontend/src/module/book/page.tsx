@@ -1,13 +1,13 @@
 import React, { useContext, useEffect /*, useState*/ } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@/hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 
 import Layout from '../layout';
 import { SpreadToolbar } from './ui/SpreadToolbar';
 import { SideToolbar } from './ui/SidePanel/SideToolbar';
 import { ColorPanel } from './ui/SidePanel/ColorPanel';
 import { SidePanel } from './ui/SidePanel/SidePanel';
-import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
+// import GraphicsPanel from './ui/SidePanel/GraphicsPanel';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { VerticalSeparator } from './ui/SidePanel/VerticalSeparator';
@@ -67,7 +67,7 @@ const BookPage: React.FC = () => {
           >
             {/* <TemplatePanel className="" /> */}
             {/* <VerticalSeparator /> */}
-            <GraphicsPanel
+            {/* <GraphicsPanel
               onGraphicAssetItemClick={(graphicAsset) => {
                 dispatch(
                   bookActions.AddGraphicAssetToPageAction({
@@ -76,7 +76,7 @@ const BookPage: React.FC = () => {
                   })
                 );
               }}
-            />
+            /> */}
             <ImageConverter />
             <VerticalSeparator />
             <ColorPanel className="" />

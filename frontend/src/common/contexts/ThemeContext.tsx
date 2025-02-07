@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import DynamicCSSLoader from '../components/DynamicCSSLoader';
+import DynamicCSSLoader from '@/components/DynamicCSSLoader';
 
 type Appearance = 'dark' | 'light';
 type ThemeContextType = {

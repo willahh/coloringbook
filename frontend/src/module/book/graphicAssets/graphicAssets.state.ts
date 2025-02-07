@@ -1,4 +1,4 @@
-import { RootState } from '@/store';
+import { RootState } from '@/common/store';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
 
 export enum Mode {

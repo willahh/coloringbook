@@ -1,26 +1,30 @@
-import { DrawableObject } from '../DrawableObject';
+import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
-import { isShape, CircleElement } from '@/types/book';
+import { isShape, RectangleElement } from '@/types/book';
 
-// TODO: Il faut que le paramètre du constructeur
-// soit de type Object {x,y,w,h,attr}
-export class Circle implements DrawableObject {
-  private circle: fabric.Circle;
+export class Rectangle implements DrawableElement {
+  private rect: fabric.Rect;
 
   constructor(
-    obj: CircleElement,
+    obj: RectangleElement,
     relativeX: number,
     relativeY: number,
-    radius: number
+    relativeW: number,
+    relativeH: number
   ) {
     if (isShape(obj)) {
-      this.circle = new fabric.Circle({
+      this.rect = new fabric.Rect({
         left: relativeX,
         top: relativeY,
-        radius: radius,
+        width: relativeW,
+        height: relativeH,
         fill: obj.attr.fill,
         stroke: obj.attr.stroke,
         strokeWidth: obj.attr.strokeWidth,
+        
+        
+        selectable: true,
+        hasControls: true
       });
     } else {
       throw new Error(
@@ -30,17 +34,16 @@ export class Circle implements DrawableObject {
   }
 
   async getObject(): Promise<fabric.Object> {
-    return this.circle;
+    return this.rect;
   }
 
   draw(canvas: fabric.Canvas): fabric.Object {
-    console.log('draw', canvas);
-    // canvas.add(this.circle);
-    return this.circle;
+    canvas.add(this.rect);
+    return this.rect;
   }
 
-  update(attrs: CircleElement): void {
-    this.circle.set(attrs);
+  update(attrs: RectangleElement): void {
+    this.rect.set(attrs);
   }
 
   delete(): void {
