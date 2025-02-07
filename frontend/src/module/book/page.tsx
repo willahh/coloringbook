@@ -1,4 +1,4 @@
-import React, { useContext, useEffect /*, useState*/ } from 'react';
+import React, { useEffect /*, useState*/ } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 
@@ -8,7 +8,7 @@ import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import UnsavedChangesToast from './ui/UnchangedModificationsToast';
 import SidePanel from './sidePanel/ui/SidePanel';
 import BookHeader from './ui/BookHeader';
-import { BookContext } from './book.context';
+// import { BookContext } from './book.context';
 import * as bookActions from './book.actions';
 import { selectBook } from './book.state';
 
@@ -22,7 +22,7 @@ const BookPage: React.FC = () => {
 
   const dispatch = useAppDispatch();
   const { book, error, areLocalUpdatesSaved } = useAppSelector(selectBook);
-  const { canvas } = useContext(BookContext);
+  // const { canvas } = useContext(BookContext);
 
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));

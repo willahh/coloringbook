@@ -1,4 +1,9 @@
+/**
+ * https://tailwindcss.com/docs/installation/using-vite
+ */
 import { defineConfig } from 'vite';
+import tailwindcss from '@tailwindcss/vite';
+
 import react from '@vitejs/plugin-react';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
@@ -9,7 +14,7 @@ const __dirname = path.dirname(__filename);
 
 export default defineConfig(() => {
   return {
-    plugins: [react(), svgr({})],
+    plugins: [react(), svgr({}), tailwindcss()],
     envDir: './env',
     publicDir: './public',
     build: {

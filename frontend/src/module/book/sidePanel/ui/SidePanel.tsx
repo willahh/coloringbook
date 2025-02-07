@@ -10,7 +10,7 @@ import TextIcon from '@assets/icons/icon_text.svg?react';
 import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 import { ToolbarButton } from '../../ui/ToolbarButton';
 import GraphicAssets from './../graphicAssets/GraphicAssets';
-import { initialState, Tab } from './../sidepanel.state';
+import { /*initialState,*/ Tab } from './../sidepanel.state';
 
 const tabs = [
   { id: Tab.Draw, label: 'Dessin', icon: PaintBrushIcon, active: true },
@@ -40,14 +40,14 @@ const tabs = [
 const SidePanel: React.FC<{
   className?: string;
   children?: React.ReactNode;
-}> = ({ className, children }) => {
+}> = (/*{ className, children }*/) => {
   console.log('#1 SidePanel');
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Draw);
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const headerHeight = 70;
-  const firstTab = tabs[0];
-  const isFirstTabActive = firstTab.active;
+  // const firstTab = tabs[0];
+  // const isFirstTabActive = firstTab.active;
 
   const handleTabClick = (tab: Tab) => {
     if (activeTab === tab) {

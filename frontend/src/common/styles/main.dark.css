@@ -1,10 +1,8 @@
 /* —————————————————————————————————————————————————————————————————————————————
   Imports
   ———————————————————————————————————————————————————————————————————————————— */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-@config "./../../../tailwind.dark.config.js"; 
+@import 'tailwindcss';
+@config "./../../../tailwind.dark.config.js";
 
 body {
   -webkit-font-smoothing: antialiased;
@@ -167,7 +165,7 @@ body {
   * prefix "cb-" ([c]oloring[b]ook) for custom classes
   * ——————————————————————————————————————————————————————————————————————————*/
 
-@layer base {
+/* @layer base {
   .heading-1 {
     @apply roboto-thin text-4xl font-bold mb-2 dark:text-white;
   }
@@ -180,9 +178,9 @@ body {
   .heading-4 {
     @apply roboto-thin text-xl font-bold mb-2 dark:text-white;
   }
-}
+} */
 
-.btn-primary {
+/* .btn-primary {
   @apply font-sans px-4 py-2 rounded
   bg-primary-500 hover:bg-primary-500
   dark:bg-primary-500 dark:text-white dark:hover:bg-primary-500;
@@ -196,7 +194,7 @@ body {
 
 .cb-grid {
   @apply grid grid-cols-1 md:grid-cols-12 gap-4;
-}
+} */
 
 /* —————————————————————————————————————————————————————————————————————————————
   radix-ui configuration
