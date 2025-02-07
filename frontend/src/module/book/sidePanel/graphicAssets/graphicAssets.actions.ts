@@ -4,7 +4,7 @@ import APIService from '@/services/api.service';
 import { GraphicAsset } from '@/types/graphic-asset.entity';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * GRAPHIC_ASSETS/FETCH_GRAPHIC_ASSETS
+ * fetchGraphicAssetsAction
  *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
 export const fetchGraphicAssetsAction = createAsyncThunk<GraphicAsset[]>(
   'GRAPHIC_ASSETS/FETCH_GRAPHIC_ASSETS',

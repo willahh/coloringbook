@@ -6,9 +6,10 @@ import {
 } from '@heroicons/react/24/outline';
 
 import TextIcon from '@assets/icons/icon_text.svg?react';
-// import SidebarCorner from '@assets/sidebar-corner.svg?react';
+// import SidebarCorner from '@asùsets/sidebar-corner.svg?react';
 import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 import { ToolbarButton } from '../../ui/ToolbarButton';
+import GraphicAssets from './../graphicAssets/GraphicAssets';
 import { initialState, Tab } from './../sidepanel.state';
 
 const tabs = [
@@ -18,6 +19,13 @@ const tabs = [
   {
     id: Tab.Background,
     label: 'Fonds',
+    icon: RectangleGroupIcon,
+    active: false,
+  },
+  {
+    id: Tab.Load,
+    label: 'Charger',
+    description: 'Charge une image, la convertir en tracé',
     icon: RectangleGroupIcon,
     active: false,
   },
@@ -83,9 +91,8 @@ const SidePanel: React.FC<{
                 <ArrowDownOnSquareStackIcon />
               </ToolbarButton>
             </div>
-            <div>
-              <h2 className="text-3xl">Paramètres</h2>
-            </div>
+          
+            <GraphicAssets />
           </div>
         </div>
         <div
@@ -93,20 +100,6 @@ const SidePanel: React.FC<{
           className={`fill-primary-black dark:fill-primary-200
             absolute bottom-0 -right-24`}
         >
-          {/* {(() => {
-            const firstTab = tabs[0];
-            const lastTab = tabs[tabs.length - 1];
-            const isLastTabActive = firstTab.active;
-            return (
-              <div className="relative w-10 h-10">
-                <SidebarCornerTop
-                  className={`fill-primary-100 dark:fill-primary-950 ${
-                    isLastTabActive ? 'dark:fill-primary-700' : ''
-                  }`}
-                />
-              </div>
-            );
-          })()} */}
           <div data-id="sp-tabs-items">
             {tabs.map((tab, index) => (
               <>

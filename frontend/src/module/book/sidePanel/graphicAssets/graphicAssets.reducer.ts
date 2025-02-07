@@ -8,7 +8,7 @@ const graphicAssetsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * BOOKS_FETCH_BOOK_BY_ID
+     * fetchGraphicAssetsAction
      *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
     builder.addCase(
       graphicAssetsActions.fetchGraphicAssetsAction.pending,

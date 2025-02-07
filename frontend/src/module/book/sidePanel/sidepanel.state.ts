@@ -7,6 +7,7 @@ export enum Tab {
   Background,
   Import,
   Current,
+  Load,
   Parameters,
 }
 interface SidePanelState {
