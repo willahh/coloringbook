@@ -481,6 +481,9 @@
   }
 }
 @layer utilities {
+  .\@container {
+    container-type: inline-size;
+  }
   .pointer-events-auto {
     pointer-events: auto;
   }
@@ -1027,6 +1030,9 @@
   .overflow-y-scroll {
     overflow-y: scroll;
   }
+  .scroll-auto {
+    scroll-behavior: auto;
+  }
   .\!rounded-full {
     border-radius: calc(infinity * 1px) !important;
   }
@@ -1047,6 +1053,9 @@
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
+  }
+  .rounded-xs {
+    border-radius: var(--radius-xs);
   }
   .rounded-tl-none {
     border-top-left-radius: 0;
@@ -1477,6 +1486,10 @@
     --tw-font-weight: var(--font-weight-extralight);
     font-weight: var(--font-weight-extralight);
   }
+  .font-light {
+    --tw-font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-light);
+  }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
@@ -1487,6 +1500,9 @@
   }
   .text-nowrap {
     text-wrap: nowrap;
+  }
+  .text-ellipsis {
+    text-overflow: ellipsis;
   }
   .whitespace-nowrap {
     white-space: nowrap;
@@ -1698,6 +1714,10 @@
     --tw-duration: 100ms;
     transition-duration: 100ms;
   }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
@@ -1713,10 +1733,6 @@
   .duration-150 {
     --tw-duration: 150ms;
     transition-duration: 150ms;
-  }
-  .duration-200 {
-    --tw-duration: 200ms;
-    transition-duration: 200ms;
   }
   .duration-400 {
     --tw-duration: 400ms;
@@ -2664,6 +2680,11 @@
   .xl\:border-yellow-500 {
     @media (width >= 80rem) {
       border-color: var(--color-yellow-500);
+    }
+  }
+  .\@xs\:grid-cols-4 {
+    @container (width >= 20rem) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   .dark\:divide-gray-200 {

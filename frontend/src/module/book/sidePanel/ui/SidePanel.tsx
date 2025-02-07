@@ -3,6 +3,7 @@ import {
   ArrowDownOnSquareStackIcon,
   PaintBrushIcon,
   RectangleGroupIcon,
+  UserIcon,
 } from '@heroicons/react/24/outline';
 
 import TextIcon from '@assets/icons/icon_text.svg?react';
@@ -13,7 +14,8 @@ import GraphicAssets from './../graphicAssets/GraphicAssets';
 import { /*initialState,*/ Tab } from './../sidepanel.state';
 
 const tabs = [
-  { id: Tab.Draw, label: 'Dessin', icon: PaintBrushIcon, active: true },
+  { id: Tab.Personal, label: 'Personnel', icon: UserIcon, active: true },
+  { id: Tab.Draw, label: 'Dessin', icon: PaintBrushIcon, active: false },
   { id: Tab.Text, label: 'Texte', icon: TextIcon, active: false },
   { id: Tab.Shape, label: 'Formes', icon: RectangleGroupIcon, active: false },
   {
@@ -91,7 +93,7 @@ const SidePanel: React.FC<{
                 <ArrowDownOnSquareStackIcon />
               </ToolbarButton>
             </div>
-          
+
             <GraphicAssets />
           </div>
         </div>

@@ -1,6 +1,7 @@
 // import { RootState } from '@/common/store';
 
 export enum Tab {
+  Personal,
   Draw,
   Text,
   Shape,
