@@ -6,17 +6,28 @@ import * as graphicAssetsAction from './graphicAssets.actions';
 import { Tooltip } from '@/components/Tooltip';
 
 const Item: React.FC<{ graphicAsset: GraphicAsset }> = ({ graphicAsset }) => (
-  <div data-name="item" className="transition-all">
-    <img src="/assets/papier/animaux.jpg" alt="" className=" rounded-lg " />
+  <button data-name="item" className="transition-all group focus:outline-0">
+    <img
+      src="/assets/papier/animaux.jpg"
+      alt=""
+      className={`rounded-lg border-2 border-primary-500
+        group-hover:border-secondary-500
+        group-focus:border-secondary-500`}
+    />
     <Tooltip content={graphicAsset.name}>
-      <div className="text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+      <div
+        className={`text-xs overflow-hidden text-ellipsis whitespace-nowrap text-primary-800 dark:text-primary-200
+            group-hover:text-black dark:group-hover:text-white 
+            group-focus:text-black dark:group-focus:text-white
+        `}
+      >
         {graphicAsset.name}
       </div>
     </Tooltip>
-    <div className="text-xs bg-secondary-500 p-1 inline rounded-xs text-secondary-900 cursor-default select-none">
+    {/* <div className="text-xs bg-secondary-500 p-1 inline rounded-xs text-secondary-900 cursor-default select-none">
       {graphicAsset.type}
-    </div>
-  </div>
+    </div> */}
+  </button>
 );
 
 const GraphicAssets: React.FC = () => {

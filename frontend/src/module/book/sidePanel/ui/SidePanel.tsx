@@ -4,6 +4,7 @@ import {
   PaintBrushIcon,
   RectangleGroupIcon,
   UserIcon,
+  // EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
 
 import TextIcon from '@assets/icons/icon_text.svg?react';
@@ -12,6 +13,7 @@ import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 import { ToolbarButton } from '../../ui/ToolbarButton';
 import GraphicAssets from './../graphicAssets/GraphicAssets';
 import { /*initialState,*/ Tab } from './../sidepanel.state';
+// import { Tooltip } from '@/components/Tooltip';
 
 const tabs = [
   { id: Tab.Personal, label: 'Personnel', icon: UserIcon, active: true },
@@ -80,7 +82,7 @@ const SidePanel: React.FC<{
         <div
           data-id="sp-content"
           className={`relative flex-1 p-4 overflow-hidden
-            bg-primary-50 dark:bg-primary-700
+           bg-primary-50 dark:bg-primary-700
            border-primary-100 dark:border-primary-900`}
           style={{
             width: isOpen ? 400 : 0,
@@ -88,12 +90,27 @@ const SidePanel: React.FC<{
           }}
         >
           <div>
+            {/*
+            
+            Resize handle
+
+            <Tooltip content="Redimensionner" delayDuration={100}>
+              <div
+                className={`fixed top-0 -right-3 flex justify-center w-6 h-full z-20 cursor-ew-resize group`}
+              >
+                <div
+                  className={`w-0 h-full flex items-center transition-all ease-in-out duration-300
+                group-hover:bg-primary-500 group-hover:w-4 `}
+                >
+                  <EllipsisVerticalIcon className='w-10 h-10'/>
+                </div>
+              </div>
+            </Tooltip> */}
             <div className="absolute top-4 right-4 flex justify-end">
               <ToolbarButton tooltipContent="Fermer">
                 <ArrowDownOnSquareStackIcon />
               </ToolbarButton>
             </div>
-
             <GraphicAssets />
           </div>
         </div>

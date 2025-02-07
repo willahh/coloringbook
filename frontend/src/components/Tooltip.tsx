@@ -4,14 +4,16 @@ import * as RadixTooltip from '@radix-ui/react-tooltip';
 export const Tooltip = ({
   children,
   content,
+  delayDuration = 500,
 }: {
   children: React.ReactNode;
   content?: string;
+  delayDuration?: number;
 }) => {
   return (
     <>
       {content ? (
-        <RadixTooltip.Provider delayDuration={500}>
+        <RadixTooltip.Provider delayDuration={delayDuration}>
           <RadixTooltip.Root>
             <RadixTooltip.Trigger asChild>{children}</RadixTooltip.Trigger>
             <RadixTooltip.Portal>
