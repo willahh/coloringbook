@@ -49,7 +49,7 @@ const GraphicAssets: React.FC = () => {
           <div className="@container">
             <div
               data-name="items"
-              className="grid grid-cols-1 @xs:grid-cols-4 gap-4"
+              className="grid grid-cols-1 @xs:grid-cols-4 gap-6"
             >
               {graphicAssets.map((graphicAsset) => {
                 return <Item graphicAsset={graphicAsset} />;

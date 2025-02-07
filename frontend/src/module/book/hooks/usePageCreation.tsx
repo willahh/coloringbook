@@ -17,7 +17,7 @@ export const usePageCreation = (
   useEffect(() => {
     if (canvas && canvas.getWidth() > 400) {
       // debugger;
-      const canvasBorder = 12;
+      const canvasBorder = 16;
       const newSpreadSize = { width: 0, height: 0 };
 
       pageSpread.forEach((page, index) => {
@@ -51,9 +51,9 @@ export const usePageCreation = (
           fill: 'white',
           selectable: false,
           shadow: new fabric.Shadow({
-            color: 'rgba(0, 0, 0, .2)',
+            color: 'rgba(0, 0, 0, .4)',
             nonScaling: true,
-            blur: 4,
+            blur: 8,
             offsetX: 2,
             offsetY: 2,
           }),
