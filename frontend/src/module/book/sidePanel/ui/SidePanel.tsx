@@ -1,4 +1,4 @@
-import React, {  useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   ArrowDownOnSquareStackIcon,
   PaintBrushIcon,
@@ -48,38 +48,52 @@ const SidePanel: React.FC<{
   ref: React.RefObject<HTMLElement>;
   setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
 }> = (/*{ className, children }*/ { ref, setSidePanelWidth }) => {
-  console.log('#1 SidePanel');
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Draw);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-
   const headerHeight = 70;
-  // const firstTab = tabs[0];
-  // const isFirstTabActive = firstTab.active;
 
+  const isAnimatingRef = useRef(false);
   const handleTabClick = (tab: Tab) => {
     if (activeTab === tab) {
-      // Same tab
-      if (isOpen) {
-        setIsOpen(false);
-      } else {
-        setIsOpen(true);
-      }
+      setIsOpen(!isOpen);
     } else {
       setActiveTab(tab);
       if (!isOpen) {
         setIsOpen(true);
       }
     }
-    setTimeout(() => {
-      if (ref.current) {
-        console.log(
-          '#1.1 setSidePanelWidth from SidePanel',
-          ref.current.offsetWidth
-        );
-        setSidePanelWidth(ref.current.offsetWidth);
-      }
-    }, 200);
   };
+  // const updateWidth = useCallback(() => {
+  //   if (ref.current && isAnimatingRef.current) {
+  //     setSidePanelWidth(ref.current.offsetWidth);
+  //     requestAnimationFrame(updateWidth);
+  //   }
+  // }, [ref, setSidePanelWidth]);
+
+  useEffect(() => {
+    if (ref.current) {
+      const handleTransitionEnd = () => {
+        isAnimatingRef.current = false;
+        if (ref.current) {
+          setSidePanelWidth(ref.current.offsetWidth);
+        }
+      };
+      // const handleTransitionRun = () => {
+      //   isAnimatingRef.current = true;
+      //   requestAnimationFrame(updateWidth);
+      // };
+
+      // ref.current.addEventListener('transitionrun', handleTransitionRun);
+      ref.current.addEventListener('transitionend', handleTransitionEnd);
+
+      return () => {
+        if (ref.current) {
+          // ref.current.removeEventListener('transitionrun', handleTransitionRun);
+          ref.current.removeEventListener('transitionend', handleTransitionEnd);
+        }
+      };
+    }
+  }, [ref.current]);
 
   return (
     <aside

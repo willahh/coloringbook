@@ -174,8 +174,7 @@ export const PagesPanel: React.FC<{
       ref={ref}
       className={`${
         className || ''
-      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto
-      border-4 border-red-500`}
+      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}
     >
       <Pages pages={pages} onDeleteButtonClick={onDeleteButtonClick} />
       <ToolbarButton

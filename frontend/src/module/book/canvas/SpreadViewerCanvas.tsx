@@ -107,7 +107,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   return (
     <div ref={containerRef} className="relative flex-1">
       {/* <SpreadNavigation /> */}
-      <canvas ref={canvasRef} style={{border: "3px solid green"}}/>
+      <canvas ref={canvasRef} />
     </div>
   );
 };
