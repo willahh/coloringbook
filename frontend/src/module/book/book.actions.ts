@@ -67,7 +67,6 @@ export const updateBookAction =
  * PAGES_ADD_PAGE
  *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
 export interface AddPagePayload {
-  book: Book;
   page: Page;
 }
 export const addPageAction = createAction<AddPagePayload>('PAGES/ADD_PAGE');

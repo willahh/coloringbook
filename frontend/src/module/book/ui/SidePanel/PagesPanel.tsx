@@ -7,6 +7,9 @@ import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
+import { useAppDispatch } from '@/common/hooks/useRedux';
+import * as BookActions from './../../book.actions';
+import { PageService } from '@/services/page.service';
 
 interface PageComponentProps {
   bookId: number;
@@ -18,10 +21,9 @@ interface PageComponentProps {
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
   page: { pageNumber, pageId, thumbImageData },
-  onDeleteButtonClick,
   selected,
 }) => {
-  // const transitionDelay = pageNumber / 12;
+  const dispatch = useAppDispatch();
 
   return (
     <motion.div
@@ -29,7 +31,6 @@ const PageComponent: React.FC<PageComponentProps> = ({
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        // delay: transitionDelay,
         duration: 0.1,
         type: 'tween',
       }}
@@ -82,10 +83,8 @@ const PageComponent: React.FC<PageComponentProps> = ({
                    ? 'group-hover:block group-focus:block group-active:block hover:bg-secondary-400 focus:bg-secondary-400'
                    : ''
                }`}
-              onClick={() => {
-                if (onDeleteButtonClick) {
-                  onDeleteButtonClick(pageId);
-                }
+              onClick={(e) => {
+                dispatch(BookActions.deletePageAction({ pageId: pageId }));
               }}
             >
               <TrashIcon className="w-4 h-4" />
@@ -104,11 +103,7 @@ interface PagesProps {
   onDeleteButtonClick?: (pageId: number) => void;
 }
 
-const Pages: React.FC<PagesProps> = ({
-  className,
-  pages,
-  onDeleteButtonClick,
-}) => {
+const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   const {
     pageParams: { pageId, bookId },
   } = useContext(BookContext);
@@ -138,7 +133,6 @@ const Pages: React.FC<PagesProps> = ({
             bookId={Number(bookId)}
             page={page}
             selected={page.pageId === selectedPageId}
-            onDeleteButtonClick={onDeleteButtonClick}
           />
         ))}
         {index === 1 ? <div className="w-14 h-20 "></div> : null}
@@ -167,8 +161,8 @@ export const PagesPanel: React.FC<{
   ref: React.RefObject<HTMLDivElement>;
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
-  onDeleteButtonClick?: (pageId: number) => void;
-}> = ({ className, ref, pages, addPageButtonClick, onDeleteButtonClick }) => {
+}> = ({ className, ref, pages, addPageButtonClick }) => {
+  const dispatch = useAppDispatch();
   return (
     <div
       ref={ref}
@@ -176,11 +170,15 @@ export const PagesPanel: React.FC<{
         className || ''
       } flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}
     >
-      <Pages pages={pages} onDeleteButtonClick={onDeleteButtonClick} />
+      <Pages pages={pages} />
       <ToolbarButton
         className="!rounded-full"
         tooltipContent="Ajouter une page"
-        onClick={addPageButtonClick}
+        onClick={() => {
+          dispatch(
+            BookActions.addPageAction({ page: PageService.getNewPage(pages) })
+          );
+        }}
       >
         <PlusIcon
           className="w-full h-full size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
