@@ -149,7 +149,8 @@ const Pages: React.FC<PagesProps> = ({
   return (
     <div
       className={`flex flex-col ${className || ''} rounded-md 
- overflow-y-scroll scrollbar scrollbar-thumb-primary-300 dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
+ overflow-y-scroll scrollbar scrollbar-thumb-primary-300 
+ dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
       style={{
         maxHeight: 'calc(100vh - 10em)', // FIXME: magic number 10em
       }}
@@ -163,15 +164,18 @@ export default Pages;
 
 export const PagesPanel: React.FC<{
   className?: string;
+  ref: React.RefObject<HTMLDivElement>;
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
   onDeleteButtonClick?: (pageId: number) => void;
-}> = ({ className, pages, addPageButtonClick, onDeleteButtonClick }) => {
+}> = ({ className, ref, pages, addPageButtonClick, onDeleteButtonClick }) => {
   return (
     <div
+      ref={ref}
       className={`${
         className || ''
-      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}
+      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto
+      border-4 border-red-500`}
     >
       <Pages pages={pages} onDeleteButtonClick={onDeleteButtonClick} />
       <ToolbarButton

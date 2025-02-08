@@ -62,7 +62,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
                 <Tooltip content="Ajouter un nouveau livre">
                   <div>
                     <Button
-                      autoFocus={true}
+                      // autoFocus={true}
                       onClick={onClick}
                       variant="secondary"
                       className="border-l-0 rounded-tl-none rounded-bl-none"

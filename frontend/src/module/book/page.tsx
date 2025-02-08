@@ -1,4 +1,4 @@
-import React, { useEffect /*, useState*/ } from 'react';
+import React, { useEffect /*, useState*/, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 
@@ -11,6 +11,7 @@ import BookHeader from './ui/BookHeader';
 // import { BookContext } from './book.context';
 import * as bookActions from './book.actions';
 import { selectBook } from './book.state';
+import { PagesPanel } from './ui/SidePanel/PagesPanel';
 
 const BookPage: React.FC = () => {
   let { bookId = 0, pageId = 1 } = useParams<{
@@ -24,6 +25,35 @@ const BookPage: React.FC = () => {
   const { book, error, areLocalUpdatesSaved } = useAppSelector(selectBook);
   // const { canvas } = useContext(BookContext);
 
+  // Manage panels size
+  const sidePanelRef = useRef<HTMLDivElement>(null);
+  const pagesPanelRef = useRef<HTMLDivElement>(null);
+  const [sidePanelWidth, setSidePanelWidth] = useState<number>(0);
+  const [pagesPanelWidth, setPagesPanelWidth] = useState<number>(0);
+
+  useEffect(() => {
+    const updateWidths = () => {
+      console.log('#1 updateWidths');
+      if (sidePanelRef.current) {
+        console.log(
+          '#1 => setSidePanelWidth',
+          sidePanelRef.current.offsetWidth
+        );
+        setSidePanelWidth(sidePanelRef.current.offsetWidth);
+      }
+      if (pagesPanelRef.current) {
+        console.log(
+          '#1 => setPagesPanelWidth',
+          pagesPanelRef.current.offsetWidth
+        );
+        setPagesPanelWidth(pagesPanelRef.current.offsetWidth);
+      }
+    };
+    updateWidths();
+    window.addEventListener('resize', updateWidths);
+    return () => window.removeEventListener('resize', updateWidths);
+  }, [sidePanelRef, pagesPanelRef, sidePanelWidth]);
+
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]);
@@ -31,6 +61,10 @@ const BookPage: React.FC = () => {
   if (error) {
     console.error('TODO: Display an error message', error);
   }
+  console.log('#1 sidePanelRef', sidePanelRef);
+  console.log('#1 pagesPanelRef', pagesPanelRef);
+  console.log('#1.1 sidePanelWidth', sidePanelWidth);
+  console.log('#1 pagesPanelWidth', pagesPanelWidth);
 
   return (
     <>
@@ -47,11 +81,23 @@ const BookPage: React.FC = () => {
           />
         }
       >
-        <SidePanel />
-        <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col">
-          {book.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
+        <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
+        <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
+          {book.pages.length > 0 && (
+            <SpreadViewerCanvas
+              pages={book.pages}
+              sidePanelWidth={sidePanelWidth}
+              pagesPanelWidth={pagesPanelWidth}
+            />
+          )}
           <SpreadToolbar />
         </main>
+        <PagesPanel
+          ref={pagesPanelRef}
+          className="w-32 bgred500"
+          pages={book.pages}
+          addPageButtonClick={() => {}}
+        ></PagesPanel>
       </Layout>
       <UnsavedChangesToast
         isModified={!areLocalUpdatesSaved}

@@ -295,6 +295,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         </div>
         <Button
           type="submit"
+          variant="secondary"
           disabled={!isVisible || isLoading}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >

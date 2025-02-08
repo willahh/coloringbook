@@ -37,9 +37,15 @@ interface SpreadCanvasProps {
   width?: number;
   height?: number;
   pages: Page[];
+  sidePanelWidth: number;
+  pagesPanelWidth: number;
 }
 
-const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
+const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
+  pages,
+  sidePanelWidth,
+  pagesPanelWidth,
+}) => {
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -49,7 +55,11 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
 
   // State
-  const dimensions = useDimensions(containerRef);
+  const dimensions = useDimensions(
+    containerRef,
+    sidePanelWidth,
+    pagesPanelWidth
+  );
 
   // Process
   const { pageSpread } = usePageSpread(pages, pageParams);
@@ -57,7 +67,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   // Init
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
-      console.log('#1 initCanvas')
       const canvas = new fabric.Canvas(canvasElement, {
         height: dimensions.height,
         width: dimensions.width,
@@ -67,7 +76,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       });
       return canvas;
     },
-    [dimensions]
+    [dimensions, sidePanelWidth, pagesPanelWidth]
   );
 
   useEventHandlers(fabricCanvasRef.current);
@@ -98,7 +107,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   return (
     <div ref={containerRef} className="relative flex-1">
       {/* <SpreadNavigation /> */}
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} style={{border: "3px solid green"}}/>
     </div>
   );
 };

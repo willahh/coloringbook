@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback, RefObject } from 'react';
 import { debounce } from 'lodash';
 
-export const useDimensions = (containerRef: RefObject<HTMLElement | null>) => {
+export const useDimensions = (
+  containerRef: RefObject<HTMLElement | null>,
+  sidePanelWidth: number,
+  pagesPanelWidth: number
+) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   const updateDimensions = useCallback(
@@ -11,15 +15,14 @@ export const useDimensions = (containerRef: RefObject<HTMLElement | null>) => {
           document.documentElement.clientHeight,
           window.innerHeight || 0
         );
-        console.log('#1 setDimensions', window.innerWidth - containerRef.current.getBoundingClientRect().x, viewportHeight - 150)
+        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth;
         setDimensions({
-          width:
-            window.innerWidth - containerRef.current.getBoundingClientRect().x,
+          width: width,
           height: viewportHeight - 150,
         });
       }
-    }, 200),
-    [containerRef]
+    }, 50),
+    [containerRef, sidePanelWidth, pagesPanelWidth]
   );
 
   useEffect(() => {

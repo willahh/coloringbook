@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { SetStateAction, useState } from 'react';
 import {
   ArrowDownOnSquareStackIcon,
   PaintBrushIcon,
@@ -13,6 +13,7 @@ import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 import { ToolbarButton } from '../../ui/ToolbarButton';
 import GraphicAssets from './../graphicAssets/GraphicAssets';
 import { /*initialState,*/ Tab } from './../sidepanel.state';
+import { Dispatch } from 'redux';
 // import { Tooltip } from '@/components/Tooltip';
 
 const tabs = [
@@ -44,7 +45,9 @@ const tabs = [
 const SidePanel: React.FC<{
   className?: string;
   children?: React.ReactNode;
-}> = (/*{ className, children }*/) => {
+  ref: React.RefObject<HTMLElement>;
+  setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
+}> = (/*{ className, children }*/ { ref, setSidePanelWidth }) => {
   console.log('#1 SidePanel');
   const [activeTab, setActiveTab] = useState<Tab>(Tab.Draw);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -67,10 +70,20 @@ const SidePanel: React.FC<{
         setIsOpen(true);
       }
     }
+    setTimeout(() => {
+      if (ref.current) {
+        console.log(
+          '#1.1 setSidePanelWidth from SidePanel',
+          ref.current.offsetWidth
+        );
+        setSidePanelWidth(ref.current.offsetWidth);
+      }
+    }, 200);
   };
 
   return (
     <aside
+      ref={ref}
       data-id="sidepanel"
       className={`h-full z-10 transition-all`}
       style={{
