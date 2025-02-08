@@ -43,7 +43,7 @@ const BookPage: React.FC = () => {
       }
       if (pagesPanelRef.current) {
         console.log(
-          '#1 => setPagesPanelWidth',
+          '#1.1 => setPagesPanelWidth',
           pagesPanelRef.current.offsetWidth
         );
         setPagesPanelWidth(pagesPanelRef.current.offsetWidth);

@@ -1,4 +1,4 @@
-import React, { SetStateAction, useState } from 'react';
+import React, {  useState } from 'react';
 import {
   ArrowDownOnSquareStackIcon,
   PaintBrushIcon,
@@ -13,7 +13,7 @@ import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 import { ToolbarButton } from '../../ui/ToolbarButton';
 import GraphicAssets from './../graphicAssets/GraphicAssets';
 import { /*initialState,*/ Tab } from './../sidepanel.state';
-import { Dispatch } from 'redux';
+// import { Dispatch } from 'redux';
 // import { Tooltip } from '@/components/Tooltip';
 
 const tabs = [
