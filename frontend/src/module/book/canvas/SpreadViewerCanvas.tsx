@@ -64,7 +64,29 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   // Process
   const { pageSpread } = usePageSpread(pages, pageParams);
 
-  // Init
+  useEventHandlers(fabricCanvasRef.current);
+
+  /**
+   * [Pages init].
+   * The dependency array for pageCreation hook is only the canvas html reference.
+   * Be cause the canvas is reset on browser resize, page change, or container changes.
+   */
+  const spreadSize = usePageCreation(
+    fabricCanvasRef.current,
+    pageSpread,
+    dimensions
+  );
+  useZoomControl(fabricCanvasRef.current, dimensions, spreadSize);
+
+  /**
+   * [Canvas init].
+   * The canvas needs to be initialized with width and height in pixels.
+   * Therefore, it must be refreshed when the browser is resized or the container size changes.
+   *
+   * The dependency array for when to update the effect includes pageSpread, meaning
+   * that when the page changes, the entire canvas is reinitialized. This approach makes it easier
+   * to manage updates for pages and graphic elements!
+   */
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
       const canvas = new fabric.Canvas(canvasElement, {
@@ -78,16 +100,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     },
     [dimensions, sidePanelWidth, pagesPanelWidth]
   );
-
-  useEventHandlers(fabricCanvasRef.current);
-
-  const spreadSize = usePageCreation(
-    fabricCanvasRef.current,
-    pageSpread,
-    dimensions
-  );
-  useZoomControl(fabricCanvasRef.current, dimensions, spreadSize);
-
   useEffect(() => {
     if (canvasRef.current) {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
@@ -95,14 +107,16 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         lastPosX?: number;
         lastPosY?: number;
       };
+      console.log('#0 setCanvas !');
       setCanvas(canvas);
 
       return () => {
+        console.log('#0 on unmount canvas');
         canvas.dispose();
         fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, setCanvas, dimensions]);
+  }, [initCanvas, setCanvas, dimensions, pageSpread]);
 
   return (
     <div ref={containerRef} className="relative flex-1">

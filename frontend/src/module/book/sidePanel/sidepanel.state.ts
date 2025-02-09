@@ -1,26 +1,15 @@
 // import { RootState } from '@/common/store';
-
-export enum Tab {
-  Personal,
-  Draw,
-  Text,
-  Shape,
-  Background,
-  Import,
-  Current,
-  Load,
-  Parameters,
-}
+import { TabType } from './sidepanel.types';
 interface SidePanelState {
   isOpen: true;
   width: number; // In pixel
-  selectedTab: Tab;
+  selectedTab: TabType;
 }
 
 const initialState: SidePanelState = {
   isOpen: true,
   width: 500,
-  selectedTab: Tab.Draw,
+  selectedTab: TabType.Element,
   // areLocalUpdatesSaved: true,
   // refreshGraphics: false,
   // graphicAssets: [],
