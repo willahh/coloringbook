@@ -32,6 +32,7 @@ import { useDimensions } from '../hooks/useDimensions';
 import { usePageSpread } from '../hooks/usePageSpread';
 import { usePageCreation } from '../hooks/usePageCreation';
 import { useZoomControl } from '../hooks/useZoomControl';
+import { BookService } from '@/services/book.service';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -62,7 +63,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   );
 
   // Process
-  const { pageSpread } = usePageSpread(pages, pageParams);
+  const { spreadPages } = usePageSpread(pages, pageParams);
 
   useEventHandlers(fabricCanvasRef.current);
 
@@ -73,7 +74,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
    */
   const spreadSize = usePageCreation(
     fabricCanvasRef.current,
-    pageSpread,
+    spreadPages,
     dimensions
   );
   useZoomControl(fabricCanvasRef.current, dimensions, spreadSize);
@@ -116,7 +117,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, setCanvas, dimensions, pageSpread]);
+  }, [initCanvas, setCanvas, dimensions, spreadPages]);
 
   return (
     <div ref={containerRef} className="relative flex-1">

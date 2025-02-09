@@ -1,4 +1,3 @@
-// hooks/usePageCreation.ts
 import { Page } from '@/types/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
@@ -6,7 +5,7 @@ import { ElementFactory } from '../canvas/element/ElementFactory';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,
-  pageSpread: Page[],
+  spreadPages: Page[],
   dimensions: { width: number; height: number }
 ) => {
   const [spreadSize, setSpreadSize] = useState<{
@@ -20,7 +19,7 @@ export const usePageCreation = (
         const canvasBorder = 16;
         const newSpreadSize = { width: 0, height: 0 };
 
-        pageSpread.forEach((page, index) => {
+        spreadPages.forEach((page, index) => {
           const fitPageHeight =
             page.aspectRatio.width > page.aspectRatio.height ||
             dimensions.width > dimensions.height;

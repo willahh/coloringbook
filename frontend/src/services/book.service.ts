@@ -57,6 +57,13 @@ export class BookService {
     }
   }
 
+  static getPageFromPageId(pages: Page[], pageId: number): Page {
+    const flatIndex = pages.findIndex((page) => {
+      return page?.pageId === pageId;
+    });
+    const page = pages[flatIndex];
+    return page;
+  }
   static getSpreadForPage(pages: Page[], pageId: number): Page[] {
     if (pages.length === 0) {
       console.warn('No pages available');

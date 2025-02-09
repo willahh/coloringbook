@@ -15,12 +15,11 @@ const Tabs: React.FC<{
     >
       <div data-id="sp-tabs-items">
         {tabs.map((tab, index) => (
-          <>
-            <button
-              key={`tab-${index}`}
-              data-id={tab.id}
-              onClick={() => onTabClick(tab.id)}
-              className={`relative flex justify-center items-center w-24 h-24
+          <button
+            key={`tab-${index}`}
+            data-id={tab.id}
+            onClick={() => onTabClick(tab.id)}
+            className={`relative flex justify-center items-center w-24 h-24
            
            group
               bg-primary-100 dark:bg-primary-900  
@@ -37,10 +36,10 @@ const Tabs: React.FC<{
                : ''
            }
            `}
-            >
-              {index === 0 && (
-                <SidebarCornerTop
-                  className={`absolute -top-10 left-0 w-10 h-10
+          >
+            {index === 0 && (
+              <SidebarCornerTop
+                className={`absolute -top-10 left-0 w-10 h-10
                    fill-primary-100 dark:fill-primary-900
                    group-hover:fill-primary-50 dark:group-hover:fill-primary-700
                    ${
@@ -48,15 +47,14 @@ const Tabs: React.FC<{
                        ? 'fill-primary-50 dark:!fill-primary-700'
                        : ''
                    }`}
-                />
-              )}
+              />
+            )}
 
-              <div className="flex flex-col items-center gap-1 ">
-                <tab.icon className="w-6 h-6" />
-                <div>{tab.label}</div>
-              </div>
-            </button>
-          </>
+            <div className="flex flex-col items-center gap-1 ">
+              <tab.icon className="w-6 h-6" />
+              <div>{tab.label}</div>
+            </div>
+          </button>
         ))}
       </div>
     </div>

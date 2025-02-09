@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BookService } from '@/services/book.service';
 import { Page } from '@/types/book';
 
-console.error('TODO: remove usePageSpread.tsx, use the Redux store')
 export const usePageSpread = (
   pages: Page[],
   pageParams: {
@@ -11,17 +10,15 @@ export const usePageSpread = (
   }
 ) => {
   const currentPageId = Number(pageParams.pageId) || 0;
-  const pageSpread = React.useMemo(
-    () => BookService.getSpreadForPage(pages, currentPageId),
-    [pages, currentPageId]
-  );
+  let useSpread = false; // Display 2 or more pages per spread
 
-  useEffect(() => {
-    if (JSON.stringify(pageSpread) !== JSON.stringify(pages)) {
-      // Assuming setPages is available in the context where this hook is used
-      // setPages(pages);
+  const spreadPages = React.useMemo(() => {
+    if (useSpread) {
+      return BookService.getSpreadForPage(pages, currentPageId);
+    } else {
+      return [BookService.getPageFromPageId(pages, currentPageId)];
     }
-  }, [pageSpread, pages]);
+  }, [pages, currentPageId]);
 
-  return { pageSpread };
+  return { spreadPages };
 };

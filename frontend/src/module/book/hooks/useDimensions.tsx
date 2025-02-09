@@ -16,7 +16,6 @@ export const useDimensions = (
           window.innerHeight || 0
         );
         const width = window.innerWidth - sidePanelWidth - pagesPanelWidth;
-        console.log('#1.1 width', width)
         setDimensions({
           width: width,
           height: viewportHeight - 150,
