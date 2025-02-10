@@ -10,7 +10,6 @@ import { Tooltip } from '@components/Tooltip';
 import { useAppDispatch } from '@/common/hooks/useRedux';
 import * as BookActions from './../../book.actions';
 import { PageService } from '@/services/page.service';
-import { BookFormatHelper } from '@/utils/book.utils';
 
 interface PageComponentProps {
   bookId: number;
@@ -37,7 +36,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       }}
     >
       <Link
-        className={`flex flex-col w-full max-w-14 rounded-sm group overflow-hidden
+        className={`flex flex-col w-full  rounded-sm group overflow-hidden
         border-2 border-primary-200 dark:border-primary-800 
         hover:border-secondary-500
         active:ring-2 active:-ring-offset-4 ring-secondary-500
@@ -75,23 +74,29 @@ const PageComponent: React.FC<PageComponentProps> = ({
             : ''
         }`}
         >
-          <Tooltip content={'Supprimer la page'}>
-            <button
-              className={`hidden 
-                p-xs rounded-sm transition-all
-                
+          <div
+            className={`opacity-0 group-hover:opacity-100 group-focus:opacity-100 ${
+              selected && 'opacity-100'
+            }`}
+          >
+            <Tooltip content={'Supprimer la page'}>
+              <button
+                className={`p-xs rounded-sm transition-all cursor-pointer
                ${
                  selected
-                   ? 'group-hover:block group-focus:block group-active:block hover:bg-secondary-400 focus:bg-secondary-400'
+                   ? 'group-active:opacity-100 hover:bg-secondary-400 focus:bg-secondary-400'
                    : ''
                }`}
-              onClick={(e) => {
-                dispatch(BookActions.deletePageAction({ pageId: pageId }));
-              }}
-            >
-              <TrashIcon className="w-4 h-4" />
-            </button>
-          </Tooltip>
+                onClick={(e) => {
+                  if (confirm('Confirmer la suppression de la page ?')) {
+                    dispatch(BookActions.deletePageAction({ pageId: pageId }));
+                  }
+                }}
+              >
+                <TrashIcon className="w-4 h-4" />
+              </button>
+            </Tooltip>
+          </div>
           <div>{pageNumber}</div>
         </div>
       </Link>
@@ -147,7 +152,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
   return (
     <div
-      className={`flex flex-col ${className || ''} rounded-md 
+      className={`flex flex-col ${className || ''} rounded-md pt-4
  overflow-y-scroll scrollbar scrollbar-thumb-primary-300 
  dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
       style={{

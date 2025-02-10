@@ -93,7 +93,7 @@ const BookPage: React.FC = () => {
         </main>
         <PagesPanel
           ref={pagesPanelRef}
-          className="w-32"
+          className="w-24"
           pages={book.pages}
           addPageButtonClick={() => {}}
         ></PagesPanel>

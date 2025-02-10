@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
 import motionConfig from '@/utils/config.utils';
-import { GridDebug, DebugButton } from '@components/Debug';
+import { GridDebug, InterfaceControls } from '@components/Debug';
 
 /**
  * Props for the Layout component.
@@ -35,7 +35,7 @@ const Layout: React.FC<LayoutProps> = ({
         className="absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10 dark:text-white focus:border focus:border-black dark:focus:border-white"
       ></div>
 
-      <DebugButton />
+      <InterfaceControls />
       {griddDebug && <GridDebug />}
       <div
         data-id="page-layout-container"
