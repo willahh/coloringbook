@@ -42,6 +42,7 @@ import { usePageCreation } from './hooks/usePageCreation';
 // import { CanvasProvider } from './canvas.context';
 import canvasService from '@/services/canvas.service';
 import { useCanvasContext } from './hooks/useCanvasContext';
+import { PagesNavigation } from '../ui/PagesNavigation';
 interface SpreadCanvasProps {
   pageId: number;
   width?: number;
@@ -58,7 +59,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   pagesPanelWidth,
 }) => {
   const { position, scale, viewportTransform } = useCanvasContext();
-  console.log('#10 SpreadViewerCanvas - viewportTransform', viewportTransform)
 
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -151,13 +151,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       // const scaleY = viewportTransform[3];
       // setPosition({ x: vpt[4], y: vpt[5] });
       // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
-      
 
       console.log('#10 useEffect scale:', scale);
       fabricCanvasRef.current.lastPosX = x;
       fabricCanvasRef.current.lastPosY = y;
       // fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
-      console.log('#10 assign viewportTransform', viewportTransform)
+      console.log('#10 assign viewportTransform', viewportTransform);
       // fabricCanvasRef.current.viewportTransform = viewportTransform;
 
       // canvasService.calculateCenteredSpread();
@@ -211,7 +210,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
   return (
     <div ref={containerRef} className="relative flex-1">
-      {/* <SpreadNavigation /> */}
+      <PagesNavigation />
       <canvas ref={canvasRef} />
     </div>
   );

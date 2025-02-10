@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/types/book';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { BookContext } from '../../book.context';
-import { Link, Links } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -10,6 +10,7 @@ import { Tooltip } from '@components/Tooltip';
 import { useAppDispatch } from '@/common/hooks/useRedux';
 import * as BookActions from './../../book.actions';
 import { PageService } from '@/services/page.service';
+import { useParams } from 'react-router';
 
 interface PageComponentProps {
   bookId: number;
@@ -172,7 +173,38 @@ export const PagesPanel: React.FC<{
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, ref, pages, addPageButtonClick }) => {
+  const { pageId } = useParams<{ pageId: string }>();
   const dispatch = useAppDispatch();
+  const panelRef = ref;
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        panelRef.current &&
+        panelRef.current.contains(document.activeElement)
+      ) {
+        if (event.key === 'Backspace' || event.key === 'Delete') {
+          const selectedPage = pages.find(
+            (page) => page.pageId === Number(pageId)
+          );
+          if (
+            selectedPage &&
+            confirm('Confirmer la suppression de la page ?')
+          ) {
+            dispatch(
+              BookActions.deletePageAction({ pageId: selectedPage.pageId })
+            );
+            event.preventDefault();
+          }
+        }
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [pages, pageId, dispatch]);
+
   return (
     <div
       ref={ref}
