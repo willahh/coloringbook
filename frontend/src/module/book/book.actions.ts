@@ -12,14 +12,18 @@ import { GraphicAsset } from '@/types/graphic-asset.entity';
 export interface FetchBookByIdActionPayload {
   bookId: number;
 }
+interface FetchBookByIdActionResponse {
+  book: Book;
+  isModified: boolean;
+}
 export const fetchBookByIdAction = createAsyncThunk<
-  Book,
+  FetchBookByIdActionResponse,
   FetchBookByIdActionPayload
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
-  const { book: newBook } = BookService.prepareBookData(book);
+  const { book: newBook, isModified } = BookService.prepareBookData(book);
 
-  return newBook;
+  return { book: newBook, isModified };
 });
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

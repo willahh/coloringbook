@@ -20,12 +20,11 @@ export class BookService {
   }
 
   static prepareBookData(book: Book): { book: Book; isModified: boolean } {
-    // Si le livre n'a pas de pages, ajoutons-en 3 par défaut
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {
       const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
       const defaultPages = Array.from(
-        { length: 3 },
+        { length: book.pageCount },
         (_, i): Page => ({
           pageId: i + 1,
           pageNumber: i + 1,

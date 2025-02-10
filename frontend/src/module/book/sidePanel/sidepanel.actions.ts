@@ -18,7 +18,7 @@ export const fetchBookByIdAction = createAsyncThunk<
   FetchBookByIdActionPayload
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
-  const { book: newBook } = BookService.prepareBookData(book);
+  const { book: newBook, isModified } = BookService.prepareBookData(book);
 
-  return newBook;
+  return { newBook, isModified };
 });

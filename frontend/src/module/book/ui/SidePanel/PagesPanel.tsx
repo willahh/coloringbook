@@ -37,8 +37,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       }}
     >
       <Link
-        style={{ aspectRatio: `${aspectRatio.width}/${aspectRatio.height}` }}
-        className={`flex flex-col w-full rounded-sm group overflow-hidden
+        className={`flex flex-col w-full max-w-14 rounded-sm group overflow-hidden
         border-2 border-primary-200 dark:border-primary-800 
         hover:border-secondary-500
         active:ring-2 active:-ring-offset-4 ring-secondary-500
@@ -55,9 +54,10 @@ const PageComponent: React.FC<PageComponentProps> = ({
       >
         <div
           data-id="page-bg"
-          className={`flex flex-1 bg-primary-100 dark:bg-primary-900 hover:bg-primary-100  dark:hover:bg-primary-300
+          className={`flex flex-1  bg-primary-100 dark:bg-primary-900 hover:bg-primary-100  dark:hover:bg-primary-300
             ${selected ? ' bg-secondary-100 dark:bg-primary-300 ' : ''}`}
           style={{
+            aspectRatio: `${aspectRatio.width}/${aspectRatio.height}`,
             backgroundImage: `url(${thumbImageData})`,
             backgroundRepeat: 'no-repeat',
             backgroundPosition: 'center',
@@ -120,6 +120,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
       spreads = [pages];
     }
   }
+  // debugger;
 
   const renderSpreads = () => {
     return spreads.map((spread, index) => (
@@ -137,7 +138,9 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
             selected={page.pageId === selectedPageId}
           />
         ))}
-        {index === 1 ? <div className="w-14 h-20 "></div> : null}
+        {index === 0 ? (
+          <div data-name="page-placeholder" className=""></div>
+        ) : null}
       </div>
     ));
   };

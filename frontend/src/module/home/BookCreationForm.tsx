@@ -18,7 +18,7 @@ const formatOptions = [
 // FIXME: Share with backend
 const bookSchema = z.object({
   name: z.string().min(1, 'Le nom est obligatoire.'),
-  format: z.enum(['carré', 'A4_portrait', 'A4_paysage']).default('carré'),
+  format: z.enum(['carré', 'A4_portrait', 'A4_paysage']).default('A4_portrait'),
   // pageCount: z
   //   .string()
   //   .refine(

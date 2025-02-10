@@ -18,10 +18,11 @@ const bookSlice = createSlice({
     });
     builder.addCase(
       bookActions.fetchBookByIdAction.fulfilled,
-      (state, { payload: book }) => {
+      (state, { payload: {book, isModified} }) => {
         state.isLoading = false;
         state.error = null;
         state.book = book;
+        state.areLocalUpdatesSaved = !isModified;
       }
     );
 
