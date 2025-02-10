@@ -10,7 +10,7 @@ import { useTheme } from '@/common/contexts/ThemeContext';
 
 type ThemeAppearance = 'light' | 'dark';
 
-export default function Example() {
+function AppearanceControl() {
   const { appearance, switchAppearance } = useTheme();
 
   const getMenuItemClassName = (
@@ -85,6 +85,40 @@ export default function Example() {
   );
 }
 
+export const InterfaceControls = () => {
+  return (
+    <div data-id="setting-button" className="absolute top-0 right-0 p-5 z-20">
+      <div className="flex items-center gap-4 relative">
+        <AppearanceControl />
+        <Popover className="">
+          <Tooltip content="Préférences">
+            <PopoverButton
+              className={ToolbarButtonClassName('!rounded-full')}
+              onClick={() => {
+                // setTooltipVisible(false);
+              }}
+            >
+              <AdjustmentsHorizontalIcon
+                aria-hidden="true"
+                className="size-5"
+              />
+            </PopoverButton>
+          </Tooltip>
+          <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
+            <div className="divide-y divide-gray-800 dark:divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-black dark:bg-white shadow">
+              <div className="grid grid-cols-2 gap-2">
+                <Switch checked={false} onChange={() => {}} />
+                <label htmlFor="a">Debug grid</label>
+              </div>
+            </div>
+          </PopoverPanel>
+        </Popover>
+      </div>
+    </div>
+  );
+};
+
+
 /**
  * A 12 column debug grid displayed as an overlay when the parameter
  * ?griddebug=1 is present in the URL
@@ -113,38 +147,3 @@ export const GridDebug = () => (
     <div className="col-span-1 bg-rose-500    border border-black pt-6">12</div>
   </div>
 );
-
-export const DebugButton = () => {
-  // const [isTooltipVisible, setTooltipVisible] = useState(true);
-
-  return (
-    <div data-id="setting-button" className="absolute top-0 right-0 p-5 z-20">
-      <div className="flex items-center gap-4 relative">
-        <Example />
-        <Popover className="">
-          <Tooltip content="Préférences">
-            <PopoverButton
-              className={ToolbarButtonClassName('!rounded-full')}
-              onClick={() => {
-                // setTooltipVisible(false);
-              }}
-            >
-              <AdjustmentsHorizontalIcon
-                aria-hidden="true"
-                className="size-5"
-              />
-            </PopoverButton>
-          </Tooltip>
-          <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
-            <div className="divide-y divide-gray-800 dark:divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-black dark:bg-white shadow">
-              <div className="grid grid-cols-2 gap-2">
-                <Switch checked={false} onChange={() => {}} />
-                <label htmlFor="a">Debug grid</label>
-              </div>
-            </div>
-          </PopoverPanel>
-        </Popover>
-      </div>
-    </div>
-  );
-};
