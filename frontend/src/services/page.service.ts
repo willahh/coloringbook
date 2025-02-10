@@ -18,7 +18,7 @@ export class PageService {
     const page: Page = {
       pageId: getNewPageId(pages),
       pageNumber: getNewPageNumber(pages),
-      aspectRatio: BookFormatHelper.getAspectRatio(BookFormat.A4_PAYSAGE),
+      aspectRatio: BookFormatHelper.getAspectRatio(BookFormat.A4_PORTRAIT),
       elements: [],
     };
 

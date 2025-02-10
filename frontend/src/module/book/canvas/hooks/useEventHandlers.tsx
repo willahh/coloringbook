@@ -10,18 +10,37 @@ import {
   handleMouseUp,
   handleDocumentKeyDown,
   handleDocumentKeyUp,
-} from '../canvas/canvas.events';
+} from '../canvas.events';
 
+import { useCanvasContext } from './useCanvasContext';
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
+  const { position, scale, setPosition, setScale, setViewportTransform } =
+    useCanvasContext();
+  console.log('#10 useEventHandlers useCanvasContext - scale ', scale);
+
   useEffect(() => {
     if (canvas) {
+      console.log('#5 add event handlers setPosition: ', setPosition);
       const eventHandlers = {
-        'mouse:wheel': handleMouseWheel(canvas),
+        'mouse:wheel': handleMouseWheel(
+          canvas,
+          setViewportTransform,
+          setPosition,
+          setScale
+        ),
         'mouse:over': handleMouseOver(canvas),
         'mouse:out': handleMouseOut(canvas),
-        'mouse:down': handleMouseDown(canvas),
-        'mouse:move': handleMouseMove(canvas),
-        'mouse:up': handleMouseUp(canvas),
+        'mouse:down': handleMouseDown(
+          canvas,
+          setViewportTransform,
+          setPosition
+        ),
+        'mouse:move': handleMouseMove(
+          canvas,
+          setViewportTransform,
+          setPosition
+        ),
+        'mouse:up': handleMouseUp(canvas, setPosition),
         'selection:created': (e: fabric.ObjectEvents) =>
           console.log('Selected:', e.selected),
         'selection:updated': (e: fabric.ObjectEvents) =>

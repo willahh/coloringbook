@@ -1,4 +1,5 @@
 import * as fabric from 'fabric';
+import { Position, Scale } from './canvas.context';
 
 declare module 'fabric' {
   interface Canvas {
@@ -10,13 +11,38 @@ declare module 'fabric' {
 }
 
 export const handleMouseWheel =
-  (canvas: fabric.Canvas) => (opt: fabric.TEvent<WheelEvent>) => {
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+    setPosition: React.Dispatch<React.SetStateAction<Position>>,
+    setScale: React.Dispatch<React.SetStateAction<Scale>>
+  ) =>
+  (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
     let zoom = canvas.getZoom();
+    console.log('#10 canvas.getZoom()', canvas.getZoom());
     zoom *= 0.988 ** delta;
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
+    console.log('#10 zoom', zoom);
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
+    console.log('#10 canvas.viewportTransform', canvas.viewportTransform);
+    // const scaleX = canvas.viewportTransform[0];
+    // const scaleY = canvas.viewportTransform[3];
+    // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
+    // if (setScale) {
+
+    
+    setTimeout(() => {
+      console.log(`#10 setViewportTransform: ${[...canvas.viewportTransform]}`);
+      setViewportTransform([...canvas.viewportTransform]);
+      // setPosition({ x: vpt[4], y: vpt[5] });
+      // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
+    }, 1000);
+    // } else {
+    //   console.error('setScale is undefined');
+    // }
+
     opt.e.preventDefault();
     opt.e.stopPropagation();
   };
@@ -36,7 +62,12 @@ export const handleMouseOut =
   };
 
 export const handleMouseDown =
-  (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+    setPosition: React.Dispatch<React.SetStateAction<Position>>
+  ) =>
+  (opt: fabric.TPointerEventInfo) => {
     const evt = opt.e;
     if (evt.altKey === true) {
       canvas.isDragging = true;
@@ -52,7 +83,12 @@ export const handleMouseDown =
   };
 
 export const handleMouseMove =
-  (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+    setPosition: React.Dispatch<React.SetStateAction<Position>>
+  ) =>
+  (opt: fabric.TPointerEventInfo) => {
     if (canvas.isDragging) {
       const e = opt.e;
       const vpt = canvas.viewportTransform;
@@ -81,12 +117,30 @@ export const handleMouseMove =
     }
   };
 
-export const handleMouseUp = (canvas: fabric.Canvas) => () => {
-  canvas.setViewportTransform(canvas.viewportTransform);
-  canvas.isDragging = false;
-  canvas.selection = true;
-  canvas.defaultCursor = 'default';
-};
+export const handleMouseUp =
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+    setPosition: React.Dispatch<React.SetStateAction<Position>>
+  ) =>
+  () => {
+    canvas.setViewportTransform(canvas.viewportTransform);
+    canvas.isDragging = false;
+    canvas.selection = true;
+    canvas.defaultCursor = 'default';
+
+    if (canvas.lastPosX && canvas.lastPosY) {
+      console.log(`#10 setViewportTransform: ${canvas.viewportTransform}`);
+      setViewportTransform([...canvas.viewportTransform]);
+      // if (setPosition) {
+      //   console.log('#3.1 call setPosition');
+      //   const vpt = canvas.viewportTransform;
+      //   setPosition({ x: vpt[4], y: vpt[5] });
+      // } else {
+      //   console.error('setPosition is undefined');
+      // }
+    }
+  };
 
 export const handleDocumentKeyDown =
   (canvas: fabric.Canvas) => (evt: { altKey: boolean; code: string }) => {

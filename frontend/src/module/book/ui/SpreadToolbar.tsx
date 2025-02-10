@@ -12,6 +12,9 @@ import {
 import { bookService } from '@/services/book.service';
 import { BookContext } from '../book.context';
 import { ToolbarButton } from './ToolbarButton';
+import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
+import { selectBook } from '../book.state';
+import { useParams } from 'react-router';
 
 const iconProps = {
   className: 'w-12 h-12',
@@ -23,9 +26,18 @@ export const SpreadToolbar: React.FC<{
   children?: React.ReactNode;
 }> = () => {
   const { canvas } = useContext(BookContext);
+  // useAppDispatch();
+  const { book } = useAppSelector(selectBook);
+  const { pageId } = useParams<{ pageId?: string }>();
+  const totalPages = book.pages.length;
+  const currentPage = pageId ? parseInt(pageId) : 1;
 
   return (
-    <div className="flex justify-center items-center gap-4 p-4 ">
+    <div
+      data-id="spread-toolbar"
+      className="flex justify-center items-center gap-4 p-4 bg-primary-50 dark:bg-primary-950"
+    >
+      <div className="text-sm text-gray-600">{`Page ${currentPage} / ${totalPages}`}</div>
       <MagnifyingGlassIcon className="w-6 h-6" />
       <Slider.Root
         className="relative flex h-5 w-[200px] touch-none select-none items-center"

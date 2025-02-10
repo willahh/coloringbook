@@ -2,7 +2,7 @@ import { motion } from 'framer-motion'; // Assuming you use framer-motion for an
 import type { Page } from '@/types/book';
 import { useContext } from 'react';
 import { BookContext } from '../../book.context';
-import { Link } from 'react-router-dom';
+import { Link, Links } from 'react-router-dom';
 import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -10,6 +10,7 @@ import { Tooltip } from '@components/Tooltip';
 import { useAppDispatch } from '@/common/hooks/useRedux';
 import * as BookActions from './../../book.actions';
 import { PageService } from '@/services/page.service';
+import { BookFormatHelper } from '@/utils/book.utils';
 
 interface PageComponentProps {
   bookId: number;
@@ -20,7 +21,7 @@ interface PageComponentProps {
 
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
-  page: { pageNumber, pageId, thumbImageData },
+  page: { pageNumber, pageId, thumbImageData, aspectRatio },
   selected,
 }) => {
   const dispatch = useAppDispatch();
@@ -36,7 +37,8 @@ const PageComponent: React.FC<PageComponentProps> = ({
       }}
     >
       <Link
-        className={`flex flex-col w-14 h-20 rounded-sm group overflow-hidden
+        style={{ aspectRatio: `${aspectRatio.width}/${aspectRatio.height}` }}
+        className={`flex flex-col w-full rounded-sm group overflow-hidden
         border-2 border-primary-200 dark:border-primary-800 
         hover:border-secondary-500
         active:ring-2 active:-ring-offset-4 ring-secondary-500
@@ -168,23 +170,25 @@ export const PagesPanel: React.FC<{
       ref={ref}
       className={`${
         className || ''
-      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto`}
+      } flex flex-col  p-4 pr-0 gap-4 overflow-y-auto`}
     >
-      <Pages pages={pages} />
-      <ToolbarButton
-        className="!rounded-full"
-        tooltipContent="Ajouter une page"
-        onClick={() => {
-          dispatch(
-            BookActions.addPageAction({ page: PageService.getNewPage(pages) })
-          );
-        }}
-      >
-        <PlusIcon
-          className="w-full h-full size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
-          style={{ strokeWidth: '0.05em' }}
-        />
-      </ToolbarButton>
+      <Pages className="pr-4" pages={pages} />
+      <div className="flex justify-center pt-4">
+        <ToolbarButton
+          className="!rounded-full"
+          tooltipContent="Ajouter une page"
+          onClick={() => {
+            dispatch(
+              BookActions.addPageAction({ page: PageService.getNewPage(pages) })
+            );
+          }}
+        >
+          <PlusIcon
+            className="w-full h-full size-6 fill-primary-200 group-hover:fill-white group-focus:fill-white"
+            style={{ strokeWidth: '0.05em' }}
+          />
+        </ToolbarButton>
+      </div>
     </div>
   );
 };

@@ -12,18 +12,18 @@ import BookHeader from './ui/BookHeader';
 import * as bookActions from './book.actions';
 import { selectBook } from './book.state';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
+import { CanvasProvider } from './canvas/canvas.context';
 
 const BookPage: React.FC = () => {
   let { bookId = 0, pageId = 1 } = useParams<{
     bookId: string;
     pageId?: string;
   }>();
-  bookId = Number(bookId) | 0;
-  pageId = Number(pageId) | 1;
+  bookId = Number(bookId) || 0;
+  pageId = Number(pageId) || 1;
 
   const dispatch = useAppDispatch();
   const { book, error, areLocalUpdatesSaved } = useAppSelector(selectBook);
-  // const { canvas } = useContext(BookContext);
 
   // Manage panels size
   const sidePanelRef = useRef<HTMLDivElement>(null);
@@ -61,10 +61,6 @@ const BookPage: React.FC = () => {
   if (error) {
     console.error('TODO: Display an error message', error);
   }
-  console.log('#1 sidePanelRef', sidePanelRef);
-  console.log('#1 pagesPanelRef', pagesPanelRef);
-  console.log('#1.1 sidePanelWidth', sidePanelWidth);
-  console.log('#1 pagesPanelWidth', pagesPanelWidth);
 
   return (
     <>
@@ -84,17 +80,20 @@ const BookPage: React.FC = () => {
         <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
           {book.pages.length > 0 && (
-            <SpreadViewerCanvas
-              pages={book.pages}
-              sidePanelWidth={sidePanelWidth}
-              pagesPanelWidth={pagesPanelWidth}
-            />
+            <CanvasProvider>
+              <SpreadViewerCanvas
+                pageId={pageId}
+                pages={book.pages}
+                sidePanelWidth={sidePanelWidth}
+                pagesPanelWidth={pagesPanelWidth}
+              />
+            </CanvasProvider>
           )}
           <SpreadToolbar />
         </main>
         <PagesPanel
           ref={pagesPanelRef}
-          className="w-32 bgred500"
+          className="w-32"
           pages={book.pages}
           addPageButtonClick={() => {}}
         ></PagesPanel>

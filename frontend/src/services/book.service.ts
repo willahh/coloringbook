@@ -57,10 +57,17 @@ export class BookService {
     }
   }
 
+  static getFirstPageId(pages: Page[]): number {
+    return pages[0].pageId;
+  }
+
   static getPageFromPageId(pages: Page[], pageId: number): Page {
     const flatIndex = pages.findIndex((page) => {
       return page?.pageId === pageId;
     });
+    if (flatIndex === -1) {
+      console.error(`Cannot find page index. pageId: ${pageId}`);
+    }
     const page = pages[flatIndex];
     return page;
   }

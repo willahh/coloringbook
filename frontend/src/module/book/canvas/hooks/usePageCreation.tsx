@@ -1,7 +1,7 @@
 import { Page } from '@/types/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { ElementFactory } from '../canvas/element/ElementFactory';
+import { ElementFactory } from '../element/ElementFactory';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,
@@ -57,7 +57,7 @@ export const usePageCreation = (
               offsetY: 2,
             }),
           });
-          console.log('#0 add page to canvas: ', page.pageNumber);
+          console.log('#3.1 add page to canvas: ', page.pageNumber);
           canvas.add(rect);
 
           // Create objects

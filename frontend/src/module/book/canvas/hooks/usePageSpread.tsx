@@ -9,16 +9,23 @@ export const usePageSpread = (
     pageId?: string;
   }
 ) => {
-  const currentPageId = Number(pageParams.pageId) || 0;
+  const pageId =
+    Number(pageParams.pageId) || BookService.getFirstPageId(pages);
+
   let useSpread = false; // Display 2 or more pages per spread
 
   const spreadPages = React.useMemo(() => {
     if (useSpread) {
-      return BookService.getSpreadForPage(pages, currentPageId);
+      return BookService.getSpreadForPage(pages, pageId);
     } else {
-      return [BookService.getPageFromPageId(pages, currentPageId)];
+      const page = BookService.getPageFromPageId(pages, pageId);
+      if (page) {
+        return [page];
+      } else {
+        return [];
+      }
     }
-  }, [pages, currentPageId]);
+  }, [pages, pageId]);
 
   return { spreadPages };
 };
