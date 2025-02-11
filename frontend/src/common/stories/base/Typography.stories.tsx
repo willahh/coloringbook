@@ -111,7 +111,6 @@ const ContentHtml = ({ className }: { className?: string }) => {
 export const Typographie = () => {
   // const isDarkMode = useDarkMode();
   // const themeColor = isDarkMode ? 'dark' : '';
-  // console.log('themeColor', themeColor)
   return (
     // <div className={`${themeColor} overflow-y-scroll`}>
     <div

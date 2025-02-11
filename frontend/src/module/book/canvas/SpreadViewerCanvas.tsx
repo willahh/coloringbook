@@ -133,35 +133,35 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   /**
    * Canvas position and scale
    */
-  useEffect(() => {
-    if (fabricCanvasRef.current) {
-      // const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
-      //   canvasSize,
-      //   spreadSize
-      // );
+  // useEffect(() => {
+  //   if (fabricCanvasRef.current) {
+  //     // const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
+  //     //   canvasSize,
+  //     //   spreadSize
+  //     // );
 
-      // const x = position.x;
-      // const y = position.y;
-      // const scaleX = scale.scaleX;
-      // const scaleY = scale.scaleY;
+  //     // const x = position.x;
+  //     // const y = position.y;
+  //     // const scaleX = scale.scaleX;
+  //     // const scaleY = scale.scaleY;
 
-      const x = viewportTransform[4];
-      const y = viewportTransform[5];
-      // const scaleX = viewportTransform[0];
-      // const scaleY = viewportTransform[3];
-      // setPosition({ x: vpt[4], y: vpt[5] });
-      // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
+  //     const x = viewportTransform[4];
+  //     const y = viewportTransform[5];
+  //     // const scaleX = viewportTransform[0];
+  //     // const scaleY = viewportTransform[3];
+  //     // setPosition({ x: vpt[4], y: vpt[5] });
+  //     // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
 
-      console.log('#10 useEffect scale:', scale);
-      fabricCanvasRef.current.lastPosX = x;
-      fabricCanvasRef.current.lastPosY = y;
-      // fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
-      console.log('#10 assign viewportTransform', viewportTransform);
-      // fabricCanvasRef.current.viewportTransform = viewportTransform;
+  //     console.log('#11 useEffect scale:', scale);
+  //     fabricCanvasRef.current.lastPosX = x;
+  //     fabricCanvasRef.current.lastPosY = y;
+  //     // fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
+  //     console.log('#10 assign viewportTransform', viewportTransform);
+  //     // fabricCanvasRef.current.viewportTransform = viewportTransform;
 
-      // canvasService.calculateCenteredSpread();
-    }
-  }, [position, scale]);
+  //     // canvasService.calculateCenteredSpread();
+  //   }
+  // }, [position, scale]);
 
   /**
    * Canvas position and scale
@@ -185,7 +185,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   // }, [pageId]);
 
   /**
-   * When the page has changed, we center the pages in the canvas
+   * Center the pages within the canvas when the page changes.
+   * Dependency array :
+   *  - spreadSize: Updated after pages and objects are drawn by usePageCreation
+   *  - pageId: Triggered when a page changes
    */
   useEffect(() => {
     if (fabricCanvasRef.current) {
@@ -195,9 +198,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         spreadSize
       );
 
-      console.log('#10 scaleX', scaleX);
-      console.log('#10 scaleY', scaleY);
-
       canvasService.applyViewportTransform(
         fabricCanvasRef.current,
         x,
@@ -206,7 +206,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         scaleY
       );
     }
-  }, [pageId]);
+  }, [spreadSize, pageId]);
 
   return (
     <div ref={containerRef} className="relative flex-1">

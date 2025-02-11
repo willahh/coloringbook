@@ -248,7 +248,6 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                   onFocus={() => console.log('focus')}
                   tabIndex={0}
                   onChange={(e) => {
-                    console.log('onChange', e.target.files);
                     setCoverImage(e.target.files?.[0] || null);
                   }}
                   // className="hidden"

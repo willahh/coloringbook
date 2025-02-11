@@ -34,7 +34,6 @@ export class Circle implements DrawableElement {
   }
 
   draw(canvas: fabric.Canvas): fabric.Object {
-    console.log('draw', canvas);
     // canvas.add(this.circle);
     return this.circle;
   }

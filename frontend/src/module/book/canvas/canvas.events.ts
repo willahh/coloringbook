@@ -20,13 +20,10 @@ export const handleMouseWheel =
   (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
     let zoom = canvas.getZoom();
-    console.log('#10 canvas.getZoom()', canvas.getZoom());
     zoom *= 0.988 ** delta;
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
-    console.log('#10 zoom', zoom);
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
-    console.log('#10 canvas.viewportTransform', canvas.viewportTransform);
     // const scaleX = canvas.viewportTransform[0];
     // const scaleY = canvas.viewportTransform[3];
     // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
@@ -34,7 +31,6 @@ export const handleMouseWheel =
 
     
     setTimeout(() => {
-      console.log(`#10 setViewportTransform: ${[...canvas.viewportTransform]}`);
       setViewportTransform([...canvas.viewportTransform]);
       // setPosition({ x: vpt[4], y: vpt[5] });
       // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
@@ -130,7 +126,6 @@ export const handleMouseUp =
     canvas.defaultCursor = 'default';
 
     if (canvas.lastPosX && canvas.lastPosY) {
-      console.log(`#10 setViewportTransform: ${canvas.viewportTransform}`);
       setViewportTransform([...canvas.viewportTransform]);
       // if (setPosition) {
       //   console.log('#3.1 call setPosition');

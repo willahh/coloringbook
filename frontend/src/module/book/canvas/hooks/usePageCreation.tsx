@@ -57,7 +57,6 @@ export const usePageCreation = (
               offsetY: 2,
             }),
           });
-          console.log('#3.1 add page to canvas: ', page.pageNumber);
           canvas.add(rect);
 
           // Create objects
@@ -84,7 +83,6 @@ export const usePageCreation = (
           top: -(canvasBorder / 2),
         });
         canvas.clipPath = mask;
-        console.log('#3 setSpreadSize', newSpreadSize);
         setSpreadSize(newSpreadSize);
       }
     }

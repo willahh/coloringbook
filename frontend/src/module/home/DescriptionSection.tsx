@@ -26,7 +26,6 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
-  console.log('#4 books.length', books.length);
   return (
     <motion.div
       initial={isVisible ? hiddenStyle : visibleStyle}

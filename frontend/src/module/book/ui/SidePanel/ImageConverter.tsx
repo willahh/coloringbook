@@ -39,7 +39,6 @@ const ImageConverter: React.FC = () => {
 
       const svg = await fetch(response.data.svgPath).then((res) => res.text());
       setConvertedImage(svg);
-      console.log('#3 call setRefreshGraphics');
       // setRefreshGraphics(true);
     } catch (error) {
       console.error('Conversion error:', error);

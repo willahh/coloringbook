@@ -16,11 +16,9 @@ import { useCanvasContext } from './useCanvasContext';
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   const { position, scale, setPosition, setScale, setViewportTransform } =
     useCanvasContext();
-  console.log('#10 useEventHandlers useCanvasContext - scale ', scale);
 
   useEffect(() => {
     if (canvas) {
-      console.log('#5 add event handlers setPosition: ', setPosition);
       const eventHandlers = {
         'mouse:wheel': handleMouseWheel(
           canvas,

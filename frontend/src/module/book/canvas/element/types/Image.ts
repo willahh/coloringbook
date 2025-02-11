@@ -29,20 +29,16 @@ export class Image implements DrawableElement {
     relativeW: number,
     relativeH: number
   ): Promise<fabric.FabricObject> {
-    console.log('#3 createImage', obj);
     // const url = `${getMediaUrl()}/${obj.attr.src}`;
     // const url = 'https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/atom.svg';
     // const url = 'https://icon-icons.com/icons2/265/PNG/512/JPG_29711.png';
 
     // const url = 'http://localhost:5173/assets/SVG/MesaDeTrabajo.svg';
     const url = 'http://localhost:5173/book_covers/5.jpg';
-    console.log('url:', url);
 
     const img = await fabric.FabricImage.fromURL(url, {
       crossOrigin: 'anonymous',
     });
-    console.log('#3 obj.y ', obj.y);
-    console.log('#3 img', img);
     return img.set({
       scaleX: 2,
       cropX: 2,

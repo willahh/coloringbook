@@ -33,19 +33,10 @@ const BookPage: React.FC = () => {
 
   useEffect(() => {
     const updateWidths = () => {
-      console.log('#1 updateWidths');
       if (sidePanelRef.current) {
-        console.log(
-          '#1 => setSidePanelWidth',
-          sidePanelRef.current.offsetWidth
-        );
         setSidePanelWidth(sidePanelRef.current.offsetWidth);
       }
       if (pagesPanelRef.current) {
-        console.log(
-          '#1.1 => setPagesPanelWidth',
-          pagesPanelRef.current.offsetWidth
-        );
         setPagesPanelWidth(pagesPanelRef.current.offsetWidth);
       }
     };

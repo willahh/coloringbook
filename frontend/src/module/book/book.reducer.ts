@@ -106,11 +106,9 @@ const bookSlice = createSlice({
     builder.addCase(
       bookActions.AddGraphicAssetToPageAction.fulfilled,
       (state, { payload: { element, pageId } }) => {
-        console.log('#5 AddGraphicAssetToPageAction');
         const pageIndex = state.book.pages.findIndex(
           (p) => p.pageId === pageId
         );
-        console.log('#5 pageIndex', pageIndex);
 
         if (pageIndex !== -1) {
           // Utilisez l'opérateur spread (...) pour créer une nouvelle copie de l'array et de l'objet page
