@@ -56,7 +56,7 @@ const BookPage: React.FC = () => {
   return (
     <>
       <Layout
-        className={`w-full flex`}
+        className={`w-full flex dark:bg-gray-700 bg-primary-400`}
         header={
           <BookHeader
             book={book}

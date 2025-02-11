@@ -10,7 +10,7 @@ import { GridDebug, InterfaceControls } from '@components/Debug';
  * @property {React.ReactNode} [children] - Optional children elements to be rendered within the layout.
  * @property {React.ReactNode} [header] - Optional custom header content to be displayed in the layout.
  */
-interface LayoutProps {
+interface LayoutProps extends React.HTMLAttributes<LayoutProps> {
   className?: string;
   aside?: React.ReactNode;
   children?: React.ReactNode;
@@ -32,7 +32,8 @@ const Layout: React.FC<LayoutProps> = ({
         id="focus-trap"
         tabIndex={0}
         aria-hidden="true"
-        className="absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10 dark:text-white focus:border focus:border-black dark:focus:border-white"
+        className={`absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10
+         dark:text-white focus:border focus:border-black dark:focus:border-white`}
       ></div>
 
       <InterfaceControls />

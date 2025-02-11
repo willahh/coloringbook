@@ -34,19 +34,23 @@ const LoadingIcon = (
 const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   return (
-    <header
-      className={`px-6 h-10 xl:h-20 flex items-center justify-end border-t border-primary-100 dark:border-primary-900 
-        gap-6
-        ${className} bg-primary-50 dark:bg-primary-950 z-20`}
-    >
-      <div className="flex-1">{children}</div>
-      {isLoading && LoadingIcon}
-      {appearance === 'dark' ? (
-        <Logo className="w-24 xl:w-36" />
-      ) : (
-        <LogoLight className="w-24 xl:w-36" />
-      )}
-    </header>
+    <div className="relative h-0">
+      <header
+        className={`relative h-32 -top-16 rounded-4xl z-20 ${className} 
+         bg-primary-50 dark:bg-primary-950 border-t border-primary-100 dark:border-primary-900 
+        `}
+      >
+        <div className="relative h-16 px-6 flex items-center justify-end gap-6">
+          <div className="flex-1">{children}</div>
+          {isLoading && LoadingIcon}
+          {appearance === 'dark' ? (
+            <Logo className="w-24 xl:w-36" />
+          ) : (
+            <LogoLight className="w-24 xl:w-36" />
+          )}
+        </div>
+      </header>
+    </div>
   );
 };
 

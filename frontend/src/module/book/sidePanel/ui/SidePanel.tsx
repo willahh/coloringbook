@@ -116,18 +116,19 @@ const SidePanel: React.FC<{
       <div data-id="sp-inner" className="relative w-full h-full flex">
         <div
           data-id="sp-content"
-          className={`relative flex-1 overflow-hidden
+          className={`relative flex-1 overflow-hidden rounded-tl-4xl
            bg-primary-50 dark:bg-primary-700
            border-primary-100 dark:border-primary-900`}
           style={{
             width: isOpen ? 400 : 0,
-            height: `calc(100vh - ${headerHeight}px)`,
+            // height: `calc(100vh - ${headerHeight}px)`,
+            height: `calc(100vh)`,
           }}
         >
-          <>
+          <div className="p-4">
             {activeTab == TabType.Personal && <UserContent />}
             {activeTab == TabType.Element && <ElementContent />}
-          </>
+          </div>
         </div>
         <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
         {/* <div

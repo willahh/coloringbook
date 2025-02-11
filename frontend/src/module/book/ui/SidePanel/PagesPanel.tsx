@@ -207,10 +207,11 @@ export const PagesPanel: React.FC<{
 
   return (
     <div
+      data-id="pages-panel"
       ref={ref}
       className={`${
         className || ''
-      } flex flex-col  p-4 pr-0 gap-4 overflow-y-auto`}
+      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto  bg-primary-50 dark:bg-primary-950`}
     >
       <Pages className="pr-4" pages={pages} />
       <div className="flex justify-center pt-4">

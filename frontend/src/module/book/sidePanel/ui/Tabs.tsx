@@ -28,6 +28,7 @@ const Tabs: React.FC<{
 
            hover:bg-primary-50  dark:hover:bg-primary-700
            last:border-b-0 first:rounded-tr-xl 
+
            
            ${
              //  tab.active
@@ -56,6 +57,7 @@ const Tabs: React.FC<{
             </div>
           </button>
         ))}
+        <div className='h-16 bg-primary-100 dark:bg-primary-900  '></div>
       </div>
     </div>
   );
