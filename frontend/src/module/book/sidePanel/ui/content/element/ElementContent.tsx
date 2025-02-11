@@ -28,7 +28,7 @@ const ElementContent: React.FC = () => {
       </div>
 
       <div>
-        <div>Elements perso</div>
+        <div>Elements</div>
       </div>
     </div>
   );

@@ -1,30 +1,18 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
-  ArrowDownOnSquareStackIcon,
   PaintBrushIcon,
   RectangleGroupIcon,
   UserIcon,
-  // EllipsisVerticalIcon,
 } from '@heroicons/react/24/outline';
 
 import TextIcon from '@assets/icons/icon_text.svg?react';
-// import SidebarCorner from '@asùsets/sidebar-corner.svg?react';
-import { ToolbarButton } from '../../ui/ToolbarButton';
-import GraphicAssets from './../graphicAssets/GraphicAssets';
-import { /*initialState,*/ TabType, Tab } from './../sidepanel.types';
+import { TabType, Tab } from './../sidepanel.types';
 import Tabs from './Tabs';
 import UserContent from './content/user/UserContent';
 import ElementContent from './content/element/ElementContent';
 
 const tabs: Tab[] = [
-  {
-    id: TabType.Personal,
-    label: 'Personnel',
-    description: 'Charger vos images',
-    icon: UserIcon,
-    active: false,
-    content: <UserContent />,
-  },
+ 
   {
     id: TabType.Element,
     label: 'Eléments',
@@ -54,6 +42,14 @@ const tabs: Tab[] = [
     content: <div>Fonds</div>,
   },
   {
+    id: TabType.Personal,
+    label: 'Personnel',
+    description: 'Charger vos images',
+    icon: UserIcon,
+    active: false,
+    content: <UserContent />,
+  },
+  {
     id: TabType.Parameters,
     label: 'Paramètres ',
     description: 'Paramètres du livre',
@@ -70,7 +66,6 @@ const SidePanel: React.FC<{
 }> = (/*{ className, children }*/ { ref, setSidePanelWidth }) => {
   const [activeTab, setActiveTab] = useState<TabType>(TabType.Element);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const headerHeight = 70;
   const isAnimatingRef = useRef(false);
 
   const handleTabClick = (tab: TabType) => {

@@ -13,13 +13,15 @@ import { useContext } from 'react';
 const BookToolbar: React.FC = () => {
   const { canvas } = useContext(BookContext);
   const iconProps = {
-    className: 'w-12 h-12',
+    className: 'w-8 h-8',
     strokeWidth: 0.5,
   };
 
   return (
     <div>
-      <div className="flex flex-col relative h-full z-20 justify-center gap-4 bg-primary-50 dark:bg-primary-950 ">
+      <div className={`flex flex-col relative h-full z-20  justify-center gap-4
+         bg-primary-50 dark:bg-primary-950
+         border-r border-primary-100 dark:border-primary-900 `}>
         <div>
           <ToolbarButton tooltipContent="Save">
             <ArrowDownOnSquareStackIcon {...iconProps} />
