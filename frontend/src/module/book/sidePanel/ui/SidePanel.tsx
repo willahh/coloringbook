@@ -10,6 +10,7 @@ import { TabType, Tab } from './../sidepanel.types';
 import Tabs from './Tabs';
 import UserContent from './content/user/UserContent';
 import ElementContent from './content/element/ElementContent';
+import useLocalStorage from '@/common/hooks/useLocalStorage';
 
 const tabs: Tab[] = [
   {
@@ -63,17 +64,25 @@ const SidePanel: React.FC<{
   ref: React.RefObject<HTMLElement>;
   setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
 }> = (/*{ className, children }*/ { ref, setSidePanelWidth }) => {
-  const [activeTab, setActiveTab] = useState<TabType>(TabType.Element);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useLocalStorage(
+    'selectedTab',
+    TabType.Element
+  );
+  const [isSidebarOpen, setIsSidebarOpen] = useLocalStorage(
+    'sidebarOpen',
+    true
+  );
+
+  // const [isOpen, setIsOpen] = useState<boolean>(false);
   const isAnimatingRef = useRef(false);
 
   const handleTabClick = (tab: TabType) => {
     if (activeTab === tab) {
-      setIsOpen(!isOpen);
+      setIsSidebarOpen(!isSidebarOpen);
     } else {
       setActiveTab(tab);
-      if (!isOpen) {
-        setIsOpen(true);
+      if (!isSidebarOpen) {
+        setIsSidebarOpen(true);
       }
     }
   };
@@ -103,7 +112,7 @@ const SidePanel: React.FC<{
       data-id="sidepanel"
       className={`h-full z-10 transition-all`}
       style={{
-        width: isOpen ? width : 0,
+        width: isSidebarOpen ? width : 0,
         filter: 'drop-shadow(0px 10px 8px rgba(0,0,0,0.3))',
       }}
     >
@@ -114,7 +123,7 @@ const SidePanel: React.FC<{
            bg-primary-50 dark:bg-primary-700
            border-primary-100 dark:border-primary-900`}
           style={{
-            width: isOpen ? width : 0,
+            width: isSidebarOpen ? width : 0,
             // height: `calc(100vh - ${headerHeight}px)`,
             height: `calc(100vh)`,
           }}
