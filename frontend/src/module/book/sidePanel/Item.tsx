@@ -7,10 +7,11 @@ const Item: React.FC<{
 }> = ({ className, children, tooltipContent }) => (
   <button
     data-name="item"
-    className={`rounded-lg border-2 border-primary-500
+    className={`rounded-lg transition-all cursor-pointer duration-300
+      border border-primary-300 dark:border-primary-600
     hover:border-secondary-500
     focus:outline-0 focus:border-secondary-500 
-    transition-all 
+    
     ${className || ''}`}
   >
     {tooltipContent ? (
