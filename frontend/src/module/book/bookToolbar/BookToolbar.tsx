@@ -5,7 +5,7 @@ import {
   DocumentArrowUpIcon,
   PrinterIcon,
 } from '@heroicons/react/24/outline';
-import { ToolbarButton } from '../ui/ToolbarButton';
+import { ToolbarButton } from '../components/ToolbarButton';
 import { bookService } from '@/services/book.service';
 import { BookContext } from '../book.context';
 import { useContext } from 'react';

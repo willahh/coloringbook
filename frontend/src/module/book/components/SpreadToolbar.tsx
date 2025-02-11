@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import * as Slider from '@radix-ui/react-slider';
+import * as Slider from '@radix-components/react-slider';
 
 import {
   ArrowDownOnSquareStackIcon,

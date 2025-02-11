@@ -1,7 +1,7 @@
-import { ToolbarButton } from '@/module/book/ui/ToolbarButton';
+import { ToolbarButton } from '@/module/book/components/ToolbarButton';
 import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
 
-import Item from '../../../Item';
+import Item from '../Item';
 import { lazy, Suspense } from 'react';
 import Loader from '@/components/Loader';
 const svgs = [

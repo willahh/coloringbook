@@ -1,6 +1,6 @@
 import React from 'react';
 import { PanelHeader } from './PanelHeader';
-import * as HoverCard from '@radix-ui/react-hover-card';
+import * as HoverCard from '@radix-components/react-hover-card';
 
 export const HoverCardDemo = () => (
   <HoverCard.Root>

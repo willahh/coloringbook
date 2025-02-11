@@ -1,6 +1,6 @@
-import { ToolbarButton } from '@/module/book/ui/ToolbarButton';
+import { ToolbarButton } from '@/module/book/components/ToolbarButton';
 import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
-import GraphicAssets from '../../../graphicAssets/GraphicAssets';
+import GraphicAssets from './../graphicAssets/GraphicAssets';
 
 const UserContent: React.FC = () => {
   return (

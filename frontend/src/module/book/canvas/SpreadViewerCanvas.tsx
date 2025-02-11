@@ -23,14 +23,7 @@
  * @see {@link https://lodash.com/docs/4.17.15#debounce|lodash.debounce}
  */
 
-import React, {
-  useRef,
-  useEffect,
-  useCallback,
-  useContext,
-  useLayoutEffect,
-  // useState,
-} from 'react';
+import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
 import { BookContext } from '../book.context';
 import { Page } from '@/types/book';
@@ -38,11 +31,9 @@ import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
 import { usePageSpread } from './hooks/usePageSpread';
 import { usePageCreation } from './hooks/usePageCreation';
-// import { BookService } from '@/services/book.service';
-// import { CanvasProvider } from './canvas.context';
 import canvasService from '@/services/canvas.service';
 import { useCanvasContext } from './hooks/useCanvasContext';
-import { PagesNavigation } from '../ui/PagesNavigation';
+import { PagesNavigation } from '../components/PagesNavigation';
 interface SpreadCanvasProps {
   pageId: number;
   width?: number;
@@ -58,7 +49,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
-  const { position, scale, viewportTransform } = useCanvasContext();
+  // const { position, scale, viewportTransform } = useCanvasContext();
 
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

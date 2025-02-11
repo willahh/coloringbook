@@ -6,10 +6,10 @@ import {
 } from '@heroicons/react/24/outline';
 
 import TextIcon from '@assets/icons/icon_text.svg?react';
-import { TabType, Tab } from './../sidepanel.types';
+import { TabType, Tab } from '../sidepanel.types';
 import Tabs from './Tabs';
-import UserContent from './content/user/UserContent';
-import ElementContent from './content/element/ElementContent';
+import UserContent from '../user/UserContent';
+import ElementContent from '../element/ElementContent';
 import useLocalStorage from '@/common/hooks/useLocalStorage';
 
 const tabs: Tab[] = [

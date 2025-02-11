@@ -16,7 +16,7 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import { useToast } from '@/common/hooks/useToast';
-import { ToolbarButton } from '../book/ui/ToolbarButton';
+import { ToolbarButton } from '../book/components/ToolbarButton';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;

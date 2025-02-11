@@ -12,7 +12,7 @@ export const usePageSpread = (
   const pageId =
     Number(pageParams.pageId) || BookService.getFirstPageId(pages);
 
-  let useSpread = false; // Display 2 or more pages per spread
+  const useSpread = false; // Display 2 or more pages per spread
 
   const spreadPages = React.useMemo(() => {
     if (useSpread) {
