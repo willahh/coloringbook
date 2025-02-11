@@ -75,8 +75,8 @@ const ElementContent: React.FC = () => {
         </ToolbarButton>
       </div>
       <div className="@container">
-        <div>Elements</div>
-        <div className="grid grid-cols-1 @4xs:grid-cols-3 gap-4">
+        <div>Ressources graphiques</div>
+        <div className="grid grid-cols-1 @4xs:grid-cols-2 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>
               <ElementItem>
