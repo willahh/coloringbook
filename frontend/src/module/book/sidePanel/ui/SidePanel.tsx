@@ -12,7 +12,6 @@ import UserContent from './content/user/UserContent';
 import ElementContent from './content/element/ElementContent';
 
 const tabs: Tab[] = [
- 
   {
     id: TabType.Element,
     label: 'Eléments',
@@ -97,14 +96,14 @@ const SidePanel: React.FC<{
       };
     }
   }, [ref.current]);
-
+  const width = 280;
   return (
     <aside
       ref={ref}
       data-id="sidepanel"
       className={`h-full z-10 transition-all`}
       style={{
-        width: isOpen ? 400 : 0,
+        width: isOpen ? width : 0,
         filter: 'drop-shadow(0px 10px 8px rgba(0,0,0,0.3))',
       }}
     >
@@ -115,7 +114,7 @@ const SidePanel: React.FC<{
            bg-primary-50 dark:bg-primary-700
            border-primary-100 dark:border-primary-900`}
           style={{
-            width: isOpen ? 400 : 0,
+            width: isOpen ? width : 0,
             // height: `calc(100vh - ${headerHeight}px)`,
             height: `calc(100vh)`,
           }}
