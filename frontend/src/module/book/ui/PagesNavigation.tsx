@@ -47,9 +47,9 @@ export const PagesNavigation: React.FC = () => {
   }, [bookId, isFirstPage, isLastPage, previousPageId]);
 
   return (
-    <div>
+    <div data-id="pages-navigation">
       {!isFirstPage && (
-        <div className="absolute left-0 flex items-center justify-between h-full p-8 z-10">
+        <div className="absolute left-20 flex items-center justify-between h-full p-8 z-10">
           <Tooltip content="Page précédente">
             <Link
               to={`/book/${bookId}/pages/${previousPageId}`}
