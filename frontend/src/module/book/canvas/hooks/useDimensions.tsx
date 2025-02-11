@@ -18,7 +18,13 @@ export const useDimensions = (
         const width = window.innerWidth - sidePanelWidth - pagesPanelWidth;
         setDimensions({
           width: width,
-          height: viewportHeight - 150,
+
+          /**
+           * height: viewportHeight - 64 (height of the bottom toolbar).
+           * The height is converted into an offset within the canvas to achieve
+           * the toolbar card overlay effect.
+           */
+          height: viewportHeight,
         });
       }
     }, 50),

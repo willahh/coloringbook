@@ -13,6 +13,7 @@ import * as bookActions from './book.actions';
 import { selectBook } from './book.state';
 import { PagesPanel } from './ui/SidePanel/PagesPanel';
 import { CanvasProvider } from './canvas/canvas.context';
+import BookToolbar from './bookToolbar/BookToolbar';
 
 const BookPage: React.FC = () => {
   let { bookId = 0, pageId = 1 } = useParams<{
@@ -68,6 +69,13 @@ const BookPage: React.FC = () => {
           />
         }
       >
+        <BookToolbar />
+        <PagesPanel
+          ref={pagesPanelRef}
+          className="w-16 xl:w-18 border-r border-primary-200 dark:border-primary-800"
+          pages={book.pages}
+          addPageButtonClick={() => {}}
+        ></PagesPanel>
         <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
           {book.pages.length > 0 && (
@@ -80,14 +88,8 @@ const BookPage: React.FC = () => {
               />
             </CanvasProvider>
           )}
-          <SpreadToolbar />
+          {/* <SpreadToolbar /> */}
         </main>
-        <PagesPanel
-          ref={pagesPanelRef}
-          className="w-24"
-          pages={book.pages}
-          addPageButtonClick={() => {}}
-        ></PagesPanel>
       </Layout>
       <UnsavedChangesToast
         isModified={!areLocalUpdatesSaved}

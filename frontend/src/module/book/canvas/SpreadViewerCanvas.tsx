@@ -192,7 +192,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
    */
   useEffect(() => {
     if (fabricCanvasRef.current) {
-      console.log('#10 page change, center spread');
       const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
         canvasSize,
         spreadSize

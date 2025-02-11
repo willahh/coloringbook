@@ -32,7 +32,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{
-        duration: 0.1,
+        duration: 0.3,
         type: 'tween',
       }}
     >
@@ -211,9 +211,12 @@ export const PagesPanel: React.FC<{
       ref={ref}
       className={`${
         className || ''
-      } flex flex-col p-4 pr-0 gap-4 overflow-y-auto  bg-primary-50 dark:bg-primary-950`}
+      } flex flex-col gap-4 overflow-y-auto 
+       z-20
+      
+      bg-primary-50 dark:bg-primary-950`}
     >
-      <Pages className="pr-4" pages={pages} />
+      <Pages className="p-2" pages={pages} />
       <div className="flex justify-center pt-4">
         <ToolbarButton
           className="!rounded-full"

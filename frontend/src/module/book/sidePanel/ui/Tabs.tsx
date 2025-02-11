@@ -11,7 +11,7 @@ const Tabs: React.FC<{
     <div
       data-id="sp-tabs"
       className={`fill-primary-black dark:fill-primary-200
-      absolute bottom-0 -right-24`}
+      absolute bottom-0 -right-18`}
     >
       <div data-id="sp-tabs-items">
         {tabs.map((tab, index) => (
@@ -19,10 +19,10 @@ const Tabs: React.FC<{
             key={`tab-${index}`}
             data-id={tab.id}
             onClick={() => onTabClick(tab.id)}
-            className={`relative flex justify-center items-center w-24 h-24
+            className={`relative flex justify-center items-center w-18 h-18
            
            group
-              bg-primary-100 dark:bg-primary-900  
+          bg-primary-100 dark:bg-primary-900  
            border-l border-primary-200 dark:border-primary-800
            border-b 
 
@@ -53,11 +53,11 @@ const Tabs: React.FC<{
 
             <div className="flex flex-col items-center gap-1 ">
               <tab.icon className="w-6 h-6" />
-              <div>{tab.label}</div>
+              <div className="text-xs">{tab.label}</div>
             </div>
           </button>
         ))}
-        <div className='h-16 bg-primary-100 dark:bg-primary-900  '></div>
+        <div className="h-16 bg-primary-100 dark:bg-primary-900  "></div>
       </div>
     </div>
   );

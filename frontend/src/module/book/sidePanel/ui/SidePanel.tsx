@@ -116,7 +116,7 @@ const SidePanel: React.FC<{
       <div data-id="sp-inner" className="relative w-full h-full flex">
         <div
           data-id="sp-content"
-          className={`relative flex-1 overflow-hidden rounded-tl-4xl
+          className={`relative flex-1 overflow-hidden 
            bg-primary-50 dark:bg-primary-700
            border-primary-100 dark:border-primary-900`}
           style={{
@@ -131,13 +131,6 @@ const SidePanel: React.FC<{
           </div>
         </div>
         <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />
-        {/* <div
-            className="relative w-10 h-5 border-l border-l-primary-500"
-            style={{ left: '-1Px', top: '-1px' }}
-          >
-            <SidebarCorner className="fill-primary-50 dark:fill-primary-950" />
-          </div>
-        </div> */}
       </div>
     </aside>
   );
