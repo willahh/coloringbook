@@ -40,9 +40,9 @@ const slice = createSlice({
     // fill in primary logic here
   },
   extraReducers: (builder) => {
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * BOOKS_FETCH_BOOK_BY_ID
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * fetchBookByIdAction
+     */
     builder.addCase(bookActions.fetchBookByIdAction.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -57,9 +57,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * BOOKS_SAVE_BOOK
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * saveBookAction
+     */
     builder.addCase(bookActions.saveBookAction.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -75,9 +75,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * BOOKS_UPDATE_BOOK
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * updateBookAction
+     */
     builder.addCase(
       bookActions.updateBookAction,
       (state, { payload: { book } }) => {
@@ -85,9 +85,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * BOOKS_EDIT_BOOK_NAME
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * editBookNameAction
+     */
     builder.addCase(bookActions.editBookNameAction.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -101,9 +101,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * PAGES_ADD_PAGE
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * addPageAction
+     */
     builder.addCase(
       bookActions.addPageAction,
       (state, { payload: { page } }) => {
@@ -112,9 +112,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * PAGES_DELETE_PAGE
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * deletePageAction
+     */
     builder.addCase(
       bookActions.deletePageAction,
       (state, { payload: { pageId } }) => {
@@ -125,9 +125,9 @@ const slice = createSlice({
       }
     );
 
-    /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-     * PAGES_ADD_GRAPHIC_ASSET_TO_PAGE
-     *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+    /**
+     * AddGraphicAssetToPageAction
+     */
     builder.addCase(
       bookActions.AddGraphicAssetToPageAction.pending,
       (state) => {

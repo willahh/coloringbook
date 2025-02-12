@@ -4,11 +4,10 @@ import { BookService } from '@/services/book.service';
 import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
-// import { PageService } from '@/services/page.service';
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * BOOKS_FETCH_BOOK_BY_ID
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * fetchBookByIdAction
+ */
 export interface FetchBookByIdActionPayload {
   bookId: number;
 }
@@ -26,9 +25,9 @@ export const fetchBookByIdAction = createAsyncThunk<
   return { book: newBook, isModified };
 });
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * BOOKS_SAVE_BOOK
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * saveBookAction
+ */
 export interface SaveBookActionPayload {
   bookId: number;
   book: Book;
@@ -42,9 +41,9 @@ export const saveBookAction = createAsyncThunk<Book, SaveBookActionPayload>(
   }
 );
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * BOOKS_EDIT_BOOK_NAME
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * editBookNameAction
+ */
 export interface EditBookNamePayload {
   bookId: number;
   bookName: string;
@@ -57,9 +56,9 @@ export const editBookNameAction = createAsyncThunk<Book, EditBookNamePayload>(
   }
 );
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * BOOKS_UPDATE_BOOK
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * updateBookAction
+ */
 export interface UpdateBookPayload {
   bookId: number;
   book: Book;
@@ -67,26 +66,26 @@ export interface UpdateBookPayload {
 export const updateBookAction =
   createAction<UpdateBookPayload>('BOOKS/UPDATE_BOOK');
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * PAGES_ADD_PAGE
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * addPageAction
+ */
 export interface AddPagePayload {
   page: Page;
 }
 export const addPageAction = createAction<AddPagePayload>('PAGES/ADD_PAGE');
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * PAGES_DELETE_PAGE
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * deletePageAction
+ */
 export interface DeletePagePayload {
   pageId: number;
 }
 export const deletePageAction =
   createAction<DeletePagePayload>('PAGES/DELETE_PAGE');
 
-/*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
- * PAGES_ADD_GRAPHIC_ASSET_TO_PAGE
- *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
+/**
+ * AddGraphicAssetToPageAction
+ */
 export interface AddGraphicAssetToPagePayload {
   graphicAsset: GraphicAsset;
   pageId: number;
