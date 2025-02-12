@@ -7,7 +7,7 @@ import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
-import { useAppDispatch } from '@/common/hooks/useRedux';
+import { useDispatch } from '@/common/store';
 import * as BookActions from '../../Book.actions';
 import { PageService } from '@/services/page.service';
 import { useParams } from 'react-router';
@@ -24,7 +24,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
   page: { pageNumber, pageId, thumbImageData, aspectRatio },
   selected,
 }) => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   return (
     <motion.div
@@ -174,7 +174,7 @@ export const PagesPanel: React.FC<{
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, ref, pages }) => {
   const { pageId } = useParams<{ pageId: string }>();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const panelRef = ref;
 
   useEffect(() => {

@@ -1,5 +1,5 @@
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
-import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
+import { useDispatch, useSelector } from '@/common/store';
 import { selectAllGraphicAssets } from './GraphicAssets.slice';
 import { useEffect } from 'react';
 import * as graphicAssetsAction from './GraphicAssets.actions';
@@ -31,10 +31,10 @@ const Item: React.FC<{ graphicAsset: GraphicAsset }> = ({ graphicAsset }) => (
 );
 
 const GraphicAssets: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const {
     graphicAssets: { graphicAssets },
-  } = useAppSelector(selectAllGraphicAssets);
+  } = useSelector(selectAllGraphicAssets);
 
   useEffect(() => {
     dispatch(graphicAssetsAction.fetchGraphicAssetsAction());

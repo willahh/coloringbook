@@ -1,14 +1,15 @@
+import { useEffect } from 'react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
-import { useAppSelector } from '@/common/hooks/useRedux';
+import { useSelector } from '@/common/store';
 import { selectBook } from '../Book.slice';
-import { useEffect } from 'react';
+
 
 export const PagesNavigation: React.FC = () => {
   const { bookId, pageId } = useParams<{ bookId?: string; pageId?: string }>();
-  const { book } = useAppSelector(selectBook);
+  const { book } = useSelector(selectBook);
   const currentPageId = Number(pageId);
   const pageIds = book.pages.map(({ pageId }) => pageId);
   const currentIndex = pageIds.indexOf(currentPageId);

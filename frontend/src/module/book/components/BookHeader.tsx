@@ -1,7 +1,7 @@
 import BreadCrumb from '@components/BreadCrumb';
 import Header from '@components/Header';
 import InlineEdit from '@components/InlineEdit';
-import { useAppSelector } from '@/common/hooks/useRedux';
+import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
 import { selectIsLoading } from '../Book.slice';
 
@@ -9,7 +9,7 @@ const BookHeader: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
-  const isLoading = useAppSelector(selectIsLoading);
+  const isLoading = useSelector(selectIsLoading);
 
   return (
     <Header isLoading={isLoading}>

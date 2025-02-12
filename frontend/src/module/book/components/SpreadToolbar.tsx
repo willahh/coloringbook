@@ -12,7 +12,7 @@ import {
 import { bookService } from '@/services/book.service';
 import { BookContext } from '../Book.context';
 import { ToolbarButton } from './ToolbarButton';
-import { useAppSelector } from '@/common/hooks/useRedux';
+import { useSelector } from '@/common/store';
 import { selectBook } from '../Book.slice';
 import { useParams } from 'react-router';
 
@@ -27,7 +27,7 @@ export const SpreadToolbar: React.FC<{
 }> = () => {
   const { canvas } = useContext(BookContext);
   // useAppDispatch();
-  const { book } = useAppSelector(selectBook);
+  const { book } = useSelector(selectBook);
   const { pageId } = useParams<{ pageId?: string }>();
   const totalPages = book.pages.length;
   const currentPage = pageId ? parseInt(pageId) : 1;
