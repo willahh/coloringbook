@@ -1,10 +1,10 @@
 import APIService from '@/services/api.service';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { BookService } from '@/services/book.service';
-import { Book, Page, Element } from '@/types/book';
+import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
-import { PageService } from '@/services/page.service';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
+// import { PageService } from '@/services/page.service';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * BOOKS_FETCH_BOOK_BY_ID
@@ -12,14 +12,18 @@ import { PageService } from '@/services/page.service';
 export interface FetchBookByIdActionPayload {
   bookId: number;
 }
+interface FetchBookByIdActionResponse {
+  book: Book;
+  isModified: boolean;
+}
 export const fetchBookByIdAction = createAsyncThunk<
-  Book,
+  FetchBookByIdActionResponse,
   FetchBookByIdActionPayload
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
-  const { book: newBook } = BookService.prepareBookData(book);
+  const { book: newBook, isModified } = BookService.prepareBookData(book);
 
-  return newBook;
+  return { book: newBook, isModified };
 });
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -67,7 +71,6 @@ export const updateBookAction =
  * PAGES_ADD_PAGE
  *–––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––*/
 export interface AddPagePayload {
-  book: Book;
   page: Page;
 }
 export const addPageAction = createAction<AddPagePayload>('PAGES/ADD_PAGE');

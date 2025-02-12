@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import AnimatedText from '@/components/AnimatedText';
+
+import AnimatedText from '@components/AnimatedText';
 import Button from '@components/Button';
 import {
   QueueListIcon,
-  // BookOpenIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import { Tooltip } from '@/components/Tooltip';
-import { Book } from '@/types/book';
+import { Tooltip } from '@components/Tooltip';
+import { Book } from '@apptypes/book';
 
 interface DescriptionSectionProps {
   onClick: () => void;
@@ -26,7 +26,6 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
   const hiddenStyle = { y: -100, opacity: 0, height: 0 };
   const visibleStyle = { y: 0, opacity: 1, height: 'auto' };
   const animateStyle = isVisible ? { ...visibleStyle } : { ...hiddenStyle };
-  console.log('#4 books.length', books.length);
   return (
     <motion.div
       initial={isVisible ? hiddenStyle : visibleStyle}
@@ -62,7 +61,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
                 <Tooltip content="Ajouter un nouveau livre">
                   <div>
                     <Button
-                      autoFocus={true}
+                      // autoFocus={true}
                       onClick={onClick}
                       variant="secondary"
                       className="border-l-0 rounded-tl-none rounded-bl-none"

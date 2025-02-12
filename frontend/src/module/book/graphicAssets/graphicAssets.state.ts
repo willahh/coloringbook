@@ -1,5 +1,5 @@
-import { RootState } from '@/store';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { RootState } from '@/common/store';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
 export enum Mode {
   Default = 'DEFAULT',

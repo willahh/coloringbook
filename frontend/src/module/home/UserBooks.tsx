@@ -1,6 +1,6 @@
 import React from 'react';
-import { Book } from '@/types/book';
-import { BookFormat } from '@/types/book.enum';
+import { Book } from '@apptypes/book';
+import { BookFormat } from '@apptypes/book.enum';
 import { UserBookItem } from './UserBook';
 
 interface UserBooksProps {

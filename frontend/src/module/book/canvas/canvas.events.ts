@@ -1,9 +1,6 @@
 import * as fabric from 'fabric';
-// import { GraphicAsset } from '@/types/graphic-asset.entity';
-// import { Book, Element, Page } from '@/types/book';
-// import { ElementService } from '@/services/element.service';
-// import { PageService } from '@/services/page.service';
-// import { BookAction } from '../book.reducer.ts_';
+// import { Position, Scale } from './canvas.context';
+
 declare module 'fabric' {
   interface Canvas {
     objSelected?: fabric.Object | null;
@@ -13,68 +10,32 @@ declare module 'fabric' {
   }
 }
 
-// export const handleGraphicAssetItemClick = (
-//   // dispatch: React.Dispatch<BookAction>,
-//   asset: GraphicAsset,
-//   book: Book | null,
-//   canvas: fabric.Canvas | null,
-//   // pages: Page[],
-//   pageId: number
-//   // setPages: React.Dispatch<React.SetStateAction<Page[]>>
-//   // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
-// ) => {
-//   const element: Element | null = ElementService.elementFromGraphicAsset(asset);
-//   if (!element || !book || !canvas) return;
-
-//   const updatedBook = ElementService.add(
-//     { ...book, pages: book.pages },
-//     element,
-//     pageId
-//   );
-//   dispatch({ type: 'SET_BOOK', payload: updatedBook }); // Assuming SET_BOOK updates the entire book
-//   dispatch({ type: 'SET_MODIFIED', payload: true });
-
-//   // const updatedBook = ElementService.add({ ...book, pages }, element, pageId);
-//   // setPages(updatedBook.pages);
-//   // setIsModified(true);
-// };
-
-// export const handleRectangleClick = (
-//   // dispatch: React.Dispatch<BookAction>,
-//   canvas: fabric.Canvas | null,
-//   pages: Page[],
-//   pageId: number
-//   // setPages: React.Dispatch<React.SetStateAction<Page[]>>
-//   // setIsModified: React.Dispatch<React.SetStateAction<boolean>>
-// ) => {
-//   console.log('#4 handleRectangleClick');
-//   if (!canvas) {
-//     console.error('!canvas');
-//     return;
-//   }
-
-//   // const pagesNew = PageService.updateThumbImageData(
-//   //   pages,
-//   //   canvas,
-//   //   Number(pageId)
-//   // );
-//   // setPages(pagesNew);
-//   // setIsModified(true);
-//   const pagesNew = PageService.updateThumbImageData(pages, canvas, pageId);
-//   console.log('#4 pagesNew:', pagesNew);
-//   console.log('#4 call dispatch SET_PAGES');
-//   dispatch({ type: 'SET_PAGES', payload: pagesNew });
-//   dispatch({ type: 'SET_MODIFIED', payload: true });
-// };
-
 export const handleMouseWheel =
-  (canvas: fabric.Canvas) => (opt: fabric.TEvent<WheelEvent>) => {
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+  ) =>
+  (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
     let zoom = canvas.getZoom();
     zoom *= 0.988 ** delta;
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
+    // const scaleX = canvas.viewportTransform[0];
+    // const scaleY = canvas.viewportTransform[3];
+    // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
+    // if (setScale) {
+
+    setTimeout(() => {
+      setViewportTransform([...canvas.viewportTransform]);
+      // setPosition({ x: vpt[4], y: vpt[5] });
+      // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
+    }, 1000);
+    // } else {
+    //   console.error('setScale is undefined');
+    // }
+
     opt.e.preventDefault();
     opt.e.stopPropagation();
   };
@@ -139,12 +100,28 @@ export const handleMouseMove =
     }
   };
 
-export const handleMouseUp = (canvas: fabric.Canvas) => () => {
-  canvas.setViewportTransform(canvas.viewportTransform);
-  canvas.isDragging = false;
-  canvas.selection = true;
-  canvas.defaultCursor = 'default';
-};
+export const handleMouseUp =
+  (
+    canvas: fabric.Canvas,
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+  ) =>
+  () => {
+    canvas.setViewportTransform(canvas.viewportTransform);
+    canvas.isDragging = false;
+    canvas.selection = true;
+    canvas.defaultCursor = 'default';
+
+    if (canvas.lastPosX && canvas.lastPosY) {
+      setViewportTransform([...canvas.viewportTransform]);
+      // if (setPosition) {
+      //   console.log('#3.1 call setPosition');
+      //   const vpt = canvas.viewportTransform;
+      //   setPosition({ x: vpt[4], y: vpt[5] });
+      // } else {
+      //   console.error('setPosition is undefined');
+      // }
+    }
+  };
 
 export const handleDocumentKeyDown =
   (canvas: fabric.Canvas) => (evt: { altKey: boolean; code: string }) => {

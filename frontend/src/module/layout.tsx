@@ -1,6 +1,6 @@
 import { motion } from 'motion/react';
-import motionConfig from '@/utils/config.utils';
-import { GridDebug, DebugButton } from '@components/Debug';
+import motionConfig from '@/common/utils/config.utils';
+import { GridDebug, InterfaceControls } from '@components/Debug';
 
 /**
  * Props for the Layout component.
@@ -10,7 +10,7 @@ import { GridDebug, DebugButton } from '@components/Debug';
  * @property {React.ReactNode} [children] - Optional children elements to be rendered within the layout.
  * @property {React.ReactNode} [header] - Optional custom header content to be displayed in the layout.
  */
-interface LayoutProps {
+interface LayoutProps extends React.HTMLAttributes<LayoutProps> {
   className?: string;
   aside?: React.ReactNode;
   children?: React.ReactNode;
@@ -32,10 +32,11 @@ const Layout: React.FC<LayoutProps> = ({
         id="focus-trap"
         tabIndex={0}
         aria-hidden="true"
-        className="absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10 dark:text-white focus:border focus:border-black dark:focus:border-white"
+        className={`absolute top-0 left-0 w-0 h-0 overflow-hidden pointer-events-none  z-10
+         dark:text-white focus:border focus:border-black dark:focus:border-white`}
       ></div>
 
-      <DebugButton />
+      <InterfaceControls />
       {griddDebug && <GridDebug />}
       <div
         data-id="page-layout-container"

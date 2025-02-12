@@ -3,9 +3,10 @@ import { useForm, Controller } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
+
 import Button from '@components/Button';
-import { getBooksUrl } from '@/utils/api';
-import { Book } from '@/types/book';
+import { getBooksUrl } from '@/common/utils/api';
+import { Book } from '@apptypes/book';
 import { TrashIcon } from '@heroicons/react/20/solid';
 
 const formatOptions = [
@@ -17,7 +18,7 @@ const formatOptions = [
 // FIXME: Share with backend
 const bookSchema = z.object({
   name: z.string().min(1, 'Le nom est obligatoire.'),
-  format: z.enum(['carré', 'A4_portrait', 'A4_paysage']).default('carré'),
+  format: z.enum(['carré', 'A4_portrait', 'A4_paysage']).default('A4_portrait'),
   // pageCount: z
   //   .string()
   //   .refine(
@@ -247,7 +248,6 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
                   onFocus={() => console.log('focus')}
                   tabIndex={0}
                   onChange={(e) => {
-                    console.log('onChange', e.target.files);
                     setCoverImage(e.target.files?.[0] || null);
                   }}
                   // className="hidden"
@@ -294,6 +294,7 @@ const BookCreationForm: React.FC<BookCreationFormProps> = ({
         </div>
         <Button
           type="submit"
+          variant="secondary"
           disabled={!isVisible || isLoading}
           className="flex justify-center w-full rounded-md py-1 px-2 text-sm md:text-base"
         >

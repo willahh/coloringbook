@@ -1,6 +1,4 @@
-import { Book, Page } from '@/types/book';
-import { BookFormat } from '@/types/book.enum';
-import { BookFormatHelper } from '@/utils/book.utils';
+import { Book, Page } from '@apptypes/book';
 import fabric from 'fabric';
 
 function getNewPageId(pages: Page[]) {
@@ -15,10 +13,11 @@ function getNewPageNumber(pages: Page[]) {
 
 export class PageService {
   public static getNewPage(pages: Page[]) {
+    const aspectRatio = pages[0].aspectRatio;
     const page: Page = {
       pageId: getNewPageId(pages),
       pageNumber: getNewPageNumber(pages),
-      aspectRatio: BookFormatHelper.getAspectRatio(BookFormat.A4_PAYSAGE),
+      aspectRatio: aspectRatio,
       elements: [],
     };
 

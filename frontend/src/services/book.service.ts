@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
-import { Book, Page } from '@/types/book';
-import { getBooksUrl } from '@/utils/api';
-import { BookFormatHelper } from '@/utils/book.utils';
+import { Book, Page } from '@apptypes/book';
+import { getBooksUrl } from '@/common/utils/api';
+import { BookFormatHelper } from '@/common/utils/book.utils';
 
 export class BookService {
   static async getBook(bookId: number): Promise<Book> {
@@ -20,12 +20,11 @@ export class BookService {
   }
 
   static prepareBookData(book: Book): { book: Book; isModified: boolean } {
-    // Si le livre n'a pas de pages, ajoutons-en 3 par défaut
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {
       const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
       const defaultPages = Array.from(
-        { length: 3 },
+        { length: book.pageCount },
         (_, i): Page => ({
           pageId: i + 1,
           pageNumber: i + 1,
@@ -57,6 +56,20 @@ export class BookService {
     }
   }
 
+  static getFirstPageId(pages: Page[]): number {
+    return pages[0].pageId;
+  }
+
+  static getPageFromPageId(pages: Page[], pageId: number): Page {
+    const flatIndex = pages.findIndex((page) => {
+      return page?.pageId === pageId;
+    });
+    if (flatIndex === -1) {
+      console.error(`Cannot find page index. pageId: ${pageId}`);
+    }
+    const page = pages[flatIndex];
+    return page;
+  }
   static getSpreadForPage(pages: Page[], pageId: number): Page[] {
     if (pages.length === 0) {
       console.warn('No pages available');

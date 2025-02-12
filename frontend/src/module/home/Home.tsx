@@ -5,18 +5,18 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
-import AnimatedText from '@/components/AnimatedText';
-import Toast from '@/components/Toast';
-import { Book } from '@/types/book';
-import { getBooksUrl } from '@/utils/api';
-import { useTheme } from '@/contexts/ThemeContext';
+import AnimatedText from '@components/AnimatedText';
+import Toast from '@components/Toast';
+import { Book } from '@apptypes/book';
+import { getBooksUrl } from '@/common/utils/api';
+import { useTheme } from '@/common/contexts/ThemeContext';
 
 import Layout from '../layout';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
-import { useToast } from '@/hooks/useToast';
-import { ToolbarButton } from '../book/ui/ToolbarButton';
+import { useToast } from '@/common/hooks/useToast';
+import { ToolbarButton } from '../book/components/ToolbarButton';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;

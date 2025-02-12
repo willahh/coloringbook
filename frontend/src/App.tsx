@@ -1,23 +1,23 @@
 import { StrictMode } from 'react';
-import { Provider } from 'react-redux';
-import { appStore } from './store';
 import { createRoot } from 'react-dom/client';
+import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import '@radix-ui/themes/styles.css';
-import * as Tooltip from '@radix-ui/react-tooltip';
-import { Theme } from '@radix-ui/themes';
-import AppRoutes from './AppRoutes.tsx';
-import { ThemeProvider, useTheme } from './contexts/ThemeContext';
 
-console.log('#0 App.tsx')
+import '@radix-ui/themes/styles.css';
+import { Theme } from '@radix-ui/themes';
+import * as Tooltip from '@radix-ui/react-tooltip';
+
+import { ThemeProvider, useTheme } from './common/contexts/ThemeContext';
+import { appStore } from './common/store';
+import AppRoutes from './AppRoutes.tsx';
+
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
-import(`./main.${defaultAppearance}.css`);
+import(`./common/styles/main.${defaultAppearance}.css`);
 
 function RenderApp() {
-  console.log('#0 RenderApp')
   const { appearance } = useTheme();
   return (
-    // <StrictMode>
+    <StrictMode>
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
@@ -27,7 +27,7 @@ function RenderApp() {
           </BrowserRouter>
         </Theme>
       </Provider>
-    // </StrictMode>
+    </StrictMode>
   );
 }
 

@@ -25,21 +25,32 @@
 
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
-import { BookContext } from '../book.context';
-import { Page } from '@/types/book';
-import { useEventHandlers } from '../hooks/useEventHandlers';
-import { useDimensions } from '../hooks/useDimensions';
-import { usePageSpread } from '../hooks/usePageSpread';
-import { usePageCreation } from '../hooks/usePageCreation';
-import { useZoomControl } from '../hooks/useZoomControl';
-
+import { BookContext } from '../Book.context';
+import { Page } from '@apptypes/book';
+import { useEventHandlers } from './hooks/useEventHandlers';
+import { useDimensions } from './hooks/useDimensions';
+import { usePageSpread } from './hooks/usePageSpread';
+import { usePageCreation } from './hooks/usePageCreation';
+import canvasService from '@/services/canvas.service';
+// import { useCanvasContext } from './hooks/useCanvasContext';
+import { PagesNavigation } from '../components/PagesNavigation';
 interface SpreadCanvasProps {
+  pageId: number;
   width?: number;
   height?: number;
   pages: Page[];
+  sidePanelWidth: number;
+  pagesPanelWidth: number;
 }
 
-const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
+const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
+  pageId,
+  pages,
+  sidePanelWidth,
+  pagesPanelWidth,
+}) => {
+  // const { position, scale, viewportTransform } = useCanvasContext();
+
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
@@ -49,36 +60,50 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
 
   // State
-  const dimensions = useDimensions(containerRef);
+  const canvasSize = useDimensions(
+    containerRef,
+    sidePanelWidth,
+    pagesPanelWidth
+  );
 
   // Process
-  const { pageSpread } = usePageSpread(pages, pageParams);
+  const { spreadPages } = usePageSpread(pages, pageParams);
 
-  // Init
+  useEventHandlers(fabricCanvasRef.current);
+
+  /**
+   * [Pages init].
+   * The dependency array for pageCreation hook is only the canvas html reference.
+   * Be cause the canvas is reset on browser resize, page change, or container changes.
+   */
+  const spreadSize = usePageCreation(
+    fabricCanvasRef.current,
+    spreadPages,
+    canvasSize
+  );
+
+  /**
+   * [Canvas init].
+   * The canvas needs to be initialized with width and height in pixels.
+   * Therefore, it must be refreshed when the browser is resized or the container size changes.
+   *
+   * The dependency array for when to update the effect includes pageSpread, meaning
+   * that when the page changes, the entire canvas is reinitialized. This approach makes it easier
+   * to manage updates for pages and graphic elements!
+   */
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
-      console.log('#1 initCanvas')
       const canvas = new fabric.Canvas(canvasElement, {
-        height: dimensions.height,
-        width: dimensions.width,
+        height: canvasSize.height,
+        width: canvasSize.width,
         selection: true,
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
       return canvas;
     },
-    [dimensions]
+    [canvasSize, sidePanelWidth, pagesPanelWidth]
   );
-
-  useEventHandlers(fabricCanvasRef.current);
-
-  const spreadSize = usePageCreation(
-    fabricCanvasRef.current,
-    pageSpread,
-    dimensions
-  );
-  useZoomControl(fabricCanvasRef.current, dimensions, spreadSize);
-
   useEffect(() => {
     if (canvasRef.current) {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
@@ -86,6 +111,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         lastPosX?: number;
         lastPosY?: number;
       };
+      console.log('#10 reset canvas');
       setCanvas(canvas);
 
       return () => {
@@ -93,11 +119,88 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, setCanvas, dimensions]);
+  }, [initCanvas, setCanvas, canvasSize, spreadPages]);
+
+  /**
+   * Canvas position and scale
+   */
+  // useEffect(() => {
+  //   if (fabricCanvasRef.current) {
+  //     // const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
+  //     //   canvasSize,
+  //     //   spreadSize
+  //     // );
+
+  //     // const x = position.x;
+  //     // const y = position.y;
+  //     // const scaleX = scale.scaleX;
+  //     // const scaleY = scale.scaleY;
+
+  //     const x = viewportTransform[4];
+  //     const y = viewportTransform[5];
+  //     // const scaleX = viewportTransform[0];
+  //     // const scaleY = viewportTransform[3];
+  //     // setPosition({ x: vpt[4], y: vpt[5] });
+  //     // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
+
+  //     console.log('#11 useEffect scale:', scale);
+  //     fabricCanvasRef.current.lastPosX = x;
+  //     fabricCanvasRef.current.lastPosY = y;
+  //     // fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
+  //     console.log('#10 assign viewportTransform', viewportTransform);
+  //     // fabricCanvasRef.current.viewportTransform = viewportTransform;
+
+  //     // canvasService.calculateCenteredSpread();
+  //   }
+  // }, [position, scale]);
+
+  /**
+   * Canvas position and scale
+   */
+  // useLayoutEffect(() => {
+  //   console.log(`#3.1 useLayoutEffect pageId has changed ! pageId: ${pageId}`);
+  //   if (fabricCanvasRef.current) {
+  //     const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
+  //       canvasSize,
+  //       spreadSize
+  //     );
+
+  //     fabricCanvasRef.current.lastPosX = x;
+  //     fabricCanvasRef.current.lastPosY = y;
+  //     fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
+  //   }
+  // }, [pages]);
+
+  // useEffect(() => {
+  //   console.log('#10 useEffect pageId changed to:', pageId);
+  // }, [pageId]);
+
+  /**
+   * Center the pages within the canvas when the page changes.
+   * Dependency array :
+   *  - spreadSize: Updated after pages and objects are drawn by usePageCreation
+   *  - pageId: Triggered when a page changes
+   */
+  useEffect(() => {
+    if (fabricCanvasRef.current) {
+      const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
+        canvasSize,
+        spreadSize
+      );
+
+      canvasService.applyViewportTransform(
+        fabricCanvasRef.current,
+        x,
+        y,
+        scaleX,
+        scaleY
+      );
+    }
+  }, [spreadSize, pageId]);
 
   return (
     <div ref={containerRef} className="relative flex-1">
-      {/* <SpreadNavigation /> */}
+      <PagesNavigation />
       <canvas ref={canvasRef} />
     </div>
   );

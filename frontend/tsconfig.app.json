@@ -11,8 +11,11 @@
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
-      "@shared/*": ["src/shared/*"]
+      "@components/*": ["src/common/components/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/common/utils/*"],
+      "@apptypes/*": ["src/common/types/*"],
+      "@shared/*": ["src/common/shared/*"]
     },
 
     /* Bundler mode */
