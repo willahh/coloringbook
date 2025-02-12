@@ -8,7 +8,7 @@
     "debug:deploy": "echo '=> files and dirs:' && find . \\( -path ./node_modules -o -path ./dist \\) -prune -o -type d -o -type f -print",
     "build": "npm run build:css && tsc -b && vite build",
     "build:test": "vite build",
-    "build:prod": "npm run build:css && tsc -p tsconfig.json && vite build --mode production",
+    "build:prod": "debug:deploy && npm run build:css && tsc -p tsconfig.json && vite build --mode production",
     "build:css": "npm run build:css-light && npm run build:css-dark",
     "build:css-light": "npx @tailwindcss/cli -i ./src/common/styles/main.light.css -o ./public/main.light.css --mode=production",
     "build:css-dark": "npx @tailwindcss/cli -i ./src/common/styles/main.dark.css -o ./public/main.dark.css --mode=production",
