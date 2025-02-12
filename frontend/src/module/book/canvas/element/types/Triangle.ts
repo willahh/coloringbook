@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
 import { DrawableElement } from '../DrawableElement';
-import { isShape, Element } from '@/types/book';
+import { isShape, Element } from '@apptypes/book';
 
 export class Triangle implements DrawableElement {
   private triangle: fabric.Triangle;

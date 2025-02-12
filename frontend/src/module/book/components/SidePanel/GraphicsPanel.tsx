@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
 import { getMediaUrl } from '@/common/utils/api';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
 // Composant pour chaque élément graphique
 const GraphicAssetItem: React.FC<{

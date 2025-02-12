@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Book } from '@/types/book';
+import { Book } from '@apptypes/book';
 import { getMediaUrl } from '@/common/utils/api';
 import { Tooltip } from '@components/Tooltip';
 

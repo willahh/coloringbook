@@ -9,7 +9,7 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
-import { Book } from '@/types/book';
+import { Book } from '@apptypes/book';
 
 interface DescriptionSectionProps {
   onClick: () => void;

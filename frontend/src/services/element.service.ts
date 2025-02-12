@@ -1,6 +1,6 @@
-import { Book, Element } from '@/types/book';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
-import { GraphicAssetType } from '@/types/graphic-asset-type.enum';
+import { Book, Element } from '@apptypes/book';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
+import { GraphicAssetType } from '@apptypes/graphic-asset-type.enum';
 
 export class ElementService {
   public static getElementFromGraphicAsset(asset: GraphicAsset): Element {

@@ -6,7 +6,7 @@ import { motion } from 'motion/react';
 
 import Button from '@components/Button';
 import { getBooksUrl } from '@/common/utils/api';
-import { Book } from '@/types/book';
+import { Book } from '@apptypes/book';
 import { TrashIcon } from '@heroicons/react/20/solid';
 
 const formatOptions = [

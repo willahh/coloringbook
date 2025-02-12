@@ -1,4 +1,4 @@
-import { BookFormat } from '@/types/book.enum';
+import { BookFormat } from '@apptypes/book.enum';
 
 export class BookFormatHelper {
   private static formatToAspectRatio: {

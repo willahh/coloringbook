@@ -1,4 +1,4 @@
-import { Book, Page } from '@/types/book';
+import { Book, Page } from '@apptypes/book';
 import fabric from 'fabric';
 
 function getNewPageId(pages: Page[]) {

@@ -1,6 +1,6 @@
 import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
-import { isText, Element } from '@/types/book';
+import { isText, Element } from '@apptypes/book';
 
 export class Text implements DrawableElement {
   private text: fabric.Text;

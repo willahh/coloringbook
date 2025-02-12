@@ -40,7 +40,10 @@ export default defineConfig(() => {
         '@': path.resolve(__dirname, './src'),
         '@assets': path.resolve(__dirname, './src/assets'),
         '@components': path.resolve(__dirname, './src/common/components'),
-        '@shared': path.resolve(__dirname, './src/shared'),
+        '@services': path.resolve(__dirname, './src/services'),
+        '@utils': path.resolve(__dirname, './src/common/utils'),
+        '@apptypes': path.resolve(__dirname, './src/common/types'),
+        '@shared': path.resolve(__dirname, './src/common/shared'),
       },
     },
   };

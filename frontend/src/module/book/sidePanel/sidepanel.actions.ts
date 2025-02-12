@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import APIService from '@/services/api.service';
 import { BookService } from '@/services/book.service';
-import { Book } from '@/types/book';
+import { Book } from '@apptypes/book';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * BOOKS_FETCH_BOOK_BY_ID

@@ -7,7 +7,7 @@ import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import AnimatedText from '@components/AnimatedText';
 import Toast from '@components/Toast';
-import { Book } from '@/types/book';
+import { Book } from '@apptypes/book';
 import { getBooksUrl } from '@/common/utils/api';
 import { useTheme } from '@/common/contexts/ThemeContext';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { BookService } from '@/services/book.service';
-import { Page } from '@/types/book';
+import { Page } from '@apptypes/book';
 
 export const usePageSpread = (
   pages: Page[],

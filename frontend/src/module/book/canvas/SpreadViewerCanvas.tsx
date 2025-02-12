@@ -26,7 +26,7 @@
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
 import { BookContext } from '../Book.context';
-import { Page } from '@/types/book';
+import { Page } from '@apptypes/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
 import { usePageSpread } from './hooks/usePageSpread';

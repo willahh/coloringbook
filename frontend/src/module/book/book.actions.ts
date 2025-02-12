@@ -1,9 +1,9 @@
 import APIService from '@/services/api.service';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { BookService } from '@/services/book.service';
-import { Book, Page, Element } from '@/types/book';
+import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 // import { PageService } from '@/services/page.service';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––

@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as bookActions from './Book.actions.ts';
-import { Book } from '@/types/book.ts';
-import { GraphicAsset } from '@/types/graphic-asset.entity.ts';
-import { BookFormat } from '@/types/book.enum.ts';
+import { Book } from '@apptypes/book.ts';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity.ts';
+import { BookFormat } from '@apptypes/book.enum.ts';
 import { RootState } from '@/common/store.ts';
 
 interface BookState {

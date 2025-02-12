@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import APIService from '@/services/api.service';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * fetchGraphicAssetsAction

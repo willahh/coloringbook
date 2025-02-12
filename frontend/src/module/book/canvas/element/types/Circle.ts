@@ -1,6 +1,6 @@
 import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
-import { isShape, CircleElement } from '@/types/book';
+import { isShape, CircleElement } from '@apptypes/book';
 
 // TODO: Il faut que le paramètre du constructeur
 // soit de type Object {x,y,w,h,attr}

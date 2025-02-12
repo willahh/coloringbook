@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Book } from '@/types/book';
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { Book } from '@apptypes/book';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { getAPIURL } from '@/common/utils/api';
 
 class APIService {

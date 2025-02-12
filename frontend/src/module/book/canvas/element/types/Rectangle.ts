@@ -1,6 +1,6 @@
 import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
-import { isShape, RectangleElement } from '@/types/book';
+import { isShape, RectangleElement } from '@apptypes/book';
 
 export class Rectangle implements DrawableElement {
   private rect: fabric.Rect;

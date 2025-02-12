@@ -1,6 +1,6 @@
 import { DrawableElement } from '../DrawableElement';
 import * as fabric from 'fabric';
-import { ImageElement } from '@/types/book';
+import { ImageElement } from '@apptypes/book';
 // import { getMediaUrl } from '@/utils/api';
 
 export class Image implements DrawableElement {

@@ -1,4 +1,4 @@
-import { GraphicAsset } from '@/types/graphic-asset.entity';
+import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 import { selectAllGraphicAssets } from './GraphicAssets.slice';
 import { useEffect } from 'react';

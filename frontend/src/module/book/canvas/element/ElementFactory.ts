@@ -5,7 +5,7 @@ import { Triangle } from './types/Triangle';
 import { Text } from './types/Text';
 import { SVG } from './types/SVG';
 import { Image } from './types/Image';
-import { Element } from '@/types/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
+import { Element } from '@apptypes/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
 
 export class ElementFactory {
   public static createObject(

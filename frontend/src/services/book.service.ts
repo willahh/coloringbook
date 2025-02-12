@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
-import { Book, Page } from '@/types/book';
+import { Book, Page } from '@apptypes/book';
 import { getBooksUrl } from '@/common/utils/api';
 import { BookFormatHelper } from '@/common/utils/book.utils';
 

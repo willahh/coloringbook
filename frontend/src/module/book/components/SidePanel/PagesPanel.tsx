@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
-import type { Page } from '@/types/book';
+import type { Page } from '@apptypes/book';
 import { useContext, useEffect } from 'react';
 import { BookContext } from '../../Book.context';
 import { Link } from 'react-router-dom';
