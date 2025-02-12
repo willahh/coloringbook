@@ -1,8 +1,8 @@
 import { GraphicAsset } from '@/types/graphic-asset.entity';
 import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
-import { selectAllGraphicAssets } from './graphicAssets.state';
+import { selectAllGraphicAssets } from './GraphicAssets.slice';
 import { useEffect } from 'react';
-import * as graphicAssetsAction from './graphicAssets.actions';
+import * as graphicAssetsAction from './GraphicAssets.actions';
 import { Tooltip } from '@/components/Tooltip';
 
 const Item: React.FC<{ graphicAsset: GraphicAsset }> = ({ graphicAsset }) => (

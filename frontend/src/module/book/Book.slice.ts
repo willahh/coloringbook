@@ -1,8 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit';
-import initialState from './book.state.ts';
-import * as bookActions from './book.actions.ts';
+import * as bookActions from './Book.actions.ts';
+import { Book } from '@/types/book.ts';
+import { GraphicAsset } from '@/types/graphic-asset.entity.ts';
+import { BookFormat } from '@/types/book.enum.ts';
+import { RootState } from '@/common/store.ts';
 
-const bookSlice = createSlice({
+interface BookState {
+  book: Book;
+  areLocalUpdatesSaved: boolean;
+  refreshGraphics: boolean;
+  graphicAssets: GraphicAsset[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState: BookState = {
+  book: {
+    coverImage: '',
+    format: BookFormat.A4_PORTRAIT,
+    id: 0,
+    name: '',
+    pageCount: 0,
+    pages: [],
+  },
+  areLocalUpdatesSaved: true,
+  refreshGraphics: false,
+  graphicAssets: [],
+  isLoading: false,
+  error: null,
+};
+
+export const selectIsLoading = (state: RootState) => state.book.isLoading;
+export const selectBook = (state: RootState) => state.book;
+
+const slice = createSlice({
   name: 'books',
   initialState,
   reducers: {
@@ -18,7 +49,7 @@ const bookSlice = createSlice({
     });
     builder.addCase(
       bookActions.fetchBookByIdAction.fulfilled,
-      (state, { payload: {book, isModified} }) => {
+      (state, { payload: { book, isModified } }) => {
         state.isLoading = false;
         state.error = null;
         state.book = book;
@@ -130,4 +161,4 @@ const bookSlice = createSlice({
   },
 });
 
-export default bookSlice.reducer;
+export default slice.reducer;

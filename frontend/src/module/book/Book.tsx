@@ -3,14 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 
 import Layout from '../layout';
-import { SpreadToolbar } from './components/SpreadToolbar';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import UnsavedChangesToast from './components/UnchangedModificationsToast';
-import SidePanel from './sidePanel/components/SidePanel';
+import SidePanel from './sidePanel/SidePanel';
 import BookHeader from './components/BookHeader';
-// import { BookContext } from './book.context';
-import * as bookActions from './book.actions';
-import { selectBook } from './book.state';
+import * as bookActions from './Book.actions';
+import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/PagesPanel';
 import { CanvasProvider } from './canvas/canvas.context';
 import BookToolbar from './bookToolbar/BookToolbar';

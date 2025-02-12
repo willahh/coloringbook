@@ -3,7 +3,7 @@ import Header from '@/components/Header';
 import InlineEdit from '@/components/InlineEdit';
 import { useAppSelector } from '@/common/hooks/useRedux';
 import { Book } from '@/types/book';
-import { selectIsLoading } from '../book.state';
+import { selectIsLoading } from '../Book.slice';
 
 const BookHeader: React.FC<{
   book: Book | null;

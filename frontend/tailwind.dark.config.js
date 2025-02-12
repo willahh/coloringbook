@@ -5,35 +5,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: {
-          DEFAULT: '#1e1b4b',
-          50: '#E6F1FF',
-          100: '#e2e0ff',
-          200: '#cac7fe',
-          300: '#aaa5fc',
-          400: '#8881f8',
-          500: '#6c63f1',
-          600: '#5046e5',
-          700: '#4138ca',
-          800: '#3730a3',
-          900: '#332e81',
-          950: '#1d1b4b',
-        },
-        secondary: {
-          DEFAULT: '#f43f5e',
-          50: '#fff1f3',
-          100: '#ffe4e9',
-          200: '#fecdd5',
-          300: '#fda4b3',
-          400: '#fb7189',
-          500: '#f43f5e',
-          600: '#e11d3f',
-          700: '#be122f',
-          800: '#9f122a',
-          900: '#881327',
-          950: '#4c0511',
-        },
-
+       
         success: {
           DEFAULT: '#15b8a6',
           50: '#f0fdfa',
@@ -99,28 +71,7 @@ export default {
         '7xl': ['4rem', { lineHeight: '1' }],
         '8xl': ['4.5rem', { lineHeight: '1' }],
         '9xl': ['6rem', { lineHeight: '1' }],
-      },
-      keyframes: {
-        slideUpAndFade: {
-          '0%': { opacity: '0', transform: 'translateY(2px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        slideRightAndFade: {
-          '0%': { opacity: '0', transform: 'translateX(-2px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        slideDownAndFade: {
-          '0%': { opacity: '0', transform: 'translateY(-2px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        slideLeftAndFade: {
-          '0%': { opacity: '0', transform: 'translateX(2px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-      },
+      }
     },
-  },
-  plugins: [
-    /*require('tailwind-scrollbar')*/
-  ],
+  }
 };

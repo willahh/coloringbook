@@ -3,9 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import APIService from '@/services/api.service';
 import { BookService } from '@/services/book.service';
 import { Book } from '@/types/book';
-// import { ElementService } from '@/services/element.service';
-// import { GraphicAsset } from '@/types/graphic-asset.entity';
-// import { PageService } from '@/services/page.service';
 
 /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
  * BOOKS_FETCH_BOOK_BY_ID
@@ -13,12 +10,16 @@ import { Book } from '@/types/book';
 export interface FetchBookByIdActionPayload {
   bookId: number;
 }
+export interface FetchBookByIdActionResponse {
+  book: Book;
+  isModified: boolean;
+}
 export const fetchBookByIdAction = createAsyncThunk<
-  Book,
+  FetchBookByIdActionResponse,
   FetchBookByIdActionPayload
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
   const { book: newBook, isModified } = BookService.prepareBookData(book);
 
-  return { newBook, isModified };
+  return { book: newBook, isModified: isModified };
 });

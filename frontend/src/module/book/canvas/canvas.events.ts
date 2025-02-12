@@ -1,5 +1,5 @@
 import * as fabric from 'fabric';
-import { Position, Scale } from './canvas.context';
+// import { Position, Scale } from './canvas.context';
 
 declare module 'fabric' {
   interface Canvas {
@@ -13,9 +13,7 @@ declare module 'fabric' {
 export const handleMouseWheel =
   (
     canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
-    setPosition: React.Dispatch<React.SetStateAction<Position>>,
-    setScale: React.Dispatch<React.SetStateAction<Scale>>
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
@@ -29,7 +27,6 @@ export const handleMouseWheel =
     // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
     // if (setScale) {
 
-    
     setTimeout(() => {
       setViewportTransform([...canvas.viewportTransform]);
       // setPosition({ x: vpt[4], y: vpt[5] });
@@ -58,12 +55,7 @@ export const handleMouseOut =
   };
 
 export const handleMouseDown =
-  (
-    canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
-    setPosition: React.Dispatch<React.SetStateAction<Position>>
-  ) =>
-  (opt: fabric.TPointerEventInfo) => {
+  (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
     const evt = opt.e;
     if (evt.altKey === true) {
       canvas.isDragging = true;
@@ -79,12 +71,7 @@ export const handleMouseDown =
   };
 
 export const handleMouseMove =
-  (
-    canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
-    setPosition: React.Dispatch<React.SetStateAction<Position>>
-  ) =>
-  (opt: fabric.TPointerEventInfo) => {
+  (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
     if (canvas.isDragging) {
       const e = opt.e;
       const vpt = canvas.viewportTransform;
@@ -116,8 +103,7 @@ export const handleMouseMove =
 export const handleMouseUp =
   (
     canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
-    setPosition: React.Dispatch<React.SetStateAction<Position>>
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   () => {
     canvas.setViewportTransform(canvas.viewportTransform);

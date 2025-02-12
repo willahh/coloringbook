@@ -1,10 +1,36 @@
 import { createSlice } from '@reduxjs/toolkit';
-import initialState from './graphicAssets.state.ts';
-import * as graphicAssetsActions from './graphicAssets.actions.ts';
 
-const graphicAssetsSlice = createSlice({
+import * as graphicAssetsActions from './GraphicAssets.actions.ts';
+import { RootState } from '@/common/store';
+import { GraphicAsset } from '@/types/graphic-asset.entity';
+
+export enum Mode {
+  Default = 'DEFAULT',
+  Edit = 'EDIT',
+  Delete = 'DELETE',
+}
+
+export interface GraphicAssetsState {
+  isLoading: boolean;
+  error?: boolean;
+  graphicAssets: GraphicAsset[];
+  selectedId?: number;
+  mode: Mode;
+}
+
+const initialState: GraphicAssetsState = {
+  error: undefined,
+  isLoading: false,
+  selectedId: undefined,
+  graphicAssets: [],
+  mode: Mode.Default,
+};
+
+export const selectAllGraphicAssets = (state: RootState) => state;
+
+const slice = createSlice({
   name: 'graphicAssets',
-  initialState,
+  initialState: initialState,
   reducers: {},
   extraReducers: (builder) => {
     /*––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -36,4 +62,4 @@ const graphicAssetsSlice = createSlice({
   },
 });
 
-export default graphicAssetsSlice.reducer;
+export default slice.reducer;

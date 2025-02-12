@@ -34,6 +34,7 @@ export class Image implements DrawableElement {
     // const url = 'https://icon-icons.com/icons2/265/PNG/512/JPG_29711.png';
 
     // const url = 'http://localhost:5173/assets/SVG/MesaDeTrabajo.svg';
+    console.info('obj', obj);
     const url = 'http://localhost:5173/book_covers/5.jpg';
 
     const img = await fabric.FabricImage.fromURL(url, {

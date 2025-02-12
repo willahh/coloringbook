@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import * as Slider from '@radix-components/react-slider';
+// import * as Slider from '@radix-components/react-slider';
 
 import {
   ArrowDownOnSquareStackIcon,
@@ -10,10 +10,10 @@ import {
   PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { bookService } from '@/services/book.service';
-import { BookContext } from '../book.context';
+import { BookContext } from '../Book.context';
 import { ToolbarButton } from './ToolbarButton';
-import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
-import { selectBook } from '../book.state';
+import { useAppSelector } from '@/common/hooks/useRedux';
+import { selectBook } from '../Book.slice';
 import { useParams } from 'react-router';
 
 const iconProps = {
@@ -38,12 +38,10 @@ export const SpreadToolbar: React.FC<{
       className={`relative gap-4 p-4 h-36 
          bg-primary-50 dark:bg-primary-900`}
     >
-      <div
-        className={`flex h-12 justify-center items-center `}
-      >
+      <div className={`flex h-12 justify-center items-center `}>
         <div className="text-sm text-gray-600">{`Page ${currentPage} / ${totalPages}`}</div>
         <MagnifyingGlassIcon className="w-6 h-6" />
-        <Slider.Root
+        {/* <Slider.Root
           className="relative flex h-5 w-[200px] touch-none select-none items-center"
           defaultValue={[50]}
           max={100}
@@ -56,7 +54,7 @@ export const SpreadToolbar: React.FC<{
             className="block size-5 rounded-[10px] bg-black dark:bg-white shadow-[0_2px_10px] shadow-black dark:shadow-white hover:bg-primary-700 dark:hover:bg-primary-300 focus:shadow-[0_0_0_5px] focus:shadow-white dark:focus:shadow-black focus:outline-none transition-all"
             aria-label="Volume"
           />
-        </Slider.Root>
+        </Slider.Root> */}
         <div className="flex gap-2">
           <ToolbarButton tooltipContent="Save">
             <ArrowDownOnSquareStackIcon {...iconProps} />

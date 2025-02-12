@@ -54,7 +54,7 @@ const svgs = [
 const ElementItem: React.FC<{
   className?: string;
   children: React.ReactNode;
-}> = ({ className, children }) => {
+}> = ({ children }) => {
   return (
     <Item
       className={`flex justify-center w-full aspect-square object-cover p-3

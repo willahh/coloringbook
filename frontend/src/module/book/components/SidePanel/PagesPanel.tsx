@@ -1,14 +1,14 @@
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import type { Page } from '@/types/book';
 import { useContext, useEffect } from 'react';
-import { BookContext } from '../../book.context';
+import { BookContext } from '../../Book.context';
 import { Link } from 'react-router-dom';
 import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 import { useAppDispatch } from '@/common/hooks/useRedux';
-import * as BookActions from './../../book.actions';
+import * as BookActions from '../../Book.actions';
 import { PageService } from '@/services/page.service';
 import { useParams } from 'react-router';
 
@@ -88,7 +88,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
                    ? 'group-active:opacity-100 hover:bg-secondary-400 focus:bg-secondary-400'
                    : ''
                }`}
-                onClick={(e) => {
+                onClick={() => {
                   if (confirm('Confirmer la suppression de la page ?')) {
                     dispatch(BookActions.deletePageAction({ pageId: pageId }));
                   }
@@ -172,7 +172,7 @@ export const PagesPanel: React.FC<{
   ref: React.RefObject<HTMLDivElement>;
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
-}> = ({ className, ref, pages, addPageButtonClick }) => {
+}> = ({ className, ref, pages }) => {
   const { pageId } = useParams<{ pageId: string }>();
   const dispatch = useAppDispatch();
   const panelRef = ref;
@@ -209,9 +209,7 @@ export const PagesPanel: React.FC<{
     <div
       data-id="pages-panel"
       ref={ref}
-      className={`${
-        className || ''
-      } flex flex-col gap-4 overflow-y-auto 
+      className={`${className || ''} flex flex-col gap-4 overflow-y-auto 
        z-20
       
       bg-primary-50 dark:bg-primary-950`}

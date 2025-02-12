@@ -1,6 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
-import initialState from './sidepanel.state.ts';
-// import * as sidebarActions from './sidebar.actions.ts';
+import { TabType } from './Sidepanel.types';
+
+interface SidePanelState {
+  isOpen: true;
+  width: number; // In pixel
+  selectedTab: TabType;
+}
+
+const initialState: SidePanelState = {
+  isOpen: true,
+  width: 500,
+  selectedTab: TabType.Element,
+};
+
 
 const sidePanelSlice = createSlice({
   name: 'sidePanel',

@@ -3,7 +3,7 @@ import { Tooltip } from '@/components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
 import { useAppSelector } from '@/common/hooks/useRedux';
-import { selectBook } from '../book.state';
+import { selectBook } from '../Book.slice';
 import { useEffect } from 'react';
 
 export const PagesNavigation: React.FC = () => {

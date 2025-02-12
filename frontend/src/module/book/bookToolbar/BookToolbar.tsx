@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from '../components/ToolbarButton';
 import { bookService } from '@/services/book.service';
-import { BookContext } from '../book.context';
+import { BookContext } from '../Book.context';
 import { useContext } from 'react';
 
 const BookToolbar: React.FC = () => {

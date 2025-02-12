@@ -25,14 +25,14 @@
 
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
 import * as fabric from 'fabric';
-import { BookContext } from '../book.context';
+import { BookContext } from '../Book.context';
 import { Page } from '@/types/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
 import { usePageSpread } from './hooks/usePageSpread';
 import { usePageCreation } from './hooks/usePageCreation';
 import canvasService from '@/services/canvas.service';
-import { useCanvasContext } from './hooks/useCanvasContext';
+// import { useCanvasContext } from './hooks/useCanvasContext';
 import { PagesNavigation } from '../components/PagesNavigation';
 interface SpreadCanvasProps {
   pageId: number;
