@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { motion } from 'motion/react';
 
 import Button from '@components/Button';
-import { getBooksUrl } from '@/utils/api';
+import { getBooksUrl } from '@/common/utils/api';
 import { Book } from '@/types/book';
 import { TrashIcon } from '@heroicons/react/20/solid';
 

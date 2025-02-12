@@ -11,7 +11,10 @@
     "paths": {
       "@/*": ["src/*"],
       "@assets/*": ["src/assets/*"],
-      "@components/*": ["src/components/*"],
+      "@components/*": ["src/common/components/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/common/utils/*"],
+      "@types/*": ["src/common/types/*"],
       "@shared/*": ["src/shared/*"]
     },
 

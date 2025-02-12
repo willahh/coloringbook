@@ -1,6 +1,6 @@
-import BreadCrumb from '@/components/BreadCrumb';
-import Header from '@/components/Header';
-import InlineEdit from '@/components/InlineEdit';
+import BreadCrumb from '@components/BreadCrumb';
+import Header from '@components/Header';
+import InlineEdit from '@components/InlineEdit';
 import { useAppSelector } from '@/common/hooks/useRedux';
 import { Book } from '@/types/book';
 import { selectIsLoading } from '../Book.slice';

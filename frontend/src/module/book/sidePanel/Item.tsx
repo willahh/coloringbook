@@ -1,4 +1,4 @@
-import { Tooltip } from '@/components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 
 const Item: React.FC<{
   className?: string;

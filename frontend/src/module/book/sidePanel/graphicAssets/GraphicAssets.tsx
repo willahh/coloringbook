@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from '@/common/hooks/useRedux';
 import { selectAllGraphicAssets } from './GraphicAssets.slice';
 import { useEffect } from 'react';
 import * as graphicAssetsAction from './GraphicAssets.actions';
-import { Tooltip } from '@/components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 
 const Item: React.FC<{ graphicAsset: GraphicAsset }> = ({ graphicAsset }) => (
   <button data-name="item" className="transition-all group focus:outline-0">

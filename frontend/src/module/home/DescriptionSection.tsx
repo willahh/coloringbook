@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 
-import AnimatedText from '@/components/AnimatedText';
+import AnimatedText from '@components/AnimatedText';
 import Button from '@components/Button';
 import {
   QueueListIcon,
   PlusIcon,
 } from '@heroicons/react/24/outline';
-import { Tooltip } from '@/components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 import { Book } from '@/types/book';
 
 interface DescriptionSectionProps {

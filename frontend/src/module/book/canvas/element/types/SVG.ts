@@ -1,7 +1,7 @@
 import { DrawableElement } from '../DrawableElement'; // Adjust the path as needed
 import * as fabric from 'fabric';
 import { SVGElement } from '@/types/book';
-import { getAPIURL } from '@/utils/api';
+import { getAPIURL } from '@/common/utils/api';
 
 export class SVG implements DrawableElement {
   private svgObjects: Promise<fabric.FabricObject> | null;

@@ -5,10 +5,10 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
-import AnimatedText from '@/components/AnimatedText';
-import Toast from '@/components/Toast';
+import AnimatedText from '@components/AnimatedText';
+import Toast from '@components/Toast';
 import { Book } from '@/types/book';
-import { getBooksUrl } from '@/utils/api';
+import { getBooksUrl } from '@/common/utils/api';
 import { useTheme } from '@/common/contexts/ThemeContext';
 
 import Layout from '../layout';

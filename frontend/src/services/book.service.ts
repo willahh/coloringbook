@@ -2,8 +2,8 @@ import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
 import { Book, Page } from '@/types/book';
-import { getBooksUrl } from '@/utils/api';
-import { BookFormatHelper } from '@/utils/book.utils';
+import { getBooksUrl } from '@/common/utils/api';
+import { BookFormatHelper } from '@/common/utils/book.utils';
 
 export class BookService {
   static async getBook(bookId: number): Promise<Book> {

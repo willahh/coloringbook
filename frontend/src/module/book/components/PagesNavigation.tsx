@@ -1,5 +1,5 @@
 import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import { Tooltip } from '@/components/Tooltip';
+import { Tooltip } from '@components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
 import { useAppSelector } from '@/common/hooks/useRedux';

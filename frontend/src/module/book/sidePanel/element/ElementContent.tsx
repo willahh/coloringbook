@@ -3,7 +3,7 @@ import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
 
 import Item from '../Item';
 import { lazy, Suspense } from 'react';
-import Loader from '@/components/Loader';
+import Loader from '@components/Loader';
 const svgs = [
   {
     name: 'Castle',

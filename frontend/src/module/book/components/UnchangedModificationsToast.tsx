@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ButtonLink from '@components/ButtonLink';
 import Toast from '@components/Toast';
-import KeyboardShortcut from '@/components/KeyboardShortcut';
+import KeyboardShortcut from '@components/KeyboardShortcut';
 
 interface UnsavedChangesToastProps {
   isModified: boolean;
