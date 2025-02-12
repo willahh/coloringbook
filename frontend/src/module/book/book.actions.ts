@@ -8,16 +8,14 @@ import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 /**
  * fetchBookByIdAction
  */
-export interface FetchBookByIdActionPayload {
-  bookId: number;
-}
-interface FetchBookByIdActionResponse {
-  book: Book;
-  isModified: boolean;
-}
 export const fetchBookByIdAction = createAsyncThunk<
-  FetchBookByIdActionResponse,
-  FetchBookByIdActionPayload
+  {
+    book: Book;
+    isModified: boolean;
+  },
+  {
+    bookId: number;
+  }
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
   const { book: newBook, isModified } = BookService.prepareBookData(book);
@@ -28,60 +26,54 @@ export const fetchBookByIdAction = createAsyncThunk<
 /**
  * saveBookAction
  */
-export interface SaveBookActionPayload {
-  bookId: number;
-  book: Book;
-}
-export const saveBookAction = createAsyncThunk<Book, SaveBookActionPayload>(
-  'BOOKS/BOOKS_SAVE_BOOK',
-  async ({ bookId, book }) => {
-    const savedBook = await APIService.updateBook(bookId, book);
-
-    return savedBook;
+export const saveBookAction = createAsyncThunk<
+  Book,
+  {
+    bookId: number;
+    book: Book;
   }
-);
+>('BOOKS/BOOKS_SAVE_BOOK', async ({ bookId, book }) => {
+  const savedBook = await APIService.updateBook(bookId, book);
+
+  return savedBook;
+});
 
 /**
  * editBookNameAction
  */
-export interface EditBookNamePayload {
-  bookId: number;
-  bookName: string;
-}
-export const editBookNameAction = createAsyncThunk<Book, EditBookNamePayload>(
-  'BOOKS/EDIT_BOOK_NAME',
-  async ({ bookId, bookName }) => {
-    const book = await APIService.updateBook(bookId, { name: bookName });
-    return book;
+export const editBookNameAction = createAsyncThunk<
+  Book,
+  {
+    bookId: number;
+    bookName: string;
   }
-);
+>('BOOKS/EDIT_BOOK_NAME', async ({ bookId, bookName }) => {
+  const book = await APIService.updateBook(bookId, { name: bookName });
+  return book;
+});
 
 /**
  * updateBookAction
  */
-export interface UpdateBookPayload {
+
+export const updateBookAction = createAction<{
   bookId: number;
   book: Book;
-}
-export const updateBookAction =
-  createAction<UpdateBookPayload>('BOOKS/UPDATE_BOOK');
+}>('BOOKS/UPDATE_BOOK');
 
 /**
  * addPageAction
  */
-export interface AddPagePayload {
+export const addPageAction = createAction<{
   page: Page;
-}
-export const addPageAction = createAction<AddPagePayload>('PAGES/ADD_PAGE');
+}>('PAGES/ADD_PAGE');
 
 /**
  * deletePageAction
  */
-export interface DeletePagePayload {
+export const deletePageAction = createAction<{
   pageId: number;
-}
-export const deletePageAction =
-  createAction<DeletePagePayload>('PAGES/DELETE_PAGE');
+}>('PAGES/DELETE_PAGE');
 
 /**
  * AddGraphicAssetToPageAction
@@ -90,13 +82,16 @@ export interface AddGraphicAssetToPagePayload {
   graphicAsset: GraphicAsset;
   pageId: number;
 }
-interface AddGraphicAssetToPageResponse {
-  pageId: number;
-  element: Element;
-}
+
 export const AddGraphicAssetToPageAction = createAsyncThunk<
-  AddGraphicAssetToPageResponse,
-  AddGraphicAssetToPagePayload
+  {
+    pageId: number;
+    element: Element;
+  },
+  {
+    graphicAsset: GraphicAsset;
+    pageId: number;
+  }
 >('PAGES_ADD_GRAPHIC_ASSET_TO_PAGE', ({ pageId, graphicAsset }) => {
   const element = ElementService.getElementFromGraphicAsset(graphicAsset);
   return { pageId: pageId, element: element };
