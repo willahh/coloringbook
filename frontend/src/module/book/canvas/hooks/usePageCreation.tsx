@@ -1,7 +1,7 @@
 import { Page } from '@apptypes/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { ElementFactory } from '../element/ElementFactory';
+import { ElementFactory } from '../../element/ElementFactory';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,
