@@ -61,7 +61,7 @@ export const usePageCreation = (
 
           // Create objects
           page.elements.forEach(async (element) => {
-            const object = ElementFactory.createObject(
+            const object = ElementFactory.createElement(
               element,
               offsetX,
               pageWidth,

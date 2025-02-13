@@ -23,6 +23,7 @@ export interface SVGAttributes {
 }
 
 export interface ImageElement {
+  elementId: number;
   type: 'image';
   x: number;
   y: number;
@@ -34,6 +35,7 @@ export interface ImageElement {
   };
 }
 export interface RectangleElement {
+  elementId: number;
   type: 'rectangle';
   x: number;
   y: number;
@@ -42,6 +44,7 @@ export interface RectangleElement {
   attr: BaseShapeAttributes;
 }
 export interface TriangleElement {
+  elementId: number;
   type: 'triangle';
   x: number;
   y: number;
@@ -50,6 +53,7 @@ export interface TriangleElement {
   attr: BaseShapeAttributes;
 }
 export interface CircleElement {
+  elementId: number;
   type: 'circle';
   x: number;
   y: number;
@@ -58,6 +62,7 @@ export interface CircleElement {
   attr: CircleAttributes;
 }
 export interface TextElement {
+  elementId: number;
   type: 'text';
   x: number;
   y: number;
@@ -66,6 +71,7 @@ export interface TextElement {
   attr: TextAttributes;
 }
 export interface SVGElement {
+  elementId: number;
   type: 'svg';
   x: number;
   y: number;

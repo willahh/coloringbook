@@ -1,3 +1,4 @@
+import * as bodyParser from 'body-parser';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from '@/app.module';
@@ -7,6 +8,12 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  // Increase the limit for JSON payloads
+  app.use(bodyParser.json({ limit: '50mb' }));
+
+  // Increase the limit for URL-encoded bodies
+  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
   app.use(delayMiddleware);
 

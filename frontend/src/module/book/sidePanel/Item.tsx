@@ -4,7 +4,8 @@ const Item: React.FC<{
   className?: string;
   children: React.ReactNode;
   tooltipContent?: string;
-}> = ({ className, children, tooltipContent }) => (
+  onClick?: () => void;
+}> = ({ className, children, tooltipContent, onClick }) => (
   <button
     data-name="item"
     className={`rounded-lg transition-all cursor-pointer duration-300
@@ -13,6 +14,7 @@ const Item: React.FC<{
     focus:outline-0 focus:border-secondary-500 
     
     ${className || ''}`}
+    onClick={onClick}
   >
     {tooltipContent ? (
       <Tooltip content={tooltipContent}>{children}</Tooltip>

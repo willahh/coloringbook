@@ -1,8 +1,18 @@
+import * as crypto from 'crypto';
 import { Book, Element } from '@apptypes/book';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { GraphicAssetType } from '@apptypes/graphic-asset-type.enum';
 
+function generateUniqueNumber(): number {
+  // Generates a unique number based on current timestamp and random bits
+  // Note: This isn't truly unique across different machines or processes, but for many use cases, it's sufficient
+  return Date.now() + Math.floor(Math.random() * 1000000);
+}
+
 export class ElementService {
+  public static createElement(el: Omit<Element, 'elementId'>): Element {
+    return { ...el, elementId: generateUniqueNumber() } as Element;
+  }
   public static getElementFromGraphicAsset(asset: GraphicAsset): Element {
     // if (asset.type === GraphicAssetType.CONVERTED_SVG) {
     if (asset.type === GraphicAssetType.SVG) {

@@ -8,38 +8,49 @@ import { Image } from './types/Image';
 import { Element } from '@apptypes/book'; // Assuming `Object` is renamed to avoid conflict with JS Object
 
 export class ElementFactory {
-  public static createObject(
-    obj: Element,
+  public static createElement(
+    element: Element,
     offsetX: number,
     pageWidth: number,
     pageHeight: number
-  ): DrawableElement | null {
-    const relativeX = offsetX + (obj.x / 100) * pageWidth;
-    const relativeY = (obj.y / 100) * pageHeight;
-    const relativeW = (obj.w / 100) * pageWidth;
-    const relativeH = (obj.h / 100) * pageHeight;
+  ): DrawableElement {
+    const relativeX = offsetX + (element.x / 100) * pageWidth;
+    const relativeY = (element.y / 100) * pageHeight;
+    const relativeW = (element.w / 100) * pageWidth;
+    const relativeH = (element.h / 100) * pageHeight;
 
-    switch (obj.type) {
+    switch (element.type) {
       case 'rectangle':
-        return new Rectangle(obj, relativeX, relativeY, relativeW, relativeH);
+        return new Rectangle(
+          element,
+          relativeX,
+          relativeY,
+          relativeW,
+          relativeH
+        );
         break;
       case 'circle':
-        return new Circle(obj, relativeX, relativeY, relativeW / 2);
+        return new Circle(element, relativeX, relativeY, relativeW / 2);
         break;
       case 'triangle':
-        return new Triangle(obj, relativeX, relativeY, relativeW, relativeH);
+        return new Triangle(
+          element,
+          relativeX,
+          relativeY,
+          relativeW,
+          relativeH
+        );
         break;
       case 'text':
-        return new Text(obj, relativeX, relativeY);
+        return new Text(element, relativeX, relativeY);
         break;
       case 'svg':
-        return new SVG(obj, relativeX, relativeY, relativeW, relativeH);
+        return new SVG(element, relativeX, relativeY, relativeW, relativeH);
         break;
       case 'image':
-        return new Image(obj, relativeX, relativeY, relativeW, relativeH);
+        return new Image(element, relativeX, relativeY, relativeW, relativeH);
       default:
-        console.warn(`Unknown object type: ${obj}`);
-        return null;
+        throw new Error(`Unknown element type: ${element}`);
     }
   }
 }

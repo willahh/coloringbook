@@ -16,6 +16,7 @@ class APIService {
     bookId: number,
     updateBookDTO: Partial<Book>
   ): Promise<Book> {
+    // const compressed = await gzip(JSON.stringify(updateBookDTO));
     const response = await axios.patch<Book>(
       `${getAPIURL()}/books/${bookId}`,
       updateBookDTO

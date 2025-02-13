@@ -6,7 +6,6 @@ import { useNavigate, useParams } from 'react-router';
 import { useSelector } from '@/common/store';
 import { selectBook } from '../Book.slice';
 
-
 export const PagesNavigation: React.FC = () => {
   const { bookId, pageId } = useParams<{ bookId?: string; pageId?: string }>();
   const { book } = useSelector(selectBook);
@@ -50,11 +49,11 @@ export const PagesNavigation: React.FC = () => {
   return (
     <div data-id="pages-navigation">
       {!isFirstPage && (
-        <div className="absolute left-20 flex items-center justify-between h-full p-8 z-10">
+        <div className="absolute left-20 flex items-center justify-between h-full p-8 z-10 pointer-events-none">
           <Tooltip content="Page précédente">
             <Link
               to={`/book/${bookId}/pages/${previousPageId}`}
-              className={`w-12 h-12 rounded-full z-10 p-2 
+              className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
           text-primary-800 dark:text-primary-200
            transition-all duration-400
          hover:ring-1 
@@ -69,11 +68,11 @@ export const PagesNavigation: React.FC = () => {
         </div>
       )}
       {!isLastPage && (
-        <div className="absolute right-0 flex items-center justify-between h-full p-8 z-10">
+        <div className="absolute right-0 flex items-center justify-between h-full p-8 z-10 pointer-events-none">
           <Tooltip content="Page suivante">
             <Link
               to={`/book/${bookId}/pages/${nextPageId}`}
-              className={`w-12 h-12 rounded-full z-10 p-2 
+              className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
               text-primary-800 dark:text-primary-200
                transition-all duration-400
              hover:ring-1 

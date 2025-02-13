@@ -100,6 +100,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
+      canvasService.canvas = canvas;
       return canvas;
     },
     [canvasSize, sidePanelWidth, pagesPanelWidth]

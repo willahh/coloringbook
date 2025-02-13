@@ -1,6 +1,18 @@
+import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
+import { Element } from '@/common/types/book';
 
 class CanvasService {
+  private _canvas: fabric.Canvas | null = null;
+
+  public get canvas(): fabric.Canvas | null {
+    return this._canvas;
+  }
+
+  public set canvas(canvasInstance: fabric.Canvas | null) {
+    this._canvas = canvasInstance;
+  }
+
   applyViewportTransform = (
     canvas: fabric.Canvas & { lastPosX?: number; lastPosY?: number },
     x: number,
@@ -37,6 +49,24 @@ class CanvasService {
       headerHeight / 2;
 
     return { x, y, scaleX, scaleY };
+  }
+
+  async addElementToCanvas(element: Element) {
+    const offsetX = 0; // TODO
+    const pageWidth = 100; // TODO
+    const pageHeight = 100; // TODO
+    console.error('TODO get page width and page height and offset')
+    const drawableElement = ElementFactory.createElement(
+      element,
+      offsetX,
+      pageWidth,
+      pageHeight
+    );
+    const fabricObject = await drawableElement.getObject();
+    if (fabricObject && this.canvas) {
+      fabricObject.set('objet', element);
+      this.canvas.add(fabricObject);
+    }
   }
 }
 

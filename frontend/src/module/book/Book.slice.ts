@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as bookActions from './Book.actions.ts';
+import * as elementActions from './element/Element.action.ts';
 import { Book } from '@apptypes/book.ts';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity.ts';
 import { BookFormat } from '@apptypes/book.enum.ts';
@@ -142,10 +143,8 @@ const slice = createSlice({
         );
 
         if (pageIndex !== -1) {
-          // Utilisez l'opérateur spread (...) pour créer une nouvelle copie de l'array et de l'objet page
           state.book.pages = state.book.pages.map((page, index) => {
             if (index === pageIndex) {
-              // Créez une nouvelle copie de la page avec le nouvel élément ajouté
               return {
                 ...page,
                 elements: [...page.elements, element],
@@ -156,6 +155,56 @@ const slice = createSlice({
         }
         state.isLoading = false;
         state.areLocalUpdatesSaved = false;
+      }
+    );
+
+    /**
+     * addElementToPage
+     */
+    builder.addCase(
+      elementActions.addElementToPage.fulfilled,
+      (state, { payload: { element, pageId } }) => {
+        const pageIndex = state.book.pages.findIndex(
+          (p) => p.pageId === pageId
+        );
+        if (pageIndex !== -1) {
+          state.book.pages = state.book.pages.map((page, index) => {
+            if (index === pageIndex) {
+              return {
+                ...page,
+                elements: [...page.elements, element],
+              };
+            }
+            return page;
+          });
+          state.areLocalUpdatesSaved = false;
+        }
+      }
+    );
+
+    /**
+     * removeElementByPageIdAndElementId
+     */
+    builder.addCase(
+      elementActions.removeElementByPageIdAndElementId.fulfilled,
+      (state, { payload: { pageId, elementId } }) => {
+        const pageIndex = state.book.pages.findIndex(
+          (p) => p.pageId === pageId
+        );
+        if (pageIndex !== -1) {
+          state.book.pages = state.book.pages.map((page, index) => {
+            if (index === pageIndex) {
+              return {
+                ...page,
+                elements: page.elements.filter(
+                  (el) => el.elementId !== elementId
+                ),
+              };
+            }
+            return page;
+          });
+          state.areLocalUpdatesSaved = false;
+        }
       }
     );
   },
