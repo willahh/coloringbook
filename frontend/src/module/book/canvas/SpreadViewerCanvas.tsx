@@ -58,6 +58,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
   // Context
   const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
+  const canvasService = useRef(new canvasService(dispatch));
 
   // State
   const canvasSize = useDimensions(

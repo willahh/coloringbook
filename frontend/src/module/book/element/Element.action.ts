@@ -40,3 +40,19 @@ export const removeElementByPageIdAndElementId = createAsyncThunk<
     return { elementId: elementId, pageId: pageId };
   }
 );
+
+/**
+ * updateElementByElementId
+ */
+export const updateElementByElementId = createAsyncThunk<
+  {
+    pageId: number;
+    elementId: number;
+  },
+  {
+    pageId: number;
+    elementId: number;
+  }
+>('ELEMENT/UPDATE_ELEMENT_BY_ELEMENT_ID', async ({ elementId, pageId }) => {
+  return { elementId: elementId, pageId: pageId };
+});

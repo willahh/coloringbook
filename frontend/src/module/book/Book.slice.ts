@@ -183,6 +183,33 @@ const slice = createSlice({
     );
 
     /**
+     * updateElementByElementId
+     */
+    builder.addCase(
+      elementActions.updateElementByElementId.fulfilled,
+      (state, { payload: { pageId, elementId } }) => {
+        const pageIndex = state.book.pages.findIndex(
+          (p) => p.pageId === pageId
+        );
+        if (pageIndex !== -1) {
+          console.error('TODO, implement me');
+          // state.book.pages = state.book.pages.map((page, index) => {
+          //   if (index === pageIndex) {
+          //     return {
+          //       ...page,
+          //       elements: page.elements.filter(
+          //         (el) => el.elementId !== elementId
+          //       ),
+          //     };
+          //   }
+          //   return page;
+          // });
+          // state.areLocalUpdatesSaved = false;
+        }
+      }
+    );
+
+    /**
      * removeElementByPageIdAndElementId
      */
     builder.addCase(
