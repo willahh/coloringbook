@@ -33,7 +33,7 @@ export const saveBookAction = createAsyncThunk<
     book: Book;
   }
 >('BOOKS/BOOKS_SAVE_BOOK', async ({ bookId, book }) => {
-  const savedBook = await APIService.updateBook(bookId, book);
+  const savedBook = await APIService.saveBook(bookId, book);
 
   return savedBook;
 });

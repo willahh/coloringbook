@@ -1,3 +1,4 @@
+import pako from 'pako';
 import axios from 'axios';
 import { Book } from '@apptypes/book';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
@@ -12,11 +13,28 @@ class APIService {
     return response.data;
   }
 
+  static async saveBook(
+    bookId: number,
+    updateBookDTO: Partial<Book>
+  ): Promise<Book> {
+    const compressed = pako.gzip(JSON.stringify(updateBookDTO));
+    const response = await axios.patch<Book>(
+      `${getAPIURL()}/books/${bookId}`,
+      compressed,
+      {
+        headers: {
+          'Content-Encoding': 'gzip',
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    return response.data;
+  }
+
   static async updateBook(
     bookId: number,
     updateBookDTO: Partial<Book>
   ): Promise<Book> {
-    // const compressed = await gzip(JSON.stringify(updateBookDTO));
     const response = await axios.patch<Book>(
       `${getAPIURL()}/books/${bookId}`,
       updateBookDTO
