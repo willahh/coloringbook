@@ -1,6 +1,8 @@
 import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
 import { Element } from '@/common/types/book';
+import { useDispatch } from '@/common/store';
+import { updateElementByElementId } from '@/module/book/element/Element.action';
 
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;
@@ -11,7 +13,37 @@ class CanvasService {
 
   public set canvas(canvasInstance: fabric.Canvas | null) {
     this._canvas = canvasInstance;
+    if (this._canvas) {
+      this.registerEventListeners();
+    }
   }
+
+  private registerEventListeners() {
+    // TODO: Implémenter un dispatch Redux
+    
+    // const dispatch = useDispatch(); // FIXME !!!!!
+    // if (!this._canvas) return;
+
+    // this._canvas.on('object:modified', (event) => {
+    //   const target = event.target;
+    //   if (target && target.get('objet')) {
+    //     const element = target.get('objet');
+
+    //     // dispatch(
+    //     //   updateElementByElementId({
+    //     //     elementId: element.id,
+    //     //     pageId: pageId,
+    //     //     x: target.left ?? element.x,
+    //     //     y: target.top ?? element.y,
+    //     //     w: (target.scaleX ?? 1) * (element.w || target.width),
+    //     //     h: (target.scaleY ?? 1) * (element.h || target.height),
+    //     //   })
+    //     // );
+    //   }
+    // });
+  }
+
+
 
   applyViewportTransform = (
     canvas: fabric.Canvas & { lastPosX?: number; lastPosY?: number },
@@ -51,11 +83,12 @@ class CanvasService {
     return { x, y, scaleX, scaleY };
   }
 
-  async addElementToCanvas(element: Element) {
-    const offsetX = 0; // TODO
-    const pageWidth = 100; // TODO
-    const pageHeight = 100; // TODO
-    console.error('TODO get page width and page height and offset')
+  async addElementToCanvas(
+    element: Element,
+    offsetX: number,
+    pageWidth: number,
+    pageHeight: number
+  ) {
     const drawableElement = ElementFactory.createElement(
       element,
       offsetX,

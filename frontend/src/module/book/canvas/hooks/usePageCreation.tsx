@@ -1,7 +1,7 @@
 import { Page } from '@apptypes/book';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { ElementFactory } from '../../element/ElementFactory';
+import canvasService from '@/services/canvas.service';
 
 export const usePageCreation = (
   canvas: fabric.Canvas | null,
@@ -59,19 +59,21 @@ export const usePageCreation = (
           });
           canvas.add(rect);
 
-          // Create objects
+          // Create page elements
           page.elements.forEach(async (element) => {
-            const object = ElementFactory.createElement(
-              element,
-              offsetX,
-              pageWidth,
-              pageHeight
-            );
-            const fabricObject = await object?.getObject();
-            if (fabricObject) {
-              fabricObject.set('objet', element);
-              canvas.add(fabricObject);
-            }
+            canvasService.addElementToCanvas(element, offsetX, pageWidth, pageHeight);
+            // const drawableElement = ElementFactory.createElement(
+            //   element,
+            //   offsetX,
+            //   pageWidth,
+            //   pageHeight
+            // );
+            
+            // const fabricObject = await drawableElement.getObject();
+            // if (fabricObject) {
+            //   fabricObject.set('objet', element);
+            //   canvas.add(fabricObject);
+            // }
           });
         });
 

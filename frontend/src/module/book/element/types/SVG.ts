@@ -27,7 +27,50 @@ export class SVG implements DrawableElement {
       // Load from an inline svg
       const svgGroup = await fabric.loadSVGFromString(obj.attr.svgContent);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
+
+      // Calculer les dimensions originales du SVG
+      let originalWidth = 0;
+      let originalHeight = 0;
+      let minX = Infinity;
+      let minY = Infinity;
+      svgFabricObject.forEach((object) => {
+        if (object) {
+          const objectBounds = object.getBoundingRect();
+          const right = objectBounds.left + objectBounds.width;
+          const bottom = objectBounds.top + objectBounds.height;
+          originalWidth = Math.max(originalWidth, right);
+          originalHeight = Math.max(originalHeight, bottom);
+          minX = Math.min(minX, objectBounds.left);
+          minY = Math.min(minY, objectBounds.top);
+        }
+      });
+
+      // Calculer l'échelle pour remplir l'espace sans distorsion
+      const scaleX = obj.w / originalWidth;
+      const scaleY = obj.h / originalHeight;
+      const scale = Math.min(scaleX, scaleY); // On prend le plus petit pour conserver les proportions
+
+      // Appliquer l'échelle à chaque objet du groupe et ajuster leur position
+      svgGroup.objects.forEach((object) => {
+        if (object) {
+          const originalPos = object.getBoundingRect();
+          object.scaleX = scale;
+          object.scaleY = scale;
+          // Ajuster la position pour que le SVG commence à (0, 0)
+          object.left = (originalPos.left - minX) * scale;
+          object.top = (originalPos.top - minY) * scale;
+        }
+      });
+
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
+
+      // Ajuster la taille du groupe pour qu'il corresponde aux dimensions spécifiées
+      groupSVGElements.set({
+        width: obj.w,
+        height: obj.h,
+        left: 0,
+        top: 0,
+      });
     } else if (obj.attr.svgURL) {
       // Load from an url
       const url = getAPIURL() + '/image/' + obj.attr.svgURL;

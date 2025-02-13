@@ -127,10 +127,10 @@ const ElementContent: React.FC = () => {
                   const element = ElementService.createElement({
                     type: 'svg',
                     attr: { svgContent: svg.rawContent },
-                    h: 50,
-                    w: 50,
-                    x: 50,
-                    y: 50,
+                    h: 1,
+                    w: 1,
+                    x: 0,
+                    y: 0,
                   });
                   dispatch(
                     addElementToPage({ element: element, pageId: pageId })
