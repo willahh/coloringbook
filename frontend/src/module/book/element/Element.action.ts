@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Element } from '@apptypes/book';
-import canvasService from '@/services/canvas.service';
+// import canvasService from '@/services/canvas.service';
 
 /**
  * addElementToPage

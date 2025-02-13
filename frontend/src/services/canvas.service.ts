@@ -1,8 +1,8 @@
 import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
 import { Element } from '@/common/types/book';
-import { useDispatch } from '@/common/store';
-import { updateElementByElementId } from '@/module/book/element/Element.action';
+// import { useDispatch } from '@/common/store';
+// import { updateElementByElementId } from '@/module/book/element/Element.action';
 
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;

@@ -187,7 +187,7 @@ const slice = createSlice({
      */
     builder.addCase(
       elementActions.updateElementByElementId.fulfilled,
-      (state, { payload: { pageId, elementId } }) => {
+      (state, { payload: { pageId } }) => {
         const pageIndex = state.book.pages.findIndex(
           (p) => p.pageId === pageId
         );

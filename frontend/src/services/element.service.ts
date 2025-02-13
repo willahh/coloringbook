@@ -1,4 +1,3 @@
-import * as crypto from 'crypto';
 import { Book, Element } from '@apptypes/book';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { GraphicAssetType } from '@apptypes/graphic-asset-type.enum';

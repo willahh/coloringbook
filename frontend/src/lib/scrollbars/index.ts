@@ -30,7 +30,6 @@ export class Scrollbars {
   /** Horizontal scrollbar offset y */
   offsetY = 0;
 
-
   /** The scrollbar currently hit */
   private _bar?: { type: string; start: number; vpt: TMat2D };
   /** The current area that can hit the scrollbar */
@@ -121,7 +120,8 @@ export class Scrollbars {
         this.scrollSpace - this.lineWidth / 2,
         this.canvas.height -
           this.scrollbarSize -
-          this.scrollSpace - this.offsetY -
+          this.scrollSpace -
+          this.offsetY -
           this.lineWidth / 2,
         this.canvas.width - this.scrollSpace * 2 + this.lineWidth,
         this.scrollbarSize + this.lineWidth
@@ -196,7 +196,8 @@ export class Scrollbars {
       (w - width);
 
     const x = this.scrollSpace + left;
-    const y = this.canvas.height - this.scrollbarSize - this.scrollSpace - this.offsetY;
+    const y =
+      this.canvas.height - this.scrollbarSize - this.scrollSpace - this.offsetY;
     this._barViewport.left = x;
     this._barViewport.right = x + width;
     this._barViewport.sx = objectWidth / mapWidth;
