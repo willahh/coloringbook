@@ -31,6 +31,8 @@ export class SVG implements DrawableElement {
       // Calculer les dimensions originales du SVG
       let originalWidth = 0;
       let originalHeight = 0;
+      let minX = Infinity;
+      let minY = Infinity;
       svgFabricObject.forEach((object) => {
         if (object) {
           const objectBounds = object.getBoundingRect();
@@ -38,6 +40,8 @@ export class SVG implements DrawableElement {
           const bottom = objectBounds.top + objectBounds.height;
           originalWidth = Math.max(originalWidth, right);
           originalHeight = Math.max(originalHeight, bottom);
+          minX = Math.min(minX, objectBounds.left);
+          minY = Math.min(minY, objectBounds.top);
         }
       });
 
@@ -46,15 +50,15 @@ export class SVG implements DrawableElement {
       const scaleY = obj.h / originalHeight;
       const scale = Math.min(scaleX, scaleY); // On prend le plus petit pour conserver les proportions
 
-      // debugger;
-      // Appliquer l'échelle à chaque objet du groupe avant de le créer
+      // Appliquer l'échelle à chaque objet du groupe et ajuster leur position
       svgGroup.objects.forEach((object) => {
-        console.log('#01 object', object)
         if (object) {
+          const originalPos = object.getBoundingRect();
           object.scaleX = scale;
           object.scaleY = scale;
-        } else {
-          console.error('#01 error object:', object)
+          // Ajuster la position pour que le SVG commence à (0, 0)
+          object.left = (originalPos.left - minX) * scale;
+          object.top = (originalPos.top - minY) * scale;
         }
       });
 
