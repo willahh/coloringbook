@@ -13,6 +13,7 @@ export class SVG implements DrawableElement {
     relativeW: number,
     relativeH: number
   ) {
+    console.error('TODO: define pageWidth and pageHeight');
     const newObj = { ...obj };
     newObj.w = relativeW;
     newObj.h = relativeH;
@@ -27,7 +28,10 @@ export class SVG implements DrawableElement {
       // Load from an inline svg
       const svgGroup = await fabric.loadSVGFromString(obj.attr.svgContent);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
+
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
+      groupSVGElements.width = obj.w;
+      groupSVGElements.height = obj.h;
     } else if (obj.attr.svgURL) {
       // Load from an url
       const url = getAPIURL() + '/image/' + obj.attr.svgURL;

@@ -17,7 +17,7 @@ export const addElementToPage = createAsyncThunk<
 >('ELEMENT/ADD_ELEMENT_TO_PAGE', async ({ element, pageId }) => {
   console.log(`#01 ELEMENT/ADD_ELEMENT_TO_PAGE pageId: ${pageId}`);
 
-  canvasService.addElementToCanvas(element);
+  // canvasService.addElementToCanvas(element);
 
   return { element: element, pageId: pageId };
 });

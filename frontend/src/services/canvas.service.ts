@@ -51,11 +51,12 @@ class CanvasService {
     return { x, y, scaleX, scaleY };
   }
 
-  async addElementToCanvas(element: Element) {
-    const offsetX = 0; // TODO
-    const pageWidth = 100; // TODO
-    const pageHeight = 100; // TODO
-    console.error('TODO get page width and page height and offset')
+  async addElementToCanvas(
+    element: Element,
+    offsetX: number,
+    pageWidth: number,
+    pageHeight: number
+  ) {
     const drawableElement = ElementFactory.createElement(
       element,
       offsetX,
