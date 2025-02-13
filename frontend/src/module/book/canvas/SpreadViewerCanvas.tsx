@@ -34,6 +34,10 @@ import { usePageCreation } from './hooks/usePageCreation';
 import canvasService from '@/services/canvas.service';
 // import { useCanvasContext } from './hooks/useCanvasContext';
 import { PagesNavigation } from '../components/PagesNavigation';
+
+import { makeMouseWheel } from '@/lib/scrollbars/utils';
+import { Scrollbars } from '@/lib/scrollbars';
+
 interface SpreadCanvasProps {
   pageId: number;
   width?: number;
@@ -58,7 +62,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
   // Context
   const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
-  const canvasService = useRef(new canvasService(dispatch));
+  // const canvasService = useRef(new canvasService(dispatch));
 
   // State
   const canvasSize = useDimensions(
@@ -96,8 +100,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     (canvasElement: HTMLCanvasElement) => {
       const canvas = new fabric.Canvas(canvasElement, {
         height: canvasSize.height,
-        width: canvasSize.width,
-        selection: true,
+        width: canvasSize.width - 50,
+        selection: false,
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
@@ -116,66 +120,25 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       console.log('#10 reset canvas');
       setCanvas(canvas);
 
+      const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
+      canvas.on('mouse:wheel', mousewheel);
+
+      const scrollbar = new Scrollbars(canvas, {
+        fill: 'rgba(255,255,0,.5)',
+        stroke: 'rgba(0,0,255,.5)',
+        lineWidth: 5,
+        scrollbarSize: 8,
+        offsetY: 62, // Footer height
+      });
+
       return () => {
+        scrollbar.dispose();
+        canvas.off('mouse:wheel', mousewheel);
         canvas.dispose();
         fabricCanvasRef.current = null;
       };
     }
   }, [initCanvas, setCanvas, canvasSize, spreadPages]);
-
-  /**
-   * Canvas position and scale
-   */
-  // useEffect(() => {
-  //   if (fabricCanvasRef.current) {
-  //     // const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
-  //     //   canvasSize,
-  //     //   spreadSize
-  //     // );
-
-  //     // const x = position.x;
-  //     // const y = position.y;
-  //     // const scaleX = scale.scaleX;
-  //     // const scaleY = scale.scaleY;
-
-  //     const x = viewportTransform[4];
-  //     const y = viewportTransform[5];
-  //     // const scaleX = viewportTransform[0];
-  //     // const scaleY = viewportTransform[3];
-  //     // setPosition({ x: vpt[4], y: vpt[5] });
-  //     // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
-
-  //     console.log('#11 useEffect scale:', scale);
-  //     fabricCanvasRef.current.lastPosX = x;
-  //     fabricCanvasRef.current.lastPosY = y;
-  //     // fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
-  //     console.log('#10 assign viewportTransform', viewportTransform);
-  //     // fabricCanvasRef.current.viewportTransform = viewportTransform;
-
-  //     // canvasService.calculateCenteredSpread();
-  //   }
-  // }, [position, scale]);
-
-  /**
-   * Canvas position and scale
-   */
-  // useLayoutEffect(() => {
-  //   console.log(`#3.1 useLayoutEffect pageId has changed ! pageId: ${pageId}`);
-  //   if (fabricCanvasRef.current) {
-  //     const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
-  //       canvasSize,
-  //       spreadSize
-  //     );
-
-  //     fabricCanvasRef.current.lastPosX = x;
-  //     fabricCanvasRef.current.lastPosY = y;
-  //     fabricCanvasRef.current.viewportTransform = [scaleX, 0, 0, scaleY, x, y];
-  //   }
-  // }, [pages]);
-
-  // useEffect(() => {
-  //   console.log('#10 useEffect pageId changed to:', pageId);
-  // }, [pageId]);
 
   /**
    * Center the pages within the canvas when the page changes.
@@ -200,6 +163,29 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     }
   }, [spreadSize, pageId]);
 
+  // useEffect(() => {
+  //   if (!containerRef.current) return;
+
+  //   const container = containerRef.current;
+  //   const fabricCanvas = fabricCanvasRef.current;
+  //   if (!fabricCanvas) return;
+
+  //   const onScroll = () => {
+  //     const vpt = fabricCanvas.viewportTransform!;
+
+  //     if (!vpt) return;
+
+  //     vpt[4] = -container.scrollLeft;
+  //     vpt[5] = -container.scrollTop;
+  //     fabricCanvas.requestRenderAll();
+  //   };
+
+  //   container.addEventListener('scroll', onScroll);
+
+  //   return () => {
+  //     container.removeEventListener('scroll', onScroll);
+  //   };
+  // }, []);
   return (
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />
