@@ -13,7 +13,6 @@ export class SVG implements DrawableElement {
     relativeW: number,
     relativeH: number
   ) {
-    console.error('TODO: define pageWidth and pageHeight');
     const newObj = { ...obj };
     newObj.w = relativeW;
     newObj.h = relativeH;
@@ -29,9 +28,45 @@ export class SVG implements DrawableElement {
       const svgGroup = await fabric.loadSVGFromString(obj.attr.svgContent);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
 
+      // Calculer les dimensions originales du SVG
+      let originalWidth = 0;
+      let originalHeight = 0;
+      svgFabricObject.forEach((object) => {
+        if (object) {
+          const objectBounds = object.getBoundingRect();
+          const right = objectBounds.left + objectBounds.width;
+          const bottom = objectBounds.top + objectBounds.height;
+          originalWidth = Math.max(originalWidth, right);
+          originalHeight = Math.max(originalHeight, bottom);
+        }
+      });
+
+      // Calculer l'échelle pour remplir l'espace sans distorsion
+      const scaleX = obj.w / originalWidth;
+      const scaleY = obj.h / originalHeight;
+      const scale = Math.min(scaleX, scaleY); // On prend le plus petit pour conserver les proportions
+
+      // debugger;
+      // Appliquer l'échelle à chaque objet du groupe avant de le créer
+      svgGroup.objects.forEach((object) => {
+        console.log('#01 object', object)
+        if (object) {
+          object.scaleX = scale;
+          object.scaleY = scale;
+        } else {
+          console.error('#01 error object:', object)
+        }
+      });
+
       groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
-      groupSVGElements.width = obj.w;
-      groupSVGElements.height = obj.h;
+
+      // Ajuster la taille du groupe pour qu'il corresponde aux dimensions spécifiées
+      groupSVGElements.set({
+        width: obj.w,
+        height: obj.h,
+        left: 0,
+        top: 0,
+      });
     } else if (obj.attr.svgURL) {
       // Load from an url
       const url = getAPIURL() + '/image/' + obj.attr.svgURL;
