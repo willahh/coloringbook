@@ -1,23 +1,20 @@
-import React, { useRef, useEffect, useCallback, useContext } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router';
 import * as fabric from 'fabric';
-// import { BookContext } from '../Book.context';
+import { makeMouseWheel } from '@/lib/scrollbars/utils';
+
 import { Page } from '@apptypes/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
-import { usePageSpread } from './hooks/usePageSpread';
 import { usePageCreation } from './hooks/usePageCreation';
 import canvasService from '@/services/canvas.service';
-// import { useCanvasContext } from './hooks/useCanvasContext';
 import { PagesNavigation } from '../components/PagesNavigation';
 
-import { makeMouseWheel } from '@/lib/scrollbars/utils';
 import { Scrollbars } from '@/lib/scrollbars';
 import useCanvasContext from '../useCanvasContext';
 import { BookPageParams } from '@/common/interfaces';
-// interface CanvasState {
-//   viewportTransform: fabric.TMat2D;
-// }
+import { BookService } from '@/services/book.service';
+
 interface SpreadCanvasProps {
   pageId: number;
   width?: number;
@@ -36,17 +33,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const pageParams = useParams<BookPageParams>();
   const { setCanvas } = useCanvasContext();
 
-  // const { position, scale, viewportTransform } = useCanvasContext();
-
   // Ref
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-
-  // Context
-  // const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
-
-  // const canvasService = useRef(new canvasService(dispatch));
 
   // State
   const canvasSize = useDimensions(
@@ -56,7 +46,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   );
 
   // Process
-  const { spreadPages } = usePageSpread(pages, pageParams);
+  const spreadPages = React.useMemo(() => {
+    const newPages = BookService.getPageSpread(pageParams, pages);
+    return newPages;
+  }, [pageParams, pages]);
 
   useEventHandlers(fabricCanvasRef.current);
 

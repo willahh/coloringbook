@@ -20,15 +20,12 @@ class CanvasService {
 
   private registerEventListeners() {
     // TODO: Implémenter un dispatch Redux
-    
     // const dispatch = useDispatch(); // FIXME !!!!!
     // if (!this._canvas) return;
-
     // this._canvas.on('object:modified', (event) => {
     //   const target = event.target;
     //   if (target && target.get('objet')) {
     //     const element = target.get('objet');
-
     //     // dispatch(
     //     //   updateElementByElementId({
     //     //     elementId: element.id,
@@ -43,7 +40,76 @@ class CanvasService {
     // });
   }
 
+  drawPagesElementsAndMask(canvas: fabric.Canvas) {
+    if (canvas) {
+      if (canvas && canvas.getWidth() > 400) {
+        console.info('#001 CANVAS UPDATE PAGES AND OBJECTS');
+        const canvasBorder = 16;
+        const newSpreadSize = { width: 0, height: 0 };
 
+        spreadPages.forEach((page, index) => {
+          const fitPageHeight =
+            page.aspectRatio.width > page.aspectRatio.height ||
+            dimensions.width > dimensions.height;
+          let pageWidth = 0;
+          let pageHeight = 0;
+
+          if (fitPageHeight) {
+            pageHeight = dimensions.height - canvasBorder * 2;
+            pageWidth =
+              pageHeight * (page.aspectRatio.width / page.aspectRatio.height) -
+              canvasBorder * 2;
+          } else {
+            pageWidth = dimensions.width - canvasBorder * 2;
+            pageHeight =
+              pageWidth * (page.aspectRatio.height / page.aspectRatio.width) -
+              canvasBorder * 2;
+          }
+
+          const offsetX = index * pageWidth;
+          newSpreadSize.width += pageWidth;
+          newSpreadSize.height = Math.max(newSpreadSize.height, pageHeight);
+
+          const rect = new fabric.Rect({
+            width: pageWidth,
+            height: pageHeight,
+            left: offsetX,
+            top: 0,
+            fill: 'white',
+            selectable: false,
+            shadow: new fabric.Shadow({
+              color: 'rgba(0, 0, 0, .4)',
+              nonScaling: true,
+              blur: 8,
+              offsetX: 2,
+              offsetY: 2,
+            }),
+          });
+          canvas.add(rect);
+
+          // Create page elements
+          page.elements.forEach(async (element) => {
+            canvasService.addElementToCanvas(
+              element,
+              offsetX,
+              pageWidth,
+              pageHeight
+            );
+          });
+        });
+
+        // Create mask
+        const mask = new fabric.Rect({
+          width: newSpreadSize.width + canvasBorder,
+          height: newSpreadSize.height + canvasBorder,
+          left: -(canvasBorder / 2),
+          top: -(canvasBorder / 2),
+        });
+        canvas.clipPath = mask;
+        setSpreadSize(newSpreadSize);
+      }
+    }
+  }
 
   applyViewportTransform = (
     canvas: fabric.Canvas & { lastPosX?: number; lastPosY?: number },
