@@ -8,12 +8,17 @@ interface CanvasContextType {
     fabric.TMat2D,
     React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ];
+  spreadSizeState: [
+    { width: number; height: number },
+    React.Dispatch<React.SetStateAction<{ width: number; height: number }>>
+  ];
 }
 
 export const CanvasContext = React.createContext<CanvasContextType>({
   canvas: null,
   setCanvas: () => {},
   canvasTransform: [[0, 0, 0, 0, 0, 0], () => {}],
+  spreadSizeState: [{ width: 0, height: 0 }, () => {}],
 });
 
 export const CanvasProvider: React.FC<{
@@ -21,6 +26,10 @@ export const CanvasProvider: React.FC<{
 }> = ({ children }) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
   const canvasTransform = useState<fabric.TMat2D>([0, 0, 0, 0, 0, 0]);
+  const spreadSizeState = useState<{
+    width: number;
+    height: number;
+  }>({ width: 0, height: 0 });
 
   return (
     <CanvasContext.Provider
@@ -28,6 +37,7 @@ export const CanvasProvider: React.FC<{
         canvas,
         setCanvas,
         canvasTransform,
+        spreadSizeState,
       }}
     >
       {children}

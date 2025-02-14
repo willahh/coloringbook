@@ -1,6 +1,6 @@
 import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
-import { Element } from '@/common/types/book';
+import { Element, Page } from '@/common/types/book';
 // import { useDispatch } from '@/common/store';
 // import { updateElementByElementId } from '@/module/book/element/Element.action';
 
@@ -40,7 +40,11 @@ class CanvasService {
     // });
   }
 
-  drawPagesElementsAndMask(canvas: fabric.Canvas) {
+  drawPagesElementsAndMask(
+    canvas: fabric.Canvas,
+    spreadPages: Page[],
+    dimensions: { width: number; height: number }
+  ) {
     if (canvas) {
       if (canvas && canvas.getWidth() > 400) {
         console.info('#001 CANVAS UPDATE PAGES AND OBJECTS');
@@ -106,7 +110,7 @@ class CanvasService {
           top: -(canvasBorder / 2),
         });
         canvas.clipPath = mask;
-        setSpreadSize(newSpreadSize);
+        return newSpreadSize;
       }
     }
   }
