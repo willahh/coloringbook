@@ -13,7 +13,7 @@ declare module 'fabric' {
 export const handleMouseWheel =
   (
     canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+    // setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
@@ -27,11 +27,11 @@ export const handleMouseWheel =
     // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
     // if (setScale) {
 
-    setTimeout(() => {
-      setViewportTransform([...canvas.viewportTransform]);
-      // setPosition({ x: vpt[4], y: vpt[5] });
-      // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
-    }, 1000);
+    // setTimeout(() => {
+    //   setViewportTransform([...canvas.viewportTransform]);
+    //   // setPosition({ x: vpt[4], y: vpt[5] });
+    //   // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
+    // }, 1000);
     // } else {
     //   console.error('setScale is undefined');
     // }
@@ -103,7 +103,7 @@ export const handleMouseMove =
 export const handleMouseUp =
   (
     canvas: fabric.Canvas,
-    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+    // setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   () => {
     canvas.setViewportTransform(canvas.viewportTransform);
@@ -112,7 +112,7 @@ export const handleMouseUp =
     canvas.defaultCursor = 'default';
 
     if (canvas.lastPosX && canvas.lastPosY) {
-      setViewportTransform([...canvas.viewportTransform]);
+      // setViewportTransform([...canvas.viewportTransform]);
       // if (setPosition) {
       //   console.log('#3.1 call setPosition');
       //   const vpt = canvas.viewportTransform;

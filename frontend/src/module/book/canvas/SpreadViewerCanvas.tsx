@@ -1,31 +1,7 @@
-/**
- * SpreadViewerCanvas component is responsible for rendering a fabric.js canvas
- * within a resizable container. It initializes the canvas, sets up event handlers,
- * and manages the dimensions of the canvas based on the container size.
- *
- * @component
- * @example
- * return (
- *   <SpreadViewerCanvas width={800} height={600} />
- * )
- *
- * @param {Object} props - Component props
- * @param {number} [props.width] - Optional width of the canvas
- * @param {number} [props.height] - Optional height of the canvas
- *
- * @returns {JSX.Element} The rendered SpreadViewerCanvas component
- *
- * @remarks
- * This component uses the `fabric` library to create and manage the canvas.
- * It also uses `lodash` for debouncing the resize event handler.
- *
- * @see {@link https://github.com/fabricjs/fabric.js/|fabric.js}
- * @see {@link https://lodash.com/docs/4.17.15#debounce|lodash.debounce}
- */
-
 import React, { useRef, useEffect, useCallback, useContext } from 'react';
+import { useParams } from 'react-router';
 import * as fabric from 'fabric';
-import { BookContext } from '../Book.context';
+// import { BookContext } from '../Book.context';
 import { Page } from '@apptypes/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
@@ -37,7 +13,11 @@ import { PagesNavigation } from '../components/PagesNavigation';
 
 import { makeMouseWheel } from '@/lib/scrollbars/utils';
 import { Scrollbars } from '@/lib/scrollbars';
-
+import useBookContext from '../useBookContext';
+import { BookPageParams } from '@/common/interfaces';
+// interface CanvasState {
+//   viewportTransform: fabric.TMat2D;
+// }
 interface SpreadCanvasProps {
   pageId: number;
   width?: number;
@@ -53,6 +33,9 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
+  const pageParams = useParams<BookPageParams>();
+  const { setCanvas } = useBookContext();
+
   // const { position, scale, viewportTransform } = useCanvasContext();
 
   // Ref
@@ -61,7 +44,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Context
-  const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
+  // const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
+  
   // const canvasService = useRef(new canvasService(dispatch));
 
   // State
@@ -75,6 +59,20 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const { spreadPages } = usePageSpread(pages, pageParams);
 
   useEventHandlers(fabricCanvasRef.current);
+
+  // const saveCanvasState = (canvas: fabric.Canvas): CanvasState => {
+  //   console.log('#001 saveCanvasState', '=>', { ...canvas.viewportTransform });
+  //   // TODO use context data
+  //   return { viewportTransform: { ...canvas.viewportTransform } };
+  // };
+
+  // const restoreCanvasState = (
+  //   canvas: fabric.Canvas,
+  //   canvasState: CanvasState
+  // ) => {
+  //   console.log('#001 restoreCanvasState', canvasState.viewportTransform);
+  //   canvas.setViewportTransform(canvasState.viewportTransform);
+  // };
 
   /**
    * [Pages init].
@@ -98,6 +96,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
    */
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
+      console.info('#001 CANVAS INIT');
       const canvas = new fabric.Canvas(canvasElement, {
         height: canvasSize.height,
         width: canvasSize.width - 50,
@@ -110,13 +109,22 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     },
     [canvasSize, sidePanelWidth, pagesPanelWidth]
   );
+
+  /**
+   * [Canvas reset]
+   */
   useEffect(() => {
     if (canvasRef.current) {
+      console.info('#001 CANVAS RESET');
       fabricCanvasRef.current = initCanvas(canvasRef.current);
       const canvas = fabricCanvasRef.current as fabric.Canvas & {
         lastPosX?: number;
         lastPosY?: number;
       };
+      // const canvasState = saveCanvasState(canvas);
+      // setTimeout(() => {
+      //   restoreCanvasState(canvasState);
+      // }, 500);
       console.log('#10 reset canvas');
       setCanvas(canvas);
 
@@ -163,29 +171,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     }
   }, [spreadSize, pageId]);
 
-  // useEffect(() => {
-  //   if (!containerRef.current) return;
-
-  //   const container = containerRef.current;
-  //   const fabricCanvas = fabricCanvasRef.current;
-  //   if (!fabricCanvas) return;
-
-  //   const onScroll = () => {
-  //     const vpt = fabricCanvas.viewportTransform!;
-
-  //     if (!vpt) return;
-
-  //     vpt[4] = -container.scrollLeft;
-  //     vpt[5] = -container.scrollTop;
-  //     fabricCanvas.requestRenderAll();
-  //   };
-
-  //   container.addEventListener('scroll', onScroll);
-
-  //   return () => {
-  //     container.removeEventListener('scroll', onScroll);
-  //   };
-  // }, []);
   return (
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />

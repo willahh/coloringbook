@@ -12,33 +12,33 @@ import {
   handleDocumentKeyUp,
 } from '../canvas.events';
 
-import { useCanvasContext } from './useCanvasContext';
+// import { useCanvasContext } from './useCanvasContext';
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
-  const { position, scale, setPosition, setScale, setViewportTransform } =
-    useCanvasContext();
+  // const { position, scale, setPosition, setScale } =
+  //   useCanvasContext();
 
   useEffect(() => {
     if (canvas) {
       const eventHandlers = {
         'mouse:wheel': handleMouseWheel(
           canvas,
-          setViewportTransform,
-          setPosition,
-          setScale
+          // setViewportTransform,
+          // setPosition,
+          // setScale
         ),
         'mouse:over': handleMouseOver(canvas),
         'mouse:out': handleMouseOut(canvas),
         'mouse:down': handleMouseDown(
           canvas,
-          setViewportTransform,
-          setPosition
+          // setViewportTransform,
+          // setPosition
         ),
         'mouse:move': handleMouseMove(
           canvas,
-          setViewportTransform,
-          setPosition
+          // setViewportTransform,
+          // setPosition
         ),
-        'mouse:up': handleMouseUp(canvas, setPosition),
+        'mouse:up': handleMouseUp(canvas),
         'selection:created': (e: fabric.ObjectEvents) =>
           console.log('Selected:', e.selected),
         'selection:updated': (e: fabric.ObjectEvents) =>

@@ -16,6 +16,7 @@ export const usePageCreation = (
   useEffect(() => {
     if (canvas) {
       if (canvas && canvas.getWidth() > 400) {
+        console.info('#001 CANVAS UPDATE PAGES AND OBJECTS')
         const canvasBorder = 16;
         const newSpreadSize = { width: 0, height: 0 };
 
@@ -62,18 +63,7 @@ export const usePageCreation = (
           // Create page elements
           page.elements.forEach(async (element) => {
             canvasService.addElementToCanvas(element, offsetX, pageWidth, pageHeight);
-            // const drawableElement = ElementFactory.createElement(
-            //   element,
-            //   offsetX,
-            //   pageWidth,
-            //   pageHeight
-            // );
             
-            // const fabricObject = await drawableElement.getObject();
-            // if (fabricObject) {
-            //   fabricObject.set('objet', element);
-            //   canvas.add(fabricObject);
-            // }
           });
         });
 

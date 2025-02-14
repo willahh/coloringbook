@@ -1,16 +1,16 @@
+import { useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
+import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+
 import type { Page } from '@apptypes/book';
-import { useContext, useEffect } from 'react';
-import { BookContext } from '../../Book.context';
-import { Link } from 'react-router-dom';
 import { BookService } from '@/services/book.service';
 import { ToolbarButton } from '../ToolbarButton';
-import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 import { useDispatch } from '@/common/store';
-import * as BookActions from '../../Book.actions';
 import { PageService } from '@/services/page.service';
-import { useParams } from 'react-router';
+import * as BookActions from '../../Book.actions';
+import { BookPageParams } from '@/common/interfaces';
 
 interface PageComponentProps {
   bookId: number;
@@ -112,9 +112,8 @@ interface PagesProps {
 }
 
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
-  const {
-    pageParams: { pageId, bookId },
-  } = useContext(BookContext);
+  const { bookId, pageId } = useParams<BookPageParams>();
+
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
   let spreads: Page[][] = [];

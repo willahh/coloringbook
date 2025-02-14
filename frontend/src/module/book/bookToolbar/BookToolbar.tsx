@@ -7,11 +7,13 @@ import {
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from '../components/ToolbarButton';
 import { bookService } from '@/services/book.service';
-import { BookContext } from '../Book.context';
-import { useContext } from 'react';
+// import { BookContext } from '../Book.context';
+import useBookContext from '../useBookContext';
+// import { useContext } from 'react';
 
 const BookToolbar: React.FC = () => {
-  const { canvas } = useContext(BookContext);
+  // const { canvas } = useContext(BookContext);
+  const { canvas } = useBookContext();
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,
@@ -19,9 +21,11 @@ const BookToolbar: React.FC = () => {
 
   return (
     <div>
-      <div className={`flex flex-col relative h-full z-20  justify-center gap-4
+      <div
+        className={`flex flex-col relative h-full z-20  justify-center gap-4
          bg-primary-50 dark:bg-primary-950
-         border-r border-primary-100 dark:border-primary-900 `}>
+         border-r border-primary-100 dark:border-primary-900 `}
+      >
         <div>
           <ToolbarButton tooltipContent="Save">
             <ArrowDownOnSquareStackIcon {...iconProps} />
