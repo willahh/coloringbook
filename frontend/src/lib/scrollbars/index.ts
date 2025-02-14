@@ -159,7 +159,6 @@ export class Scrollbars {
     mapRect: ScrollbarProps,
     objectRect: ScrollbarProps
   ) {
-    console.log('#0q render');
     ctx.save();
     ctx.fillStyle = this.fill;
     ctx.strokeStyle = this.stroke;
@@ -177,10 +176,8 @@ export class Scrollbars {
     mapRect: ScrollbarXProps,
     objectRect: ScrollbarXProps
   ) {
-    console.log('#0q drawScrollbarX');
     const mapWidth = mapRect.right - mapRect.left;
     const objectWidth = objectRect.right - objectRect.left;
-    console.log('#0q mapWidth', mapWidth, 'objectWidth:', objectWidth);
     if (mapWidth == objectWidth) {
       this._barViewport.left = 1;
       this._barViewport.right = -1;
@@ -201,18 +198,7 @@ export class Scrollbars {
     this._barViewport.left = x;
     this._barViewport.right = x + width;
     this._barViewport.sx = objectWidth / mapWidth;
-    console.log(
-      '#0q width',
-      width,
-      'x:',
-      x,
-      'y:',
-      y,
-      'w:',
-      width,
-      'h:',
-      this.scrollbarSize
-    );
+   
     this.drawRect(ctx, {
       x,
       y,
@@ -225,7 +211,6 @@ export class Scrollbars {
     mapRect: ScrollbarYProps,
     objectRect: ScrollbarYProps
   ) {
-    console.log('#0q drawScrollbarY');
     const mapHeight = mapRect.bottom - mapRect.top;
     const objectHeight = objectRect.bottom - objectRect.top;
     if (mapHeight == objectHeight) {
@@ -247,16 +232,7 @@ export class Scrollbars {
     this._barViewport.top = y;
     this._barViewport.bottom = y + height;
     this._barViewport.sy = objectHeight / mapHeight;
-    console.log(
-      '#0q width',
-      this.scrollbarSize,
-      'x:',
-      x,
-      'y:',
-      y,
-      'h:',
-      height
-    );
+    
     this.drawRect(ctx, {
       x,
       y,

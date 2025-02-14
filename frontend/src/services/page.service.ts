@@ -24,8 +24,6 @@ export class PageService {
     return page;
   }
 
-  
-
   public static addPage(p_oBookData: Book, p_oPage: Page): Book {
     const page: Page = { ...p_oPage };
     p_oBookData.pages = [...p_oBookData.pages];

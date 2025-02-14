@@ -4,40 +4,34 @@ import * as fabric from 'fabric';
 interface CanvasContextType {
   canvas: fabric.Canvas | null;
   setCanvas: React.Dispatch<React.SetStateAction<fabric.Canvas | null>>;
-  canvasTransform: [
-    fabric.TMat2D,
-    React.Dispatch<React.SetStateAction<fabric.TMat2D>>
-  ];
-  spreadSizeState: [
-    { width: number; height: number },
-    React.Dispatch<React.SetStateAction<{ width: number; height: number }>>
-  ];
+
+  viewportTransform?: fabric.TMat2D;
+  setViewportTransform: React.Dispatch<
+    React.SetStateAction<fabric.TMat2D | undefined>
+  >;
 }
 
 export const CanvasContext = React.createContext<CanvasContextType>({
   canvas: null,
   setCanvas: () => {},
-  canvasTransform: [[0, 0, 0, 0, 0, 0], () => {}],
-  spreadSizeState: [{ width: 0, height: 0 }, () => {}],
+
+  // viewportTransform: null,
+  setViewportTransform: () => {},
 });
 
 export const CanvasProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const [canvas, setCanvas] = useState<fabric.Canvas | null>(null);
-  const canvasTransform = useState<fabric.TMat2D>([0, 0, 0, 0, 0, 0]);
-  const spreadSizeState = useState<{
-    width: number;
-    height: number;
-  }>({ width: 0, height: 0 });
+  const [viewportTransform, setViewportTransform] = useState<fabric.TMat2D>();
 
   return (
     <CanvasContext.Provider
       value={{
         canvas,
         setCanvas,
-        canvasTransform,
-        spreadSizeState,
+        viewportTransform,
+        setViewportTransform,
       }}
     >
       {children}

@@ -19,10 +19,6 @@ export class ElementFactory {
     const relativeW = element.w * pageWidth;
     const relativeH = element.h * pageHeight;
 
-    console.log('#01 offsetX', offsetX)
-    console.log('#01 pageWidth', pageWidth)
-    console.log('#01 element.w', element.w)
-
     switch (element.type) {
       case 'rectangle':
         return new Rectangle(

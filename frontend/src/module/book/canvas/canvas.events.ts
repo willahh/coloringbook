@@ -13,7 +13,7 @@ declare module 'fabric' {
 export const handleMouseWheel =
   (
     canvas: fabric.Canvas,
-    // setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
@@ -22,6 +22,8 @@ export const handleMouseWheel =
     if (zoom > 20) zoom = 20;
     if (zoom < 0.01) zoom = 0.01;
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
+    
+    setViewportTransform([...canvas.viewportTransform]);
     // const scaleX = canvas.viewportTransform[0];
     // const scaleY = canvas.viewportTransform[3];
     // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
@@ -103,24 +105,26 @@ export const handleMouseMove =
 export const handleMouseUp =
   (
     canvas: fabric.Canvas,
-    // setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
+    setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   () => {
     canvas.setViewportTransform(canvas.viewportTransform);
+    
+    setViewportTransform([...canvas.viewportTransform]);
     canvas.isDragging = false;
     canvas.selection = true;
     canvas.defaultCursor = 'default';
 
-    if (canvas.lastPosX && canvas.lastPosY) {
-      // setViewportTransform([...canvas.viewportTransform]);
-      // if (setPosition) {
-      //   console.log('#3.1 call setPosition');
-      //   const vpt = canvas.viewportTransform;
-      //   setPosition({ x: vpt[4], y: vpt[5] });
-      // } else {
-      //   console.error('setPosition is undefined');
-      // }
-    }
+    // if (canvas.lastPosX && canvas.lastPosY) {
+    //   // setViewportTransform([...canvas.viewportTransform]);
+    //   // if (setPosition) {
+    //   //   console.log('#3.1 call setPosition');
+    //   //   const vpt = canvas.viewportTransform;
+    //   //   setPosition({ x: vpt[4], y: vpt[5] });
+    //   // } else {
+    //   //   console.error('setPosition is undefined');
+    //   // }
+    // }
   };
 
 export const handleDocumentKeyDown =
