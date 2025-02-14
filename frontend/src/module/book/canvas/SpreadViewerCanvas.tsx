@@ -13,7 +13,7 @@ import { PagesNavigation } from '../components/PagesNavigation';
 
 import { makeMouseWheel } from '@/lib/scrollbars/utils';
 import { Scrollbars } from '@/lib/scrollbars';
-import useBookContext from '../useBookContext';
+import useCanvasContext from '../useCanvasContext';
 import { BookPageParams } from '@/common/interfaces';
 // interface CanvasState {
 //   viewportTransform: fabric.TMat2D;
@@ -34,7 +34,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
-  const { setCanvas } = useBookContext();
+  const { setCanvas } = useCanvasContext();
 
   // const { position, scale, viewportTransform } = useCanvasContext();
 
@@ -45,7 +45,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
   // Context
   // const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
-  
+
   // const canvasService = useRef(new canvasService(dispatch));
 
   // State

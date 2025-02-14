@@ -1,11 +1,11 @@
 import { useContext } from 'react';
-import { BookContext } from './Book.context';
+import { CanvasContext } from './Canvas.context';
 
-const useBookContext = () => {
-  const context = useContext(BookContext);
+const useCanvasContext = () => {
+  const context = useContext(CanvasContext);
   if (context === undefined) {
     throw new Error('useBookContext must be used within a BookProvider');
   }
   return context;
 };
-export default useBookContext;
+export default useCanvasContext;

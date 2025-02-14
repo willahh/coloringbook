@@ -7,13 +7,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { ToolbarButton } from '../components/ToolbarButton';
 import { bookService } from '@/services/book.service';
-// import { BookContext } from '../Book.context';
-import useBookContext from '../useBookContext';
-// import { useContext } from 'react';
+import useCanvasContext from '../useCanvasContext';
 
 const BookToolbar: React.FC = () => {
-  // const { canvas } = useContext(BookContext);
-  const { canvas } = useBookContext();
+  const { canvas } = useCanvasContext();
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,

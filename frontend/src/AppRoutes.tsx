@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import BookPage from './module/book/Book';
 import HomePage from './module/home/Home';
-import { BookProvider } from './module/book/Book.context';
+import { CanvasProvider } from './module/book/Canvas.context';
 
 const AppRoutes: React.FC = () => (
   <Routes>
@@ -10,17 +10,17 @@ const AppRoutes: React.FC = () => (
     <Route
       path="book/:bookId"
       element={
-        <BookProvider>
+        <CanvasProvider>
           <BookPage />
-        </BookProvider>
+        </CanvasProvider>
       }
     />
     <Route
       path="book/:bookId/pages/:pageId"
       element={
-        <BookProvider>
+        <CanvasProvider>
           <BookPage />
-        </BookProvider>
+        </CanvasProvider>
       }
     />
   </Routes>

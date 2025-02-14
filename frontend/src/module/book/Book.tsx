@@ -10,7 +10,7 @@ import BookHeader from './components/BookHeader';
 import * as bookActions from './Book.actions';
 import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/PagesPanel';
-import { CanvasProvider } from './canvas/canvas.context';
+// import { CanvasProvider } from './canvas/canvas.context';
 import BookToolbar from './bookToolbar/BookToolbar';
 
 const BookPage: React.FC = () => {
@@ -77,14 +77,14 @@ const BookPage: React.FC = () => {
         <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
           {book.pages.length > 0 && (
-            <CanvasProvider>
-              <SpreadViewerCanvas
-                pageId={pageId}
-                pages={book.pages}
-                sidePanelWidth={sidePanelWidth}
-                pagesPanelWidth={pagesPanelWidth}
-              />
-            </CanvasProvider>
+            // <CanvasProvider>
+            <SpreadViewerCanvas
+              pageId={pageId}
+              pages={book.pages}
+              sidePanelWidth={sidePanelWidth}
+              pagesPanelWidth={pagesPanelWidth}
+            />
+            // </CanvasProvider>
           )}
           {/* <SpreadToolbar /> */}
         </main>

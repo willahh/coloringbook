@@ -13,7 +13,7 @@ import { ToolbarButton } from './ToolbarButton';
 import { useSelector } from '@/common/store';
 import { selectBook } from '../Book.slice';
 import { useParams } from 'react-router';
-import useBookContext from '../useBookContext';
+import useCanvasContext from '../useCanvasContext';
 
 const iconProps = {
   className: 'w-12 h-12',
@@ -24,7 +24,7 @@ export const SpreadToolbar: React.FC<{
   className?: string;
   children?: React.ReactNode;
 }> = () => {
-  const { canvas } = useBookContext();
+  const { canvas } = useCanvasContext();
   const { book } = useSelector(selectBook);
   const { pageId } = useParams<{ pageId?: string }>();
   const totalPages = book.pages.length;
