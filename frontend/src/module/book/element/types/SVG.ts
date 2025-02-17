@@ -22,6 +22,7 @@ export class SVG implements DrawableElement {
   }
 
   private async createSVG(obj: SVGElement): Promise<fabric.FabricObject> {
+    console.log('#02 createSVG');
     let groupSVGElements: fabric.FabricObject | null = null;
     if (obj.attr.svgContent) {
       // Load from an inline svg
@@ -62,7 +63,24 @@ export class SVG implements DrawableElement {
         }
       });
 
-      groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
+      const groupProps: Partial<fabric.GroupProps> = {
+        cornerColor: '#f43f5e',
+        borderColor: '#f43f5e',
+        cornerStrokeColor: 'red',
+        cornerSize: 10,
+
+        cornerStyle: 'circle',
+        borderScaleFactor: 2,
+
+        borderDashArray: null,
+        transparentCorners: false,
+
+        // globalCompositeOperation: {}
+      };
+      groupSVGElements = fabric.util.groupSVGElements(
+        svgFabricObject,
+        groupProps
+      );
 
       // Ajuster la taille du groupe pour qu'il corresponde aux dimensions spécifiées
       groupSVGElements.set({

@@ -25,6 +25,7 @@ class CanvasService {
     dimensions: { width: number; height: number }
   ) {
     if (canvas) {
+      let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 20) {
         console.info('#001 CANVAS DRAW PAGES AND OBJECTS');
         const canvasBorder = 16;
@@ -71,16 +72,36 @@ class CanvasService {
           });
           canvas.add(rect);
 
+          // TODO, gérer la sauvegarde de la sélection ICI
+
           // Create page elements
+
           page.elements.forEach(async (element) => {
-            canvasService.addElementToCanvas(
+            const fabricObject = await canvasService.addElementToCanvas(
               page.pageId,
               element,
               offsetX,
               pageWidth,
               pageHeight
             );
+            console.log('#02 fabricObject', fabricObject);
+            if (fabricObject) {
+              activeFabricObject = fabricObject;
+              console.log('#02 set activeFabricObject', activeFabricObject);
+            }
           });
+
+          console.log('#02 => activeFabricObject', activeFabricObject);
+
+          // canvas.getObjects()
+
+          // await selectedActiveObject
+          // console.log('#02 selectedActiveObject', selectedActiveObject);
+
+          if (activeFabricObject) {
+            canvas.setActiveObject(activeFabricObject);
+            // debugger;
+          }
         });
 
         // Create mask
@@ -153,7 +174,7 @@ class CanvasService {
     offsetX: number,
     pageWidth: number,
     pageHeight: number
-  ) {
+  ): Promise<fabric.FabricObject> {
     const drawableElement = ElementFactory.createElement(
       element,
       offsetX,
@@ -166,6 +187,7 @@ class CanvasService {
       fabricObject.set('pageId', pageId);
       this.canvas.add(fabricObject);
     }
+    return fabricObject;
   }
 }
 

@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from '@/common/store';
 import { selectBook } from '../../Book.slice';
 import canvasService from '@/services/canvas.service';
 import { updateElementByElementId } from '../../element/Element.action';
-import { ElementService } from '@/services/element.service';
 
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   const dispatch = useDispatch();
@@ -29,11 +28,12 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
     if (canvas) {
       const eventHandlers = {
         'mouse:wheel': handleMouseWheel(canvas, setViewportTransform),
-        'mouse:over': handleMouseOver(canvas),
-        'mouse:out': handleMouseOut(canvas),
         'mouse:down': handleMouseDown(canvas),
         'mouse:move': handleMouseMove(canvas),
         'mouse:up': handleMouseUp(canvas, setViewportTransform),
+
+        'mouse:over': handleMouseOver(canvas),
+        'mouse:out': handleMouseOut(canvas),
         'selection:created': (e: fabric.ObjectEvents) =>
           console.log('Selected:', e.selected),
         'selection:updated': (e: fabric.ObjectEvents) =>
@@ -45,25 +45,24 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
       Object.entries(eventHandlers).forEach(([event, handler]) => {
         canvas.on(event as keyof fabric.CanvasEvents, handler); // @ts-nocheck
       });
+      // canvas.on('mouse:over', (e: fabric.TPointerEventInfo) => {
+      //   if (e.target) {
+      //     console.log('e.target', e.target);
+      //     // e.target.strokeBorders(2)
+      //     // e.target.set({
+
+      //     // });
+      //     canvas.requestRenderAll();
+      //   }
+      // });
       canvas.on('object:modified', (e: fabric.ModifiedEvent) => {
         console.log('#03 object:modified', e);
         const fabricObject: fabric.FabricObject = e.target;
         const element: Element = fabricObject.get('objet');
         if (element) {
-          console.log('fabricObject.getXY()', fabricObject.getXY());
-          console.log(
-            'fabricObject.getScaledWidth()',
-            fabricObject.getScaledWidth()
-          );
-          console.log(
-            'fabricObject.getRelativeXY()',
-            fabricObject.getRelativeXY()
-          );
-
           const pageId: number = fabricObject.get('pageId');
           const page = PageService.getPage(book.pages, pageId);
           if (page) {
-            console.log('page', page);
             const pageDimensions = canvasService.getPageDimensions(
               canvas,
               pageId
@@ -75,15 +74,10 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
               w: fabricObject.getScaledWidth() / pageDimensions.width,
               h: fabricObject.getScaledHeight() / pageDimensions.height,
             };
-            console.log('newElement', newElement);
-            console.log('pageDimensions', pageDimensions);
             dispatch(
               updateElementByElementId({ element: newElement, pageId: pageId })
             );
           }
-
-          console.log('element', element);
-          // debugger;
         }
       });
 
