@@ -7,7 +7,15 @@ declare module 'fabric' {
     lastPosX?: number;
     lastPosY?: number;
     isDragging?: boolean;
+    dragHistory?: DragHistory[];
   }
+}
+
+// Nouvelle variable pour stocker les positions récentes
+interface DragHistory {
+  time: number;
+  x: number;
+  y: number;
 }
 
 export const handleMouseWheel =
@@ -18,25 +26,15 @@ export const handleMouseWheel =
   (opt: fabric.TEvent<WheelEvent>) => {
     const delta = opt.e.deltaY;
     let zoom = canvas.getZoom();
-    zoom *= 0.988 ** delta;
-    if (zoom > 20) zoom = 20;
-    if (zoom < 0.01) zoom = 0.01;
+    const zoomMin = 0.75;
+    const zoomMax = 5;
+    zoom *= 0.998 ** delta;
+    console.log('zoom', zoom);
+    if (zoom > zoomMax) zoom = zoomMax;
+    if (zoom < zoomMin) zoom = zoomMin;
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
-    
-    setViewportTransform([...canvas.viewportTransform]);
-    // const scaleX = canvas.viewportTransform[0];
-    // const scaleY = canvas.viewportTransform[3];
-    // console.log(`#10 scaleX: ${scaleX} scaleY: ${scaleY}`);
-    // if (setScale) {
 
-    // setTimeout(() => {
-    //   setViewportTransform([...canvas.viewportTransform]);
-    //   // setPosition({ x: vpt[4], y: vpt[5] });
-    //   // setScale({ scaleX: vpt[0], scaleY: vpt[3] });
-    // }, 1000);
-    // } else {
-    //   console.error('setScale is undefined');
-    // }
+    setViewportTransform([...canvas.viewportTransform]);
 
     opt.e.preventDefault();
     opt.e.stopPropagation();
@@ -77,31 +75,45 @@ export const handleMouseMove =
     if (canvas.isDragging) {
       const e = opt.e;
       const vpt = canvas.viewportTransform;
+      let clientX: number, clientY: number;
+
       if (e instanceof MouseEvent) {
-        vpt[4] += e.clientX - (canvas.lastPosX ?? 0);
-        vpt[5] += e.clientY - (canvas.lastPosY ?? 0);
-        canvas.lastPosX = e.clientX;
-        canvas.lastPosY = e.clientY;
+        clientX = e.clientX;
+        clientY = e.clientY;
       } else if (e instanceof TouchEvent) {
-        vpt[4] += e.touches[0].clientX - (canvas.lastPosX ?? 0);
-        vpt[5] += e.touches[0].clientY - (canvas.lastPosY ?? 0);
-        canvas.lastPosX = e.touches[0].clientX;
-        canvas.lastPosY = e.touches[0].clientY;
+        clientX = e.touches[0].clientX;
+        clientY = e.touches[0].clientY;
+      } else {
+        return; // Si ce n'est ni un MouseEvent ni un TouchEvent, on sort
       }
+
+      // Calculer le déplacement
+      const moveX = clientX - (canvas.lastPosX ?? 0);
+      const moveY = clientY - (canvas.lastPosY ?? 0);
+
+      // Mettre à jour la position
+      vpt[4] += moveX;
+      vpt[5] += moveY;
+
+      // Garder une trace des mouvements récents pour calculer la vélocité
+      if (!canvas.dragHistory) {
+        canvas.dragHistory = [];
+      }
+      canvas.dragHistory.push({ time: Date.now(), x: clientX, y: clientY });
+
+      // Garder seulement les 10 dernières positions pour éviter une surcharge de mémoire
+      if (canvas.dragHistory.length > 10) {
+        canvas.dragHistory.shift();
+      }
+
+      canvas.lastPosX = clientX;
+      canvas.lastPosY = clientY;
       canvas.requestRenderAll();
-      if (e instanceof MouseEvent) {
-        canvas.lastPosX = e.clientX;
-      } else if (e instanceof TouchEvent) {
-        canvas.lastPosX = e.touches[0].clientX;
-      }
-      if (e instanceof MouseEvent) {
-        canvas.lastPosY = e.clientY;
-      } else if (e instanceof TouchEvent) {
-        canvas.lastPosY = e.touches[0].clientY;
-      }
     }
   };
 
+// Nouvelle fonction handleMouseUp avec animation de glissement
+// Nouvelle fonction handleMouseUp avec animation de glissement
 export const handleMouseUp =
   (
     canvas: fabric.Canvas,
@@ -109,22 +121,56 @@ export const handleMouseUp =
   ) =>
   () => {
     canvas.setViewportTransform(canvas.viewportTransform);
-    
     setViewportTransform([...canvas.viewportTransform]);
     canvas.isDragging = false;
     canvas.selection = true;
     canvas.defaultCursor = 'default';
 
-    // if (canvas.lastPosX && canvas.lastPosY) {
-    //   // setViewportTransform([...canvas.viewportTransform]);
-    //   // if (setPosition) {
-    //   //   console.log('#3.1 call setPosition');
-    //   //   const vpt = canvas.viewportTransform;
-    //   //   setPosition({ x: vpt[4], y: vpt[5] });
-    //   // } else {
-    //   //   console.error('setPosition is undefined');
-    //   // }
-    // }
+    const dragHistory = canvas.dragHistory || [];
+    if (dragHistory.length < 3) return; // Utiliser au moins 3 points pour la vélocité
+
+    const lastMove = dragHistory[dragHistory.length - 1];
+    const prevMove = dragHistory[dragHistory.length - 3]; // Utiliser un point plus ancien pour une différence de temps plus significative
+    const timeDiff = lastMove.time - prevMove.time;
+    if (timeDiff === 0) {
+      console.log('#11 timeDiff === 0');
+      return; // Ne pas procéder si le temps n'a toujours pas changé
+    }
+
+    let velocityX = (lastMove.x - prevMove.x) / timeDiff;
+    let velocityY = (lastMove.y - prevMove.y) / timeDiff;
+
+    // Animation de glissement
+    function animateGlide() {
+      const vpt = canvas.viewportTransform;
+      const friction = 0.96; // Réduction de la vitesse à chaque frame
+      const minVelocity = 0.05; // Vitesse minimale pour arrêter l'animation
+
+      vpt[4] += velocityX;
+      vpt[5] += velocityY;
+
+      console.log('vpt', vpt);
+
+      canvas.setViewportTransform(vpt);
+      setViewportTransform([...vpt]);
+
+      // Réduire la vélocité
+      velocityX *= friction;
+      velocityY *= friction;
+
+      if (
+        Math.abs(velocityX) > minVelocity ||
+        Math.abs(velocityY) > minVelocity
+      ) {
+        requestAnimationFrame(animateGlide);
+      }
+    }
+
+    // Commencer l'animation
+    requestAnimationFrame(animateGlide);
+
+    // Réinitialiser l'historique de glissement
+    canvas.dragHistory = [];
   };
 
 export const handleDocumentKeyDown =
