@@ -18,6 +18,45 @@ interface DragHistory {
   y: number;
 }
 
+function startZoomMomentum(
+  canvas: fabric.Canvas,
+  setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+  initialZoomSpeed: number,
+  mousePoint: fabric.Point
+) {
+  let zoomMomentum = initialZoomSpeed;
+  let lastTime = performance.now();
+
+  function animateZoomMomentum() {
+    const now = performance.now();
+    const timeDiff = now - lastTime;
+    const currentZoom = canvas.getZoom();
+    const newZoom = currentZoom + (zoomMomentum * timeDiff) / 1000; // Ajuster le facteur de temps selon besoin
+    let appliedZoom = newZoom;
+
+    if (appliedZoom > 5) appliedZoom = 5;
+    if (appliedZoom < 0.75) appliedZoom = 0.75;
+
+    // canvas.setZoom(appliedZoom);
+    canvas.zoomToPoint(mousePoint, appliedZoom);
+    setViewportTransform([...canvas.viewportTransform]);
+
+    // Appliquer la friction au momentum
+    zoomMomentum *= 0.98; // Friction pour le zoom
+    lastTime = now;
+
+    if (Math.abs(zoomMomentum) > 0.001) {
+      // Vitesse minimale pour continuer l'animation
+      requestAnimationFrame(animateZoomMomentum);
+    }
+  }
+
+  // Démarrer l'animation
+  requestAnimationFrame(animateZoomMomentum);
+}
+
+const zoomHistory: { time: number; zoom: number }[] = [];
+
 export const handleMouseWheel =
   (
     canvas: fabric.Canvas,
@@ -29,17 +68,34 @@ export const handleMouseWheel =
     const zoomMin = 0.75;
     const zoomMax = 5;
     zoom *= 0.998 ** delta;
-    console.log('zoom', zoom);
     if (zoom > zoomMax) zoom = zoomMax;
     if (zoom < zoomMin) zoom = zoomMin;
     canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
 
     setViewportTransform([...canvas.viewportTransform]);
 
+    // Ajouter le nouveau zoom à l'historique
+    zoomHistory.push({ time: performance.now(), zoom });
+    if (zoomHistory.length > 10) {
+      zoomHistory.shift();
+    }
+
+    // Calculer et déclencher immédiatement le momentum du zoom
+    if (zoomHistory.length > 1) {
+      const lastZoom = zoomHistory[zoomHistory.length - 1];
+      const prevZoom = zoomHistory[zoomHistory.length - 2];
+      const timeDiff = lastZoom.time - prevZoom.time;
+      if (timeDiff > 0) {
+        const zoomDiff = lastZoom.zoom - prevZoom.zoom;
+        const zoomSpeed = (zoomDiff / timeDiff) * 10; // Réduction de la vitesse initiale
+        const mousePoint = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
+        startZoomMomentum(canvas, setViewportTransform, zoomSpeed, mousePoint);
+      }
+    }
+
     opt.e.preventDefault();
     opt.e.stopPropagation();
   };
-
 export const handleMouseOver =
   (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
     if (opt.target) {
@@ -120,6 +176,7 @@ export const handleMouseUp =
     setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   () => {
+    console.log('handleMouseUp');
     canvas.setViewportTransform(canvas.viewportTransform);
     setViewportTransform([...canvas.viewportTransform]);
     canvas.isDragging = false;
@@ -139,6 +196,7 @@ export const handleMouseUp =
 
     let velocityX = (lastMove.x - prevMove.x) / timeDiff;
     let velocityY = (lastMove.y - prevMove.y) / timeDiff;
+    console.log('#a velocityX', velocityX);
 
     // Animation de glissement
     function animateGlide() {
