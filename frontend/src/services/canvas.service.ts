@@ -71,6 +71,9 @@ class CanvasService {
           });
           canvas.add(rect);
 
+
+          // TODO, gérer la sauvegarde de la sélection ICI
+          
           // Create page elements
           page.elements.forEach(async (element) => {
             canvasService.addElementToCanvas(
@@ -81,6 +84,15 @@ class CanvasService {
               pageHeight
             );
           });
+
+          // canvas.getObjects()
+
+          // await selectedActiveObject
+          // console.log('#02 selectedActiveObject', selectedActiveObject);
+
+          // if (selectedActiveObject) {
+          //   // canvas.setActiveObject(selectedActiveObject);
+          // }
         });
 
         // Create mask

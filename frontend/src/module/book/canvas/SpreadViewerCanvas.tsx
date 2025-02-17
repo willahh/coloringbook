@@ -51,6 +51,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
+  console.log('#02 canvasSize', canvasSize)
+
   useEffect(() => {
     setNeedPageCenter(true);
   }, [pageId]);
@@ -77,6 +79,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
+      
+      console.log('#02 canvasNew')
       canvasService.canvas = canvasNew;
       setNeedRedrawPages(true);
 
