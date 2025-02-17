@@ -176,7 +176,6 @@ export const handleMouseUp =
     setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   () => {
-    console.log('handleMouseUp');
     canvas.setViewportTransform(canvas.viewportTransform);
     setViewportTransform([...canvas.viewportTransform]);
     canvas.isDragging = false;
@@ -190,13 +189,11 @@ export const handleMouseUp =
     const prevMove = dragHistory[dragHistory.length - 3]; // Utiliser un point plus ancien pour une différence de temps plus significative
     const timeDiff = lastMove.time - prevMove.time;
     if (timeDiff === 0) {
-      console.log('#11 timeDiff === 0');
       return; // Ne pas procéder si le temps n'a toujours pas changé
     }
 
     let velocityX = (lastMove.x - prevMove.x) / timeDiff;
     let velocityY = (lastMove.y - prevMove.y) / timeDiff;
-    console.log('#a velocityX', velocityX);
 
     // Animation de glissement
     function animateGlide() {
