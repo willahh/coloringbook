@@ -2,6 +2,7 @@ import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
 import * as fabric from 'fabric';
 import { Book, Page } from '@apptypes/book';
+import { BookPageParams } from '@/common/interfaces';
 import { getBooksUrl } from '@/common/utils/api';
 import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
 
@@ -10,6 +11,7 @@ export class BookService {
     const response = await fetch(`${getBooksUrl()}/${bookId}`);
     return await response.json();
   }
+
   static async updateBook(bookId: number, book: Partial<Book>) {
     const response = await fetch(`${getBooksUrl()}/${bookId}`, {
       method: 'PATCH',
@@ -100,6 +102,23 @@ export class BookService {
     }
 
     return spreadPages[currentSpreadIndex];
+  }
+  
+  static getPageSpread(pageParams: BookPageParams, pages: Page[]) {
+    const pageId =
+      Number(pageParams.pageId) || BookService.getFirstPageId(pages);
+    const useSpread = false; // Display 2 or more pages per spread
+
+    if (useSpread) {
+      return BookService.getSpreadForPage(pages, pageId);
+    } else {
+      const page = BookService.getPageFromPageId(pages, pageId);
+      if (page) {
+        return [page];
+      } else {
+        return [];
+      }
+    }
   }
 
   private getPDF(

@@ -68,8 +68,8 @@ export class SVG implements DrawableElement {
       groupSVGElements.set({
         width: obj.w,
         height: obj.h,
-        left: 0,
-        top: 0,
+        left: obj.x,
+        top: obj.y,
       });
     } else if (obj.attr.svgURL) {
       // Load from an url

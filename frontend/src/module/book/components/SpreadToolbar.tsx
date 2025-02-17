@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-// import * as Slider from '@radix-components/react-slider';
+import React from 'react';
 
 import {
   ArrowDownOnSquareStackIcon,
@@ -10,11 +9,11 @@ import {
   PrinterIcon,
 } from '@heroicons/react/24/outline';
 import { bookService } from '@/services/book.service';
-import { BookContext } from '../Book.context';
 import { ToolbarButton } from './ToolbarButton';
 import { useSelector } from '@/common/store';
 import { selectBook } from '../Book.slice';
 import { useParams } from 'react-router';
+import useCanvasContext from '../useCanvasContext';
 
 const iconProps = {
   className: 'w-12 h-12',
@@ -25,8 +24,7 @@ export const SpreadToolbar: React.FC<{
   className?: string;
   children?: React.ReactNode;
 }> = () => {
-  const { canvas } = useContext(BookContext);
-  // useAppDispatch();
+  const { canvas } = useCanvasContext();
   const { book } = useSelector(selectBook);
   const { pageId } = useParams<{ pageId?: string }>();
   const totalPages = book.pages.length;

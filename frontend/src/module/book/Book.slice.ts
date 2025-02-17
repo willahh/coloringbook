@@ -187,24 +187,24 @@ const slice = createSlice({
      */
     builder.addCase(
       elementActions.updateElementByElementId.fulfilled,
-      (state, { payload: { pageId } }) => {
+      (state, { payload: { element, pageId } }) => {
         const pageIndex = state.book.pages.findIndex(
           (p) => p.pageId === pageId
         );
         if (pageIndex !== -1) {
-          console.error('TODO, implement me');
-          // state.book.pages = state.book.pages.map((page, index) => {
-          //   if (index === pageIndex) {
-          //     return {
-          //       ...page,
-          //       elements: page.elements.filter(
-          //         (el) => el.elementId !== elementId
-          //       ),
-          //     };
-          //   }
-          //   return page;
-          // });
-          // state.areLocalUpdatesSaved = false;
+          const elementIndex = state.book.pages[pageIndex].elements.findIndex(
+            (el) => el.elementId === element.elementId
+          );
+
+          if (elementIndex !== -1) {
+            console.log('=> element', element);
+            state.book.pages[pageIndex].elements[elementIndex] = element;
+            state.areLocalUpdatesSaved = false;
+          } else {
+            console.error('Element not found for update:', element.elementId);
+          }
+        } else {
+          console.error('Page not found for update:', pageId);
         }
       }
     );
@@ -213,7 +213,7 @@ const slice = createSlice({
      * removeElementByPageIdAndElementId
      */
     builder.addCase(
-      elementActions.removeElementByPageIdAndElementId.fulfilled,
+      elementActions.removeEementByPageIdAndElementId.fulfilled,
       (state, { payload: { pageId, elementId } }) => {
         const pageIndex = state.book.pages.findIndex(
           (p) => p.pageId === pageId

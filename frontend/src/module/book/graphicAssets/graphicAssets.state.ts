@@ -20,7 +20,6 @@ const initialGraphicAssetState: GraphicAssetsState = {
   isLoading: false,
   selectedId: undefined,
   graphicAssets: [],
-  // graphicAssetsCache: [],
   mode: Mode.Default,
 };
 

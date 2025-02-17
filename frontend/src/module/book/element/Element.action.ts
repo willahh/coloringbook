@@ -25,7 +25,7 @@ export const addElementToPage = createAsyncThunk<
 /**
  * removeElementByPageIdAndElementId
  */
-export const removeElementByPageIdAndElementId = createAsyncThunk<
+export const removeEementByPageIdAndElementId = createAsyncThunk<
   {
     pageId: number;
     elementId: number;
@@ -47,12 +47,12 @@ export const removeElementByPageIdAndElementId = createAsyncThunk<
 export const updateElementByElementId = createAsyncThunk<
   {
     pageId: number;
-    elementId: number;
+    element: Element;
   },
   {
     pageId: number;
-    elementId: number;
+    element: Element;
   }
->('ELEMENT/UPDATE_ELEMENT_BY_ELEMENT_ID', async ({ elementId, pageId }) => {
-  return { elementId: elementId, pageId: pageId };
+>('ELEMENT/UPDATE_ELEMENT_BY_ELEMENT_ID', async ({ element, pageId }) => {
+  return { element: element, pageId: pageId };
 });

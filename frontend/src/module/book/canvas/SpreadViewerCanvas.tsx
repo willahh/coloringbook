@@ -1,42 +1,19 @@
-/**
- * SpreadViewerCanvas component is responsible for rendering a fabric.js canvas
- * within a resizable container. It initializes the canvas, sets up event handlers,
- * and manages the dimensions of the canvas based on the container size.
- *
- * @component
- * @example
- * return (
- *   <SpreadViewerCanvas width={800} height={600} />
- * )
- *
- * @param {Object} props - Component props
- * @param {number} [props.width] - Optional width of the canvas
- * @param {number} [props.height] - Optional height of the canvas
- *
- * @returns {JSX.Element} The rendered SpreadViewerCanvas component
- *
- * @remarks
- * This component uses the `fabric` library to create and manage the canvas.
- * It also uses `lodash` for debouncing the resize event handler.
- *
- * @see {@link https://github.com/fabricjs/fabric.js/|fabric.js}
- * @see {@link https://lodash.com/docs/4.17.15#debounce|lodash.debounce}
- */
-
-import React, { useRef, useEffect, useCallback, useContext } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useParams } from 'react-router';
 import * as fabric from 'fabric';
-import { BookContext } from '../Book.context';
+import { makeMouseWheel } from '@/lib/scrollbars/utils';
+
 import { Page } from '@apptypes/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
-import { usePageSpread } from './hooks/usePageSpread';
-import { usePageCreation } from './hooks/usePageCreation';
 import canvasService from '@/services/canvas.service';
-// import { useCanvasContext } from './hooks/useCanvasContext';
 import { PagesNavigation } from '../components/PagesNavigation';
 
-import { makeMouseWheel } from '@/lib/scrollbars/utils';
 import { Scrollbars } from '@/lib/scrollbars';
+import useCanvasContext from '../useCanvasContext';
+import { BookPageParams } from '@/common/interfaces';
+import { BookService } from '@/services/book.service';
+import { TMat2D } from 'fabric';
 
 interface SpreadCanvasProps {
   pageId: number;
@@ -53,63 +30,64 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
-  // const { position, scale, viewportTransform } = useCanvasContext();
+  const pageParams = useParams<BookPageParams>();
+  const { setCanvas, viewportTransform, setViewportTransform } =
+    useCanvasContext();
 
-  // Ref
+  // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
+  const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
+
+  // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvas = fabricCanvasRef.current;
 
-  // Context
-  const { setCanvas, pageParams /*, setPages */ } = useContext(BookContext);
-  // const canvasService = useRef(new canvasService(dispatch));
-
-  // State
+  // Process –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const canvasSize = useDimensions(
     containerRef,
     sidePanelWidth,
     pagesPanelWidth
   );
 
-  // Process
-  const { spreadPages } = usePageSpread(pages, pageParams);
+  useEffect(() => {
+    setNeedPageCenter(true);
+  }, [pageId]);
+
+  // useMemo to avoid too many re-renders
+  const spreadPages = React.useMemo(
+    () => BookService.getPageSpread(pageParams, pages),
+    [pageParams, pages]
+  );
 
   useEventHandlers(fabricCanvasRef.current);
 
   /**
-   * [Pages init].
-   * The dependency array for pageCreation hook is only the canvas html reference.
-   * Be cause the canvas is reset on browser resize, page change, or container changes.
-   */
-  const spreadSize = usePageCreation(
-    fabricCanvasRef.current,
-    spreadPages,
-    canvasSize
-  );
-
-  /**
-   * [Canvas init].
+   * [Canvas instanciation]
    * The canvas needs to be initialized with width and height in pixels.
    * Therefore, it must be refreshed when the browser is resized or the container size changes.
-   *
-   * The dependency array for when to update the effect includes pageSpread, meaning
-   * that when the page changes, the entire canvas is reinitialized. This approach makes it easier
-   * to manage updates for pages and graphic elements!
    */
   const initCanvas = useCallback(
     (canvasElement: HTMLCanvasElement) => {
-      const canvas = new fabric.Canvas(canvasElement, {
+      const canvasNew = new fabric.Canvas(canvasElement, {
         height: canvasSize.height,
         width: canvasSize.width - 50,
         selection: false,
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
-      canvasService.canvas = canvas;
-      return canvas;
+      canvasService.canvas = canvasNew;
+      setNeedRedrawPages(true);
+
+      return canvasNew;
     },
-    [canvasSize, sidePanelWidth, pagesPanelWidth]
+    [canvasSize]
   );
+
+  /**
+   * [Canvas reset]
+   */
   useEffect(() => {
     if (canvasRef.current) {
       fabricCanvasRef.current = initCanvas(canvasRef.current);
@@ -117,7 +95,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         lastPosX?: number;
         lastPosY?: number;
       };
-      console.log('#10 reset canvas');
+
       setCanvas(canvas);
 
       const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
@@ -138,54 +116,61 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, setCanvas, canvasSize, spreadPages]);
+  }, [initCanvas, setCanvas, spreadPages]);
 
   /**
-   * Center the pages within the canvas when the page changes.
-   * Dependency array :
-   *  - spreadSize: Updated after pages and objects are drawn by usePageCreation
-   *  - pageId: Triggered when a page changes
+   * [Canvas drawing].
+   * Draw pages, elements and page mask.
+   * The dependency array for pageCreation hook is only the canvas html reference.
+   * Be cause the canvas is reset on browser resize, page change, or container changes.
    */
   useEffect(() => {
-    if (fabricCanvasRef.current) {
-      const { x, y, scaleX, scaleY } = canvasService.calculateCenteredSpread(
-        canvasSize,
-        spreadSize
-      );
+    if (canvas) {
+      if (needRedrawPages) {
+        const spreadSizeNew = canvasService.drawPagesElementsAndMask(
+          canvas,
+          spreadPages,
+          canvasSize
+        );
 
-      canvasService.applyViewportTransform(
-        fabricCanvasRef.current,
-        x,
-        y,
-        scaleX,
-        scaleY
-      );
+        // Center spread when viewportTransform is not defined (on page mount)
+        if (spreadSizeNew) {
+          if (needPageCenter) {
+            const { x, y, scaleX, scaleY } =
+              canvasService.calculateCenteredSpread(canvasSize, spreadSizeNew);
+
+            // [scaleX, 0, 0, scaleY, x, y];
+            const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
+            setViewportTransform(vpt);
+            setNeedPageCenter(false);
+          }
+          setNeedRedrawPages(false);
+        }
+      }
+
+      if (viewportTransform) {
+        canvas.viewportTransform = viewportTransform;
+      }
     }
-  }, [spreadSize, pageId]);
+  }, [
+    canvas,
+    spreadPages,
+    canvasSize,
+    viewportTransform,
+    needPageCenter,
+    needRedrawPages,
+    setViewportTransform,
+  ]);
 
-  // useEffect(() => {
-  //   if (!containerRef.current) return;
+  useEffect(() => {
+    if (canvas) {
+      console.log('#001 pageId has changed !!!', pageId);
 
-  //   const container = containerRef.current;
-  //   const fabricCanvas = fabricCanvasRef.current;
-  //   if (!fabricCanvas) return;
+      // On page change, we reset the setViewportTransform
+      setViewportTransform(undefined);
+    }
+  }, [pageId]); // pageId: Triggered when a page changes
 
-  //   const onScroll = () => {
-  //     const vpt = fabricCanvas.viewportTransform!;
-
-  //     if (!vpt) return;
-
-  //     vpt[4] = -container.scrollLeft;
-  //     vpt[5] = -container.scrollTop;
-  //     fabricCanvas.requestRenderAll();
-  //   };
-
-  //   container.addEventListener('scroll', onScroll);
-
-  //   return () => {
-  //     container.removeEventListener('scroll', onScroll);
-  //   };
-  // }, []);
   return (
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />
