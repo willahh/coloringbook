@@ -28,11 +28,12 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
     if (canvas) {
       const eventHandlers = {
         'mouse:wheel': handleMouseWheel(canvas, setViewportTransform),
-        'mouse:over': handleMouseOver(canvas),
-        'mouse:out': handleMouseOut(canvas),
         'mouse:down': handleMouseDown(canvas),
         'mouse:move': handleMouseMove(canvas),
         'mouse:up': handleMouseUp(canvas, setViewportTransform),
+
+        'mouse:over': handleMouseOver(canvas),
+        'mouse:out': handleMouseOut(canvas),
         'selection:created': (e: fabric.ObjectEvents) =>
           console.log('Selected:', e.selected),
         'selection:updated': (e: fabric.ObjectEvents) =>

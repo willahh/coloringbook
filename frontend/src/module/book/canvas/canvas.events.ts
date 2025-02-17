@@ -63,33 +63,42 @@ export const handleMouseWheel =
     setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>
   ) =>
   (opt: fabric.TEvent<WheelEvent>) => {
-    const delta = opt.e.deltaY;
-    let zoom = canvas.getZoom();
-    const zoomMin = 0.75;
-    const zoomMax = 5;
-    zoom *= 0.998 ** delta;
-    if (zoom > zoomMax) zoom = zoomMax;
-    if (zoom < zoomMin) zoom = zoomMin;
-    canvas.zoomToPoint(new fabric.Point(opt.e.offsetX, opt.e.offsetY), zoom);
+    // Vérifier si l'événement est un zoom (pinch to zoom) sur un trackpad
+    if (opt.e.ctrlKey || opt.e.metaKey) {
+      // Sur Mac, metaKey est utilisé pour le zoom
+      const delta = opt.e.deltaY;
+      let zoom = canvas.getZoom();
+      const zoomMin = 0.75;
+      const zoomMax = 5;
+      zoom *= 0.998 ** delta;
+      if (zoom > zoomMax) zoom = zoomMax;
+      if (zoom < zoomMin) zoom = zoomMin;
+      const mousePoint = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
+      canvas.zoomToPoint(mousePoint, zoom);
 
-    setViewportTransform([...canvas.viewportTransform]);
+      setViewportTransform([...canvas.viewportTransform]);
 
-    // Ajouter le nouveau zoom à l'historique
-    zoomHistory.push({ time: performance.now(), zoom });
-    if (zoomHistory.length > 10) {
-      zoomHistory.shift();
-    }
+      // Ajouter le nouveau zoom à l'historique
+      zoomHistory.push({ time: performance.now(), zoom });
+      if (zoomHistory.length > 10) {
+        zoomHistory.shift();
+      }
 
-    // Calculer et déclencher immédiatement le momentum du zoom
-    if (zoomHistory.length > 1) {
-      const lastZoom = zoomHistory[zoomHistory.length - 1];
-      const prevZoom = zoomHistory[zoomHistory.length - 2];
-      const timeDiff = lastZoom.time - prevZoom.time;
-      if (timeDiff > 0) {
-        const zoomDiff = lastZoom.zoom - prevZoom.zoom;
-        const zoomSpeed = (zoomDiff / timeDiff) * 10; // Réduction de la vitesse initiale
-        const mousePoint = new fabric.Point(opt.e.offsetX, opt.e.offsetY);
-        startZoomMomentum(canvas, setViewportTransform, zoomSpeed, mousePoint);
+      // Calculer et déclencher immédiatement le momentum du zoom
+      if (zoomHistory.length > 1) {
+        const lastZoom = zoomHistory[zoomHistory.length - 1];
+        const prevZoom = zoomHistory[zoomHistory.length - 2];
+        const timeDiff = lastZoom.time - prevZoom.time;
+        if (timeDiff > 0) {
+          const zoomDiff = lastZoom.zoom - prevZoom.zoom;
+          const zoomSpeed = (zoomDiff / timeDiff) * 10;
+          startZoomMomentum(
+            canvas,
+            setViewportTransform,
+            zoomSpeed,
+            mousePoint
+          );
+        }
       }
     }
 
@@ -112,23 +121,26 @@ export const handleMouseOut =
 
 export const handleMouseDown =
   (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
-    const evt = opt.e;
-    if (evt.altKey === true) {
-      canvas.isDragging = true;
-      canvas.selection = false;
-      if (evt instanceof MouseEvent) {
-        canvas.lastPosX = evt.clientX;
-        canvas.lastPosY = evt.clientY;
-      } else if (evt instanceof TouchEvent) {
-        canvas.lastPosX = evt.touches[0].clientX;
-        canvas.lastPosY = evt.touches[0].clientY;
+    if (!opt.e.ctrlKey && !opt.e.metaKey) {
+      // Assure que ce n'est pas un événement de zoom
+      const evt = opt.e;
+      if (evt.altKey === true) {
+        canvas.isDragging = true;
+        canvas.selection = false;
+        if (evt instanceof MouseEvent) {
+          canvas.lastPosX = evt.clientX;
+          canvas.lastPosY = evt.clientY;
+        } else if (evt instanceof TouchEvent) {
+          canvas.lastPosX = evt.touches[0].clientX;
+          canvas.lastPosY = evt.touches[0].clientY;
+        }
       }
     }
   };
 
 export const handleMouseMove =
   (canvas: fabric.Canvas) => (opt: fabric.TPointerEventInfo) => {
-    if (canvas.isDragging) {
+    if (canvas.isDragging && !opt.e.ctrlKey && !opt.e.metaKey) {
       const e = opt.e;
       const vpt = canvas.viewportTransform;
       let clientX: number, clientY: number;
@@ -144,12 +156,12 @@ export const handleMouseMove =
       }
 
       // Calculer le déplacement
-      const moveX = clientX - (canvas.lastPosX ?? 0);
-      const moveY = clientY - (canvas.lastPosY ?? 0);
+      const moveX =  (canvas.lastPosX ?? 0) - clientX
+      const moveY = (canvas.lastPosY ?? 0) - clientY;
 
       // Mettre à jour la position
-      vpt[4] += moveX;
-      vpt[5] += moveY;
+      vpt[4] -= moveX;
+      vpt[5] -= moveY;
 
       // Garder une trace des mouvements récents pour calculer la vélocité
       if (!canvas.dragHistory) {
