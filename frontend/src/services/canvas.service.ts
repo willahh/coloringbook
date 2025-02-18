@@ -185,6 +185,18 @@ class CanvasService {
 
   getMaxPageWidth(canvas: fabric.Canvas): number {
     const pages = canvasService.findPagesInCanvas(canvas);
+    if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
+
+    // Calculer la largeur max parmi toutes les pages
+    return Math.max(
+      ...pages.map((page) => {
+        return page.width || 0;
+      })
+    );
+  }
+
+  getMaxPageScaledWidth(canvas: fabric.Canvas): number {
+    const pages = canvasService.findPagesInCanvas(canvas);
     const zoom = canvas.getZoom();
     if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
 
@@ -235,8 +247,15 @@ class CanvasService {
     const centerCanvasY = canvasHeight / 2;
 
     // Calculer le déplacement nécessaire pour centrer la page dans le canvas
-    const deltaX = centerCanvasX - centerPageX * zoom;
+    let deltaX = centerCanvasX - centerPageX * zoom;
     const deltaY = centerCanvasY - centerPageY * zoom;
+
+    // Appliquer la contrainte horizontale
+    deltaX = this.constrainHorizontalMovement(
+      canvasWidth,
+      pageWidth * zoom,
+      deltaX
+    );
 
     // Construire et retourner le viewport transform
     return [zoom, 0, 0, zoom, deltaX, deltaY];
@@ -244,7 +263,7 @@ class CanvasService {
 
   constrainHorizontalMovement(
     canvasWidth: number,
-    totalWidth: number,
+    maxPageWidth: number,
     x: number
   ): number {
     let newX = x;
@@ -252,12 +271,16 @@ class CanvasService {
     // Limite de déplacement horizontal
     const margin = 100;
     const maxX = margin; // Si le contenu est aligné à gauche par défaut
-    const minX = canvasWidth - totalWidth - margin; // Si le contenu dépasse la taille du canvas
+    const minX = canvasWidth - maxPageWidth - margin; // Si le contenu dépasse la taille du canvas
 
     // Centrer le contenu si possible
-    if (totalWidth <= canvasWidth) {
+    if (maxPageWidth <= canvasWidth) {
+      console.log('\n#z constrainHorizontalMovement');
       console.log('#z center');
-      newX = (canvasWidth - totalWidth) / 2; // Centrer
+      console.log('#z maxPageWidth', maxPageWidth);
+      console.log('#z canvasWidth', canvasWidth);
+      const offsetX = 77; // Largeur des onglets a gauche
+      newX = (canvasWidth - maxPageWidth + offsetX) / 2; // Centrer
     } else {
       newX = Math.min(Math.max(x, minX), maxX);
     }
@@ -286,6 +309,115 @@ class CanvasService {
       this.canvas.add(fabricObject);
     }
     return fabricObject;
+  }
+
+  // Quadratic In (accélère progressivement)
+  quadraticIn(t: number): number {
+    return t * t;
+  }
+
+  // Quadratic Out (décélère progressivement)
+  quadraticOut(t: number): number {
+    return t * (2 - t);
+  }
+
+  // Quadratic InOut (commence lentement, accélère, puis ralentit)
+  quadraticInOut(t: number): number {
+    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+  }
+
+  // Fonction pour l'animation Elastic In
+  elasticIn(t: number): number {
+    const c4 = (2 * Math.PI) / 3;
+    return t === 0
+      ? 0
+      : t === 1
+      ? 1
+      : Math.pow(2, 10 * (t - 1)) *
+        Math.sin(((t - 1 - c4) * (2 * Math.PI)) / 0.3);
+  }
+
+  // Fonction pour l'animation Elastic Out
+  elasticOut(t: number): number {
+    const c4 = (2 * Math.PI) / 3;
+    return t === 0
+      ? 0
+      : t === 1
+      ? 1
+      : Math.pow(2, -10 * t) * Math.sin(((t - c4) * (2 * Math.PI)) / 0.3) + 1;
+  }
+
+  // Fonction pour l'animation Elastic InOut
+  elasticInOut(t: number): number {
+    const c5 = (2 * Math.PI) / 4.5;
+    return t === 0
+      ? 0
+      : t === 1
+      ? 1
+      : t < 0.5
+      ? 0.5 * Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * c5)
+      : Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * c5) * 0.5 + 1;
+  }
+
+  // Fonction Elastic douce InOut
+  elasticInOutSoft(t: number): number {
+    const c5 = (2 * Math.PI) / 5; // Moins de fréquence pour un rebond plus doux
+    return t === 0
+      ? 0
+      : t === 1
+      ? 1
+      : t < 0.5
+      ? 0.5 * Math.pow(2, 20 * t - 10) * Math.sin((20 * t - 11.125) * c5)
+      : Math.pow(2, -20 * t + 10) * Math.sin((20 * t - 11.125) * c5) * 0.5 + 1;
+  }
+
+  // Fonction pour calculer l'interpolation Bézier quadratique
+  quadraticBezier(t: number, p0: number, p1: number, p2: number): number {
+    const oneMinusT = 1 - t;
+    return oneMinusT * oneMinusT * p0 + 2 * oneMinusT * t * p1 + t * t * p2;
+  }
+
+  // Fonction pour animer le viewport
+  animateViewportTransform(
+    canvas: fabric.Canvas,
+    currentVpt: number[],
+    targetVpt: number[],
+    animationDuration: number = 500
+  ) {
+    const startTime = performance.now();
+    let animationFrameId: number;
+
+    // Fonction d'animation qui sera appelée à chaque frame
+    const animate = (timestamp: number) => {
+      const elapsedTime = timestamp - startTime;
+      const progress = Math.min(elapsedTime / animationDuration, 1);
+
+      // Appliquer l'animation élastique
+      const easingProgress = this.quadraticOut(progress);
+
+      // Appliquer l'interpolation élastique pour chaque valeur
+      const zoom =
+        currentVpt[0] + (targetVpt[0] - currentVpt[0]) * easingProgress;
+      const deltaX =
+        currentVpt[4] + (targetVpt[4] - currentVpt[4]) * easingProgress;
+      const deltaY =
+        currentVpt[5] + (targetVpt[5] - currentVpt[5]) * easingProgress;
+
+      // Appliquer la nouvelle transformation à chaque étape
+      canvas.setViewportTransform([zoom, 0, 0, zoom, deltaX, deltaY]);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        canvas.requestRenderAll();
+      }
+    };
+
+    // Démarrer l'animation
+    animationFrameId = requestAnimationFrame(animate);
+
+    // Retourner la fonction d'annulation si nécessaire
+    return () => cancelAnimationFrame(animationFrameId);
   }
 }
 

@@ -1,4 +1,4 @@
-import canvasService from '@/services/canvas.service';
+// import canvasService from '@/services/canvas.service';
 import * as fabric from 'fabric';
 // import { Position, Scale } from './canvas.context';
 
@@ -19,45 +19,45 @@ interface DragHistory {
   y: number;
 }
 
-function startZoomMomentum(
-  canvas: fabric.Canvas,
-  setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
-  initialZoomSpeed: number,
-  mousePoint: fabric.Point
-) {
-  let zoomMomentum = initialZoomSpeed;
-  let lastTime = performance.now();
+// function startZoomMomentum(
+//   canvas: fabric.Canvas,
+//   setViewportTransform: React.Dispatch<React.SetStateAction<fabric.TMat2D>>,
+//   initialZoomSpeed: number,
+//   mousePoint: fabric.Point
+// ) {
+//   let zoomMomentum = initialZoomSpeed;
+//   let lastTime = performance.now();
 
-  function animateZoomMomentum() {
-    const now = performance.now();
-    const timeDiff = now - lastTime;
-    const currentZoom = canvas.getZoom();
-    const newZoom = currentZoom + (zoomMomentum * timeDiff) / 1000; // Ajuster le facteur de temps selon besoin
-    let appliedZoom = newZoom;
+//   function animateZoomMomentum() {
+//     const now = performance.now();
+//     const timeDiff = now - lastTime;
+//     const currentZoom = canvas.getZoom();
+//     const newZoom = currentZoom + (zoomMomentum * timeDiff) / 1000; // Ajuster le facteur de temps selon besoin
+//     let appliedZoom = newZoom;
 
-    const zoomMin = 0.4;
-    if (appliedZoom > 5) appliedZoom = 5;
-    if (appliedZoom < zoomMin) appliedZoom = zoomMin;
+//     const zoomMin = 0.4;
+//     if (appliedZoom > 5) appliedZoom = 5;
+//     if (appliedZoom < zoomMin) appliedZoom = zoomMin;
 
-    // canvas.setZoom(appliedZoom);
-    canvas.zoomToPoint(mousePoint, appliedZoom);
-    setViewportTransform([...canvas.viewportTransform]);
+//     // canvas.setZoom(appliedZoom);
+//     canvas.zoomToPoint(mousePoint, appliedZoom);
+//     setViewportTransform([...canvas.viewportTransform]);
 
-    // Appliquer la friction au momentum
-    zoomMomentum *= 0.98; // Friction pour le zoom
-    lastTime = now;
+//     // Appliquer la friction au momentum
+//     zoomMomentum *= 0.98; // Friction pour le zoom
+//     lastTime = now;
 
-    if (Math.abs(zoomMomentum) > 0.001) {
-      // Vitesse minimale pour continuer l'animation
-      requestAnimationFrame(animateZoomMomentum);
-    }
-  }
+//     if (Math.abs(zoomMomentum) > 0.001) {
+//       // Vitesse minimale pour continuer l'animation
+//       requestAnimationFrame(animateZoomMomentum);
+//     }
+//   }
 
-  // Démarrer l'animation
-  requestAnimationFrame(animateZoomMomentum);
-}
+//   // Démarrer l'animation
+//   requestAnimationFrame(animateZoomMomentum);
+// }
 
-const zoomHistory: { time: number; zoom: number }[] = [];
+// const zoomHistory: { time: number; zoom: number }[] = [];
 
 export const handleMouseWheel =
   (

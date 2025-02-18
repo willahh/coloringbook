@@ -1,7 +1,10 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router';
 import * as fabric from 'fabric';
-import { makeMouseWheel } from '@/lib/scrollbars/utils';
+import {
+  makeMouseWheel,
+  makeMouseWheelWithAnimation,
+} from '@/lib/scrollbars/utils';
 
 import { Page } from '@apptypes/book';
 import { useEventHandlers } from './hooks/useEventHandlers';
@@ -12,8 +15,6 @@ import { PagesNavigation } from '../components/PagesNavigation';
 import { Scrollbars } from '@/lib/scrollbars';
 import useCanvasContext from '../useCanvasContext';
 import { BookPageParams } from '@/common/interfaces';
-import { BookService } from '@/services/book.service';
-import { TMat2D } from 'fabric';
 
 interface SpreadCanvasProps {
   pageId: number;
@@ -101,7 +102,11 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
       setCanvas(canvas);
 
-      const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
+      // const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
+      const mousewheel = makeMouseWheelWithAnimation(canvas, {
+        min: 0.02,
+        max: 256,
+      });
       canvas.on('mouse:wheel', mousewheel);
 
       const scrollbar = new Scrollbars(canvas, {
@@ -130,6 +135,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   useEffect(() => {
     if (canvas) {
       if (needRedrawPages) {
+        console.log('#001 call redraw');
         const spreadSizeNew = canvasService.drawPagesElementsAndMask(
           canvas,
           spreadPages,
@@ -143,18 +149,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
             if (vpt) {
               setViewportTransform(vpt);
             }
-
-            // const { x, y, scaleX, scaleY } =
-            //   canvasService.calculateCenteredSpread(
-            //     canvasSize,
-            //     spreadSizeNew,
-            //     spreadPages,
-            //     pageId
-            //   );
-
-            // [scaleX, 0, 0, scaleY, x, y];
-            // const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
-            // setViewportTransform(vpt);
             setNeedPageCenter(false);
           }
           setNeedRedrawPages(false);
@@ -179,11 +173,25 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     if (canvas) {
       console.log('#001 pageId has changed !!!', pageId);
 
-      // On page change, we reset the setViewportTransform
-      setViewportTransform(undefined);
-      // setNeedPageCenter(true);
+      const vpt = canvasService.focusOnPage(canvas, pageId);
+      if (vpt) {
+        console.log('#001 start viewport transform animation');
+
+        const currentVpt = canvas.viewportTransform.slice(); // Copier l'état actuel du viewport
+        const targetVpt = vpt; // Vpt cible calculé précédemment
+
+        // Appeler la fonction d'animation avec les valeurs nécessaires
+        const cancelAnimation = canvasService.animateViewportTransform(
+          canvas,
+          currentVpt,
+          targetVpt
+        );
+
+        // Nettoyage de l'animation si le composant se démonte ou si la pageId change
+        return cancelAnimation;
+      }
     }
-  }, [pageId]); // pageId: Triggered when a page changes
+  }, [pageId]); // pageId : déclencheur lorsque la page change
 
   return (
     <div ref={containerRef} className="relative flex-1">

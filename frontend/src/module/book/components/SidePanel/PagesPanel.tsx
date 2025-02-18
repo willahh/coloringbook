@@ -98,7 +98,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
               </button>
             </Tooltip>
           </div>
-          <div>{pageNumber}</div>
+          <div className="select-none">{pageNumber}</div>
         </div>
       </Link>
     </motion.div>
@@ -213,7 +213,7 @@ export const PagesPanel: React.FC<{
       
       bg-primary-50 dark:bg-primary-950`}
     >
-      <Pages className="p-2" pages={pages} />
+      <Pages className="p-2 flex-1" pages={pages} />
       <div className="flex justify-center pt-4">
         <ToolbarButton
           className="!rounded-full"
