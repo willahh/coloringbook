@@ -2,8 +2,8 @@ import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
 import { Element, Page } from '@/common/types/book';
 import {
-  fabricRectPage,
-  IPageFabricObject,
+  FabricRectPage,
+  PageFabricObject,
   PageDimensions,
 } from '@/common/interfaces';
 
@@ -158,7 +158,7 @@ class CanvasService {
     const pageRect = canvas.getObjects().find((obj) => {
       if (
         obj.type === 'rect' &&
-        (obj as fabricRectPage).pageId === Number(pageId)
+        (obj as FabricRectPage).pageId === Number(pageId)
       ) {
         return true;
       }
@@ -175,10 +175,10 @@ class CanvasService {
     return pageDimensions;
   }
 
-  findPagesInCanvas(canvas: fabric.Canvas): IPageFabricObject[] {
+  findPagesInCanvas(canvas: fabric.Canvas): PageFabricObject[] {
     const pages = canvas.getObjects().filter((obj) => {
       return (obj as fabric.Object & { isPage?: boolean }).isPage === true;
-    }) as IPageFabricObject[];
+    }) as PageFabricObject[];
 
     return pages;
   }
@@ -196,60 +196,50 @@ class CanvasService {
     );
   }
 
-  /**
-   * Calcule la position et l'échelle pour centrer et ajuster une planche sur le canvas verticalement, en se focalisant sur une page spécifique.
-   * @param canvasSize - Dimensions du canvas
-   * @param spreadSize - Dimensions totales de la planche à centrer (la somme des hauteurs de toutes les pages)
-   * @param pages - Liste des pages
-   * @param pageId - Identifiant de la page à centrer
-   * @returns Un objet contenant la position x, y et les échelles x et y.
-   */
-  calculateCenteredSpread(
-    canvasSize: { width: number; height: number },
-    spreadSize: { width: number; height: number },
-    pages: Page[],
-    pageId: number
-  ) {
-    console.log('calculateCenteredSpread');
-    // Vérification que pages est bien défini et est un array
-    if (!Array.isArray(pages)) {
-      console.error('Pages must be an array');
-      return { x: 0, y: 0, scaleX: 1, scaleY: 1 }; // Retourner des valeurs par défaut en cas d'erreur
+  focusOnPage(
+    canvas: fabric.Canvas,
+    pageId: number,
+    margin = 100
+  ): fabric.TMat2D | null {
+    const page = canvas
+      .getObjects()
+      .find(
+        (obj) => (obj as PageFabricObject).pageId === pageId
+      ) as PageFabricObject & fabric.Rect;
+
+    if (!page) {
+      console.warn(`Page with ID ${pageId} not found.`);
+      return null;
     }
 
-    // Calculer l'échelle pour s'assurer que la page cible rentre dans le canvas
-    const scale = Math.min(1, canvasSize.height / spreadSize.height);
-    const offsetX = -32; // Tabs width on the left
-    const scaleX = scale;
-    const scaleY = scale;
+    // Cast en fabric.Rect pour les propriétés spécifiques à Rect
+    const pageRect = page as fabric.Rect;
+    const pageLeft = pageRect.left || 0;
+    const pageTop = pageRect.top || 0;
+    const pageWidth = pageRect.width || 0;
+    const pageHeight = pageRect.height || 0;
 
-    // Trouver l'index de la page cible
-    const targetPageIndex = pages.findIndex((page) => page.pageId === pageId);
-    if (targetPageIndex === -1) {
-      console.error(`Page with id ${pageId} not found`);
-      return { x: 0, y: 0, scaleX: 1, scaleY: 1 }; // Retourner des valeurs par défaut si la page n'est pas trouvée
-    }
+    // Dimensions du canvas
+    const canvasWidth = canvas.getWidth();
+    const canvasHeight = canvas.getHeight();
 
-    // Calculer la position x (centrage horizontal de la page cible)
-    const targetPageWidth =
-      pages[targetPageIndex].aspectRatio.width *
-      (pages[targetPageIndex].aspectRatio.height /
-        pages[targetPageIndex].aspectRatio.width) *
-      scaleY;
-    const x = (canvasSize.width + offsetX) / 2 - (targetPageWidth * scaleX) / 2;
+    // Calculer le zoom nécessaire pour voir toute la page avec des marges
+    const zoomX = (canvasWidth - 2 * margin) / pageWidth;
+    const zoomY = (canvasHeight - 2 * margin) / pageHeight;
+    const zoom = Math.min(zoomX, zoomY);
 
-    // Calculer la position y pour centrer la page cible verticalement
-    let yOffset = 0;
-    for (let i = 0; i < targetPageIndex; i++) {
-      // Ajouter la hauteur des pages précédentes avec une marge
-      yOffset += pages[i].aspectRatio.height * scaleY + 10; // Marge de 10 pixels entre chaque page
-    }
+    // Calculer le centre de la page et du canvas pour positionner correctement le viewport
+    const centerPageX = pageLeft + pageWidth / 2;
+    const centerPageY = pageTop + pageHeight / 2;
+    const centerCanvasX = canvasWidth / 2;
+    const centerCanvasY = canvasHeight / 2;
 
-    // Calculer la position y de la page cible
-    const targetPageHeight = pages[targetPageIndex].aspectRatio.height * scaleY;
-    const y = (canvasSize.height - targetPageHeight) / 2 - yOffset;
+    // Calculer le déplacement nécessaire pour centrer la page dans le canvas
+    const deltaX = centerCanvasX - centerPageX * zoom;
+    const deltaY = centerCanvasY - centerPageY * zoom;
 
-    return { x, y, scaleX, scaleY };
+    // Construire et retourner le viewport transform
+    return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
 
   constrainHorizontalMovement(
@@ -266,7 +256,7 @@ class CanvasService {
 
     // Centrer le contenu si possible
     if (totalWidth <= canvasWidth) {
-      console.log('#z center')
+      console.log('#z center');
       newX = (canvasWidth - totalWidth) / 2; // Centrer
     } else {
       newX = Math.min(Math.max(x, minX), maxX);

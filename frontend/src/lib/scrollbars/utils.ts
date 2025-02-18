@@ -18,7 +18,6 @@ export const makeMouseWheel =
       e.preventDefault();
     }
 
-    console.log('makeMouseWheel');
     const isTouchScale = Math.floor(e.deltaY) !== Math.ceil(e.deltaY);
     const totalWidth = canvasService.getMaxPageWidth(canvas);
     const canvasWidth = canvas.getWidth();

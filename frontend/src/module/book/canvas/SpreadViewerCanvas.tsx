@@ -51,7 +51,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
-
   useEffect(() => {
     setNeedPageCenter(true);
   }, [pageId]);
@@ -140,17 +139,22 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         // Center spread when viewportTransform is not defined (on page mount)
         if (spreadSizeNew) {
           if (needPageCenter) {
-            const { x, y, scaleX, scaleY } =
-              canvasService.calculateCenteredSpread(
-                canvasSize,
-                spreadSizeNew,
-                spreadPages,
-                pageId
-              );
+            const vpt = canvasService.focusOnPage(canvas, pageId);
+            if (vpt) {
+              setViewportTransform(vpt);
+            }
+
+            // const { x, y, scaleX, scaleY } =
+            //   canvasService.calculateCenteredSpread(
+            //     canvasSize,
+            //     spreadSizeNew,
+            //     spreadPages,
+            //     pageId
+            //   );
 
             // [scaleX, 0, 0, scaleY, x, y];
-            const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
-            setViewportTransform(vpt);
+            // const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
+            // setViewportTransform(vpt);
             setNeedPageCenter(false);
           }
           setNeedRedrawPages(false);
