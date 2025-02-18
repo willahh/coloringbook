@@ -6,6 +6,7 @@ import {
   PageFabricObject,
   PageDimensions,
 } from '@/common/interfaces';
+import { Appearance } from '@/common/contexts/ThemeContext';
 
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;
@@ -26,7 +27,8 @@ class CanvasService {
   drawPagesElementsAndMask(
     canvas: fabric.Canvas,
     spreadPages: Page[],
-    dimensions: { width: number; height: number }
+    dimensions: { width: number; height: number },
+    appearance: Appearance
   ) {
     if (canvas) {
       let activeFabricObject: fabric.FabricObject | null = null;
@@ -55,7 +57,6 @@ class CanvasService {
           }
 
           const scaleY = pageHeight / canvas.height;
-          console.log('scaleY', scaleY);
 
           const offsetX = 0;
           // const offsetX = (index * (pageWidth + 100));
@@ -92,13 +93,15 @@ class CanvasService {
           });
           canvas.add(pageRect);
 
+          console.log('appearance', appearance)
+
           const pageInfo = new fabric.Text(
             `Page ${page.pageNumber} / ${spreadPages.length}`,
             {
               left: offsetX,
               top: offsetY + pageHeight + 8,
               fontSize: 16,
-              fill: 'white',
+              fill: (appearance === 'dark') ? 'white' : 'black',
               fontFamily: 'Arial',
             }
           );
@@ -117,14 +120,11 @@ class CanvasService {
               pageWidth,
               pageHeight
             );
-            console.log('#02 fabricObject', fabricObject);
+
             if (fabricObject) {
               activeFabricObject = fabricObject;
-              console.log('#02 set activeFabricObject', activeFabricObject);
             }
           });
-
-          console.log('#02 => activeFabricObject', activeFabricObject);
 
           // canvas.getObjects()
 

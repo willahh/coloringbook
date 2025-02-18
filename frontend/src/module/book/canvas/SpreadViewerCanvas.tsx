@@ -15,6 +15,7 @@ import { PagesNavigation } from '../components/PagesNavigation';
 import { Scrollbars } from '@/lib/scrollbars';
 import useCanvasContext from '../useCanvasContext';
 import { BookPageParams } from '@/common/interfaces';
+import { useTheme } from '@/common/contexts/ThemeContext';
 
 interface SpreadCanvasProps {
   pageId: number;
@@ -34,6 +35,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const pageParams = useParams<BookPageParams>();
   const { setCanvas, viewportTransform, setViewportTransform } =
     useCanvasContext();
+  const { appearance } = useTheme();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
@@ -136,10 +138,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     if (canvas) {
       if (needRedrawPages) {
         console.log('#001 call redraw');
+        console.log('#001 appearance', appearance);
         const spreadSizeNew = canvasService.drawPagesElementsAndMask(
           canvas,
           spreadPages,
-          canvasSize
+          canvasSize,
+          appearance
         );
 
         // Center spread when viewportTransform is not defined (on page mount)

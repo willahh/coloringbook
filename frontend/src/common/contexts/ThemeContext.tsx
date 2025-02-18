@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState } from 'react';
 import DynamicCSSLoader from '@components/DynamicCSSLoader';
 
-type Appearance = 'dark' | 'light';
+export type Appearance = 'dark' | 'light';
 type ThemeContextType = {
   appearance: Appearance;
   switchAppearance: (appearance: Appearance) => void;
