@@ -1,7 +1,11 @@
 import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
 import { Element, Page } from '@/common/types/book';
-import { fabricRectPage, PageDimensions } from '@/common/interfaces';
+import {
+  fabricRectPage,
+  IPageFabricObject,
+  PageDimensions,
+} from '@/common/interfaces';
 
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;
@@ -63,6 +67,7 @@ class CanvasService {
           newSpreadSize.width = Math.max(newSpreadSize.width, pageWidth);
 
           const pageRect = new fabric.Rect({
+            isPage: true,
             pageId: page.pageId,
             width: pageWidth,
             height: pageHeight,
@@ -87,13 +92,16 @@ class CanvasService {
           });
           canvas.add(pageRect);
 
-          const pageInfo = new fabric.Text(`Page ${page.pageNumber} / ${spreadPages.length}`, {
-            left: offsetX,
-            top: offsetY + pageHeight + 8,
-            fontSize: 16,
-            fill: 'white',
-            fontFamily: 'Arial',
-          });
+          const pageInfo = new fabric.Text(
+            `Page ${page.pageNumber} / ${spreadPages.length}`,
+            {
+              left: offsetX,
+              top: offsetY + pageHeight + 8,
+              fontSize: 16,
+              fill: 'white',
+              fontFamily: 'Arial',
+            }
+          );
           canvas.add(pageInfo);
 
           // TODO, gérer la sauvegarde de la sélection ICI
@@ -167,30 +175,103 @@ class CanvasService {
     return pageDimensions;
   }
 
+  findPagesInCanvas(canvas: fabric.Canvas): IPageFabricObject[] {
+    const pages = canvas.getObjects().filter((obj) => {
+      return (obj as fabric.Object & { isPage?: boolean }).isPage === true;
+    }) as IPageFabricObject[];
+
+    return pages;
+  }
+
+  getMaxPageWidth(canvas: fabric.Canvas): number {
+    const pages = canvasService.findPagesInCanvas(canvas);
+    const zoom = canvas.getZoom();
+    if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
+
+    // Calculer la largeur max parmi toutes les pages
+    return Math.max(
+      ...pages.map((page) => {
+        return page.width * zoom || 0;
+      })
+    );
+  }
+
   /**
-   *
-   * Calcule la position et l'échelle pour centrer et ajuster une planche sur le canvas.
+   * Calcule la position et l'échelle pour centrer et ajuster une planche sur le canvas verticalement, en se focalisant sur une page spécifique.
    * @param canvasSize - Dimensions du canvas
-   * @param spreadSize - Dimensions de la planche à centrer
+   * @param spreadSize - Dimensions totales de la planche à centrer (la somme des hauteurs de toutes les pages)
+   * @param pages - Liste des pages
+   * @param pageId - Identifiant de la page à centrer
    * @returns Un objet contenant la position x, y et les échelles x et y.
    */
   calculateCenteredSpread(
     canvasSize: { width: number; height: number },
-    spreadSize: { width: number; height: number }
+    spreadSize: { width: number; height: number },
+    pages: Page[],
+    pageId: number
   ) {
-    const scale = 0.8; // This needs to be calculated
+    console.log('calculateCenteredSpread');
+    // Vérification que pages est bien défini et est un array
+    if (!Array.isArray(pages)) {
+      console.error('Pages must be an array');
+      return { x: 0, y: 0, scaleX: 1, scaleY: 1 }; // Retourner des valeurs par défaut en cas d'erreur
+    }
+
+    // Calculer l'échelle pour s'assurer que la page cible rentre dans le canvas
+    const scale = Math.min(1, canvasSize.height / spreadSize.height);
     const offsetX = -32; // Tabs width on the left
     const scaleX = scale;
     const scaleY = scale;
-    const x =
-      (canvasSize.width + offsetX) / 2 - (spreadSize.width * scaleX) / 2;
-    const headerHeight = 64;
-    const y =
-      canvasSize.height / 2 -
-      (spreadSize.height * scaleY) / 2 -
-      headerHeight / 2;
+
+    // Trouver l'index de la page cible
+    const targetPageIndex = pages.findIndex((page) => page.pageId === pageId);
+    if (targetPageIndex === -1) {
+      console.error(`Page with id ${pageId} not found`);
+      return { x: 0, y: 0, scaleX: 1, scaleY: 1 }; // Retourner des valeurs par défaut si la page n'est pas trouvée
+    }
+
+    // Calculer la position x (centrage horizontal de la page cible)
+    const targetPageWidth =
+      pages[targetPageIndex].aspectRatio.width *
+      (pages[targetPageIndex].aspectRatio.height /
+        pages[targetPageIndex].aspectRatio.width) *
+      scaleY;
+    const x = (canvasSize.width + offsetX) / 2 - (targetPageWidth * scaleX) / 2;
+
+    // Calculer la position y pour centrer la page cible verticalement
+    let yOffset = 0;
+    for (let i = 0; i < targetPageIndex; i++) {
+      // Ajouter la hauteur des pages précédentes avec une marge
+      yOffset += pages[i].aspectRatio.height * scaleY + 10; // Marge de 10 pixels entre chaque page
+    }
+
+    // Calculer la position y de la page cible
+    const targetPageHeight = pages[targetPageIndex].aspectRatio.height * scaleY;
+    const y = (canvasSize.height - targetPageHeight) / 2 - yOffset;
 
     return { x, y, scaleX, scaleY };
+  }
+
+  constrainHorizontalMovement(
+    canvasWidth: number,
+    totalWidth: number,
+    x: number
+  ): number {
+    let newX = x;
+
+    // Limite de déplacement horizontal
+    const margin = 100;
+    const maxX = margin; // Si le contenu est aligné à gauche par défaut
+    const minX = canvasWidth - totalWidth - margin; // Si le contenu dépasse la taille du canvas
+
+    // Centrer le contenu si possible
+    if (totalWidth <= canvasWidth) {
+      console.log('#z center')
+      newX = (canvasWidth - totalWidth) / 2; // Centrer
+    } else {
+      newX = Math.min(Math.max(x, minX), maxX);
+    }
+    return newX;
   }
 
   async addElementToCanvas(

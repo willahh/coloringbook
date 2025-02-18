@@ -51,7 +51,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
-  console.log('#02 canvasSize', canvasSize)
 
   useEffect(() => {
     setNeedPageCenter(true);
@@ -80,8 +79,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         renderOnAddRemove: true,
         allowTouchScrolling: true,
       });
-      
-      console.log('#02 canvasNew')
+
+      console.log('#02 canvasNew');
       canvasService.canvas = canvasNew;
       setNeedRedrawPages(true);
 
@@ -142,7 +141,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         if (spreadSizeNew) {
           if (needPageCenter) {
             const { x, y, scaleX, scaleY } =
-              canvasService.calculateCenteredSpread(canvasSize, spreadSizeNew);
+              canvasService.calculateCenteredSpread(
+                canvasSize,
+                spreadSizeNew,
+                spreadPages,
+                pageId
+              );
 
             // [scaleX, 0, 0, scaleY, x, y];
             const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
@@ -173,6 +177,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
       // On page change, we reset the setViewportTransform
       setViewportTransform(undefined);
+      // setNeedPageCenter(true);
     }
   }, [pageId]); // pageId: Triggered when a page changes
 
