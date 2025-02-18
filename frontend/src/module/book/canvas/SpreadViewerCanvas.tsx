@@ -58,10 +58,11 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   }, [pageId]);
 
   // useMemo to avoid too many re-renders
-  const spreadPages = React.useMemo(
-    () => BookService.getPageSpread(pageParams, pages),
-    [pageParams, pages]
-  );
+  // const spreadPages = React.useMemo(
+  //   () => BookService.getPageSpread(pageParams, pages),
+  //   [pageParams, pages]
+  // );
+  const spreadPages = pages;
 
   useEventHandlers(fabricCanvasRef.current);
 

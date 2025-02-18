@@ -34,8 +34,9 @@ function startZoomMomentum(
     const newZoom = currentZoom + (zoomMomentum * timeDiff) / 1000; // Ajuster le facteur de temps selon besoin
     let appliedZoom = newZoom;
 
+    const zoomMin = 0.4;
     if (appliedZoom > 5) appliedZoom = 5;
-    if (appliedZoom < 0.75) appliedZoom = 0.75;
+    if (appliedZoom < zoomMin) appliedZoom = zoomMin;
 
     // canvas.setZoom(appliedZoom);
     canvas.zoomToPoint(mousePoint, appliedZoom);
@@ -68,7 +69,7 @@ export const handleMouseWheel =
       // Sur Mac, metaKey est utilisé pour le zoom
       const delta = opt.e.deltaY;
       let zoom = canvas.getZoom();
-      const zoomMin = 0.75;
+      const zoomMin = 0.4;
       const zoomMax = 5;
       zoom *= 0.998 ** delta;
       if (zoom > zoomMax) zoom = zoomMax;
@@ -156,7 +157,7 @@ export const handleMouseMove =
       }
 
       // Calculer le déplacement
-      const moveX =  (canvas.lastPosX ?? 0) - clientX
+      const moveX = (canvas.lastPosX ?? 0) - clientX;
       const moveY = (canvas.lastPosY ?? 0) - clientY;
 
       // Mettre à jour la position

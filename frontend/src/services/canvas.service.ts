@@ -50,18 +50,33 @@ class CanvasService {
               canvasBorder * 2;
           }
 
-          const offsetX = index * pageWidth;
-          newSpreadSize.width += pageWidth;
-          newSpreadSize.height = Math.max(newSpreadSize.height, pageHeight);
+          const scaleY = pageHeight / canvas.height;
+          console.log('scaleY', scaleY);
 
-          const rect = new fabric.Rect({
+          const offsetX = 0;
+          // const offsetX = (index * (pageWidth + 100));
+          const offsetY = index * (pageHeight + 100);
+          // newSpreadSize.width += pageWidth;
+          // newSpreadSize.height = Math.max(newSpreadSize.height, pageHeight);
+
+          newSpreadSize.height += pageHeight;
+          newSpreadSize.width = Math.max(newSpreadSize.width, pageWidth);
+
+          const pageRect = new fabric.Rect({
             pageId: page.pageId,
             width: pageWidth,
             height: pageHeight,
             left: offsetX,
-            top: 0,
+            top: offsetY,
             fill: 'white',
-            selectable: false,
+
+            hasControls: false,
+            borderScaleFactor: 2,
+            selectable: true,
+            borderColor: 'red',
+            lockMovementX: true,
+            lockMovementY: true,
+
             shadow: new fabric.Shadow({
               color: 'rgba(0, 0, 0, .4)',
               nonScaling: true,
@@ -70,7 +85,16 @@ class CanvasService {
               offsetY: 2,
             }),
           });
-          canvas.add(rect);
+          canvas.add(pageRect);
+
+          const pageInfo = new fabric.Text(`Page ${page.pageNumber} / ${spreadPages.length}`, {
+            left: offsetX,
+            top: offsetY + pageHeight + 8,
+            fontSize: 16,
+            fill: 'white',
+            fontFamily: 'Arial',
+          });
+          canvas.add(pageInfo);
 
           // TODO, gérer la sauvegarde de la sélection ICI
 
@@ -81,6 +105,7 @@ class CanvasService {
               page.pageId,
               element,
               offsetX,
+              offsetY,
               pageWidth,
               pageHeight
             );
@@ -105,13 +130,13 @@ class CanvasService {
         });
 
         // Create mask
-        const mask = new fabric.Rect({
-          width: newSpreadSize.width + canvasBorder,
-          height: newSpreadSize.height + canvasBorder,
-          left: -(canvasBorder / 2),
-          top: -(canvasBorder / 2),
-        });
-        canvas.clipPath = mask;
+        // const mask = new fabric.Rect({
+        //   width: newSpreadSize.width + canvasBorder,
+        //   height: newSpreadSize.height + canvasBorder,
+        //   left: -(canvasBorder / 2),
+        //   top: -(canvasBorder / 2),
+        // });
+        // canvas.clipPath = mask;
         return newSpreadSize;
       }
     }
@@ -172,12 +197,14 @@ class CanvasService {
     pageId: number,
     element: Element,
     offsetX: number,
+    offsetY: number,
     pageWidth: number,
     pageHeight: number
   ): Promise<fabric.FabricObject> {
     const drawableElement = ElementFactory.createElement(
       element,
       offsetX,
+      offsetY,
       pageWidth,
       pageHeight
     );
