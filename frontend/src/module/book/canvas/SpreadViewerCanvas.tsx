@@ -38,7 +38,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const { appearance } = useTheme();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
+  // const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -54,9 +54,9 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
-  useEffect(() => {
-    setNeedPageCenter(true);
-  }, [pageId]);
+  // useEffect(() => {
+  //   setNeedPageCenter(true);
+  // }, [pageId]);
 
   // useMemo to avoid too many re-renders
   // const spreadPages = React.useMemo(
@@ -148,13 +148,13 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
         // Center spread when viewportTransform is not defined (on page mount)
         if (spreadSizeNew) {
-          if (needPageCenter) {
-            const vpt = canvasService.focusOnPage(canvas, pageId);
-            if (vpt) {
-              setViewportTransform(vpt);
-            }
-            setNeedPageCenter(false);
+          // if (needPageCenter) {
+          const vpt = canvasService.focusOnPage(canvas, pageId);
+          if (vpt) {
+            setViewportTransform(vpt);
           }
+          // setNeedPageCenter(false);
+          // }
           setNeedRedrawPages(false);
         }
       }
@@ -168,7 +168,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     spreadPages,
     canvasSize,
     viewportTransform,
-    needPageCenter,
+    // needPageCenter,
     needRedrawPages,
     setViewportTransform,
   ]);
