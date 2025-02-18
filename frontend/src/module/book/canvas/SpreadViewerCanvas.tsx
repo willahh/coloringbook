@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router';
 import * as fabric from 'fabric';
 import {
-  makeMouseWheel,
+  // makeMouseWheel,
   makeMouseWheelWithAnimation,
 } from '@/lib/scrollbars/utils';
 
@@ -38,7 +38,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const { appearance } = useTheme();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  // const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
+  const [needPageCenter, setNeedPageCenter] = useState<boolean>(true);
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
@@ -105,10 +105,15 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       setCanvas(canvas);
 
       // const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
-      const mousewheel = makeMouseWheelWithAnimation(canvas, {
-        min: 0.02,
-        max: 256,
-      });
+      const mousewheel = makeMouseWheelWithAnimation(
+        canvas,
+        {
+          min: 0.02,
+          max: 256,
+        },
+        true,
+        setViewportTransform
+      );
       canvas.on('mouse:wheel', mousewheel);
 
       const scrollbar = new Scrollbars(canvas, {
@@ -138,7 +143,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     if (canvas) {
       if (needRedrawPages) {
         console.log('#001 call redraw');
-        console.log('#001 appearance', appearance);
+
         const spreadSizeNew = canvasService.drawPagesElementsAndMask(
           canvas,
           spreadPages,
@@ -148,19 +153,23 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
         // Center spread when viewportTransform is not defined (on page mount)
         if (spreadSizeNew) {
-          // if (needPageCenter) {
-          const vpt = canvasService.focusOnPage(canvas, pageId);
-          if (vpt) {
-            setViewportTransform(vpt);
+          if (needPageCenter) {
+            console.log('#001 FOCUS ON PAGE');
+            const vpt = canvasService.focusOnPage(canvas, pageId);
+            if (vpt) {
+              setViewportTransform(vpt);
+            }
+            console.log('#001 set setNeedPageCenter to false');
+            setNeedPageCenter(false);
           }
-          // setNeedPageCenter(false);
-          // }
           setNeedRedrawPages(false);
         }
       }
 
+      console.log('#001 viewportTransform: ', viewportTransform);
       if (viewportTransform) {
         canvas.viewportTransform = viewportTransform;
+        canvas.requestRenderAll();
       }
     }
   }, [
@@ -168,7 +177,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     spreadPages,
     canvasSize,
     viewportTransform,
-    // needPageCenter,
+    needPageCenter,
     needRedrawPages,
     setViewportTransform,
   ]);
@@ -179,7 +188,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
       const vpt = canvasService.focusOnPage(canvas, pageId);
       if (vpt) {
-        console.log('#001 start viewport transform animation');
+        // console.log('#001 start viewport transform animation');
+        console.log('#001 FOCUS ON PAGE from pageId change');
 
         const currentVpt = canvas.viewportTransform.slice(); // Copier l'état actuel du viewport
         const targetVpt = vpt; // Vpt cible calculé précédemment
@@ -190,6 +200,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
           currentVpt,
           targetVpt
         );
+        console.log('#001 set setNeedPageCenter to false');
+        setNeedPageCenter(false);
 
         // Nettoyage de l'animation si le composant se démonte ou si la pageId change
         return cancelAnimation;

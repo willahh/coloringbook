@@ -61,23 +61,25 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
         const element: Element = fabricObject.get('objet');
         if (element) {
           const pageId: number = fabricObject.get('pageId');
-          const page = PageService.getPage(book.pages, pageId);
-          if (page) {
-            const pageDimensions = canvasService.getPageDimensions(
-              canvas,
-              pageId
-            );
-            const newElement: Element = {
-              ...element,
-              x: fabricObject.getRelativeX() / pageDimensions.width,
-              y: fabricObject.getRelativeY() / pageDimensions.height,
-              w: fabricObject.getScaledWidth() / pageDimensions.width,
-              h: fabricObject.getScaledHeight() / pageDimensions.height,
-            };
-            dispatch(
-              updateElementByElementId({ element: newElement, pageId: pageId })
-            );
-          }
+          const pageRect = canvasService.getPageRectbyPageId(canvas, pageId);
+          const offsetY = pageRect?.getY() || 0;
+
+          const pageDimensions = canvasService.getPageDimensions(
+            canvas,
+            pageId
+          );
+          const newElement: Element = {
+            ...element,
+            x: fabricObject.getRelativeX() / pageDimensions.width,
+            y: (fabricObject.getRelativeY() - offsetY) / pageDimensions.height,
+            w: fabricObject.getScaledWidth() / pageDimensions.width,
+            h: fabricObject.getScaledHeight() / pageDimensions.height,
+          };
+          console.log('newElement', newElement);
+          dispatch(
+            updateElementByElementId({ element: newElement, pageId: pageId })
+          );
+          // }
         }
       });
 

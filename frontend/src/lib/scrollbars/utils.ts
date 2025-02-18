@@ -13,7 +13,10 @@ export const makeMouseWheelWithAnimation =
   (
     canvas: fabric.Canvas,
     size = { min: 0.02, max: 256 },
-    enableZoomAnimation = true
+    enableZoomAnimation = true,
+    setViewportTransform: React.Dispatch<
+      React.SetStateAction<fabric.TMat2D | undefined>
+    >
   ) =>
   (options: CustomPointerEventInfo<WheelEvent>) => {
     const e = options.e;
@@ -34,6 +37,7 @@ export const makeMouseWheelWithAnimation =
 
     function applyZoom(zoom: number, point: fabric.Point) {
       canvas.zoomToPoint(point, zoom);
+      // setViewportTransform([...canvas.viewportTransform]);
 
       if (canvas.viewportTransform) {
         const vpt = canvas.viewportTransform.slice(0) as fabric.TMat2D;
@@ -44,10 +48,11 @@ export const makeMouseWheelWithAnimation =
           vpt[4]
         );
         vpt[4] = newX;
-        canvas.setViewportTransform(vpt);
+        // canvas.setViewportTransform(vpt);
+        setViewportTransform([...canvas.viewportTransform]);
       }
 
-      canvas.requestRenderAll();
+      // canvas.requestRenderAll();
     }
 
     function animateMomentumZoom(point: fabric.Point) {
@@ -98,14 +103,21 @@ export const makeMouseWheelWithAnimation =
         vpt[4] = newX;
         vpt[5] -= e.deltaY;
 
-        canvas.setViewportTransform(vpt);
-        canvas.requestRenderAll();
+        setViewportTransform([...vpt]);
+        // canvas.setViewportTransform(vpt);
+        // canvas.requestRenderAll();
       }
     }
   };
 
 export const makeMouseWheel =
-  (canvas: fabric.Canvas, size = { min: 0.02, max: 256 }) =>
+  (
+    canvas: fabric.Canvas,
+    size = { min: 0.02, max: 256 },
+    setViewportTransform: React.Dispatch<
+      React.SetStateAction<fabric.TMat2D | undefined>
+    >
+  ) =>
   (options: CustomPointerEventInfo<WheelEvent>) => {
     const e = options.e;
     if (
@@ -149,7 +161,8 @@ export const makeMouseWheel =
         );
 
         vpt[4] = newX; // Appliquer la contrainte
-        canvas.setViewportTransform(vpt);
+        // canvas.setViewportTransform(vpt);
+        setViewportTransform([...canvas.viewportTransform]);
       }
 
       canvas.requestRenderAll();
@@ -166,8 +179,9 @@ export const makeMouseWheel =
         vpt[4] = newX;
         vpt[5] -= e.deltaY; // Déplacement vertical sans changement
 
-        canvas.setViewportTransform(vpt);
-        canvas.requestRenderAll();
+        // canvas.setViewportTransform(vpt);
+        // canvas.requestRenderAll();
+        setViewportTransform([...canvas.viewportTransform]);
       }
     }
   };

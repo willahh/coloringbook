@@ -56,7 +56,7 @@ class CanvasService {
               canvasBorder * 2;
           }
 
-          const scaleY = pageHeight / canvas.height;
+          // const scaleY = pageHeight / canvas.height;
 
           const offsetX = 0;
           // const offsetX = (index * (pageWidth + 100));
@@ -93,15 +93,13 @@ class CanvasService {
           });
           canvas.add(pageRect);
 
-          console.log('appearance', appearance)
-
           const pageInfo = new fabric.Text(
             `Page ${page.pageNumber} / ${spreadPages.length}`,
             {
               left: offsetX,
               top: offsetY + pageHeight + 8,
               fontSize: 16,
-              fill: (appearance === 'dark') ? 'white' : 'black',
+              fill: appearance === 'dark' ? 'white' : 'black',
               fontFamily: 'Arial',
             }
           );
@@ -150,11 +148,10 @@ class CanvasService {
     }
   }
 
-  getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
-    let pageDimensions = {
-      width: 0,
-      height: 0,
-    };
+  getPageRectbyPageId(
+    canvas: fabric.Canvas,
+    pageId: number
+  ): FabricRectPage | undefined {
     const pageRect = canvas.getObjects().find((obj) => {
       if (
         obj.type === 'rect' &&
@@ -164,6 +161,16 @@ class CanvasService {
       }
       return false;
     });
+
+    return pageRect as FabricRectPage;
+  }
+
+  getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
+    let pageDimensions = {
+      width: 0,
+      height: 0,
+    };
+    const pageRect = this.getPageRectbyPageId(canvas, pageId);
 
     if (pageRect) {
       pageDimensions = {
@@ -275,10 +282,10 @@ class CanvasService {
 
     // Centrer le contenu si possible
     if (maxPageWidth <= canvasWidth) {
-      console.log('\n#z constrainHorizontalMovement');
-      console.log('#z center');
-      console.log('#z maxPageWidth', maxPageWidth);
-      console.log('#z canvasWidth', canvasWidth);
+      // console.log('\n#z constrainHorizontalMovement');
+      // console.log('#z center');
+      // console.log('#z maxPageWidth', maxPageWidth);
+      // console.log('#z canvasWidth', canvasWidth);
       const offsetX = 77; // Largeur des onglets a gauche
       newX = (canvasWidth - maxPageWidth + offsetX) / 2; // Centrer
     } else {
