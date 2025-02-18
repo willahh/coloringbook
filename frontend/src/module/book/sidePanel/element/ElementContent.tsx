@@ -8,7 +8,7 @@ import { useDispatch } from '@/common/store';
 import { addElementToPage } from '../../element/Element.action';
 import { useParams } from 'react-router';
 import { ElementService } from '@/services/element.service';
-
+import { HeartIcon } from '@heroicons/react/20/solid';
 // Définition des imports lazy pour chaque SVG
 const svgs = [
   {
@@ -72,12 +72,12 @@ const ElementItem: React.FC<{
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
-}> = ({ children, onClick }) => {
+}> = ({ children, onClick, className }) => {
   return (
     <Item
       className={`flex justify-center w-full aspect-square object-cover p-3
         dark:fill-white
-        bg-primary-100 dark:bg-primary-800`}
+        bg-primary-100 dark:bg-primary-800 ${className || ''}`}
       onClick={onClick}
     >
       {children}
@@ -140,7 +140,10 @@ const LazyElementItem: React.FC<{
   };
 
   return (
-    <ElementItem onClick={handleClick}>
+    <ElementItem onClick={handleClick} className="relative group">
+      <button className="absolute top-2 right-2  opacity-0  group-hover:opacity-100 transition-all duration-300">
+        <HeartIcon className="w-4 h-4 text-pink-500" />
+      </button>
       <svg.component className="h-full" />
     </ElementItem>
   );

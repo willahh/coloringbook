@@ -77,7 +77,7 @@ const BookPage: React.FC = () => {
         <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
           {book.pages.length > 0 && (
             <SpreadViewerCanvas
-              pageId={pageId}
+              // pageId={pageId}
               pages={book.pages}
               sidePanelWidth={sidePanelWidth}
               pagesPanelWidth={pagesPanelWidth}

@@ -91,6 +91,24 @@ class CanvasService {
               offsetY: 2,
             }),
           });
+
+          // pageRect.on('mouseover', () => {
+          //   console.log('on mouseover');
+
+          //   pageRect.set({
+          //     stroke: 'green',
+          //     strokeWidth: 10,
+          //   } as fabric.RectProps);
+          //   canvas.renderAll();
+          // });
+
+          // pageRect.on('mouseout', () => {
+          //   pageRect.set({
+          //     stroke: 'green',
+          //     strokeWidth: 0,
+          //   } as fabric.RectProps);
+          //   canvas.renderAll();
+          // });
           canvas.add(pageRect);
 
           const pageInfo = new fabric.Text(
@@ -182,7 +200,7 @@ class CanvasService {
     return pageDimensions;
   }
 
-  findPagesInCanvas(canvas: fabric.Canvas): PageFabricObject[] {
+  getPages(canvas: fabric.Canvas): PageFabricObject[] {
     const pages = canvas.getObjects().filter((obj) => {
       return (obj as fabric.Object & { isPage?: boolean }).isPage === true;
     }) as PageFabricObject[];
@@ -191,7 +209,7 @@ class CanvasService {
   }
 
   getMaxPageWidth(canvas: fabric.Canvas): number {
-    const pages = canvasService.findPagesInCanvas(canvas);
+    const pages = canvasService.getPages(canvas);
     if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
 
     // Calculer la largeur max parmi toutes les pages
@@ -203,7 +221,7 @@ class CanvasService {
   }
 
   getMaxPageScaledWidth(canvas: fabric.Canvas): number {
-    const pages = canvasService.findPagesInCanvas(canvas);
+    const pages = canvasService.getPages(canvas);
     const zoom = canvas.getZoom();
     if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
 
@@ -425,6 +443,43 @@ class CanvasService {
 
     // Retourner la fonction d'annulation si nécessaire
     return () => cancelAnimationFrame(animationFrameId);
+  }
+
+  detectCurrentPage(
+    canvas: fabric.Canvas,
+    setSelectedPageId: (id: number) => void
+  ) {
+    const vpt = canvas.viewportTransform;
+    if (!vpt) return;
+
+    const zoom = vpt[0]; // Échelle actuelle
+    const offsetY = vpt[5]; // Position verticale du viewport
+
+    // Liste des pages avec leurs positions
+    const pages = this.getPages(canvas);
+    let bestPageId = null;
+    let bestVisibility = 0;
+
+    pages.forEach((page) => {
+      const pageTop = page.getY() * zoom + offsetY;
+      const pageBottom = (page.getY() + page.height) * zoom + offsetY;
+      const viewportHeight = canvas.getHeight();
+
+      // Calcul de la visibilité de la page dans la fenêtre
+      const visibleHeight =
+        Math.min(viewportHeight, pageBottom) - Math.max(0, pageTop);
+      const visibilityRatio = visibleHeight / page.height;
+
+      // Sélectionner la page la plus visible
+      if (visibilityRatio > bestVisibility) {
+        bestVisibility = visibilityRatio;
+        bestPageId = page.pageId;
+      }
+    });
+
+    if (bestPageId !== null) {
+      setSelectedPageId(bestPageId);
+    }
   }
 }
 

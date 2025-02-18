@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
 import { useParams } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import * as fabric from 'fabric';
 import {
   // makeMouseWheel,
@@ -18,7 +19,7 @@ import { BookPageParams } from '@/common/interfaces';
 import { useTheme } from '@/common/contexts/ThemeContext';
 
 interface SpreadCanvasProps {
-  pageId: number;
+  // pageId: number;
   width?: number;
   height?: number;
   pages: Page[];
@@ -27,15 +28,17 @@ interface SpreadCanvasProps {
 }
 
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
-  pageId,
+  // pageId,
   pages,
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
+  const pageId = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const { setCanvas, viewportTransform, setViewportTransform } =
     useCanvasContext();
   const { appearance } = useTheme();
+  const navigate = useNavigate();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needPageCenter, setNeedPageCenter] = useState<boolean>(true);
@@ -133,6 +136,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     }
   }, [initCanvas, setCanvas, spreadPages]);
 
+  let timeoutId;
   /**
    * [Canvas drawing].
    * Draw pages, elements and page mask.
@@ -143,6 +147,11 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     if (canvas) {
       if (needRedrawPages) {
         console.log('#001 call redraw');
+        console.log('#001 timeoutId', timeoutId)
+        if (timeoutId) {
+          console.log('#001 clearTimeout timeoutId');
+          clearTimeout(timeoutId);
+        }
 
         const spreadSizeNew = canvasService.drawPagesElementsAndMask(
           canvas,
@@ -152,24 +161,33 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         );
 
         // Center spread when viewportTransform is not defined (on page mount)
-        if (spreadSizeNew) {
-          if (needPageCenter) {
-            console.log('#001 FOCUS ON PAGE');
-            const vpt = canvasService.focusOnPage(canvas, pageId);
-            if (vpt) {
-              setViewportTransform(vpt);
-            }
-            console.log('#001 set setNeedPageCenter to false');
-            setNeedPageCenter(false);
+        if (spreadSizeNew && needPageCenter) {
+          console.log('#001 FOCUS ON PAGE');
+          const vpt = canvasService.focusOnPage(canvas, pageId);
+          if (vpt) {
+            setViewportTransform(vpt);
           }
-          setNeedRedrawPages(false);
+          console.log('#001 set setNeedPageCenter to false');
+          setNeedPageCenter(false);
         }
+        setNeedRedrawPages(false);
       }
 
-      console.log('#001 viewportTransform: ', viewportTransform);
+      // Mettre à jour le viewport et détecter la page actuelle
       if (viewportTransform) {
         canvas.viewportTransform = viewportTransform;
         canvas.requestRenderAll();
+
+        // Délai pour éviter plusieurs navigations rapides
+        timeoutId = setTimeout(() => {
+          canvasService.detectCurrentPage(canvas, (id: number) => {
+            // Lorsque la page actuelle est détectée, naviguer vers la page
+            if (id !== pageId) {
+              navigate(`/book/${pageParams.bookId}/pages/${id}`);
+            }
+          });
+        }, 24); // 24ms pour laisser l'animation se finir
+        return () => clearTimeout(timeoutId);
       }
     }
   }, [
@@ -213,6 +231,24 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />
       <canvas ref={canvasRef} />
+
+      <div
+        data-id="inline-toolbar"
+        className={`absolute bottom-20 left-12 z-10
+          rounded-full px-4 py-2
+         bg-secondary-500 dark:bg-secondary-500  text-white dark:text-white
+         text-sm flex gap-2`}
+      >
+        <button>Modification</button>
+        <button>Color</button>
+        <button>Border color</button>
+        <button>Border style</button>
+        <button>Border radius</button>
+        <button>Lock</button>
+        <button>Duplicate</button>
+        <button>Delete</button>
+        <button>Plus</button>
+      </div>
     </div>
   );
 };
