@@ -120,7 +120,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       canvas.on('mouse:wheel', mousewheel);
 
       const scrollbar = new Scrollbars(canvas, {
-        fill: 'rgba(255,255,0,.5)',
+        fill: '#f43f5f',
         stroke: 'rgba(0,0,255,.5)',
         lineWidth: 5,
         scrollbarSize: 8,
@@ -136,7 +136,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     }
   }, [initCanvas, setCanvas, spreadPages]);
 
-  let timeoutId;
   /**
    * [Canvas drawing].
    * Draw pages, elements and page mask.
@@ -147,11 +146,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     if (canvas) {
       if (needRedrawPages) {
         console.log('#001 call redraw');
-        console.log('#001 timeoutId', timeoutId)
-        if (timeoutId) {
-          console.log('#001 clearTimeout timeoutId');
-          clearTimeout(timeoutId);
-        }
 
         const spreadSizeNew = canvasService.drawPagesElementsAndMask(
           canvas,
@@ -179,14 +173,18 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         canvas.requestRenderAll();
 
         // Délai pour éviter plusieurs navigations rapides
-        timeoutId = setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           canvasService.detectCurrentPage(canvas, (id: number) => {
             // Lorsque la page actuelle est détectée, naviguer vers la page
+            // Si la page actuelle est différente de la page actuelle
             if (id !== pageId) {
-              navigate(`/book/${pageParams.bookId}/pages/${id}`);
+              // Si le canvas n'est pas en train de défiler
+              if (!canvas.get('scrolling')) {
+                navigate(`/book/${pageParams.bookId}/pages/${id}`);
+              }
             }
           });
-        }, 24); // 24ms pour laisser l'animation se finir
+        }, 24);
         return () => clearTimeout(timeoutId);
       }
     }

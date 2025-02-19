@@ -57,12 +57,9 @@ class CanvasService {
           }
 
           // const scaleY = pageHeight / canvas.height;
-
+          const spaceBetweenPages = 200;
           const offsetX = 0;
-          // const offsetX = (index * (pageWidth + 100));
-          const offsetY = index * (pageHeight + 100);
-          // newSpreadSize.width += pageWidth;
-          // newSpreadSize.height = Math.max(newSpreadSize.height, pageHeight);
+          const offsetY = index * (pageHeight + spaceBetweenPages);
 
           newSpreadSize.height += pageHeight;
           newSpreadSize.width = Math.max(newSpreadSize.width, pageWidth);
@@ -236,7 +233,7 @@ class CanvasService {
   focusOnPage(
     canvas: fabric.Canvas,
     pageId: number,
-    margin = 100
+    margin = 40
   ): fabric.TMat2D | null {
     const page = canvas
       .getObjects()
@@ -258,7 +255,7 @@ class CanvasService {
 
     // Dimensions du canvas
     const canvasWidth = canvas.getWidth();
-    const canvasHeight = canvas.getHeight();
+    const canvasHeight = canvas.getHeight() - 66; // 66 = Hauteur du footer
 
     // Calculer le zoom nécessaire pour voir toute la page avec des marges
     const zoomX = (canvasWidth - 2 * margin) / pageWidth;
@@ -300,10 +297,6 @@ class CanvasService {
 
     // Centrer le contenu si possible
     if (maxPageWidth <= canvasWidth) {
-      // console.log('\n#z constrainHorizontalMovement');
-      // console.log('#z center');
-      // console.log('#z maxPageWidth', maxPageWidth);
-      // console.log('#z canvasWidth', canvasWidth);
       const offsetX = 77; // Largeur des onglets a gauche
       newX = (canvasWidth - maxPageWidth + offsetX) / 2; // Centrer
     } else {
