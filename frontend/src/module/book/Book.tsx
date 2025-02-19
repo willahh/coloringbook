@@ -74,7 +74,11 @@ const BookPage: React.FC = () => {
           addPageButtonClick={() => {}}
         ></PagesPanel>
         <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
-        <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
+        <main
+          className={`flex flex-1  flex-col overflow-hidden
+          bg-radial-[at_1%_-100%] from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
+          `}
+        >
           {book.pages.length > 0 && (
             <SpreadViewerCanvas
               // pageId={pageId}

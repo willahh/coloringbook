@@ -1,0 +1,31 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-primary-50: #f1f7fd;
+  --color-primary-100: #dfedfa;
+  --color-primary-200: #c6e0f7;
+  --color-primary-300: #9ecdf2;
+  --color-primary-400: #70b1ea;
+  --color-primary-500: #4a90e2;
+  --color-primary-600: #3978d7;
+  --color-primary-700: #3063c5;
+  --color-primary-800: #2d51a0;
+  --color-primary-900: #29467f;
+  --color-primary-950: #1d2c4e;
+
+  --color-secondary-50: #faf4ff;
+  --color-secondary-100: #f3e5ff;
+  --color-secondary-200: #e9d0ff;
+  --color-secondary-300: #d9acff;
+  --color-secondary-400: #c177ff;
+  --color-secondary-500: #a943ff;
+  --color-secondary-600: #9013fe;
+  --color-secondary-700: #810fe1;
+  --color-secondary-800: #6d12b7;
+  --color-secondary-900: #5a1093;
+  --color-secondary-950: #3d006e;
+}
+
+@config "./../../../tailwind.dark.config.js";
+@import './fonts.css';
+@import './main.base.css';
