@@ -75,7 +75,7 @@ const ElementItem: React.FC<{
 }> = ({ children, onClick, className }) => {
   return (
     <Item
-      className={`flex justify-center w-full aspect-square object-cover p-3
+      className={`flex justify-center w-full aspect-square object-cover p-2
         dark:fill-white
         bg-primary-100 dark:bg-primary-800 ${className || ''}`}
       onClick={onClick}
@@ -85,7 +85,7 @@ const ElementItem: React.FC<{
   );
 };
 
-const ElementContent: React.FC = () => {
+const ElementTabContent: React.FC = () => {
   const dispatch = useDispatch();
   const params = useParams<{ pageId?: string }>();
   const pageId = Number(params.pageId);
@@ -149,4 +149,4 @@ const LazyElementItem: React.FC<{
   );
 };
 
-export default ElementContent;
+export default ElementTabContent;

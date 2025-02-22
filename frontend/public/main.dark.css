@@ -341,28 +341,28 @@
     --default-mono-font-family: roboto-mono-regular, Courier New, Courier, monospace;
     --default-mono-font-feature-settings: normal;
     --default-mono-font-variation-settings: normal;
-    --color-primary-50: #E6F1FF;
-    --color-primary-100: #e2e0ff;
-    --color-primary-200: #cac7fe;
-    --color-primary-300: #aaa5fc;
-    --color-primary-400: #8881f8;
-    --color-primary-500: #6c63f1;
-    --color-primary-600: #5046e5;
-    --color-primary-700: #4138ca;
-    --color-primary-800: #3730a3;
-    --color-primary-900: #332e81;
-    --color-primary-950: #1d1b4b;
-    --color-secondary-50: #fff1f3;
-    --color-secondary-100: #ffe4e9;
-    --color-secondary-200: #fecdd5;
-    --color-secondary-300: #fda4b3;
-    --color-secondary-400: #fb7189;
-    --color-secondary-500: #f43f5e;
-    --color-secondary-600: #e11d3f;
-    --color-secondary-700: #be122f;
-    --color-secondary-800: #9f122a;
-    --color-secondary-900: #881327;
-    --color-secondary-950: #4c0511;
+    --color-primary-50: #f1f7fd;
+    --color-primary-100: #dfedfa;
+    --color-primary-200: #c6e0f7;
+    --color-primary-300: #9ecdf2;
+    --color-primary-400: #70b1ea;
+    --color-primary-500: #4a90e2;
+    --color-primary-600: #3978d7;
+    --color-primary-700: #3063c5;
+    --color-primary-800: #2d51a0;
+    --color-primary-900: #29467f;
+    --color-primary-950: #1d2c4e;
+    --color-secondary-50: #faf4ff;
+    --color-secondary-100: #f3e5ff;
+    --color-secondary-200: #e9d0ff;
+    --color-secondary-300: #d9acff;
+    --color-secondary-400: #c177ff;
+    --color-secondary-500: #a943ff;
+    --color-secondary-600: #9013fe;
+    --color-secondary-700: #810fe1;
+    --color-secondary-800: #6d12b7;
+    --color-secondary-900: #5a1093;
+    --color-secondary-950: #3d006e;
     --container-4xs: 12rem;
   }
 }
@@ -558,6 +558,9 @@
   .top-1 {
     top: calc(var(--spacing) * 1);
   }
+  .top-2 {
+    top: calc(var(--spacing) * 2);
+  }
   .top-4 {
     top: calc(var(--spacing) * 4);
   }
@@ -576,17 +579,26 @@
   .right-1 {
     right: calc(var(--spacing) * 1);
   }
+  .right-2 {
+    right: calc(var(--spacing) * 2);
+  }
   .right-4 {
     right: calc(var(--spacing) * 4);
   }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
   }
+  .bottom-20 {
+    bottom: calc(var(--spacing) * 20);
+  }
   .-left-2 {
     left: calc(var(--spacing) * -2);
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
+  }
+  .left-12 {
+    left: calc(var(--spacing) * 12);
   }
   .left-20 {
     left: calc(var(--spacing) * 20);
@@ -702,6 +714,9 @@
   .inline-flex {
     display: inline-flex;
   }
+  .aspect-\[\$\{width\}\/\$\{height\}\] {
+    aspect-ratio: ${width}/${height};
+  }
   .aspect-\[1\/1\.414\] {
     aspect-ratio: 1/1.414;
   }
@@ -773,6 +788,9 @@
   }
   .h-18 {
     height: calc(var(--spacing) * 18);
+  }
+  .h-20 {
+    height: calc(var(--spacing) * 20);
   }
   .h-24 {
     height: calc(var(--spacing) * 24);
@@ -931,6 +949,9 @@
   }
   .flex-row {
     flex-direction: row;
+  }
+  .place-items-end {
+    place-items: end;
   }
   .place-items-start {
     place-items: start;
@@ -1281,6 +1302,18 @@
   .bg-yellow-500 {
     background-color: var(--color-yellow-500);
   }
+  .bg-radial-\[at_50\%_75\%\] {
+    --tw-gradient-position: at 50% 75%;
+    background-image: radial-gradient(var(--tw-gradient-stops,at 50% 75%));
+  }
+  .from-secondary-100 {
+    --tw-gradient-from: var(--color-secondary-100);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .to-primary-100 {
+    --tw-gradient-to: var(--color-primary-100);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
   .bg-cover {
     background-size: cover;
   }
@@ -1301,6 +1334,9 @@
   }
   .fill-white {
     fill: var(--color-white);
+  }
+  .stroke-secondary-500 {
+    stroke: var(--color-secondary-500);
   }
   .stroke-white {
     stroke: var(--color-white);
@@ -1536,6 +1572,9 @@
   }
   .text-green-400 {
     color: var(--color-green-400);
+  }
+  .text-pink-500 {
+    color: var(--color-pink-500);
   }
   .text-primary-300 {
     color: var(--color-primary-300);
@@ -2818,6 +2857,18 @@
       background-color: var(--color-white);
     }
   }
+  .dark\:from-secondary-900 {
+    &:where(.dark, .dark *) {
+      --tw-gradient-from: var(--color-secondary-900);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
+  .dark\:to-primary-900 {
+    &:where(.dark, .dark *) {
+      --tw-gradient-to: var(--color-primary-900);
+      --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+    }
+  }
   .dark\:\!fill-primary-700 {
     &:where(.dark, .dark *) {
       fill: var(--color-primary-700) !important;
@@ -3371,6 +3422,48 @@ div[data-is-root-theme].light {
   syntax: "*";
   inherits: false;
   initial-value: solid;
+}
+@property --tw-gradient-position {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-via {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-to {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-via-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+@property --tw-gradient-via-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --tw-gradient-to-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 100%;
 }
 @property --tw-leading {
   syntax: "*";

@@ -9,7 +9,7 @@ import TextIcon from '@assets/icons/icon_text.svg?react';
 import { TabType, Tab } from './Sidepanel.types';
 import Tabs from './Tabs';
 import UserContent from './user/UserContent';
-import ElementContent from './element/ElementContent';
+import ElementTabContent from './element/ElementContent';
 import useLocalStorage from '@/common/hooks/useLocalStorage';
 
 const tabs: Tab[] = [
@@ -18,7 +18,7 @@ const tabs: Tab[] = [
     label: 'Eléments',
     icon: PaintBrushIcon,
     active: true,
-    content: <ElementContent />,
+    content: <ElementTabContent />,
   },
   {
     id: TabType.Text,
@@ -130,7 +130,7 @@ const SidePanel: React.FC<{
         >
           <div className="p-4">
             {activeTab == TabType.Personal && <UserContent />}
-            {activeTab == TabType.Element && <ElementContent />}
+            {activeTab == TabType.Element && <ElementTabContent />}
           </div>
         </div>
         <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />

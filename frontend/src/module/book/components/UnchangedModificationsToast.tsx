@@ -6,7 +6,28 @@ import KeyboardShortcut from '@components/KeyboardShortcut';
 interface UnsavedChangesToastProps {
   isModified: boolean;
   onSave: () => void;
+  onDontShowAgain?: () => void;
 }
+
+export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
+  onDontShowAgain,
+  onSave,
+}) => {
+  return (
+    <div>
+      <div>Les modifications ne sont pas enregistrées</div>
+      <div className="flex gap-4">
+        <ButtonLink className="flex items-center gap-1" onClick={onSave}>
+          <span>Enregistrer</span>
+          <KeyboardShortcut keys={['Ctrl', 'S']} />
+        </ButtonLink>
+        <ButtonLink onClick={onDontShowAgain} color="gray">
+          Ne plus afficher
+        </ButtonLink>
+      </div>
+    </div>
+  );
+};
 
 const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
   isModified,
@@ -20,29 +41,20 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
       setIsClosed(false);
     }
   }, [isModified, show]);
-  
+
   const onDontShowAgain = () => {
     console.log('onDontShowAgain');
   };
-
-  // if (!isVisible) return null;
 
   return (
     <Toast
       autoClose={false}
       message={
-        <div>
-          <div>Les modifications ne sont pas enregistrées</div>
-          <div className="flex gap-4">
-            <ButtonLink className="flex items-center gap-1" onClick={onSave}>
-              <span>Enregistrer</span>
-              <KeyboardShortcut keys={['Ctrl', 'S']} />
-            </ButtonLink>
-            <ButtonLink onClick={onDontShowAgain} color="gray">
-              Ne plus afficher
-            </ButtonLink>
-          </div>
-        </div>
+        <UnsavedChangesComponent
+          isModified={isModified}
+          onDontShowAgain={onDontShowAgain}
+          onSave={onSave}
+        />
       }
       type="info"
       // show={!isClosed && show}
