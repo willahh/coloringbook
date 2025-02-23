@@ -30,11 +30,10 @@ class CanvasService {
     dimensions: { width: number; height: number },
     appearance: Appearance
   ) {
-    console.log('#a drawPagesElementsAndMask - dimensions', dimensions);
     if (canvas) {
       let activeFabricObject: fabric.FabricObject | null = null;
-      if (canvas && canvas.getWidth() > 20) {
-        console.info('#001 CANVAS DRAW PAGES AND OBJECTS');
+      if (canvas && canvas.getWidth() > 0) {
+        console.info('#c CANVAS DRAW PAGES AND OBJECTS');
         const canvasBorder = 16;
         const newSpreadSize = { width: 0, height: 0 };
 
@@ -233,7 +232,7 @@ class CanvasService {
     );
   }
 
-  focusOnPage(
+  getPageFocusCoordinates(
     canvas: fabric.Canvas,
     pageId: number,
     margin = 40
@@ -282,7 +281,6 @@ class CanvasService {
       deltaX
     );
 
-    // Construire et retourner le viewport transform
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
 

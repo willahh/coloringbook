@@ -55,7 +55,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     useState(false);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>();
   // const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
   // const canvas = fabricCanvasRef.current;
@@ -69,49 +69,29 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
 
   const spreadPages = pages;
 
-  useEventHandlers(canvas);
-
   /**
-   * [Canvas instanciation]
-   * The canvas needs to be initialized with width and height in pixels.
-   * Therefore, it must be refreshed when the browser is resized or the container size changes.
-   */
-  const initCanvas = useCallback(
-    (canvasElement: HTMLCanvasElement) => {
-      const canvasNew = new fabric.Canvas(canvasElement, {
-        height: canvasSize.height,
-        width: canvasSize.width - 50,
-        selection: false,
-        renderOnAddRemove: true,
-        allowTouchScrolling: true,
-      });
-
-      console.log('#02 canvasNew');
-      canvasService.canvas = canvasNew;
-      console.log('#a setNeedRedrawPages to true')
-      setNeedRedrawPages(true);
-
-      return canvasNew;
-    },
-    [canvasSize]
-  );
-
-  /**
-   * [Canvas reset]
+   * [Canvas.initialize]
+   * Only one instanciation on component mount
    */
   useEffect(() => {
     if (canvasRef.current) {
-      const canvas = initCanvas(canvasRef.current);
-      console.log('#a NEW CANVAS');
-      // const canvas = fabricCanvasRef.current as fabric.Canvas & {
-      //   lastPosX?: number;
-      //   lastPosY?: number;
-      // };
-      console.log('#a set current canvas');
+      console.log('#c INSTANCIATE OF A NEW CANVAS');
+
+      const container = canvasRef.current.closest('main');
+      const canvas = new fabric.Canvas(canvasRef.current, {
+        width: container?.clientWidth,
+        height: container?.clientHeight,
+        selection: false,
+        renderOnAddRemove: true,
+        allowTouchScrolling: true,
+        backgroundColor: 'red',
+      });
 
       setCanvas(canvas);
+      setNeedRedrawPages(true);
+      canvasService.canvas = canvas;
 
-      // const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
+      // Initialize mousewheel pan and zoom
       const mousewheel = makeMouseWheelWithAnimation(
         canvas,
         {
@@ -123,6 +103,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       );
       canvas.on('mouse:wheel', mousewheel);
 
+      // Initialize virtual scrollbars
       const scrollbar = new Scrollbars(canvas, {
         fill: '#f43f5f',
         stroke: 'rgba(0,0,255,.5)',
@@ -135,194 +116,82 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         scrollbar.dispose();
         canvas.off('mouse:wheel', mousewheel);
         canvas.dispose();
-        // fabricCanvasRef.current = null;
       };
     }
-  }, [initCanvas, spreadPages]);
+  }, []); // Keep empty to run only once
 
   /**
-   * [Canvas drawing].
-   * Draw pages, elements and page mask.
-   * The dependency array for pageCreation hook is only the canvas html reference.
-   * Be cause the canvas is reset on browser resize, page change, or container changes.
+   * [Canvas.onWindowResize]
    */
   useEffect(() => {
-    if (canvas) {
-      if (needRedrawPages) {
-        console.log('#001 #a call redraw');
+    console.log('#c RESIZE CANVAS');
+    canvas?.setDimensions({
+      width: canvasSize.width,
+      height: canvasSize.height,
+    });
+  }, [canvasSize]);
 
-        const spreadSizeNew = canvasService.drawPagesElementsAndMask(
-          canvas,
-          spreadPages,
-          canvasSize,
-          appearance
-        );
+  /**
+   * [Canvas.addEventHandlers]
+   */
+  useEventHandlers(canvas);
 
-        // Center spread when viewportTransform is not defined (on page mount)
-        if (spreadSizeNew && needPageCenter) {
-          console.log('#001 FOCUS ON PAGE');
-          const vpt = canvasService.focusOnPage(canvas, pageId);
-          if (vpt) {
-            setViewportTransform(vpt);
-          }
-          console.log('#001 set setNeedPageCenter to false');
-          setNeedPageCenter(false);
-        }
-        console.log('#a setNeedRedrawPages to false')
-        setNeedRedrawPages(false);
-      }
+  /**
+   * [Canvas.redrawPages]
+   * Draw pages, elements and page mask
+   */
+  useEffect(() => {
+    if (!canvas) return;
+    if (needRedrawPages) {
+      console.log('#c REDRAW PAGES');
 
+      canvasService.drawPagesElementsAndMask(
+        canvas,
+        spreadPages,
+        canvasSize,
+        appearance
+      );
+      setNeedRedrawPages(false);
 
-      // Mettre à jour le viewport et détecter la page actuelle
-      if (viewportTransform) {
-        canvas.viewportTransform = viewportTransform;
-        canvas.requestRenderAll();
+      // Center spread when viewportTransform is not defined (on page mount)
+      // if (spreadSizeNew && needPageCenter) {
+      //   const vpt = canvasService.getPageFocusCoordinates(canvas, pageId);
+      //   if (vpt) {
+      //     setViewportTransform(vpt);
+      //   }
+      //   setNeedPageCenter(false);
+      // }
+    }
 
-        // Délai pour éviter plusieurs navigations rapides
-        const timeoutId = setTimeout(() => {
-          canvasService.detectCurrentPage(canvas, (id: number) => {
-            // Lorsque la page actuelle est détectée, naviguer vers la page
-            // Si la page actuelle est différente de la page actuelle
-            if (id !== pageId) {
-              // Si le canvas n'est pas en train de défiler
-              if (!canvas.get('scrolling')) {
-                navigate(`/book/${pageParams.bookId}/pages/${id}`);
-              }
+    // Mettre à jour le viewport et détecter la page actuelle
+    if (viewportTransform) {
+      canvas.viewportTransform = viewportTransform;
+      canvas.requestRenderAll();
+
+      // Délai pour éviter plusieurs navigations rapides
+      const timeoutId = setTimeout(() => {
+        canvasService.detectCurrentPage(canvas, (id: number) => {
+          // Lorsque la page actuelle est détectée, naviguer vers la page
+          // Si la page actuelle est différente de la page actuelle
+          if (id !== pageId) {
+            // Si le canvas n'est pas en train de défiler
+            if (!canvas.get('scrolling')) {
+              navigate(`/book/${pageParams.bookId}/pages/${id}`);
             }
-          });
-        }, 24);
-        return () => clearTimeout(timeoutId);
-      }
+          }
+        });
+      }, 24);
+      return () => clearTimeout(timeoutId);
     }
   }, [
     canvas,
-    spreadPages,
-    canvasSize,
     viewportTransform,
-    needPageCenter,
-    needRedrawPages,
-    setViewportTransform,
-  ]);
 
-  /**
-   * [Update page thumbnails]
-   */
-  useEffect(() => {
-    console.log('\n#a => useEffect for update page thumbnails');
-    console.log('#a canvas.getObjects():', canvas?.getObjects());
-    console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
-
-    if (!canvas) return; // Ne s'exécute qu'une seule fois si non initialisé
-
-    const updateThumbnailForPage = async (
-      canvas: fabric.Canvas,
-      pageId: number
-    ) => {
-      const page = PageService.getPageById(pages, pageId);
-      console.log('#a updateThumbnailForPage page:', page, canvas);
-
-      if (!canvas.upperCanvasEl) {
-        console.error('Canvas not initialized');
-      }
-
-      // const page = book.pages.find((p) => p.pageId === pageId);
-      if (page) {
-        const pageRect = canvasService.getPageRectbyPageId(canvas, page.pageId);
-        console.log('#a2 pageRect', pageRect);
-        if (pageRect) {
-          const dimensions = {
-            width: 100, // Taille fixe pour la preview
-            height: 141,
-          };
-
-          // Attendre que les éléments soient dessinés (si besoin)
-          setTimeout(async () => {
-            // await new Promise((resolve) => setTimeout(resolve, 20)); // Petit délai pour s'assurer que les éléments sont rendus
-            const newThumbnail = await canvasService.generatePagePreview(
-              page,
-              dimensions
-            );
-            //debugger;
-            console.log('#a2', newThumbnail);
-            console.log('#a2 page', page);
-            dispatch(
-              updatePageThumbImageData({
-                thumbnails: { [pageId]: newThumbnail },
-              })
-            );
-            setHasInitializedThumbnails(true); // Marquer comme initialisé
-          }, 1000);
-        }
-      }
-    };
-
-    // Mettre à jour les vignettes pour toutes les pages
-    if (!hasInitializedThumbnails && needRedrawPages === false) {
-      for (const page of pages) {
-        updateThumbnailForPage(canvas, page.pageId);
-      }
-    }
-
-    const handleObjectModified = (canvas: fabric.Canvas, pages: Page[]) => {
-      // console.log('\n#a3 >>>>> handleObjectModified');
-      console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
-      console.log('#a canvas.getObjects():', canvas?.getObjects());
-      setTimeout(() => {
-        console.log('\n#a3 >>>>> handleObjectModified');
-        console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
-        const activeObject = canvas.getActiveObject();
-        if (activeObject && 'pageId' in activeObject) {
-          // Attendre que les éléments soient dessinés (si besoin)
-          console.log('#a 01');
-          // await new Promise((resolve) => setTimeout(resolve, 1000)); // Petit délai pour s'assurer que les éléments sont rendus
-          console.log('#a 02');
-          updateThumbnailForPage(canvas, activeObject.pageId as number);
-        }
-      }, 500);
-    };
-
-    const handleObjectAdded = (e: fabric.IEvent) => {
-      const object = e.target as fabric.Object;
-      if (object && 'pageId' in object) {
-        // updateThumbnailForPage(object.pageId as number);
-      }
-    };
-
-    const handleObjectRemoved = (e: fabric.IEvent) => {
-      const object = e.target as fabric.Object;
-      if (object && 'pageId' in object) {
-        // updateThumbnailForPage(object.pageId as number);
-      }
-    };
-
-    console.log('#a add handler handleObjectModified', 'canvas:', canvas);
-    console.log('#a3 >>>>>> pages[1].elements[0]', pages[1].elements[0]);
-
-    const handleObjectModifiedRef = () => {
-      handleObjectModified(canvas, pages);
-    };
-
-    // setTimeout(() => {
-    canvas.on('object:modified', handleObjectModifiedRef);
-    // }, 1000);
-
-    canvas.on('object:added', handleObjectAdded);
-    canvas.on('object:removed', handleObjectRemoved);
-
-    return () => {
-      canvas.off('object:modified', handleObjectModifiedRef);
-      canvas.off('object:added', handleObjectAdded);
-      canvas.off('object:removed', handleObjectRemoved);
-      // updateThumbnailForPage.cancel();
-    };
-  }, [
-    canvas,
-    appearance,
-    dispatch,
-    hasInitializedThumbnails,
-    needRedrawPages,
-    pages,
-    // book.pages,
+    // canvasSize,
+    // spreadPages,
+    // needRedrawPages,
+    // setViewportTransform,
+    // needPageCenter,
   ]);
 
   /**
@@ -330,30 +199,149 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
    */
   useEffect(() => {
     if (canvas) {
-      console.log('#001 pageId has changed !!!', pageId);
+      let focusPageId = pageId;
+      if (focusPageId === 0) {
+        focusPageId = pages[0].pageId;
+      }
 
-      const vpt = canvasService.focusOnPage(canvas, pageId);
+      const vpt = canvasService.getPageFocusCoordinates(canvas, focusPageId);
       if (vpt) {
-        // console.log('#001 start viewport transform animation');
-        console.log('#001 FOCUS ON PAGE from pageId change');
+        console.log('#c FOCUS ON PAGE pageId:', pageId);
+        const currentVpt = [...canvas.viewportTransform];
+        const targetVpt = vpt;
 
-        const currentVpt = canvas.viewportTransform.slice(); // Copier l'état actuel du viewport
-        const targetVpt = vpt; // Vpt cible calculé précédemment
-
-        // Appeler la fonction d'animation avec les valeurs nécessaires
         const cancelAnimation = canvasService.animateViewportTransform(
           canvas,
           currentVpt,
           targetVpt
         );
-        console.log('#001 set setNeedPageCenter to false');
         setNeedPageCenter(false);
 
-        // Nettoyage de l'animation si le composant se démonte ou si la pageId change
         return cancelAnimation;
       }
     }
-  }, [pageId]); // pageId : déclencheur lorsque la page change
+  }, [canvas, pageId]);
+
+  // /**
+  //  * [Update page thumbnails]
+  //  */
+  // useEffect(() => {
+  //   console.log('\n#a => useEffect for update page thumbnails');
+  //   console.log('#a canvas.getObjects():', canvas?.getObjects());
+  //   console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
+
+  //   if (!canvas) return; // Ne s'exécute qu'une seule fois si non initialisé
+
+  //   const updateThumbnailForPage = async (
+  //     canvas: fabric.Canvas,
+  //     pageId: number
+  //   ) => {
+  //     const page = PageService.getPageById(pages, pageId);
+  //     console.log('#a updateThumbnailForPage page:', page, canvas);
+
+  //     if (!canvas.upperCanvasEl) {
+  //       console.error('Canvas not initialized');
+  //     }
+
+  //     // const page = book.pages.find((p) => p.pageId === pageId);
+  //     if (page) {
+  //       const pageRect = canvasService.getPageRectbyPageId(canvas, page.pageId);
+  //       console.log('#a2 pageRect', pageRect);
+  //       if (pageRect) {
+  //         const dimensions = {
+  //           width: 100, // Taille fixe pour la preview
+  //           height: 141,
+  //         };
+
+  //         // Attendre que les éléments soient dessinés (si besoin)
+  //         setTimeout(async () => {
+  //           // await new Promise((resolve) => setTimeout(resolve, 20)); // Petit délai pour s'assurer que les éléments sont rendus
+  //           const newThumbnail = await canvasService.generatePagePreview(
+  //             page,
+  //             dimensions
+  //           );
+  //           //debugger;
+  //           console.log('#a2', newThumbnail);
+  //           console.log('#a2 page', page);
+  //           dispatch(
+  //             updatePageThumbImageData({
+  //               thumbnails: { [pageId]: newThumbnail },
+  //             })
+  //           );
+  //           setHasInitializedThumbnails(true); // Marquer comme initialisé
+  //         }, 1000);
+  //       }
+  //     }
+  //   };
+
+  //   // Mettre à jour les vignettes pour toutes les pages
+  //   if (!hasInitializedThumbnails && needRedrawPages === false) {
+  //     for (const page of pages) {
+  //       updateThumbnailForPage(canvas, page.pageId);
+  //     }
+  //   }
+
+  //   const handleObjectModified = (canvas: fabric.Canvas, pages: Page[]) => {
+  //     // console.log('\n#a3 >>>>> handleObjectModified');
+  //     console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
+  //     console.log('#a canvas.getObjects():', canvas?.getObjects());
+  //     setTimeout(() => {
+  //       console.log('\n#a3 >>>>> handleObjectModified');
+  //       console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
+  //       const activeObject = canvas.getActiveObject();
+  //       if (activeObject && 'pageId' in activeObject) {
+  //         // Attendre que les éléments soient dessinés (si besoin)
+  //         console.log('#a 01');
+  //         // await new Promise((resolve) => setTimeout(resolve, 1000)); // Petit délai pour s'assurer que les éléments sont rendus
+  //         console.log('#a 02');
+  //         updateThumbnailForPage(canvas, activeObject.pageId as number);
+  //       }
+  //     }, 500);
+  //   };
+
+  //   const handleObjectAdded = (e: fabric.IEvent) => {
+  //     const object = e.target as fabric.Object;
+  //     if (object && 'pageId' in object) {
+  //       // updateThumbnailForPage(object.pageId as number);
+  //     }
+  //   };
+
+  //   const handleObjectRemoved = (e: fabric.IEvent) => {
+  //     const object = e.target as fabric.Object;
+  //     if (object && 'pageId' in object) {
+  //       // updateThumbnailForPage(object.pageId as number);
+  //     }
+  //   };
+
+  //   console.log('#a add handler handleObjectModified', 'canvas:', canvas);
+  //   console.log('#a3 >>>>>> pages[1].elements[0]', pages[1].elements[0]);
+
+  //   const handleObjectModifiedRef = () => {
+  //     handleObjectModified(canvas, pages);
+  //   };
+
+  //   // setTimeout(() => {
+  //   canvas.on('object:modified', handleObjectModifiedRef);
+  //   // }, 1000);
+
+  //   canvas.on('object:added', handleObjectAdded);
+  //   canvas.on('object:removed', handleObjectRemoved);
+
+  //   return () => {
+  //     canvas.off('object:modified', handleObjectModifiedRef);
+  //     canvas.off('object:added', handleObjectAdded);
+  //     canvas.off('object:removed', handleObjectRemoved);
+  //     // updateThumbnailForPage.cancel();
+  //   };
+  // }, [
+  //   canvas,
+  //   appearance,
+  //   dispatch,
+  //   hasInitializedThumbnails,
+  //   needRedrawPages,
+  //   pages,
+  //   // book.pages,
+  // ]);
 
   return (
     <div ref={containerRef} className="relative flex-1">
