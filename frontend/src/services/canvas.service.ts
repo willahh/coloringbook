@@ -34,6 +34,8 @@ class CanvasService {
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
+        
+        canvas.clear();
         const canvasBorder = 16;
         const newSpreadSize = { width: 0, height: 0 };
 

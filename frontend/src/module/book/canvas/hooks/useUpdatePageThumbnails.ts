@@ -9,8 +9,6 @@ import { updatePageThumbImageData } from '../../Book.actions';
 const useUpdatePageThumbnails = (
   canvas: fabric.Canvas | null,
   pages: Page[],
-  //   setHasInitializedThumbnails: React.Dispatch<React.SetStateAction<boolean>>,
-  //   hasInitializedThumbnails: boolean,
   needRedrawPages: boolean
 ) => {
   const dispatch = useDispatch();
@@ -38,7 +36,6 @@ const useUpdatePageThumbnails = (
         console.error('Canvas not initialized');
       }
 
-      // const page = book.pages.find((p) => p.pageId === pageId);
       if (page) {
         const pageRect = canvasService.getPageRectbyPageId(canvas, page.pageId);
         console.log('#a2 pageRect', pageRect);
@@ -50,21 +47,17 @@ const useUpdatePageThumbnails = (
 
           // Attendre que les éléments soient dessinés (si besoin)
           setTimeout(async () => {
-            // await new Promise((resolve) => setTimeout(resolve, 20)); // Petit délai pour s'assurer que les éléments sont rendus
             const newThumbnail = await canvasService.generatePagePreview(
               page,
               dimensions
             );
-            //debugger;
-            console.log('#a2', newThumbnail);
-            console.log('#a2 page', page);
             dispatch(
               updatePageThumbImageData({
                 thumbnails: { [pageId]: newThumbnail },
               })
             );
             setHasInitializedThumbnails(true); // Marquer comme initialisé
-          }, 1000);
+          }, 500);
         }
       }
     };
@@ -95,17 +88,17 @@ const useUpdatePageThumbnails = (
     };
 
     const handleObjectAdded = (/*e: fabric.StaticCanvasEvents*/) => {
-    //   const object = e.target as fabric.Object;
-    //   if (object && 'pageId' in object) {
-    //     // updateThumbnailForPage(object.pageId as number);
-    //   }
+      //   const object = e.target as fabric.Object;
+      //   if (object && 'pageId' in object) {
+      //     // updateThumbnailForPage(object.pageId as number);
+      //   }
     };
 
     const handleObjectRemoved = (/*e: fabric.StaticCanvasEvents*/) => {
-    //   const object = e.target as fabric.Object;
-    //   if (object && 'pageId' in object) {
-    //     // updateThumbnailForPage(object.pageId as number);
-    //   }
+      //   const object = e.target as fabric.Object;
+      //   if (object && 'pageId' in object) {
+      //     // updateThumbnailForPage(object.pageId as number);
+      //   }
     };
 
     console.log('#a add handler handleObjectModified', 'canvas:', canvas);
@@ -130,12 +123,10 @@ const useUpdatePageThumbnails = (
     };
   }, [
     canvas,
-    // appearance,
     dispatch,
     hasInitializedThumbnails,
     needRedrawPages,
     pages,
-    // book.pages,
   ]);
 };
 export default useUpdatePageThumbnails;
