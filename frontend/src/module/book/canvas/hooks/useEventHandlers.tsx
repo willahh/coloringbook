@@ -2,24 +2,19 @@
 import { useEffect } from 'react';
 import * as fabric from 'fabric';
 import {
-  handleMouseWheel,
   handleMouseOver,
   handleMouseOut,
   handleMouseDown,
-  handleMouseMove,
-  handleMouseUp,
   handleDocumentKeyDown,
   handleDocumentKeyUp,
 } from '../canvas.events';
-import useCanvasContext from '../../useCanvasContext';
 import { Element } from '@/common/types/book';
-import { useDispatch/*, useSelector */} from '@/common/store';
+import { useDispatch} from '@/common/store';
 import canvasService from '@/services/canvas.service';
 import { updateElementByElementId } from '../../element/Element.action';
 
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   const dispatch = useDispatch();
-  const { setViewportTransform } = useCanvasContext();
 
   /**
    * [Canvas.addEventHandlers]
@@ -27,11 +22,7 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   useEffect(() => {
     if (canvas) {
       const eventHandlers = {
-        'mouse:wheel': handleMouseWheel(canvas, setViewportTransform),
         'mouse:down': handleMouseDown(canvas),
-        'mouse:move': handleMouseMove(canvas),
-        'mouse:up': handleMouseUp(canvas, setViewportTransform),
-
         'mouse:over': handleMouseOver(canvas),
         'mouse:out': handleMouseOut(canvas),
         'selection:created': (e: fabric.ObjectEvents) =>
@@ -45,16 +36,7 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
       Object.entries(eventHandlers).forEach(([event, handler]) => {
         canvas.on(event as keyof fabric.CanvasEvents, handler); // @ts-nocheck
       });
-      // canvas.on('mouse:over', (e: fabric.TPointerEventInfo) => {
-      //   if (e.target) {
-      //     console.log('e.target', e.target);
-      //     // e.target.strokeBorders(2)
-      //     // e.target.set({
-
-      //     // });
-      //     canvas.requestRenderAll();
-      //   }
-      // });
+      
       canvas.on('object:modified', (e: fabric.ModifiedEvent) => {
         console.log('#03 object:modified', e);
         const fabricObject: fabric.FabricObject = e.target;

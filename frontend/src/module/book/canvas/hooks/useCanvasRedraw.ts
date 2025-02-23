@@ -5,7 +5,7 @@ import canvasService from '@/services/canvas.service';
 import { Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
 
-import { Appearance } from '@/common/contexts/ThemeContext';
+import { useTheme } from '@/common/contexts/ThemeContext';
 
 export function useCanvasRedraw(
   canvas: fabric.Canvas | null,
@@ -14,11 +14,11 @@ export function useCanvasRedraw(
   pageId: number,
   needRedrawPages: boolean,
   pages: Page[],
-  canvasSize: { width: number; height: number },
-  appearance: Appearance
+  canvasSize: { width: number; height: number }
 ) {
   const pageParams = useParams<BookPageParams>();
   const navigate = useNavigate();
+  const { appearance } = useTheme();
 
   /**
    * [Canvas.redrawPages]

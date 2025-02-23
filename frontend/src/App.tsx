@@ -17,7 +17,7 @@ import(`./common/styles/main.${defaultAppearance}.css`);
 function RenderApp() {
   const { appearance } = useTheme();
   return (
-    // <StrictMode>
+    <StrictMode>
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
@@ -27,7 +27,7 @@ function RenderApp() {
           </BrowserRouter>
         </Theme>
       </Provider>
-    // </StrictMode>
+    </StrictMode>
   );
 }
 

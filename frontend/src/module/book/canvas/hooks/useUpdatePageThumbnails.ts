@@ -3,17 +3,19 @@ import { Page } from '@/common/types/book';
 import canvasService from '@/services/canvas.service';
 import { PageService } from '@/services/page.service';
 import * as fabric from 'fabric';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { updatePageThumbImageData } from '../../Book.actions';
 
 const useUpdatePageThumbnails = (
   canvas: fabric.Canvas | null,
   pages: Page[],
-  setHasInitializedThumbnails: React.Dispatch<React.SetStateAction<boolean>>,
-  hasInitializedThumbnails: boolean,
+  //   setHasInitializedThumbnails: React.Dispatch<React.SetStateAction<boolean>>,
+  //   hasInitializedThumbnails: boolean,
   needRedrawPages: boolean
 ) => {
   const dispatch = useDispatch();
+  const [hasInitializedThumbnails, setHasInitializedThumbnails] =
+    useState(false);
 
   /**
    * [Update page thumbnails]
@@ -92,18 +94,18 @@ const useUpdatePageThumbnails = (
       }, 500);
     };
 
-    const handleObjectAdded = (e: fabric.IEvent) => {
-      const object = e.target as fabric.Object;
-      if (object && 'pageId' in object) {
-        // updateThumbnailForPage(object.pageId as number);
-      }
+    const handleObjectAdded = (/*e: fabric.StaticCanvasEvents*/) => {
+    //   const object = e.target as fabric.Object;
+    //   if (object && 'pageId' in object) {
+    //     // updateThumbnailForPage(object.pageId as number);
+    //   }
     };
 
-    const handleObjectRemoved = (e: fabric.IEvent) => {
-      const object = e.target as fabric.Object;
-      if (object && 'pageId' in object) {
-        // updateThumbnailForPage(object.pageId as number);
-      }
+    const handleObjectRemoved = (/*e: fabric.StaticCanvasEvents*/) => {
+    //   const object = e.target as fabric.Object;
+    //   if (object && 'pageId' in object) {
+    //     // updateThumbnailForPage(object.pageId as number);
+    //   }
     };
 
     console.log('#a add handler handleObjectModified', 'canvas:', canvas);

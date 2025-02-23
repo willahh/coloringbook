@@ -341,28 +341,28 @@
     --default-mono-font-family: roboto-mono-regular, Courier New, Courier, monospace;
     --default-mono-font-feature-settings: normal;
     --default-mono-font-variation-settings: normal;
-    --color-primary-50: #f1f7fd;
-    --color-primary-100: #dfedfa;
-    --color-primary-200: #c6e0f7;
-    --color-primary-300: #9ecdf2;
-    --color-primary-400: #70b1ea;
-    --color-primary-500: #4a90e2;
-    --color-primary-600: #3978d7;
-    --color-primary-700: #3063c5;
-    --color-primary-800: #2d51a0;
-    --color-primary-900: #29467f;
-    --color-primary-950: #1d2c4e;
-    --color-secondary-50: #faf4ff;
-    --color-secondary-100: #f3e5ff;
-    --color-secondary-200: #e9d0ff;
-    --color-secondary-300: #d9acff;
-    --color-secondary-400: #c177ff;
-    --color-secondary-500: #a943ff;
-    --color-secondary-600: #9013fe;
-    --color-secondary-700: #810fe1;
-    --color-secondary-800: #6d12b7;
-    --color-secondary-900: #5a1093;
-    --color-secondary-950: #3d006e;
+    --color-primary-50: #E6F1FF;
+    --color-primary-100: #e2e0ff;
+    --color-primary-200: #cac7fe;
+    --color-primary-300: #aaa5fc;
+    --color-primary-400: #8881f8;
+    --color-primary-500: #6c63f1;
+    --color-primary-600: #5046e5;
+    --color-primary-700: #4138ca;
+    --color-primary-800: #3730a3;
+    --color-primary-900: #332e81;
+    --color-primary-950: #1d1b4b;
+    --color-secondary-50: #fff1f3;
+    --color-secondary-100: #ffe4e9;
+    --color-secondary-200: #fecdd5;
+    --color-secondary-300: #fda4b3;
+    --color-secondary-400: #fb7189;
+    --color-secondary-500: #f43f5e;
+    --color-secondary-600: #e11d3f;
+    --color-secondary-700: #be122f;
+    --color-secondary-800: #9f122a;
+    --color-secondary-900: #881327;
+    --color-secondary-950: #4c0511;
     --container-4xs: 12rem;
   }
 }
@@ -1302,9 +1302,9 @@
   .bg-yellow-500 {
     background-color: var(--color-yellow-500);
   }
-  .bg-radial-\[at_50\%_75\%\] {
-    --tw-gradient-position: at 50% 75%;
-    background-image: radial-gradient(var(--tw-gradient-stops,at 50% 75%));
+  .bg-radial-\[at_1\%_-100\%\] {
+    --tw-gradient-position: at 1% -100%;
+    background-image: radial-gradient(var(--tw-gradient-stops,at 1% -100%));
   }
   .from-secondary-100 {
     --tw-gradient-from: var(--color-secondary-100);

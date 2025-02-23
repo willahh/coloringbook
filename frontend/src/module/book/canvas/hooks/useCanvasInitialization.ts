@@ -6,7 +6,7 @@ import canvasService from '@/services/canvas.service';
 import useCanvasContext from '../../useCanvasContext';
 
 export function useCanvasInitialization(
-  canvasRef: React.MutableRefObject<HTMLCanvasElement | undefined>
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
 ) {
   const { setCanvas, setViewportTransform } = useCanvasContext();
 
@@ -26,7 +26,6 @@ export function useCanvasInitialization(
       selection: false,
       renderOnAddRemove: true,
       allowTouchScrolling: true,
-      backgroundColor: 'red',
     });
 
     setCanvas(canvas);

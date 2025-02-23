@@ -1302,9 +1302,9 @@
   .bg-yellow-500 {
     background-color: var(--color-yellow-500);
   }
-  .bg-radial-\[at_50\%_75\%\] {
-    --tw-gradient-position: at 50% 75%;
-    background-image: radial-gradient(var(--tw-gradient-stops,at 50% 75%));
+  .bg-radial-\[at_1\%_-100\%\] {
+    --tw-gradient-position: at 1% -100%;
+    background-image: radial-gradient(var(--tw-gradient-stops,at 1% -100%));
   }
   .from-secondary-100 {
     --tw-gradient-from: var(--color-secondary-100);

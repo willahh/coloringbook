@@ -1,18 +1,7 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
-import debounce from 'lodash/debounce';
+import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { useNavigate } from 'react-router-dom';
-import * as fabric from 'fabric';
-import {
-  // makeMouseWheel,
-  makeMouseWheelWithAnimation,
-} from '@/lib/scrollbars/utils';
 
 import { Page } from '@apptypes/book';
-import { useTheme } from '@/common/contexts/ThemeContext';
-import { useDispatch, useSelector } from '@/common/store';
-import canvasService from '@/services/canvas.service';
-import { Scrollbars } from '@/lib/scrollbars';
 import { BookPageParams } from '@/common/interfaces';
 
 import { useEventHandlers } from './hooks/useEventHandlers';
@@ -20,16 +9,11 @@ import { useDimensions } from './hooks/useDimensions';
 import { PagesNavigation } from '../components/PagesNavigation';
 
 import useCanvasContext from '../useCanvasContext';
-import { updatePageThumbImageData } from '../Book.actions';
-import { selectBook } from '../Book.slice';
-import { PageService } from '@/services/page.service';
-
 import { useCanvasInitialization } from './hooks/useCanvasInitialization';
 import { useCanvasResize } from './hooks/useCanvasResize';
 import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
 import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
-import { U } from 'node_modules/react-router/dist/development/fog-of-war-D6dP9JIt.d.mts';
 
 interface SpreadCanvasProps {
   // pageId: number;
@@ -41,31 +25,20 @@ interface SpreadCanvasProps {
 }
 
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
-  // pageId,
   pages,
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
   const pageId = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
-  const { canvas, setCanvas, viewportTransform, setViewportTransform } =
-    useCanvasContext();
-  const { appearance } = useTheme();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  // const { book } = useSelector(selectBook); // Pour accéder à l'état complet du livre
+  const { canvas, viewportTransform } = useCanvasContext();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const [needPageCenter, setNeedPageCenter] = useState<boolean>(true);
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
-  const [hasInitializedThumbnails, setHasInitializedThumbnails] =
-    useState(false);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const canvasRef = useRef<HTMLCanvasElement>();
-  // const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  // const canvas = fabricCanvasRef.current;
 
   // Process –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const canvasSize = useDimensions(
@@ -74,9 +47,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
-  // const spreadPages = pages;
-
-  // Utilisation des hooks
+  // Hooks –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   useCanvasInitialization(canvasRef);
   useCanvasResize(canvas, canvasSize);
   useEventHandlers(canvas);
@@ -87,17 +58,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pageId,
     needRedrawPages,
     pages,
-    canvasSize,
-    appearance
+    canvasSize
   );
-  usePageFocus(canvas, pages, pageId, setNeedPageCenter);
-  useUpdatePageThumbnails(
-    canvas,
-    pages,
-    setHasInitializedThumbnails,
-    hasInitializedThumbnails,
-    needRedrawPages
-  );
+  usePageFocus(canvas, pages, pageId);
+  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
     <div ref={containerRef} className="relative flex-1">
