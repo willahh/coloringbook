@@ -20,7 +20,7 @@ export class ElementFactory {
     const relativeW = element.w * pageWidth;
     const relativeH = element.h * pageHeight;
 
-    console.log('#a createElement', 'pageWidth: ', pageWidth, ' - pageHeight: ', pageHeight, ' - relativeX: ', relativeX, 'relativeY:', relativeY, 'relativeW:', relativeW, 'relativeH:', relativeH);
+    console.debug('#a createElement', 'pageWidth: ', pageWidth, ' - pageHeight: ', pageHeight, ' - relativeX: ', relativeX, 'relativeY:', relativeY, 'relativeW:', relativeW, 'relativeH:', relativeH);
 
     switch (element.type) {
       case 'rectangle':

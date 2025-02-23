@@ -169,7 +169,10 @@ class CanvasService {
     canvas: fabric.Canvas,
     pageId: number
   ): FabricRectPage | undefined {
+    console.log('#a getPageRectbyPageId', pageId, canvas.getObjects());
+    
     const pageRect = canvas.getObjects().find((obj) => {
+      console.log('#a find by pageId ', pageId, obj);
       if (
         obj.type === 'rect' &&
         (obj as FabricRectPage).pageId === Number(pageId)
