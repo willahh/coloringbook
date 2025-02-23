@@ -30,6 +30,7 @@ class CanvasService {
     dimensions: { width: number; height: number },
     appearance: Appearance
   ) {
+    console.log('#a drawPagesElementsAndMask - dimensions', dimensions);
     if (canvas) {
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 20) {
@@ -126,6 +127,7 @@ class CanvasService {
 
           page.elements.forEach(async (element) => {
             const fabricObject = await canvasService.addElementToCanvas(
+              canvas,
               page.pageId,
               element,
               offsetX,
@@ -306,6 +308,7 @@ class CanvasService {
   }
 
   async addElementToCanvas(
+    canvas: fabric.Canvas,
     pageId: number,
     element: Element,
     offsetX: number,
@@ -321,10 +324,10 @@ class CanvasService {
       pageHeight
     );
     const fabricObject = await drawableElement.getObject();
-    if (fabricObject && this.canvas) {
+    if (fabricObject && canvas) {
       fabricObject.set('objet', element);
       fabricObject.set('pageId', pageId);
-      this.canvas.add(fabricObject);
+      canvas.add(fabricObject);
     }
     return fabricObject;
   }
@@ -473,6 +476,87 @@ class CanvasService {
     if (bestPageId !== null) {
       setSelectedPageId(bestPageId);
     }
+  }
+
+  // public generatePagePreview(
+  //   page: Page,
+  //   dimensions: { width: number; height: number },
+  //   appearance: Appearance
+  // ): string {
+  //   const tempCanvas = new fabric.Canvas(null, {
+  //     width: 100, // Taille réduite pour la preview
+  //     height: 141, // Proportions A4 (1:1.414)
+  //   });
+
+  //   // Dessiner la page et ses éléments sur un canvas temporaire
+  //   this.drawPagesElementsAndMask(tempCanvas, [page], dimensions, appearance);
+  //   return tempCanvas.toDataURL(); // Retourne une image encodée en base64
+  // }
+
+  public async generatePagePreview(
+    page: Page,
+    dimensions: { width: number; height: number }
+  ): Promise<string> {
+    console.log('#a generatePagePreview');
+
+    // Créer un canvas HTML temporaire
+    const tempCanvasElement = document.createElement('canvas');
+    tempCanvasElement.width = dimensions.width; // Définir la largeur
+    tempCanvasElement.height = dimensions.height; // Définir la hauteur
+
+    // Initialiser Fabric.js avec cet élément canvas
+    const tempCanvas = new fabric.Canvas(tempCanvasElement, {
+      width: dimensions.width,
+      height: dimensions.height,
+    });
+
+    // Dessiner la page et ses éléments sur le canvas temporaire
+    // this.drawPagesElementsAndMask(tempCanvas, [page], dimensions, appearance);
+
+    // Dessiner le rectangle de page (fond blanc)
+    const pageRect = new fabric.Rect({
+      isPage: true,
+      pageId: page.pageId,
+      width: dimensions.width,
+      height: dimensions.height,
+      left: 0,
+      top: 0,
+      fill: 'white',
+      hasControls: false,
+      selectable: false,
+    });
+    tempCanvas.add(pageRect);
+
+    // Dessiner chaque élément de la page sur le canvas temporaire
+    for (const element of page.elements) {
+      const drawableElement = ElementFactory.createElement(
+        element,
+        0, // offsetX (position relative dans la preview)
+        0, // offsetY (position relative dans la preview)
+        dimensions.width,
+        dimensions.height
+      );
+      const fabricObject = await drawableElement.getObject();
+      if (fabricObject) {
+        fabricObject.set('pageId', page.pageId); // Assure-toi que l'objet a un pageId
+        tempCanvas.add(fabricObject);
+      }
+    }
+
+    // Forcer le rendu pour s'assurer que tout est dessiné
+    tempCanvas.renderAll();
+
+    const dataURL = tempCanvas.toDataURL({
+      format: 'jpeg', // Utiliser JPG au lieu de PNG
+      quality: 0.7, // Qualité de compression (0 à 1, 0.7 = 70% de qualité, équilibré)
+      multiplier: 0.8, // Réduire la taille pour une preview légère (optionnel)
+    }); // Générer la data URL
+    console.log('#a dataURL', dataURL);
+
+    // Nettoyer en disposant du canvas temporaire
+    tempCanvas.dispose();
+
+    return dataURL;
   }
 }
 

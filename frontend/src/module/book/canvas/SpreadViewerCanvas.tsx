@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useCallback, useState } from 'react';
+import debounce from 'lodash/debounce';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 import * as fabric from 'fabric';
@@ -8,15 +9,19 @@ import {
 } from '@/lib/scrollbars/utils';
 
 import { Page } from '@apptypes/book';
+import { useTheme } from '@/common/contexts/ThemeContext';
+import { useDispatch, useSelector } from '@/common/store';
+import canvasService from '@/services/canvas.service';
+import { Scrollbars } from '@/lib/scrollbars';
+import { BookPageParams } from '@/common/interfaces';
+
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
-import canvasService from '@/services/canvas.service';
 import { PagesNavigation } from '../components/PagesNavigation';
 
-import { Scrollbars } from '@/lib/scrollbars';
 import useCanvasContext from '../useCanvasContext';
-import { BookPageParams } from '@/common/interfaces';
-import { useTheme } from '@/common/contexts/ThemeContext';
+import { updatePageThumbImageData } from '../Book.actions';
+import { selectBook } from '../Book.slice';
 
 interface SpreadCanvasProps {
   // pageId: number;
@@ -39,10 +44,14 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     useCanvasContext();
   const { appearance } = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { book } = useSelector(selectBook); // Pour accéder à l'état complet du livre
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needPageCenter, setNeedPageCenter] = useState<boolean>(true);
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
+  const [hasInitializedThumbnails, setHasInitializedThumbnails] =
+    useState(false);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -196,6 +205,90 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     needPageCenter,
     needRedrawPages,
     setViewportTransform,
+  ]);
+
+  /**
+   * [Update page thumbnails]
+   */
+  useEffect(() => {
+    if (!canvas || hasInitializedThumbnails) return; // Ne s'exécute qu'une seule fois si non initialisé
+
+    // TODO: Finaliser ici, toutes les previews ne sont pas à jour
+    const updateThumbnailForPage = async (pageId: number) => {
+      const page = book.pages.find((p) => p.pageId === pageId);
+        if (page) {
+        // const newThumbnails: { [key: number]: string } = {};
+        // for (const page of book.pages) {
+          const pageRect = canvasService.getPageRectbyPageId(canvas, page.pageId);
+          if (pageRect) {
+            const dimensions = {
+              width: 100, // Taille fixe pour la preview
+              height: 141,
+            };
+            // Attendre que les éléments soient dessinés (si besoin)
+            await new Promise((resolve) => setTimeout(resolve, 20)); // Petit délai pour s'assurer que les éléments sont rendus
+            const newThumbnail = await canvasService.generatePagePreview(
+              page,
+              dimensions
+            );
+            dispatch(updatePageThumbImageData({ thumbnails: { [pageId]: newThumbnail } }));
+            setHasInitializedThumbnails(true); // Marquer comme initialisé
+          }
+        // }
+      }
+    }
+
+    // Ne lancer que si le canvas a été redraw avec les éléments
+    if (needRedrawPages === false) {
+      // Assure-toi que le canvas a été redraw
+      // updateThumbnailForPage();
+
+      for (const page of book.pages) {
+        // Assure-toi que le canvas a été redraw
+        updateThumbnailForPage(page.pageId);
+      }
+    }
+
+    // return () => updateThumbnails.cancel();
+
+    const handleObjectModified = () => {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject && 'pageId' in activeObject) {
+        updateThumbnailForPage(activeObject.pageId as number);
+      }
+    };
+
+    const handleObjectAdded = (e: fabric.IEvent) => {
+      const object = e.target as fabric.Object;
+      if (object && 'pageId' in object) {
+        updateThumbnailForPage(object.pageId as number);
+      }
+    };
+
+    const handleObjectRemoved = (e: fabric.IEvent) => {
+      const object = e.target as fabric.Object;
+      if (object && 'pageId' in object) {
+        updateThumbnailForPage(object.pageId as number);
+      }
+    };
+
+    canvas.on('object:modified', handleObjectModified);
+    canvas.on('object:added', handleObjectAdded);
+    canvas.on('object:removed', handleObjectRemoved);
+
+    return () => {
+      canvas.off('object:modified', handleObjectModified);
+      canvas.off('object:added', handleObjectAdded);
+      canvas.off('object:removed', handleObjectRemoved);
+      // updateThumbnailForPage.cancel();
+    };
+  }, [
+    canvas,
+    appearance,
+    dispatch,
+    hasInitializedThumbnails,
+    needRedrawPages,
+    book.pages,
   ]);
 
   useEffect(() => {

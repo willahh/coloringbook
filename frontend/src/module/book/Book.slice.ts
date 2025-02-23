@@ -159,6 +159,20 @@ const slice = createSlice({
     );
 
     /**
+     * updatePageThumbImageData
+     */
+    builder.addCase(bookActions.updatePageThumbImageData, (state, action) => {
+      console.log('#a bookActions.updatePageThumbImageData')
+
+      const { thumbnails } = action.payload;
+      state.book.pages = state.book.pages.map((page) => ({
+        ...page,
+        thumbImageData: thumbnails[page.pageId] || page.thumbImageData,
+      }));
+      state.areLocalUpdatesSaved = false; // Marquer comme non sauvegardé
+    });
+
+    /**
      * addElementToPage
      */
     builder.addCase(
