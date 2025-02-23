@@ -13,17 +13,17 @@ import {
 } from '../canvas.events';
 import useCanvasContext from '../../useCanvasContext';
 import { Element } from '@/common/types/book';
-import { PageService } from '@/services/page.service';
-import { useDispatch, useSelector } from '@/common/store';
-import { selectBook } from '../../Book.slice';
+import { useDispatch/*, useSelector */} from '@/common/store';
 import canvasService from '@/services/canvas.service';
 import { updateElementByElementId } from '../../element/Element.action';
 
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {
   const dispatch = useDispatch();
   const { setViewportTransform } = useCanvasContext();
-  const { book } = useSelector(selectBook);
 
+  /**
+   * [Canvas.addEventHandlers]
+   */
   useEffect(() => {
     if (canvas) {
       const eventHandlers = {
