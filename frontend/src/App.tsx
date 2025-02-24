@@ -10,6 +10,7 @@ import * as Tooltip from '@radix-ui/react-tooltip';
 import { ThemeProvider, useTheme } from './common/contexts/ThemeContext';
 import { appStore } from './common/store';
 import AppRoutes from './AppRoutes.tsx';
+import RouteTracker from './RouteTracker';
 
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
 import(`./common/styles/main.${defaultAppearance}.css`);
@@ -21,6 +22,7 @@ function RenderApp() {
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
+            <RouteTracker />
             <Tooltip.Provider delayDuration={0}>
               <AppRoutes />
             </Tooltip.Provider>
