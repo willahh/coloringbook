@@ -54,7 +54,10 @@ const usePageAutoFocus = (
 
       if (isDifferentPageId && isNotScrolling) {
         if (isZoomWithinPageRange) {
-          navigateWithAnimation(id);
+          // Mise à jour suite utilisation, pour ne jamais prender la main
+          // sur l'utilisateur ... beaucoup trop chiant
+          // navigateWithAnimation(id);
+          navigateWithoutAnimation(id);
         } else {
           navigateWithoutAnimation(id);
         }

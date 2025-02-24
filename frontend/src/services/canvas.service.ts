@@ -77,11 +77,13 @@ class CanvasService {
             fill: 'white',
 
             hasControls: false,
-            borderScaleFactor: 2,
+            // borderScaleFactor: 2,
             selectable: false,
-            borderColor: 'red',
-            lockMovementX: true,
-            lockMovementY: true,
+            evented: false,
+            // borderColor: 'red',
+            // lockMovementX: true,
+            // lockMovementY: true,
+            // moveCursor: null,
 
             shadow: new fabric.Shadow({
               color: 'rgba(0, 0, 0, .4)',
