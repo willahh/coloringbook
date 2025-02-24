@@ -80,14 +80,6 @@ class CanvasService {
             selectable: false,
             hoverCursor: 'default',
 
-            // evented: false,
-            // borderScaleFactor: 2,
-            // borderColor: 'red',
-            // lockMovementX: true,
-            // lockMovementY: true,
-            // moveCursor: null,
-            // moveCursor: undefined,
-
             shadow: new fabric.Shadow({
               color: 'rgba(0, 0, 0, .4)',
               nonScaling: true,
@@ -97,8 +89,14 @@ class CanvasService {
             }),
           });
 
-          pageRect.on('mouseup', () => {
-            me.pageFocus(canvas, spreadPages, page.pageId);
+          pageRect.on('mousedown:before', () => {
+            canvas.getActiveObjects();
+            // Focus sur la page, uniquement si aucune sélection n'est présente.
+            // Evite le focus lorsque l'on a sélectionnée un élément, et que
+            // l'on click sur la page pour le désélectionner.
+            if (canvas.getActiveObjects().length === 0) {
+              me.pageFocus(canvas, spreadPages, page.pageId);
+            }
           });
           pageRect.on('mousedblclick', () => {
             me.pageFocus(canvas, spreadPages, page.pageId);
@@ -361,6 +359,40 @@ class CanvasService {
     if (fabricObject && canvas) {
       fabricObject.set('objet', element);
       fabricObject.set('pageId', pageId);
+
+      // Ajouter les écouteurs pour l’effet de survol
+      fabricObject.on('mouseover', (e: fabric.TPointerEventInfo) => {
+        console.log('#c2 mouseover');
+        e.target?.set({
+          stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
+          strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
+          strokeDashArray: [5, 5], // Bordure pointillée (optionnel, pour un style plus subt
+
+          // borderColor: '#000',
+          // cornerColor: '#DDD',
+          // cornerStyle: 'circle',
+          // cornerSize: 5,
+
+          // stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
+          // strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
+          // strokeDashArray: [5, 5], // Bordure pointillée (optionnel, pour un style plus subtil)
+        });
+      });
+
+      fabricObject.on('mouseout', (e: fabric.TPointerEventInfo) => {
+        console.log('#c2 mouseout');
+        e.target?.set({
+          stroke: null, // Supprimer la bordure
+          strokeWidth: 0, // Réinitialiser l’épaisseur
+          strokeDashArray: null, // Réinitialiser le style pointillé
+        });
+        canvas.renderAll();
+        // object.canvas?.renderAll(); // Forcer le rendu pour afficher les changements
+      });
+
+      // fabricObject.stroke = '#ff0000';
+      // fabricObject.strokeWidth = 20;
+
       canvas.add(fabricObject);
     }
     return fabricObject;

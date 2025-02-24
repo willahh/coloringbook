@@ -2,7 +2,8 @@
   * Tailwind CSS utilities
   * prefix "cb-" ([c]oloring[b]ook) for custom classes
   * ——————————————————————————————————————————————————————————————————————————*/
-@theme {
+  @import './themes/theme.blueviolet.css';
+  @theme {
   --container-4xs: 12rem;
 }
 
