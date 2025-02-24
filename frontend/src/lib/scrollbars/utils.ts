@@ -57,7 +57,7 @@ export const makeMouseWheelWithAnimation =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        // setViewportTransform([...canvas.viewportTransform]);
+        setViewportTransform([...canvas.viewportTransform]);
         canvas.setViewportTransform(vpt);
       }
     }
@@ -117,7 +117,7 @@ export const makeMouseWheelWithAnimation =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        // setViewportTransform([...vpt]);
+        setViewportTransform([...vpt]);
         canvas.setViewportTransform(vpt);
       }
     }
@@ -178,7 +178,7 @@ export const makeMouseWheel =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        // setViewportTransform([...canvas.viewportTransform]);
+        setViewportTransform([...canvas.viewportTransform]);
         canvas.setViewportTransform(vpt);
       }
 
@@ -201,7 +201,7 @@ export const makeMouseWheel =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        // setViewportTransform([...canvas.viewportTransform]);
+        setViewportTransform([...canvas.viewportTransform]);
         canvas.setViewportTransform(vpt);
       }
     }

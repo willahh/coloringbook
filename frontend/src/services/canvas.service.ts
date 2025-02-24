@@ -616,6 +616,8 @@ class CanvasService {
       }
     });
 
+    console.log('#c2 bestPageId:', bestPageId)
+
     if (bestPageId !== null) {
       callbackfn(bestPageId);
     }

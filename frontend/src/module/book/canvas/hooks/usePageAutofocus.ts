@@ -45,8 +45,6 @@ const usePageAutoFocus = (
   useEffect(() => {
     if (!canvas || !viewportTransform) return;
     debouncedDetectPage(canvas, (id: number) => {
-      console.log('#c2 debouncedDetectPage', viewportTransform);
-      console.log('#c2 canvas.getZoom()', canvas.getZoom());
       const isDifferentPageId = id !== pageId;
       const isZoomWithinPageRange =
         canvas.getZoom() > 0.4 && canvas.getZoom() < 1.8;

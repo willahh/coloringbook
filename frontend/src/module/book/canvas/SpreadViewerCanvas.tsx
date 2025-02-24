@@ -87,7 +87,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       <PagesNavigation />
       <canvas ref={canvasRef} />
 
-
       <div
         data-id="inline-toolbar"
         className={`absolute bottom-20 right-12 z-10
