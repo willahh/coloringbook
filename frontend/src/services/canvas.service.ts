@@ -1,5 +1,5 @@
-import { ElementFactory } from '@/module/book/element/ElementFactory';
 import * as fabric from 'fabric';
+import { ElementFactory } from '@/module/book/element/ElementFactory';
 import { Element, Page } from '@/common/types/book';
 import {
   FabricRectPage,
@@ -7,7 +7,6 @@ import {
   PageDimensions,
 } from '@/common/interfaces';
 import { Appearance } from '@/common/contexts/ThemeContext';
-
 import * as themeColors from '@/common/utils/themeColors';
 
 class CanvasService {
@@ -485,12 +484,10 @@ class CanvasService {
     page: Page,
     dimensions: { width: number; height: number }
   ): Promise<string> {
-    console.log('#a generatePagePreview');
-
     // Créer un canvas HTML temporaire
     const tempCanvasElement = document.createElement('canvas');
-    tempCanvasElement.width = dimensions.width; // Définir la largeur
-    tempCanvasElement.height = dimensions.height; // Définir la hauteur
+    tempCanvasElement.width = dimensions.width;
+    tempCanvasElement.height = dimensions.height;
 
     // Initialiser Fabric.js avec cet élément canvas
     const tempCanvas = new fabric.Canvas(tempCanvasElement, {
@@ -498,11 +495,7 @@ class CanvasService {
       height: dimensions.height,
     });
 
-    // Dessiner la page et ses éléments sur le canvas temporaire
-    // this.drawPagesElementsAndMask(tempCanvas, [page], dimensions, appearance);
-
-    // Dessiner le rectangle de page (fond blanc)
-    console.log('#d dimensions', dimensions);
+    // Dessiner le rectangle de page
     const pageRect = new fabric.Rect({
       isPage: true,
       pageId: page.pageId,
@@ -520,8 +513,8 @@ class CanvasService {
     for (const element of page.elements) {
       const drawableElement = ElementFactory.createElement(
         element,
-        0, // offsetX (position relative dans la preview)
-        0, // offsetY (position relative dans la preview)
+        0,
+        0,
         dimensions.width,
         dimensions.height
       );
@@ -561,29 +554,24 @@ class CanvasService {
       selectable: false,
       hasControls: false,
     });
-
-    // Créer un groupe avec la bande et le texte
     const watermarkGroup = new fabric.Group([diagonalBand, watermarkText], {
       left: 0,
       top: 0,
       angle: 45,
-      opacity: .5,
+      opacity: 0.5,
       selectable: false,
       hasControls: false,
     });
 
-    // Ajouter le groupe au canvas
     tempCanvas.add(watermarkGroup);
 
-    // Forcer le rendu pour s'assurer que tout est dessiné
     tempCanvas.renderAll();
 
     const dataURL = tempCanvas.toDataURL({
-      format: 'jpeg', // Utiliser JPG au lieu de PNG
-      quality: 0.7, // Qualité de compression (0 à 1, 0.7 = 70% de qualité, équilibré)
-      multiplier: 1, // Réduire la taille pour une preview légère (optionnel)
-    }); // Générer la data URL
-    console.log('#a dataURL', dataURL);
+      format: 'jpeg',
+      quality: 0.7,
+      multiplier: 1,
+    });
 
     // Nettoyer en disposant du canvas temporaire
     tempCanvas.dispose();
