@@ -25,6 +25,9 @@ class CanvasService {
 
   private registerEventListeners() {}
 
+  getVerticalSpaceBetweenPages() {
+    return 200;
+  }
   drawPagesElementsAndMask(
     canvas: fabric.Canvas,
     spreadPages: Page[],
@@ -61,7 +64,7 @@ class CanvasService {
           }
 
           // const scaleY = pageHeight / canvas.height;
-          const spaceBetweenPages = 200;
+          const spaceBetweenPages = this.getVerticalSpaceBetweenPages();
           const offsetX = 0;
           const offsetY = index * (pageHeight + spaceBetweenPages);
 
@@ -226,14 +229,37 @@ class CanvasService {
 
   getMaxPageWidth(canvas: fabric.Canvas): number {
     const pages = canvasService.getPages(canvas);
-    if (pages.length === 0) return 0; // Si aucune page, largeur totale est 0
+    if (pages.length === 0) return 0;
 
-    // Calculer la largeur max parmi toutes les pages
     return Math.max(
       ...pages.map((page) => {
         return page.width || 0;
       })
     );
+  }
+
+  /**
+   * Calcule la hauteur totale cumulée des pages avec une marge entre elles.
+   * @param canvas Le canvas Fabric.js
+   * @param margin La marge entre chaque page (par défaut : 10 pixels)
+   * @returns La hauteur totale avec marges
+   */
+  getTotalPageHeightCumulated(
+    canvas: fabric.Canvas
+  ): number {
+    const pages = canvasService.getPages(canvas);
+    if (pages.length === 0) return 0;
+
+    let totalHeight = 0;
+
+    pages.forEach((page, index) => {
+      totalHeight += page.height || 0;
+      if (index < pages.length - 1) {
+        totalHeight += this.getVerticalSpaceBetweenPages();
+      }
+    });
+
+    return totalHeight;
   }
 
   getMaxPageScaledWidth(canvas: fabric.Canvas): number {
@@ -292,11 +318,7 @@ class CanvasService {
     const deltaY = centerCanvasY - centerPageY * zoom;
 
     // Appliquer la contrainte horizontale
-    deltaX = this.constrainHorizontalMovement(
-      canvasWidth,
-      pageWidth,
-      deltaX
-    );
+    deltaX = this.constrainHorizontalMovement(canvasWidth, pageWidth * zoom, deltaX);
 
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
@@ -351,6 +373,7 @@ class CanvasService {
     }
   }
 
+  // avec scale
   constrainHorizontalMovement(
     canvasWidth: number,
     maxPageWidth: number,
@@ -365,12 +388,35 @@ class CanvasService {
 
     // Centrer le contenu si possible
     if (maxPageWidth <= canvasWidth) {
-      const offsetX = 77; // Largeur des onglets a gauche
+      // const offsetX = 77; // Largeur des onglets a gauche
+      const offsetX = 0;
       newX = (canvasWidth - maxPageWidth + offsetX) / 2; // Centrer
+      newX = (canvasWidth / 2) - (maxPageWidth / 2)
     } else {
       newX = Math.min(Math.max(x, minX), maxX);
     }
     return newX;
+  }
+
+  constrainVerticalMovement(
+    canvasHeight: number,
+    maxPageHeight: number,
+    y: number
+  ): number {
+    let newY = y;
+
+    // Limite de déplacement vertical
+    const margin = 100;
+    const maxY = margin;
+    const minY = canvasHeight - maxPageHeight - margin;
+
+    if (maxPageHeight <= canvasHeight) {
+      const offsetY = 77;
+      newY = (canvasHeight - maxPageHeight + offsetY) / 2;
+    } else {
+      newY = Math.min(Math.max(y, minY), maxY);
+    }
+    return newY;
   }
 
   async addElementToCanvas(
