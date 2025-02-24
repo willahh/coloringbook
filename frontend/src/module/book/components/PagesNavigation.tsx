@@ -26,12 +26,12 @@ export const PagesNavigation: React.FC = () => {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.key) {
-        case 'ArrowLeft':
+        case 'ArrowUp':
           if (!isFirstPage) {
             navigate(`/book/${bookId}/pages/${previousPageId}`);
           }
           break;
-        case 'ArrowRight':
+        case 'ArrowDown':
           if (!isLastPage) {
             navigate(`/book/${bookId}/pages/${nextPageId}`);
           }

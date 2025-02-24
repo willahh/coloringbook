@@ -14,9 +14,9 @@ import { useCanvasResize } from './hooks/useCanvasResize';
 import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
 import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
+import usePageAutoFocus from './hooks/usePageAutofocus';
 
 interface SpreadCanvasProps {
-  // pageId: number;
   width?: number;
   height?: number;
   pages: Page[];
@@ -55,13 +55,14 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     canvas,
     viewportTransform,
     setNeedRedrawPages,
-    pageId,
+    // pageId,
     needRedrawPages,
     pages,
     canvasSize
   );
   usePageFocus(canvas, pages, pageId);
   useUpdatePageThumbnails(canvas, pages, needRedrawPages);
+  usePageAutoFocus(canvas, pageId, viewportTransform);
 
   return (
     <div ref={containerRef} className="relative flex-1">

@@ -6,8 +6,7 @@ import { useEffect } from 'react';
 const usePageFocus = (
   canvas: fabric.Canvas | null,
   pages: Page[],
-  pageId: number,
-//   setNeedPageCenter: React.Dispatch<React.SetStateAction<boolean>>
+  pageId: number
 ) => {
   /**
    * [Focus page when pageId change]
@@ -30,7 +29,6 @@ const usePageFocus = (
           currentVpt,
           targetVpt
         );
-        // setNeedPageCenter(false);
 
         return cancelAnimation;
       }
