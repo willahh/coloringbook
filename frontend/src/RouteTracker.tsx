@@ -20,7 +20,6 @@ const RouteTracker: React.FC<RouteTrackerProps> = ({ children }) => {
       hitType: 'pageview',
       page: location.pathname + location.search,
     };
-    console.log('#f RouteTracker.tsx useEffect, send event to GA', obj);
     // if (process.env.NODE_ENV === 'production') {
     ReactGA.send(obj);
     // }
