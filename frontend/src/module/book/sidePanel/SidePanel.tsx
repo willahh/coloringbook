@@ -35,6 +35,13 @@ const tabs: Tab[] = [
     content: <div>Formes</div>,
   },
   {
+    id: TabType.Draw,
+    label: 'Dessins',
+    icon: RectangleGroupIcon,
+    active: false,
+    content: <div>Dessins</div>,
+  },
+  {
     id: TabType.Background,
     label: 'Fonds',
     icon: RectangleGroupIcon,
