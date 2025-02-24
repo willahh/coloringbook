@@ -29,11 +29,8 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
       navigate(`/book/${book.id}`);
     }
   };
-
   const { width, height } = BookFormatHelper.getAspectRatio(book.format);
-  console.log('width', width, 'height', height);
-
-  let cls = `${className} relative w-full aspect-[${width}/${height}] rounded-md overflow-hidden
+  let cls = `${className} relative w-full rounded-md overflow-hidden
   `;
   const bookExist = book.id !== -1;
   if (bookExist) {
@@ -82,6 +79,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
             backgroundRepeat: 'no-repeat',
             boxShadow:
               '0 0 5px -1px black, inset -1px 1px 2px rgba(255, 255, 255, 0.5)',
+            aspectRatio: `${width}/${height}`,
             margin: 'auto',
             borderRadius: '5px',
             backgroundSize: 'cover',
