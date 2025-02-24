@@ -8,6 +8,8 @@ import {
 } from '@/common/interfaces';
 import { Appearance } from '@/common/contexts/ThemeContext';
 
+import * as themeColors from '@/common/utils/themeColors';
+
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;
 
@@ -34,7 +36,7 @@ class CanvasService {
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
-        
+
         canvas.clear();
         const canvasBorder = 16;
         const newSpreadSize = { width: 0, height: 0 };
@@ -171,7 +173,7 @@ class CanvasService {
     pageId: number
   ): FabricRectPage | undefined {
     const pageRect = canvas.getObjects().find((obj) => {
-     // console.log('#a find by pageId ', pageId, obj);
+      // console.log('#a find by pageId ', pageId, obj);
       if (
         obj.type === 'rect' &&
         (obj as FabricRectPage).pageId === Number(pageId)
@@ -479,21 +481,6 @@ class CanvasService {
     }
   }
 
-  // public generatePagePreview(
-  //   page: Page,
-  //   dimensions: { width: number; height: number },
-  //   appearance: Appearance
-  // ): string {
-  //   const tempCanvas = new fabric.Canvas(null, {
-  //     width: 100, // Taille réduite pour la preview
-  //     height: 141, // Proportions A4 (1:1.414)
-  //   });
-
-  //   // Dessiner la page et ses éléments sur un canvas temporaire
-  //   this.drawPagesElementsAndMask(tempCanvas, [page], dimensions, appearance);
-  //   return tempCanvas.toDataURL(); // Retourne une image encodée en base64
-  // }
-
   public async generatePagePreview(
     page: Page,
     dimensions: { width: number; height: number }
@@ -515,6 +502,7 @@ class CanvasService {
     // this.drawPagesElementsAndMask(tempCanvas, [page], dimensions, appearance);
 
     // Dessiner le rectangle de page (fond blanc)
+    console.log('#d dimensions', dimensions);
     const pageRect = new fabric.Rect({
       isPage: true,
       pageId: page.pageId,
@@ -544,13 +532,56 @@ class CanvasService {
       }
     }
 
+    /*
+     * Water marks –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+     */
+    const size = {
+      width: Math.sqrt(
+        dimensions.width * dimensions.width +
+          dimensions.height * dimensions.height
+      ),
+      height: 28,
+    };
+    const diagonalBand = new fabric.Rect({
+      width: size.width,
+      height: size.height + 8,
+      fill: themeColors.secondaryColor,
+      selectable: false,
+      hasControls: false,
+    });
+    const watermarkText = new fabric.FabricText('© ColoringBook', {
+      left: 22,
+      top: 9,
+      width: size.width,
+      height: size.height,
+      textAlign: 'center',
+      fontSize: 18,
+      fill: 'rgba(255, 255, 255, 1)',
+      fontFamily: 'Arial',
+      selectable: false,
+      hasControls: false,
+    });
+
+    // Créer un groupe avec la bande et le texte
+    const watermarkGroup = new fabric.Group([diagonalBand, watermarkText], {
+      left: 0,
+      top: 0,
+      angle: 45,
+      opacity: .5,
+      selectable: false,
+      hasControls: false,
+    });
+
+    // Ajouter le groupe au canvas
+    tempCanvas.add(watermarkGroup);
+
     // Forcer le rendu pour s'assurer que tout est dessiné
     tempCanvas.renderAll();
 
     const dataURL = tempCanvas.toDataURL({
       format: 'jpeg', // Utiliser JPG au lieu de PNG
       quality: 0.7, // Qualité de compression (0 à 1, 0.7 = 70% de qualité, équilibré)
-      multiplier: 0.8, // Réduire la taille pour une preview légère (optionnel)
+      multiplier: 1, // Réduire la taille pour une preview légère (optionnel)
     }); // Générer la data URL
     console.log('#a dataURL', dataURL);
 
