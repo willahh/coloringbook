@@ -41,7 +41,7 @@ export const makeMouseWheelWithAnimation =
       canvas.zoomToPoint(point, zoom);
 
       if (canvas.viewportTransform) {
-        const vpt = [...canvas.viewportTransform];
+        const vpt = [...canvas.viewportTransform] as fabric.TMat2D;
         const adjustedTotalWidth = totalWidth * zoom;
         const adjustedTotalHeight = totalHeight * zoom; // Ajustement pour la hauteur
         const newX = canvasService.constrainHorizontalMovement(
@@ -57,7 +57,8 @@ export const makeMouseWheelWithAnimation =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        setViewportTransform([...canvas.viewportTransform]);
+        // setViewportTransform([...canvas.viewportTransform]);
+        canvas.setViewportTransform(vpt);
       }
     }
 
@@ -112,11 +113,12 @@ export const makeMouseWheelWithAnimation =
           y
         );
 
-        console.log('#z totalHeight:', totalHeight)
+        console.log('#z totalHeight:', totalHeight);
 
         vpt[4] = newX;
         vpt[5] = newY;
-        setViewportTransform([...vpt]);
+        // setViewportTransform([...vpt]);
+        canvas.setViewportTransform(vpt);
       }
     }
   };
@@ -176,7 +178,8 @@ export const makeMouseWheel =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        setViewportTransform([...canvas.viewportTransform]);
+        // setViewportTransform([...canvas.viewportTransform]);
+        canvas.setViewportTransform(vpt);
       }
 
       canvas.requestRenderAll();
@@ -198,7 +201,8 @@ export const makeMouseWheel =
 
         vpt[4] = newX;
         vpt[5] = newY;
-        setViewportTransform([...canvas.viewportTransform]);
+        // setViewportTransform([...canvas.viewportTransform]);
+        canvas.setViewportTransform(vpt);
       }
     }
   };

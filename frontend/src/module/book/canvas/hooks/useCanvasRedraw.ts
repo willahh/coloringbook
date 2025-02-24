@@ -54,24 +54,10 @@ export function useCanvasRedraw(
       setNeedRedrawPages(false);
     }
 
-    if (viewportTransform) {
-      canvas.viewportTransform = viewportTransform;
-      canvas.requestRenderAll();
-
-      /**
-       * [feature: Page auto focus on scroll]
-       */
-      // const timeoutId = setTimeout(() => {
-      //   canvasService.detectCurrentPage(canvas, (id: number) => {
-      //     if (id !== pageId) {
-      //       if (!canvas.get('scrolling')) {
-      //         navigate(`/book/${pageParams.bookId}/pages/${id}`);
-      //       }
-      //     }
-      //   });
-      // }, 24);
-      // return () => clearTimeout(timeoutId);
-    }
+    // if (viewportTransform) {
+    //   canvas.viewportTransform = viewportTransform;
+    //   canvas.requestRenderAll();
+    // }
   }, [
     canvas,
     viewportTransform,
