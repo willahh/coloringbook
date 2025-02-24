@@ -341,28 +341,28 @@
     --default-mono-font-family: roboto-mono-regular, Courier New, Courier, monospace;
     --default-mono-font-feature-settings: normal;
     --default-mono-font-variation-settings: normal;
-    --color-primary-50: #f1f7fd;
-    --color-primary-100: #dfedfa;
-    --color-primary-200: #c6e0f7;
-    --color-primary-300: #9ecdf2;
-    --color-primary-400: #70b1ea;
-    --color-primary-500: #4a90e2;
-    --color-primary-600: #3978d7;
-    --color-primary-700: #3063c5;
-    --color-primary-800: #2d51a0;
-    --color-primary-900: #29467f;
-    --color-primary-950: #1d2c4e;
-    --color-secondary-50: #faf4ff;
-    --color-secondary-100: #f3e5ff;
-    --color-secondary-200: #e9d0ff;
-    --color-secondary-300: #d9acff;
-    --color-secondary-400: #c177ff;
-    --color-secondary-500: #a943ff;
-    --color-secondary-600: #9013fe;
-    --color-secondary-700: #810fe1;
-    --color-secondary-800: #6d12b7;
-    --color-secondary-900: #5a1093;
-    --color-secondary-950: #3d006e;
+    --color-primary-50: #f3f5fa;
+    --color-primary-100: #eaecf5;
+    --color-primary-200: #d9deec;
+    --color-primary-300: #c1c7e0;
+    --color-primary-400: #a7add2;
+    --color-primary-500: #9194c3;
+    --color-primary-600: #7e7db4;
+    --color-primary-700: #69679b;
+    --color-primary-800: #56557e;
+    --color-primary-900: #494966;
+    --color-primary-950: #2b2a3c;
+    --color-secondary-50: #fff1f3;
+    --color-secondary-100: #ffe4e9;
+    --color-secondary-200: #fecdd5;
+    --color-secondary-300: #fda4b3;
+    --color-secondary-400: #fb7189;
+    --color-secondary-500: #f43f5e;
+    --color-secondary-600: #e11d3f;
+    --color-secondary-700: #be122f;
+    --color-secondary-800: #9f122a;
+    --color-secondary-900: #881327;
+    --color-secondary-950: #4c0511;
     --container-4xs: 12rem;
   }
 }
@@ -1603,8 +1603,8 @@
   .text-secondary-600 {
     color: var(--color-secondary-600);
   }
-  .text-secondary-700 {
-    color: var(--color-secondary-700);
+  .text-secondary-800 {
+    color: var(--color-secondary-800);
   }
   .text-secondary-900 {
     color: var(--color-secondary-900);
@@ -1757,9 +1757,13 @@
     --tw-duration: 200ms;
     transition-duration: 200ms;
   }
-  .duration-400 {
-    --tw-duration: 400ms;
-    transition-duration: 400ms;
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
+  .duration-500 {
+    --tw-duration: 500ms;
+    transition-duration: 500ms;
   }
   .duration-1000 {
     --tw-duration: 1000ms;
@@ -1769,13 +1773,9 @@
     --tw-duration: 150ms;
     transition-duration: 150ms;
   }
-  .duration-300 {
-    --tw-duration: 300ms;
-    transition-duration: 300ms;
-  }
-  .duration-500 {
-    --tw-duration: 500ms;
-    transition-duration: 500ms;
+  .duration-400 {
+    --tw-duration: 400ms;
+    transition-duration: 400ms;
   }
   .ease-in {
     --tw-ease: var(--ease-in);
@@ -2960,6 +2960,12 @@
   .dark\:ring-gray-300 {
     &:where(.dark, .dark *) {
       --tw-ring-color: var(--color-gray-300);
+    }
+  }
+  .dark\:brightness-125 {
+    &:where(.dark, .dark *) {
+      --tw-brightness: brightness(125%);
+      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
     }
   }
   .dark\:group-hover\:fill-primary-700 {

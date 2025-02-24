@@ -4,7 +4,7 @@ import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
 import canvasService from '@/services/canvas.service';
 import useCanvasContext from '../../useCanvasContext';
-import { secondaryColor } from '@/common/utils/themeColors';
+import { getSecondaryColor } from '@/common/utils/themeColors';
 
 export function useCanvasInitialization(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
@@ -43,7 +43,7 @@ export function useCanvasInitialization(
 
     // Ajout des scrollbars
     const scrollbar = new Scrollbars(canvas, {
-      fill: secondaryColor,
+      fill: getSecondaryColor(),
       // fill: '#f43f5f',
       stroke: 'rgba(0,0,255,.5)',
       lineWidth: 5,

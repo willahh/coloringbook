@@ -4,7 +4,7 @@
   "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "npm run build:css && vite --host",
     "debug:deploy": "echo '=> files and dirs:' && find . \\( -path ./node_modules -o -path ./dist \\) -prune -o -type d -o -type f -print",
     "build": "npm run build:css && tsc -b && vite build",
     "build:test": "vite build",

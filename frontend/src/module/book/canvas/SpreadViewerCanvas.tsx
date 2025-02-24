@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 import { Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
@@ -15,6 +15,8 @@ import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
 import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
 import usePageAutoFocus from './hooks/usePageAutofocus';
+import { PageService } from '@/services/page.service';
+import canvasService from '@/services/canvas.service';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -30,8 +32,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
-  const pageId = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
+  // const pageId = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
+  const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const { canvas, viewportTransform } = useCanvasContext();
+  const navigate = useNavigate();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
@@ -47,6 +51,15 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pagesPanelWidth
   );
 
+  let pageId = pageIdParams;
+  const page = PageService.getPageById(pages, pageId);
+  if (!page) {
+    pageId = pages[0].pageId;
+    if (canvas) {
+      navigate(`/book/${pageParams.bookId}/pages/${pageId}`);
+    }
+  }
+
   // Hooks –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   useCanvasInitialization(canvasRef);
   useCanvasResize(canvas, canvasSize);
@@ -59,16 +72,21 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pages,
     canvasSize
   );
-  
+
   useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
-  const { disableFocusAnimation } = usePageAutoFocus(canvas, pageId, viewportTransform);
+  const { disableFocusAnimation } = usePageAutoFocus(
+    canvas,
+    pageId,
+    viewportTransform
+  );
   usePageFocus(canvas, pages, pageId, disableFocusAnimation);
 
   return (
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />
       <canvas ref={canvasRef} />
+
 
       <div
         data-id="inline-toolbar"

@@ -1,11 +1,10 @@
 /* ———————————————————————————————————————————————————————————————————————————
   * Tailwind CSS utilities
-  * prefix "cb-" ([c]oloring[b]ook) for custom classes
   * ——————————————————————————————————————————————————————————————————————————*/
-  @import './themes/theme.blueviolet.css';
-  @theme {
+@theme {
   --container-4xs: 12rem;
 }
+
 
 /* —————————————————————————————————————————————————————————————————————————————
   radix-ui configuration

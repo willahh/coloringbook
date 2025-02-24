@@ -1,4 +1,5 @@
 @import 'tailwindcss';
-@config "./../../../tailwind.dark.config.js";
+@config "./../../../tailwind.config.js";
+@import './themes/theme.bluered.css';
 @import './fonts.css';
 @import './main.base.css';

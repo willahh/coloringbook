@@ -80,6 +80,10 @@ class CanvasService {
             selectable: false,
             hoverCursor: 'default',
 
+            strokeWidth: 4,
+            // stroke: themeColors.secondaryColor,
+            // stroke: 'transparent',
+
             shadow: new fabric.Shadow({
               color: 'rgba(0, 0, 0, .4)',
               nonScaling: true,
@@ -300,11 +304,44 @@ class CanvasService {
   pageFocus(
     canvas: fabric.Canvas,
     pages: Page[],
-    pageId: number
+    pageId: number,
+    previousPageId?: number
   ): (() => void) | void {
     let focusPageId = pageId;
     if (focusPageId === 0) {
       focusPageId = pages[0].pageId;
+    }
+
+   
+
+
+  // Restaurer la bordure de la page précédente, si elle existe
+  if (previousPageId && previousPageId !== focusPageId) {
+    const previousPageRect = this.getPageRectbyPageId(canvas, previousPageId);
+    if (previousPageRect) {
+      // const initialState = this.pageBorderStates.get(previousPageId) || {
+      const initialState = {
+        stroke: null,
+        strokeWidth: 0,
+        strokeDashArray: null,
+      };
+      previousPageRect.set({
+        stroke: initialState.stroke,
+        strokeWidth: initialState.strokeWidth,
+        strokeDashArray: initialState.strokeDashArray,
+      });
+      canvas.renderAll();
+    }
+  }
+
+    const currentPageRect = this.getPageRectbyPageId(canvas, focusPageId);
+    if (currentPageRect) {
+      currentPageRect.set({
+        stroke: themeColors.getSecondaryColor(),
+        strokeWidth: 2,
+        strokeDashArray: [5, 5],
+      });
+      canvas.renderAll();
     }
 
     const vpt = this.getPageFocusCoordinates(canvas, focusPageId);
@@ -599,7 +636,7 @@ class CanvasService {
     const diagonalBand = new fabric.Rect({
       width: size.width,
       height: size.height + 8,
-      fill: themeColors.secondaryColor,
+      fill: themeColors.getSecondaryColor(),
       selectable: false,
       hasControls: false,
     });

@@ -73,21 +73,32 @@ const BookPage: React.FC = () => {
           pages={book.pages}
           addPageButtonClick={() => {}}
         ></PagesPanel>
-        <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
-        <main
-          className={`flex flex-1  flex-col overflow-hidden
-          bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
-          `}
-        >
-          {book.pages.length > 0 && (
-            <SpreadViewerCanvas
-              // pageId={pageId}
-              pages={book.pages}
-              sidePanelWidth={sidePanelWidth}
-              pagesPanelWidth={pagesPanelWidth}
-            />
-          )}
-          {/* <SpreadToolbar /> */}
+        <SidePanel
+          ref={sidePanelRef}
+          setSidePanelWidth={setSidePanelWidth}
+          className="relative z-20"
+        />
+        <main className={`relative flex-1`}>
+          <div
+            className="absolute top-0 left-0 w-full h-full z-10
+            flex flex-1 flex-col overflow-hidden"
+          >
+            {book.pages.length > 0 && (
+              <SpreadViewerCanvas
+                pages={book.pages}
+                sidePanelWidth={sidePanelWidth}
+                pagesPanelWidth={pagesPanelWidth}
+              />
+            )}
+            {/* <SpreadToolbar /> */}
+          </div>
+          <div
+            data-name="bg"
+
+            className="absolute top-0 left-0 w-full h-full pointer-events-none
+            bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
+            dark:brightness-125"
+          ></div>
         </main>
       </Layout>
       {/* <UnsavedChangesToast

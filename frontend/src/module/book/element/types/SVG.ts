@@ -2,7 +2,7 @@ import { DrawableElement } from '../DrawableElement'; // Adjust the path as need
 import * as fabric from 'fabric';
 import { SVGElement } from '@apptypes/book';
 import { getAPIURL } from '@/common/utils/api';
-import { secondaryColor } from '@/common/utils/themeColors';
+import { getSecondaryColor } from '@/common/utils/themeColors';
 export class SVG implements DrawableElement {
   private svgObjects: Promise<fabric.FabricObject> | null;
 
@@ -64,8 +64,8 @@ export class SVG implements DrawableElement {
       });
 
       const groupProps: Partial<fabric.GroupProps> = {
-        cornerColor: secondaryColor,
-        borderColor: secondaryColor,
+        cornerColor: getSecondaryColor(),
+        borderColor: getSecondaryColor(),
         hasBorders: true,
         
         cornerSize: 10,

@@ -1,7 +1,10 @@
-/**
- * TODO: Find a way to use the tailwind css variables
- */
-export const primaryColor: string = '#4a90e2';
-export const secondaryColor: string = '#a943ff';
-  
-  
+const element = document.documentElement;
+const style = getComputedStyle(element);
+
+export const getPrimaryColor = () => {
+  return style.getPropertyValue('--color-primary-500').trim();
+};
+
+export const getSecondaryColor = () => {
+  return style.getPropertyValue('--color-secondary-500').trim();
+};

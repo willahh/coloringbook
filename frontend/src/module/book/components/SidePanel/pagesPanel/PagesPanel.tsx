@@ -111,7 +111,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
            bg-primary-200 dark:bg-primary-800 text-xs p-0.5 text-right
         ${
           selected
-            ? 'bg-secondary-300 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300 font-extrabold'
+            ? 'bg-secondary-300 dark:bg-secondary-500 text-secondary-800 dark:text-secondary-300 font-extrabold'
             : ''
         }`}
         >
