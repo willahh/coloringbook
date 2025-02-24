@@ -5,9 +5,7 @@ import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
 import { useSelector } from '../store';
 import { selectBook } from '@/module/book/Book.slice';
 import { Tooltip } from './Tooltip';
-import UnsavedChangesToast, {
-  // UnsavedChangesComponent,
-} from '@/module/book/components/UnchangedModificationsToast';
+import UnsavedChangesToast from '@/module/book/components/UnchangedModificationsToast'; // UnsavedChangesComponent,
 
 interface HeaderProps {
   className?: string;
@@ -53,6 +51,16 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
       >
         <div className="relative h-16 px-6 flex items-center justify-end gap-6">
           <div className="flex-1">{children}</div>
+
+          <div className="text-xs text-gray-400 dark:text-gray-600">
+            <a
+              href="https://williamravel.netlify.app"
+              className="underline"
+              target="_blank"
+            >
+              williamravel.netlify.app
+            </a>
+          </div>
           {!areLocalUpdatesSaved && (
             <Tooltip
               wrapperClassName="p-1 bg-transparent h-20"
@@ -88,6 +96,7 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
             </Tooltip>
           )}
           {isLoading && LoadingIcon}
+
           {appearance === 'dark' ? (
             <Logo className="w-24 xl:w-36" />
           ) : (
