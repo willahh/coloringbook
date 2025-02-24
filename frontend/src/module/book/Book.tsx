@@ -9,7 +9,7 @@ import SidePanel from './sidePanel/SidePanel';
 import BookHeader from './components/BookHeader';
 import * as bookActions from './Book.actions';
 import { selectBook } from './Book.slice';
-import { PagesPanel } from './components/SidePanel/PagesPanel';
+import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
 import BookToolbar from './bookToolbar/BookToolbar';
 
 const BookPage: React.FC = () => {

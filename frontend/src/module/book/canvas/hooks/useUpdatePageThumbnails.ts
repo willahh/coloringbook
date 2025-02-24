@@ -99,7 +99,7 @@ const useUpdatePageThumbnails = (
     };
 
     console.log('#a add handler handleObjectModified', 'canvas:', canvas);
-    console.log('#a3 >>>>>> pages[1].elements[0]', pages[1].elements[0]);
+    //console.log('#a3 >>>>>> pages[1].elements[0]', pages[1].elements[0]);
 
     const handleObjectModifiedRef = () => {
       handleObjectModified(canvas, pages);

@@ -35,8 +35,7 @@ const initialState: BookState = {
 
 export const selectIsLoading = (state: RootState) => state.book.isLoading;
 export const selectBook = (state: RootState) => state.book;
-
-const selectBookPages = (state: RootState) => state.book.book.pages;
+export const selectBookPages = (state: RootState) => state.book.book.pages;
 
 // Sélecteur des éléments mémoïsé
 export const selectElements = createSelector(

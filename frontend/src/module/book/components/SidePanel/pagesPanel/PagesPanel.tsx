@@ -1,16 +1,17 @@
 import { useEffect, useRef } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import type { Page } from '@apptypes/book';
-import { BookService } from '@/services/book.service';
-import { ToolbarButton } from '../ToolbarButton';
+import { BookService, bookService } from '@/services/book.service';
+import { ToolbarButton } from '../../ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
-import { useDispatch } from '@/common/store';
+import { useDispatch, useSelector } from '@/common/store';
 import { PageService } from '@/services/page.service';
-import * as BookActions from '../../Book.actions';
+import * as BookActions from '../../../Book.actions';
 import { BookPageParams } from '@/common/interfaces';
+import { selectBookPages } from '../../../Book.slice';
 
 interface PageComponentProps {
   bookId: number;
@@ -19,12 +20,32 @@ interface PageComponentProps {
   onDeleteButtonClick?: (pageId: number) => void;
 }
 
+const useDeletePage = (bookId: number) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pages = useSelector(selectBookPages);
+
+  const useDeletePage = (pageIdToDelete: number) => {
+    if (confirm('Confirmer la suppression de la page ?')) {
+      dispatch(BookActions.deletePageAction({ pageId: pageIdToDelete }));
+      requestAnimationFrame(() => {
+        const nextPageId = bookService.getNextPageId(pageIdToDelete, pages);
+        if (nextPageId !== undefined && bookId) {
+          navigate(`/book/${bookId}/pages/${nextPageId}`);
+        }
+      });
+    }
+  };
+
+  return useDeletePage;
+};
+
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
   page: { pageNumber, pageId, thumbImageData, aspectRatio },
   selected,
 }) => {
-  const dispatch = useDispatch();
+  const deletePageFn = useDeletePage(bookId);
 
   return (
     <motion.div
@@ -90,9 +111,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
                    : ''
                }`}
                 onClick={() => {
-                  if (confirm('Confirmer la suppression de la page ?')) {
-                    dispatch(BookActions.deletePageAction({ pageId: pageId }));
-                  }
+                  deletePageFn(pageId);
                 }}
               >
                 <TrashIcon className="w-4 h-4" />
@@ -202,8 +221,9 @@ export const PagesPanel: React.FC<{
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, ref, pages }) => {
-  const { pageId } = useParams<{ pageId: string }>();
+  const { bookId, pageId } = useParams<{ bookId: string; pageId: string }>();
   const dispatch = useDispatch();
+  const deletePageFn = useDeletePage(Number(bookId));
   const panelRef = ref;
 
   useEffect(() => {
@@ -212,18 +232,14 @@ export const PagesPanel: React.FC<{
         panelRef.current &&
         panelRef.current.contains(document.activeElement)
       ) {
+        event.preventDefault();
         if (event.key === 'Backspace' || event.key === 'Delete') {
           const selectedPage = pages.find(
             (page) => page.pageId === Number(pageId)
           );
-          if (
-            selectedPage &&
-            confirm('Confirmer la suppression de la page ?')
-          ) {
-            dispatch(
-              BookActions.deletePageAction({ pageId: selectedPage.pageId })
-            );
-            event.preventDefault();
+
+          if (selectedPage) {
+            deletePageFn(selectedPage.pageId);
           }
         }
       }
