@@ -78,7 +78,7 @@ class CanvasService {
 
             hasControls: false,
             borderScaleFactor: 2,
-            selectable: true,
+            selectable: false,
             borderColor: 'red',
             lockMovementX: true,
             lockMovementY: true,
