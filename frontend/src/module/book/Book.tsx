@@ -69,7 +69,7 @@ const BookPage: React.FC = () => {
         <BookToolbar />
         <PagesPanel
           ref={pagesPanelRef}
-          className="w-16 xl:w-18 border-r border-primary-200 dark:border-primary-800"
+          className="w-16 md:w-24 xl:w-30 border-r border-primary-200 dark:border-primary-800"
           pages={book.pages}
           addPageButtonClick={() => {}}
         ></PagesPanel>
