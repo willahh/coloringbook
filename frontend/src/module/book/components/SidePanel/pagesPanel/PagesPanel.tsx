@@ -40,6 +40,24 @@ const useDeletePage = (bookId: number) => {
   return useDeletePage;
 };
 
+const useAddPage = (bookId: number) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pages = useSelector(selectBookPages);
+
+  const useAddPage = () => {
+    const pageNew = PageService.getNewPage(pages);
+    dispatch(BookActions.addPageAction({ page: pageNew }));
+    requestAnimationFrame(() => {
+      if (bookId) {
+        navigate(`/book/${bookId}/pages/${pageNew.pageId}`);
+      }
+    });
+  };
+
+  return useAddPage;
+};
+
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
   page: { pageNumber, pageId, thumbImageData, aspectRatio },
@@ -221,10 +239,11 @@ export const PagesPanel: React.FC<{
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, ref, pages }) => {
+  const panelRef = ref;
   const { bookId, pageId } = useParams<{ bookId: string; pageId: string }>();
   const dispatch = useDispatch();
   const deletePageFn = useDeletePage(Number(bookId));
-  const panelRef = ref;
+  const addPageFn = useAddPage(Number(bookId));
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -264,9 +283,7 @@ export const PagesPanel: React.FC<{
           className="!rounded-full"
           tooltipContent="Ajouter une page"
           onClick={() => {
-            dispatch(
-              BookActions.addPageAction({ page: PageService.getNewPage(pages) })
-            );
+            addPageFn();
           }}
         >
           <PlusIcon
