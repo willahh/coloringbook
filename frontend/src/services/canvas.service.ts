@@ -32,6 +32,7 @@ class CanvasService {
     appearance: Appearance
   ) {
     if (canvas) {
+      const me = this;
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
@@ -75,15 +76,17 @@ class CanvasService {
             left: offsetX,
             top: offsetY,
             fill: 'white',
-
             hasControls: false,
-            // borderScaleFactor: 2,
             selectable: false,
-            evented: false,
+            hoverCursor: 'default',
+
+            // evented: false,
+            // borderScaleFactor: 2,
             // borderColor: 'red',
             // lockMovementX: true,
             // lockMovementY: true,
             // moveCursor: null,
+            // moveCursor: undefined,
 
             shadow: new fabric.Shadow({
               color: 'rgba(0, 0, 0, .4)',
@@ -92,6 +95,13 @@ class CanvasService {
               offsetX: 2,
               offsetY: 2,
             }),
+          });
+
+          pageRect.on('mouseup', () => {
+            me.pageFocus(canvas, spreadPages, page.pageId);
+          });
+          pageRect.on('mousedblclick', () => {
+            me.pageFocus(canvas, spreadPages, page.pageId);
           });
 
           // pageRect.on('mouseover', () => {
@@ -289,6 +299,26 @@ class CanvasService {
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
 
+  pageFocus(
+    canvas: fabric.Canvas,
+    pages: Page[],
+    pageId: number
+  ): (() => void) | void {
+    let focusPageId = pageId;
+    if (focusPageId === 0) {
+      focusPageId = pages[0].pageId;
+    }
+
+    const vpt = this.getPageFocusCoordinates(canvas, focusPageId);
+    if (vpt) {
+      console.log('#c2 FOCUS ON PAGE pageId:', pageId);
+      const currentVpt = [...canvas.viewportTransform];
+      const targetVpt = vpt;
+
+      return this.animateViewportTransform(canvas, currentVpt, targetVpt);
+    }
+  }
+
   constrainHorizontalMovement(
     canvasWidth: number,
     maxPageWidth: number,
@@ -445,9 +475,6 @@ class CanvasService {
     return () => cancelAnimationFrame(animationFrameId);
   }
 
-
-
-  
   detectCurrentPage(canvas: fabric.Canvas, callbackfn: (id: number) => void) {
     const vpt = canvas.viewportTransform;
     if (!vpt) return;

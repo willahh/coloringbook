@@ -90,12 +90,12 @@ const BookPage: React.FC = () => {
           {/* <SpreadToolbar /> */}
         </main>
       </Layout>
-      <UnsavedChangesToast
+      {/* <UnsavedChangesToast
         isModified={!areLocalUpdatesSaved}
         onSave={() => {
           dispatch(bookActions.saveBookAction({ bookId: bookId, book: book }));
         }}
-      />
+      /> */}
     </>
   );
 };
