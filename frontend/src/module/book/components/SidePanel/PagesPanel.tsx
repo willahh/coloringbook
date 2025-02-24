@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -28,6 +28,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
 
   return (
     <motion.div
+      data-id={`sp-page-${pageId}`}
       key={`pageCmp-${pageId}`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -125,7 +126,35 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
       spreads = [pages];
     }
   }
-  // debugger;
+
+  /**
+   * Automatically scrolling to page feature
+   */
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollToPage = (targetPageId: string) => {
+    const container = scrollContainerRef.current;
+    const pageElement: HTMLElement | null = document.querySelector(
+      'div[data-id="sp-page-' + targetPageId + '"]'
+    );
+
+    if (container && pageElement) {
+      const containerHeight = container.clientHeight;
+      const pageHeight = pageElement.offsetHeight;
+      const pageOffsetTop = pageElement.offsetTop;
+      const scrollPosition = pageOffsetTop - (containerHeight - pageHeight) / 2;
+
+      container.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (pageId) {
+      scrollToPage(pageId);
+    }
+  }, [pageId]);
 
   const renderSpreads = () => {
     return spreads.map((spread, index) => (
@@ -152,6 +181,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
   return (
     <div
+      ref={scrollContainerRef}
       className={`flex flex-col ${className || ''} rounded-md pt-4
  overflow-y-scroll scrollbar scrollbar-thumb-primary-300 
  dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}

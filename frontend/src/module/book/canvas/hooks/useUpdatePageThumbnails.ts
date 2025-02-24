@@ -19,10 +19,7 @@ const useUpdatePageThumbnails = (
    * [Update page thumbnails]
    */
   useEffect(() => {
-    console.log('\n#a => useEffect for update page thumbnails');
-    console.log('#a canvas.getObjects():', canvas?.getObjects());
-    console.log('#a3 pages[1].elements[0]', pages[1].elements[0]);
-
+    
     if (!canvas) return; // Ne s'exécute qu'une seule fois si non initialisé
 
     const updateThumbnailForPage = async (
