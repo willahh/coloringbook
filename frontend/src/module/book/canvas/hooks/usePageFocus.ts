@@ -6,32 +6,36 @@ import { useEffect } from 'react';
 const usePageFocus = (
   canvas: fabric.Canvas | null,
   pages: Page[],
-  pageId: number
+  pageId: number,
+  disableFocusAnimation?: boolean // Paramètre optionnel pour désactiver l'animation
 ) => {
   /**
    * [Focus page when pageId change]
    */
   useEffect(() => {
-    if (canvas) {
-      let focusPageId = pageId;
-      if (focusPageId === 0) {
-        focusPageId = pages[0].pageId;
-      }
+    if (!canvas) return;
 
-      const vpt = canvasService.getPageFocusCoordinates(canvas, focusPageId);
-      if (vpt) {
-        console.log('#c FOCUS ON PAGE pageId:', pageId);
-        const currentVpt = [...canvas.viewportTransform];
-        const targetVpt = vpt;
+    if (disableFocusAnimation) {
+      return;
+    }
+    let focusPageId = pageId;
+    if (focusPageId === 0) {
+      focusPageId = pages[0].pageId;
+    }
 
-        const cancelAnimation = canvasService.animateViewportTransform(
-          canvas,
-          currentVpt,
-          targetVpt
-        );
+    const vpt = canvasService.getPageFocusCoordinates(canvas, focusPageId);
+    if (vpt) {
+      console.log('#c2 FOCUS ON PAGE pageId:', pageId);
+      const currentVpt = [...canvas.viewportTransform];
+      const targetVpt = vpt;
 
-        return cancelAnimation;
-      }
+      const cancelAnimation = canvasService.animateViewportTransform(
+        canvas,
+        currentVpt,
+        targetVpt
+      );
+
+      return cancelAnimation;
     }
   }, [canvas, pageId]);
 };

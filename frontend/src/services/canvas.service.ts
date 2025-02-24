@@ -443,10 +443,10 @@ class CanvasService {
     return () => cancelAnimationFrame(animationFrameId);
   }
 
-  detectCurrentPage(
-    canvas: fabric.Canvas,
-    setSelectedPageId: (id: number) => void
-  ) {
+
+
+  
+  detectCurrentPage(canvas: fabric.Canvas, callbackfn: (id: number) => void) {
     const vpt = canvas.viewportTransform;
     if (!vpt) return;
 
@@ -476,7 +476,7 @@ class CanvasService {
     });
 
     if (bestPageId !== null) {
-      setSelectedPageId(bestPageId);
+      callbackfn(bestPageId);
     }
   }
 

@@ -55,14 +55,15 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     canvas,
     viewportTransform,
     setNeedRedrawPages,
-    // pageId,
     needRedrawPages,
     pages,
     canvasSize
   );
-  usePageFocus(canvas, pages, pageId);
+  
   useUpdatePageThumbnails(canvas, pages, needRedrawPages);
-  usePageAutoFocus(canvas, pageId, viewportTransform);
+
+  const { disableFocusAnimation } = usePageAutoFocus(canvas, pageId, viewportTransform);
+  usePageFocus(canvas, pages, pageId, disableFocusAnimation);
 
   return (
     <div ref={containerRef} className="relative flex-1">

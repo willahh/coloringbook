@@ -101,11 +101,11 @@ export const makeMouseWheelWithAnimation =
           x
         );
 
-        if (Math.abs(e.deltaY) === 1) {
-          canvas.set('scrolling', false);
-        } else {
-          canvas.set('scrolling', true);
-        }
+        // if (Math.abs(e.deltaY) === 1) {
+        //   canvas.set('scrolling', false);
+        // } else {
+        //   canvas.set('scrolling', true);
+        // }
        
         vpt[4] = newX;
         vpt[5] -= e.deltaY;
