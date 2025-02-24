@@ -18,7 +18,7 @@ export const useDimensions = (
           document.documentElement.clientHeight,
           window.innerHeight || 0
         );
-        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth;
+        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
         setDimensions({
           width: width,
 
