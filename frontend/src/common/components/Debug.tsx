@@ -91,7 +91,7 @@ export const InterfaceControls = () => {
       <div className="flex items-center gap-4 relative">
         <AppearanceControl />
         <Popover className="">
-          <Tooltip content="Préférences">
+          {/* <Tooltip content="Préférences">
             <PopoverButton
               className={ToolbarButtonClassName('!rounded-full')}
               onClick={() => {
@@ -103,7 +103,7 @@ export const InterfaceControls = () => {
                 className="size-5"
               />
             </PopoverButton>
-          </Tooltip>
+          </Tooltip> */}
           <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
             <div className="divide-y divide-gray-800 dark:divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-black dark:bg-white shadow">
               <div className="grid grid-cols-2 gap-2">

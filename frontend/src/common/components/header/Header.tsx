@@ -1,11 +1,10 @@
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
-import { CloudArrowUpIcon } from '@heroicons/react/24/outline';
-import { useSelector } from '../store';
+import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
-import { Tooltip } from './Tooltip';
-import UnsavedChangesToast from '@/module/book/components/UnchangedModificationsToast'; // UnsavedChangesComponent,
+
+import SavePopOver from './SavePopOver';
 
 interface HeaderProps {
   className?: string;
@@ -37,8 +36,6 @@ const LoadingIcon = (
 );
 
 const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
-  // const dispatch = useDispatch();
-  // const { book } = useSelector(selectBook);
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
 
@@ -61,42 +58,8 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
               williamravel.netlify.app
             </a>
           </div>
-          {!areLocalUpdatesSaved && (
-            <Tooltip
-              wrapperClassName="p-1 bg-transparent h-20"
-              content={
-                <div
-                  className="bg-white p-2"
-                  style={{
-                    position: 'static',
-                    width: '400px',
-                    bottom: '-50px',
-                  }}
-                >
-                  <UnsavedChangesToast isModified={true} onSave={() => {}} />
-                </div>
-                // <div className="bg-white p-2">
-                //   <UnsavedChangesComponent
-                //     onDontShowAgain={() => {}}
-                //     isModified={true}
-                //     onSave={() => {
-                //       console.log('onsave click !');
-                //       dispatch(
-                //         bookActions.saveBookAction({
-                //           bookId: book.id,
-                //           book: book,
-                //         })
-                //       );
-                //     }}
-                //   />
-                // </div>
-              }
-            >
-              <CloudArrowUpIcon className="w-6 h-6 stroke-secondary-500 " />
-            </Tooltip>
-          )}
+          <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
-
           {appearance === 'dark' ? (
             <Logo className="w-24 xl:w-36" />
           ) : (
