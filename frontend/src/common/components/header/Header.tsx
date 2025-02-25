@@ -49,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
         <div className="relative h-16 px-6 flex items-center justify-end gap-6">
           <div className="flex-1">{children}</div>
 
-          <div className="text-xs text-primary-400 dark:text-primary-500">
+          <div className="text-xs text-primary-500 dark:text-primary-500">
             <a
               href="https://williamravel.netlify.app"
               className="underline"
