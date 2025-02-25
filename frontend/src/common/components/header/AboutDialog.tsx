@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef, useState } from 'react';
-import { formatDistanceToNow, format } from 'date-fns'; // Pour formater la date
-import { fr } from 'date-fns/locale'; // Locale française pour "il y a X jours"
+import { formatDistanceToNow, format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 
 interface AboutDialogProps {
   version: string;
@@ -20,10 +20,8 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
 
   return (
     <>
-      {/* Bouton "About" */}
       <div
-        className={`flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold
-          hover:bg-secondary-600 hover:text-white cursor-pointer transition-all`}
+        className="flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold hover:bg-secondary-600 hover:text-white cursor-pointer transition-all"
         onClick={() => setIsOpen(true)}
       >
         <svg
@@ -43,14 +41,12 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
         About
       </div>
 
-      {/* Boîte de dialogue */}
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
           className="relative z-50"
           onClose={() => setIsOpen(false)}
-          initialFocus={closeButtonRef} // Ajoutez une ref au bouton Fermer
-          aria-labelledby="about-dialog-title"
+          initialFocus={closeButtonRef}
         >
           <Transition.Child
             as={Fragment}
@@ -76,35 +72,51 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title
-                    as="h3"
-                    className="text-lg font-semibold text-gray-900 dark:text-gray-100"
-                  >
+                  <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Coloring Book
                   </Dialog.Title>
-                  <div className="mt-2 space-y-2 text-sm text-gray-700 dark:text-gray-300">
-                    <p>
-                      <span className="font-medium">Alpha: </span> v{version}
-                    </p>
-                    <p>
-                      <span className="font-medium">Version: </span> {version}
-                    </p>
-                    <p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                    <li>
+                      <span className="font-medium">Version: </span> v{version}
+                    </li>
+                    <li>
                       <span className="font-medium">Dernier build: </span>{' '}
                       {lastBuildText}
-                    </p>
-                    <p>
-                      <span className="font-medium">Auteur: </span>{' '}
+                    </li>
+                    <li>
+                      <span className="font-medium">Auteur: </span>
                       <a
                         href="https://williamravel.netlify.app/"
                         target="_blank"
                         className="text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        William Ravel - williamravel.netlify.app
+                        William Ravel
                       </a>
-                    </p>
-                    <p>
-                      <span className="font-medium">Signaler un problème: </span>{' '}
+                    </li>
+                    <li>
+                      <span className="font-medium">Github: </span>
+                      <a
+                        href="https://github.com/willahh"
+                        target="_blank"
+                        className="text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        github.com/willahh
+                      </a>
+                    </li>
+                    <li>
+                      <span className="font-medium">LinkedIn: </span>
+                      <a
+                        href="https://www.linkedin.com/in/williamravel/"
+                        target="_blank"
+                        className="text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        linkedin.com/in/williamravel
+                      </a>
+                    </li>
+                    <li>
+                      <span className="font-medium">
+                        Signaler un problème:{' '}
+                      </span>
                       <a
                         href="https://github.com/willahh/coloringbook/issues"
                         target="_blank"
@@ -112,25 +124,35 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                       >
                         GitHub Issues
                       </a>
-                    </p>
-                  </div>
+                    </li>
+                  </ul>
 
                   <div className="mt-4">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       Mentions légales
                     </h4>
                     <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                      Coloring Book est une œuvre protégée par le droit d’auteur
-                      © 2025 William Ravel. Tous droits réservés. Le code
-                      source, disponible sur GitHub, est fourni à des fins
-                      éducatives et personnelles uniquement. Toute reproduction,
-                      modification, distribution ou utilisation commerciale sans
-                      autorisation explicite de l’auteur est strictement
-                      interdite et passible de poursuites judiciaires. Les
-                      voleurs de code s’exposent à des conséquences graves, y
-                      compris des actions en justice pour violation de propriété
-                      intellectuelle. Soyez respectueux : créez votre propre
-                      art, pas celui des autres.
+                      Mentions légales Coloring Book © 2025 William Ravel. Tous
+                      droits réservés. Cette application et son code source sont
+                      protégés par le droit d’auteur. Toute reproduction,
+                      distribution ou modification non autorisée est interdite.
+                      Le code source disponible sur GitHub est fourni sous
+                      licence spécifique et ne peut être utilisé à des fins
+                      commerciales sans accord explicite de l’auteur.
+                    </p>
+                  </div>
+
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Vous avez un projet web ou une application interactive en
+                      tête ?
+                    </h4>
+                    <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                      Je suis développeur freelance spécialisé en développement
+                      web et applications interactives. Discutons-en ! Pour
+                      toute utilisation professionnelle de cette application ou
+                      demande de partenariat, contactez-moi via mon portfolio ou
+                      mon LinkedIn.
                     </p>
                   </div>
 
