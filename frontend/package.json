@@ -9,7 +9,7 @@
     "debug:deploy": "echo '=> files and dirs:' && find . \\( -path ./node_modules -o -path ./dist \\) -prune -o -type d -o -type f -print",
     "version:major": "npm run update-build-date && npm version major -m \"Release v%v\" -git-tag-version",
     "version:minor": "npm run update-build-date && npm version minor -m \"Release v%v\" -git-tag-version",
-    "version:patch": "npm run update-build-date && npm version patch -m \"Release v%v\" -git-tag-version",
+    "version:patch": "npm run update-build-date && standard-version --release-as patch",
     "update-build-date": "node scripts/updateBuildDate.js",
     "build": "npm run update-build-date && npm run build:css && tsc -b && vite build",
     "build:test": "vite build",
