@@ -3,7 +3,7 @@ import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
-
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import SavePopOver from './SavePopOver';
 
 import packageJson from '@/../package.json';
@@ -52,21 +52,29 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
         <div className="relative h-16 px-6 flex items-center justify-end gap-6">
           <div className="flex-1">{children}</div>
 
-          <div>
-            <span className="font-mono text-xs bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 border border-primary-300 dark:border-primary-700 px-1 py-0.5 rounded-sm">
+          <div
+            className={`flex items-center gap-4 font-mono text-xs px-1 py-0.5 rounded-sm 
+              bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 
+              border border-primary-300 dark:border-primary-700`}
+          >
+            <a
+              href="https://williamravel.netlify.app"
+              className="underline"
+              target="_blank"
+            >
+              williamravel.netlify.app
+            </a>
+            <span>
               alpha - <span>{appVersion}</span>
             </span>
-          </div>
-          <div>
-            <span className="font-mono text-xs bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 border border-primary-300 dark:border-primary-700 px-1 py-0.5 rounded-sm">
-              <a
-                href="https://williamravel.netlify.app"
-                className="underline"
-                target="_blank"
-              >
-                williamravel.netlify.app
-              </a>
-            </span>
+            <div className={`flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold
+            hover:bg-secondary-600 hover:text-white
+            cursor-pointer transition-all`
+
+            }>
+              <InformationCircleIcon className="w-4 h-4" />
+              About
+            </div>
           </div>
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
