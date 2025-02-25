@@ -13,19 +13,18 @@ const usePageFocus = (
    * [Focus page when pageId change]
    */
   useEffect(() => {
+    console.log('#c2 usePageFocus.ts', canvas)
     if (!canvas) return;
 
     if (disableFocusAnimation) {
       return;
     }
-    const cancelAnimation = canvasService.pageFocus(
-      canvas,
-      pages,
-      pageId,
-    );
+
+    console.log('#c2 useEffecrt usePageFocus call pageFocus')
+    const cancelAnimation = canvasService.pageFocus(canvas, pages, pageId);
 
     return cancelAnimation;
-  }, [canvas, pageId]);
+  }, [canvas, pageId]); // Canvas et pageId doivent être présent
 };
 
 export default usePageFocus;

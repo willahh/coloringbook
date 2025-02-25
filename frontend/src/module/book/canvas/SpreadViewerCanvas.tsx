@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 import { Page } from '@apptypes/book';
@@ -7,6 +7,8 @@ import { BookPageParams } from '@/common/interfaces';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
 import { PagesNavigation } from '../components/PagesNavigation';
+import { PageService } from '@/services/page.service';
+import canvasService from '@/services/canvas.service';
 
 import useCanvasContext from '../useCanvasContext';
 import { useCanvasInitialization } from './hooks/useCanvasInitialization';
@@ -15,8 +17,7 @@ import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
 import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
 import usePageAutoFocus from './hooks/usePageAutofocus';
-import { PageService } from '@/services/page.service';
-import canvasService from '@/services/canvas.service';
+import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -32,10 +33,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
-  // const pageId = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const { canvas, viewportTransform } = useCanvasContext();
-  const navigate = useNavigate();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
@@ -45,23 +44,16 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Process –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  const pageId = pageIdParams;
+
+  // Effects –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  useCanvasInitialization(canvasRef);
+  useNavigateToFirstPage(canvas, pages);
   const canvasSize = useDimensions(
     containerRef,
     sidePanelWidth,
     pagesPanelWidth
   );
-
-  let pageId = pageIdParams;
-  const page = PageService.getPageById(pages, pageId);
-  if (!page) {
-    pageId = pages[0].pageId;
-    if (canvas) {
-      navigate(`/book/${pageParams.bookId}/pages/${pageId}`);
-    }
-  }
-
-  // Hooks –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  useCanvasInitialization(canvasRef);
   useCanvasResize(canvas, canvasSize);
   useEventHandlers(canvas);
   useCanvasRedraw(
@@ -73,14 +65,17 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     canvasSize
   );
 
-  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
-
   const { disableFocusAnimation } = usePageAutoFocus(
     canvas,
     pageId,
     viewportTransform
   );
   usePageFocus(canvas, pages, pageId, disableFocusAnimation);
+
+  // FIXME: Finaliser ce useEffect, il faut charger toute les vignettes une seule fois
+  // lorsqu'elles n'existent pas et les stoquer quelque part. Peut être dans
+  // le navigateur avec storage.
+  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
     <div ref={containerRef} className="relative flex-1">
