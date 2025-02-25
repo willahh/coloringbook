@@ -14,6 +14,7 @@ import { UpdateGraphicTable1738520517876 } from './migrations/1738520517876-upda
 import { UpdateBookEntity1738581096732 } from './migrations/1738581096732-update-book-entity';
 import { Newsletter } from './newsletter/newsletter.entity';
 import { AddNewsletterEntity1740520521395 } from './migrations/1740520521395-add-newsletter-entity';
+import { UpdateNewsletterEntity1740521986608 } from './migrations/1740521986608-update-newsletter-entity';
 
 // Load environment variables based on the environment
 let envFile =
@@ -24,7 +25,7 @@ let envFile =
       : '.env';
 
 envFile += '';
-// envFile = 'production.env'; // Uncomment me to run production migration scripts
+envFile = 'production.env'; // Uncomment me to run production migration scripts
 
 dotenv.config({ path: 'env/' + envFile });
 
@@ -76,6 +77,7 @@ export const options: DataSourceOptions = {
     UpdateGraphicTable1738520517876,
     UpdateBookEntity1738581096732,
     AddNewsletterEntity1740520521395,
+    UpdateNewsletterEntity1740521986608,
   ],
   synchronize: false,
   logging: true,
