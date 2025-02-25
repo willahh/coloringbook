@@ -2,6 +2,8 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Fragment, useRef, useState } from 'react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
+import { FaXTwitter } from 'react-icons/fa6'; // Pour l'icône de X (Twitter)
 
 interface AboutDialogProps {
   version: string;
@@ -84,36 +86,6 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                       {lastBuildText}
                     </li>
                     <li>
-                      <span className="font-medium">Auteur: </span>
-                      <a
-                        href="https://williamravel.netlify.app/"
-                        target="_blank"
-                        className="text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        William Ravel
-                      </a>
-                    </li>
-                    <li>
-                      <span className="font-medium">Github: </span>
-                      <a
-                        href="https://github.com/willahh"
-                        target="_blank"
-                        className="text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        github.com/willahh
-                      </a>
-                    </li>
-                    <li>
-                      <span className="font-medium">LinkedIn: </span>
-                      <a
-                        href="https://www.linkedin.com/in/williamravel/"
-                        target="_blank"
-                        className="text-blue-600 dark:text-blue-400 hover:underline"
-                      >
-                        linkedin.com/in/williamravel
-                      </a>
-                    </li>
-                    <li>
                       <span className="font-medium">
                         Signaler un problème:{' '}
                       </span>
@@ -123,6 +95,47 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                         className="text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         GitHub Issues
+                      </a>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span>Auteur: </span>
+                      <a
+                        href="https://williamravel.netlify.app/"
+                        target="_blank"
+                        className="text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        William Ravel
+                      </a>
+                      <a
+                        href="https://github.com/willahh"
+                        target="_blank"
+                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                        title="GitHub"
+                      >
+                        <FaGithub size={18} />
+                      </a>
+                      <a
+                        href="https://www.linkedin.com/in/wravel/"
+                        target="_blank"
+                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                        title="LinkedIn"
+                      >
+                        <FaLinkedin size={18} />
+                      </a>
+                      <a
+                        href="mailto:wravel@gmail.com"
+                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                        title="Email"
+                      >
+                        <FaEnvelope size={18} />
+                      </a>
+                      <a
+                        href="https://x.com/willahhravel"
+                        target="_blank"
+                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                        title="X (Twitter)"
+                      >
+                        <FaXTwitter size={18} />
                       </a>
                     </li>
                   </ul>
