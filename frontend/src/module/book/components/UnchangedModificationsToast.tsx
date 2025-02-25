@@ -11,6 +11,13 @@ interface UnsavedChangesToastProps {
   onDontShowAgain?: () => void;
 }
 
+const isMac = () => {
+  return /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+};
+const getCmdChar = () => {
+  return isMac() ? '⌘' : 'Ctrl';
+};
+
 export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
   areLocalUpdatesSaved,
   // onDontShowAgain,
@@ -18,7 +25,7 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
 }) => {
   // areLocalUpdatesSaved = !areLocalUpdatesSaved;
   return (
-    <div className="shadow-md z-30 rounded-2xl m-2 max-w-md transition-all text-lg border-2 border-secondary-500 overflow-hidden">
+    <div className="shadow-md z-20 rounded-2xl m-2 max-w-md transition-all text-lg border-2 border-secondary-500 overflow-hidden">
       <div className="flex items-center gap-4 bg-secondary-100 dark:bg-secondary-500 text-secondary-500 dark:text-white p-4">
         {areLocalUpdatesSaved ? (
           <>
@@ -30,18 +37,20 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
         ) : (
           <>
             <CloudNotSavedIcon className="w-12 h-12 text-md font-semibold fill-secondary-500 dark:fill-white" />
-            <span>
-              Modifications non synchronisées
-            </span>
+            <span>Modifications non synchronisées</span>
           </>
         )}
       </div>
       <div className="bg-white dark:bg-gray-900 text-sm p-4 space-y-4 text-gray-700 dark:text-gray-300">
         {areLocalUpdatesSaved ? (
           <>
-          <p className=''><strong>Vos modifications ont été enregistrées avec succès dans le cloud.</strong></p>
             <p className="">
-              
+              <strong>
+                Vos modifications ont été enregistrées avec succès dans le
+                cloud.
+              </strong>
+            </p>
+            <p className="">
               Tout votre travail est maintenant sécurisé et accessible depuis
               n’importe quel appareil. Vous pouvez continuer à travailler en
               toute tranquillité !
@@ -56,12 +65,13 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
               gérer cela plus tard.
             </p>
             <p className="">
-              Vous pouvez aussi utiliser le raccourcis clavier CTRL+S.
+              Vous pouvez aussi sauvegarder avec le raccourcis clavier{' '}
+              {getCmdChar()}+S.
             </p>
             <div className="flex gap-4">
               <ButtonLink className="flex items-center gap-1" onClick={onSave}>
                 <span>Synchroniser maintenant</span>
-                <KeyboardShortcut keys={['Ctrl', 'S']} />
+                <KeyboardShortcut keys={[getCmdChar(), 'S']} />
               </ButtonLink>
             </div>
           </>

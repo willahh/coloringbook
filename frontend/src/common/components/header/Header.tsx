@@ -6,6 +6,9 @@ import { selectBook } from '@/module/book/Book.slice';
 
 import SavePopOver from './SavePopOver';
 
+import packageJson from '@/../package.json';
+const appVersion = packageJson.version;
+
 interface HeaderProps {
   className?: string;
   children?: React.ReactNode;
@@ -49,14 +52,21 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
         <div className="relative h-16 px-6 flex items-center justify-end gap-6">
           <div className="flex-1">{children}</div>
 
-          <div className="text-xs text-primary-500 dark:text-primary-500">
-            <a
-              href="https://williamravel.netlify.app"
-              className="underline"
-              target="_blank"
-            >
-              williamravel.netlify.app
-            </a>
+          <div>
+            <span className="font-mono text-xs bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 border border-primary-300 dark:border-primary-700 px-1 py-0.5 rounded-sm">
+              alpha - <span>{appVersion}</span>
+            </span>
+          </div>
+          <div>
+            <span className="font-mono text-xs bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 border border-primary-300 dark:border-primary-700 px-1 py-0.5 rounded-sm">
+              <a
+                href="https://williamravel.netlify.app"
+                className="underline"
+                target="_blank"
+              >
+                williamravel.netlify.app
+              </a>
+            </span>
           </div>
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
