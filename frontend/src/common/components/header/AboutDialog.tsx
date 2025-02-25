@@ -9,16 +9,19 @@ interface AboutDialogProps {
   version: string;
   buildDate: string;
 }
+export const getLastBuildText = (buildDate: Date) => {
+  const buildDateObj = new Date(buildDate);
+  return formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr }) ===
+    'il y a moins d’une minute'
+    ? `aujourd'hui à ${format(buildDateObj, 'HH:mm')}`
+    : formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr });
+};
 
 const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const buildDateObj = new Date(buildDate);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const lastBuildText =
-    formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr }) ===
-    'il y a moins d’une minute'
-      ? `aujourd'hui à ${format(buildDateObj, 'HH:mm')}`
-      : formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr });
+  const lastBuildText = getLastBuildText(buildDateObj);
 
   return (
     <>

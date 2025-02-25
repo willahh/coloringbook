@@ -4,7 +4,7 @@ import { useTheme } from '@/common/contexts/ThemeContext';
 import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
 import SavePopOver from './SavePopOver';
-import AboutDialog from './AboutDialog'; // Importez le nouveau composant
+import AboutDialog, { getLastBuildText } from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
 
 interface HeaderProps {
@@ -40,11 +40,14 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
-  const buildDate = new Date(packageJson.buildDate).toLocaleDateString('fr-FR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
+  const buildDate = new Date(packageJson.buildDate).toLocaleDateString(
+    'fr-FR',
+    {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }
+  );
 
   return (
     <div className="relative h-0">
@@ -53,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
          bg-primary-50 dark:bg-primary-950 border-t border-primary-100 dark:border-primary-900 
         `}
       >
-        <div className="relative h-16 px-6 flex items-center justify-end gap-6">
+        <div className="relative h-16 px-6 flex items-center justify-end gap-4">
           <div className="flex-1">{children}</div>
 
           <div
@@ -71,9 +74,14 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
             <span>⸱</span>
             <span title="Last build">
               <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
-              <span>v{appVersion}</span> ({buildDate})
+              <span>v{appVersion}</span> <span>⸱</span> last build : {' '}
+              {getLastBuildText(new Date(packageJson.buildDate))}
             </span>
-            <AboutDialog version={appVersion} buildDate={packageJson.buildDate} />
+
+            <AboutDialog
+              version={appVersion}
+              buildDate={packageJson.buildDate}
+            />
           </div>
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
