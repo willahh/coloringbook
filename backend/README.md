@@ -103,12 +103,12 @@ https://typeorm.io/migrations
 SQL migrations is managed with typeorm.  
 
 # Add a new migration script : 
+#1. `data-source.ts`: Add your new entity file in DataSourceOptions entities: [..., NewEntity],
 
+# 2. Generate the migration file
+- `npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/migration-name-update-book-entity`
 
-# 1. Generate the migration file
-`npx typeorm migration:generate -d ./public/data-source.js ./src/migrations/migration-name-update-book-entity`
-
-# 2. Add the migration file to the datasource `data-source.ts`.
+# 3. Add the migration file to the datasource `data-source.ts`.
 # If a new entity is added, add it to the data-source : entities: [User, Book, GraphicAsset, MyNewEntity].
 ```sh
 export const options: DataSourceOptions = {
@@ -117,8 +117,8 @@ export const options: DataSourceOptions = {
   ...
 };
 ```
-3. Compile with `npm run start` to generate .js files
-4. Run the migration script to update the database :
+4. Compile with `npm run start` to generate .js files
+5. Run the migration script to update the database :
 `npx typeorm migration:run -d ./public/data-source.js`
 
 

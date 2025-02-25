@@ -12,6 +12,8 @@ import { UpdateGraphicTable1738268956723 } from './migrations/1738268956723-upda
 import { UpdateGraphicTable1738520339796 } from './migrations/1738520339796-update-graphic-table';
 import { UpdateGraphicTable1738520517876 } from './migrations/1738520517876-update-graphic-table';
 import { UpdateBookEntity1738581096732 } from './migrations/1738581096732-update-book-entity';
+import { Newsletter } from './newsletter/newsletter.entity';
+import { AddNewsletterEntity1740520521395 } from './migrations/1740520521395-add-newsletter-entity';
 
 // Load environment variables based on the environment
 let envFile =
@@ -62,7 +64,7 @@ export const options: DataSourceOptions = {
   username: user,
   password: password,
   database: database,
-  entities: [User, Book, GraphicAsset],
+  entities: [User, Book, GraphicAsset, Newsletter],
   // entities: ['src/**/entities/*.entity.ts'],
   migrations: [
     Init1736932735124,
@@ -73,6 +75,7 @@ export const options: DataSourceOptions = {
     UpdateGraphicTable1738520339796,
     UpdateGraphicTable1738520517876,
     UpdateBookEntity1738581096732,
+    AddNewsletterEntity1740520521395,
   ],
   synchronize: false,
   logging: true,
