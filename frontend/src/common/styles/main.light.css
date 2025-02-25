@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @config "./../../../tailwind.config.js";
 @import './themes/theme.bluegray.css';
-@import './fonts.css';
 @import './main.base.css';
 

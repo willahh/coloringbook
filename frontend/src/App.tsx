@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 
-import '@radix-ui/themes/styles.css';
+// import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import * as Tooltip from '@radix-ui/react-tooltip';
 
@@ -18,7 +18,7 @@ import(`./common/styles/main.${defaultAppearance}.css`);
 function RenderApp() {
   const { appearance } = useTheme();
   return (
-    // <StrictMode>
+    <StrictMode>
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
@@ -29,7 +29,7 @@ function RenderApp() {
           </BrowserRouter>
         </Theme>
       </Provider>
-    // </StrictMode>
+   </StrictMode>
   );
 }
 

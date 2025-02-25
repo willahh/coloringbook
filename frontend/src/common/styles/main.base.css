@@ -5,6 +5,15 @@
   --container-4xs: 12rem;
 }
 
+:root {
+  font-size: 0.9rem; /* Redéfinit 1rem = 12px */
+}
+body {
+  font-family: 'Inter', serif;
+}
+
+
+
 
 /* —————————————————————————————————————————————————————————————————————————————
   radix-ui configuration

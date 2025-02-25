@@ -52,10 +52,10 @@ export default {
         lg: '1rem',
         xl: '1.25rem',
       },
-      fontFamily: {
-        mono: ['roboto-mono-regular', 'Courier New', 'Courier', 'monospace'],
-        sans: ['roboto', 'Arial', 'Sans-serif'],
-      },
+      // fontFamily: {
+      //   mono: ['roboto-mono-regular', 'Courier New', 'Courier', 'monospace'],
+      //   sans: ['roboto', 'Arial', 'Sans-serif'],
+      // },
       fontSize: {
         xs: ['0.65rem', { lineHeight: '1rem' }],
         sm: ['0.75rem', { lineHeight: '1.25rem' }],

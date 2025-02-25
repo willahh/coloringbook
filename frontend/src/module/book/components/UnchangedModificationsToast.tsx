@@ -18,29 +18,29 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
 }) => {
   // areLocalUpdatesSaved = !areLocalUpdatesSaved;
   return (
-    <div className="shadow-2xl rounded-2xl m-2 max-w-md transition-all">
-      <div className="flex items-center gap-4 bg-secondary-100 dark:bg-primary-950 text-secondary-500 p-4">
+    <div className="shadow-md z-30 rounded-2xl m-2 max-w-md transition-all text-lg border-2 border-secondary-500 overflow-hidden">
+      <div className="flex items-center gap-4 bg-secondary-100 dark:bg-secondary-500 text-secondary-500 dark:text-white p-4">
         {areLocalUpdatesSaved ? (
           <>
-            <CloudSavedIcon className="w-12 h-12 text-md font-semibold fill-secondary-500" />
+            <CloudSavedIcon className="w-12 h-12 text-md font-semibold fill-secondary-500 dark:fill-white" />
             <div>
               Les modifications ont bien étés synchronisées dans le Cloud
             </div>
           </>
         ) : (
           <>
-            <CloudNotSavedIcon className="w-12 h-12 text-md font-semibold fill-secondary-500" />
-            <span className="font-semibold">
+            <CloudNotSavedIcon className="w-12 h-12 text-md font-semibold fill-secondary-500 dark:fill-white" />
+            <span>
               Modifications non synchronisées
             </span>
           </>
         )}
       </div>
-      <div className="bg-white dark:bg-primary-950 text-sm p-4 space-y-4">
+      <div className="bg-white dark:bg-gray-900 text-sm p-4 space-y-4 text-gray-700 dark:text-gray-300">
         {areLocalUpdatesSaved ? (
           <>
-          <p className='text-gray-700 dark:text-gray-600'><strong>Vos modifications ont été enregistrées avec succès dans le cloud.</strong></p>
-            <p className="text-gray-700 dark:text-gray-600">
+          <p className=''><strong>Vos modifications ont été enregistrées avec succès dans le cloud.</strong></p>
+            <p className="">
               
               Tout votre travail est maintenant sécurisé et accessible depuis
               n’importe quel appareil. Vous pouvez continuer à travailler en
@@ -49,13 +49,13 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
           </>
         ) : (
           <>
-            <p className="text-gray-700 dark:text-gray-600">
+            <p className="">
               Vos dernières modifications n’ont pas encore été enregistrées dans
               le cloud. Pour éviter de perdre votre travail, synchronisez-les
               maintenant ou choisissez de masquer cette alerte si vous préférez
               gérer cela plus tard.
             </p>
-            <p className="text-gray-700 dark:text-gray-600">
+            <p className="">
               Vous pouvez aussi utiliser le raccourcis clavier CTRL+S.
             </p>
             <div className="flex gap-4">
