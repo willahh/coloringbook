@@ -1,6 +1,5 @@
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { Popover, PopoverPanel } from '@headlessui/react';
 import Switch from '@components/Switch';
 import { Tooltip } from '@components/Tooltip';
 

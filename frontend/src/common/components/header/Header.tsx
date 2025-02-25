@@ -6,8 +6,8 @@ import { selectBook } from '@/module/book/Book.slice';
 import SavePopOver from './SavePopOver';
 import AboutDialog, { getLastBuildText } from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
-import { useEffect, useState } from 'react';
-import useLocalStorage from '@/common/hooks/useLocalStorage';
+// import { useEffect, useState } from 'react';
+// import useLocalStorage from '@/common/hooks/useLocalStorage';
 import { useAutoOpenDialog } from './useAutoOpenDialog';
 
 interface HeaderProps {
@@ -53,7 +53,7 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   // );
 
   // const [isOpen, setIsOpen] = useState(false);
-  const {isOpen, setIsOpen} = useAutoOpenDialog();
+  const { isOpen, setIsOpen } = useAutoOpenDialog();
 
   // const DELAY = 5000; // 5 secondes avant affichage auto
   // // const SHOW_INTERVAL = 24 * 60 * 60 * 1000; // 24 heures
@@ -99,14 +99,7 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
               bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 
               border border-primary-300 dark:border-primary-700`}
           >
-            <a
-              href="https://williamravel.netlify.app"
-              className="underline"
-              target="_blank"
-            >
-              williamravel.netlify.app
-            </a>
-            <span>⸱</span>
+            
             <span title="Last build">
               <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
               <span>v{appVersion}</span> <span>⸱</span> last build :{' '}

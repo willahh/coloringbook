@@ -6,6 +6,7 @@ import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 
 interface UnsavedChangesToastProps {
+  isModified: boolean;
   areLocalUpdatesSaved: boolean;
   onSave: () => void;
   onDontShowAgain?: () => void;
@@ -103,6 +104,7 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
       autoClose={false}
       message={
         <UnsavedChangesComponent
+          areLocalUpdatesSaved={!isModified}
           isModified={isModified}
           onDontShowAgain={onDontShowAgain}
           onSave={onSave}

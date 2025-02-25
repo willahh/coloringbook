@@ -1,10 +1,10 @@
 /* ———————————————————————————————————————————————————————————————————————————
   * Tailwind CSS utilities
   * ——————————————————————————————————————————————————————————————————————————*/
+@import 'tailwindcss';
 @theme {
   --container-4xs: 12rem;
 }
-
 
 /* —————————————————————————————————————————————————————————————————————————————
   radix-ui configuration
@@ -63,8 +63,4 @@ div[data-is-root-theme].light {
 }
 body {
   font-family: 'Inter', serif;
-}
-
-.btn {
-  @apply inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 transition-all;
 }

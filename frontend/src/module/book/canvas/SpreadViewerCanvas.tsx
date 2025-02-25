@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import React, { useRef, useState } from 'react';
+import { useParams } from 'react-router';
 
 import { Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
@@ -7,8 +7,6 @@ import { BookPageParams } from '@/common/interfaces';
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
 import { PagesNavigation } from '../components/PagesNavigation';
-import { PageService } from '@/services/page.service';
-import canvasService from '@/services/canvas.service';
 
 import useCanvasContext from '../useCanvasContext';
 import { useCanvasInitialization } from './hooks/useCanvasInitialization';

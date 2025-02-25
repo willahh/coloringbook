@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/common/store';
 import Layout from '../layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
-import UnsavedChangesToast from './components/UnchangedModificationsToast';
 import SidePanel from './sidePanel/SidePanel';
 import BookHeader from './components/BookHeader';
 import * as bookActions from './Book.actions';
@@ -21,7 +20,7 @@ const BookPage: React.FC = () => {
   pageId = Number(pageId) || 1;
 
   const dispatch = useDispatch();
-  const { book, error, areLocalUpdatesSaved } = useSelector(selectBook);
+  const { book, error } = useSelector(selectBook);
 
   // Manage panels size
   const sidePanelRef = useRef<HTMLDivElement>(null);

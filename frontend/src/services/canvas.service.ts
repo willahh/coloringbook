@@ -328,7 +328,7 @@ class CanvasService {
     canvas: fabric.Canvas,
     pages: Page[],
     pageId: number,
-    previousPageId?: number
+    // previousPageId?: number
   ): (() => void) | void {
     
     let focusPageId = pageId;

@@ -27,9 +27,9 @@ const usePageAutoFocus = (
   );
 
   // Fonction pour naviguer avec animation (par défaut)
-  const navigateWithAnimation = (newPageId: number) => {
-    navigate(`/book/${pageParams.bookId}/pages/${newPageId}`);
-  };
+  // const navigateWithAnimation = (newPageId: number) => {
+  //   navigate(`/book/${pageParams.bookId}/pages/${newPageId}`);
+  // };
 
   // Fonction pour naviguer sans animation
   const navigateWithoutAnimation = (newPageId: number) => {
