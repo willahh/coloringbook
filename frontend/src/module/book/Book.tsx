@@ -4,12 +4,11 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from '@/common/store';
 import Layout from '../layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
-import UnsavedChangesToast from './components/UnchangedModificationsToast';
 import SidePanel from './sidePanel/SidePanel';
 import BookHeader from './components/BookHeader';
 import * as bookActions from './Book.actions';
 import { selectBook } from './Book.slice';
-import { PagesPanel } from './components/SidePanel/PagesPanel';
+import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
 import BookToolbar from './bookToolbar/BookToolbar';
 
 const BookPage: React.FC = () => {
@@ -21,7 +20,7 @@ const BookPage: React.FC = () => {
   pageId = Number(pageId) || 1;
 
   const dispatch = useDispatch();
-  const { book, error, areLocalUpdatesSaved } = useSelector(selectBook);
+  const { book, error } = useSelector(selectBook);
 
   // Manage panels size
   const sidePanelRef = useRef<HTMLDivElement>(null);
@@ -69,29 +68,44 @@ const BookPage: React.FC = () => {
         <BookToolbar />
         <PagesPanel
           ref={pagesPanelRef}
-          className="w-16 xl:w-18 border-r border-primary-200 dark:border-primary-800"
+          className="w-16 md:w-24 xl:w-30 border-r border-primary-200 dark:border-primary-800"
           pages={book.pages}
           addPageButtonClick={() => {}}
         ></PagesPanel>
-        <SidePanel ref={sidePanelRef} setSidePanelWidth={setSidePanelWidth} />
-        <main className="flex flex-1 bg-primary-100 dark:bg-primary-900 flex-col overflow-hidden">
-          {book.pages.length > 0 && (
-            <SpreadViewerCanvas
-              pageId={pageId}
-              pages={book.pages}
-              sidePanelWidth={sidePanelWidth}
-              pagesPanelWidth={pagesPanelWidth}
-            />
-          )}
-          {/* <SpreadToolbar /> */}
+        <SidePanel
+          ref={sidePanelRef}
+          setSidePanelWidth={setSidePanelWidth}
+          className="relative z-20"
+        />
+        <main className={`relative flex-1`}>
+          <div
+            className="absolute top-0 left-0 w-full h-full z-10
+            flex flex-1 flex-col overflow-hidden"
+          >
+            {book.pages.length > 0 && (
+              <SpreadViewerCanvas
+                pages={book.pages}
+                sidePanelWidth={sidePanelWidth}
+                pagesPanelWidth={pagesPanelWidth}
+              />
+            )}
+            {/* <SpreadToolbar /> */}
+          </div>
+          <div
+            data-name="bg"
+
+            className="absolute top-0 left-0 w-full h-full pointer-events-none
+            bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
+            dark:brightness-125"
+          ></div>
         </main>
       </Layout>
-      <UnsavedChangesToast
+      {/* <UnsavedChangesToast
         isModified={!areLocalUpdatesSaved}
         onSave={() => {
           dispatch(bookActions.saveBookAction({ bookId: bookId, book: book }));
         }}
-      />
+      /> */}
     </>
   );
 };

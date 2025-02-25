@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
               }`}
             >
               <div
-                className="grid grid-cols-1 
+                className="grid grid-cols-1 place-items-end
               md:grid-cols-8 md:grid-rows-2
               xl:grid-cols-6 xl:grid-rows-3 gap-4 w-full"
               >
@@ -140,7 +140,8 @@ const HomePage: React.FC = () => {
                       loading={loading}
                       minItems={20}
                       highlightBookId={highlightBookId}
-                      itemClassName={`col-span-1 bg-cover bg-center w-full aspect-[1/1.414] px-2
+                      itemClassName={`col-span-1 bg-cover bg-center w-full px-2
+                        
       ${gridDebug ? 'border border-primary-500' : ''}`}
                     />
 

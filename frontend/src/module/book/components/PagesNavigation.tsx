@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline';
 import { Tooltip } from '@components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
@@ -26,12 +26,12 @@ export const PagesNavigation: React.FC = () => {
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       switch (event.key) {
-        case 'ArrowLeft':
+        case 'ArrowUp': case 'ArrowLeft' :
           if (!isFirstPage) {
             navigate(`/book/${bookId}/pages/${previousPageId}`);
           }
           break;
-        case 'ArrowRight':
+        case 'ArrowDown':  case 'ArrowRight' :
           if (!isLastPage) {
             navigate(`/book/${bookId}/pages/${nextPageId}`);
           }
@@ -47,13 +47,15 @@ export const PagesNavigation: React.FC = () => {
   }, [bookId, isFirstPage, isLastPage, previousPageId]);
 
   return (
-    <div data-id="pages-navigation">
-      {!isFirstPage && (
-        <div className="absolute left-20 flex items-center justify-between h-full p-8 z-10 pointer-events-none">
-          <Tooltip content="Page précédente">
-            <Link
-              to={`/book/${bookId}/pages/${previousPageId}`}
-              className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
+    <div
+      data-id="pages-navigation"
+      className="flex flex-col items-center justify-center absolute right-8 gap-4 h-full z-10 pointer-events-none"
+    >
+      <Tooltip content="Page précédente">
+        <Link
+          to={`/book/${bookId}/pages/${previousPageId}`}
+          className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
+              ${isFirstPage ? ' opacity-0' : ''}
           text-primary-800 dark:text-primary-200
            transition-all duration-400
          hover:ring-1 
@@ -61,18 +63,16 @@ export const PagesNavigation: React.FC = () => {
          dark:hover:bg-primary-950  dark:hover:ring-primary-800 
          active:ring-primary-950 dark:active:ring-primary-50
           `}
-            >
-              <ArrowLeftIcon />
-            </Link>
-          </Tooltip>
-        </div>
-      )}
-      {!isLastPage && (
-        <div className="absolute right-0 flex items-center justify-between h-full p-8 z-10 pointer-events-none">
-          <Tooltip content="Page suivante">
-            <Link
-              to={`/book/${bookId}/pages/${nextPageId}`}
-              className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
+        >
+          <ArrowUpIcon />
+        </Link>
+      </Tooltip>
+
+      <Tooltip content="Page suivante">
+        <Link
+          to={`/book/${bookId}/pages/${nextPageId}`}
+          className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
+              ${isLastPage ? ' opacity-0' : ''}
               text-primary-800 dark:text-primary-200
                transition-all duration-400
              hover:ring-1 
@@ -80,12 +80,10 @@ export const PagesNavigation: React.FC = () => {
              dark:hover:bg-primary-950  dark:hover:ring-primary-800 
              active:ring-primary-950 dark:active:ring-primary-50
               `}
-            >
-              <ArrowRightIcon />
-            </Link>
-          </Tooltip>
-        </div>
-      )}
+        >
+          <ArrowDownIcon />
+        </Link>
+      </Tooltip>
     </div>
   );
 };

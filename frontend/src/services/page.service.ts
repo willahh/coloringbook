@@ -35,7 +35,7 @@ export class PageService {
     return { ...p_oBookData };
   }
 
-  public static getPage(
+  public static getPageById(
     p_aoPages: Page[],
     p_nPageId: number
   ): Page | undefined {

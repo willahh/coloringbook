@@ -5,10 +5,12 @@ export const Tooltip = ({
   children,
   content,
   delayDuration = 500,
+  wrapperClassName,
 }: {
   children: React.ReactNode;
-  content?: string;
+  content?: string | React.ReactNode;
   delayDuration?: number;
+  wrapperClassName?: string;
 }) => {
   return (
     <>
@@ -23,7 +25,9 @@ export const Tooltip = ({
               >
                 <RadixTooltip.Arrow className="fill-secondary-500"></RadixTooltip.Arrow>
 
-                <div className="bg-secondary-500 rounded-md p-2 text-sm select-none pointer-events-none">
+                <div
+                  className={`${wrapperClassName || ''} bg-secondary-500 rounded-md p-2 text-sm select-none pointer-events-none`}
+                >
                   {content}
                 </div>
               </RadixTooltip.Content>

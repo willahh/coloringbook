@@ -1,22 +1,23 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import * as fabric from 'fabric';
-import { makeMouseWheel } from '@/lib/scrollbars/utils';
 
 import { Page } from '@apptypes/book';
+import { BookPageParams } from '@/common/interfaces';
+
 import { useEventHandlers } from './hooks/useEventHandlers';
 import { useDimensions } from './hooks/useDimensions';
-import canvasService from '@/services/canvas.service';
 import { PagesNavigation } from '../components/PagesNavigation';
 
-import { Scrollbars } from '@/lib/scrollbars';
 import useCanvasContext from '../useCanvasContext';
-import { BookPageParams } from '@/common/interfaces';
-import { BookService } from '@/services/book.service';
-import { TMat2D } from 'fabric';
+import { useCanvasInitialization } from './hooks/useCanvasInitialization';
+import { useCanvasResize } from './hooks/useCanvasResize';
+import { useCanvasRedraw } from './hooks/useCanvasRedraw';
+import usePageFocus from './hooks/usePageFocus';
+import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
+import usePageAutoFocus from './hooks/usePageAutofocus';
+import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 
 interface SpreadCanvasProps {
-  pageId: number;
   width?: number;
   height?: number;
   pages: Page[];
@@ -25,160 +26,77 @@ interface SpreadCanvasProps {
 }
 
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
-  pageId,
   pages,
   sidePanelWidth,
   pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
-  const { setCanvas, viewportTransform, setViewportTransform } =
-    useCanvasContext();
+  const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
+  const { canvas, viewportTransform } = useCanvasContext();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const [needPageCenter, setNeedPageCenter] = useState<boolean>(false);
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
 
   // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const fabricCanvasRef = useRef<fabric.Canvas | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const canvas = fabricCanvasRef.current;
 
   // Process –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  const pageId = pageIdParams;
+
+  // Effects –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  useCanvasInitialization(canvasRef);
+  useNavigateToFirstPage(canvas, pages);
   const canvasSize = useDimensions(
     containerRef,
     sidePanelWidth,
     pagesPanelWidth
   );
-
-  console.log('#02 canvasSize', canvasSize)
-
-  useEffect(() => {
-    setNeedPageCenter(true);
-  }, [pageId]);
-
-  // useMemo to avoid too many re-renders
-  const spreadPages = React.useMemo(
-    () => BookService.getPageSpread(pageParams, pages),
-    [pageParams, pages]
-  );
-
-  useEventHandlers(fabricCanvasRef.current);
-
-  /**
-   * [Canvas instanciation]
-   * The canvas needs to be initialized with width and height in pixels.
-   * Therefore, it must be refreshed when the browser is resized or the container size changes.
-   */
-  const initCanvas = useCallback(
-    (canvasElement: HTMLCanvasElement) => {
-      const canvasNew = new fabric.Canvas(canvasElement, {
-        height: canvasSize.height,
-        width: canvasSize.width - 50,
-        selection: false,
-        renderOnAddRemove: true,
-        allowTouchScrolling: true,
-      });
-      
-      console.log('#02 canvasNew')
-      canvasService.canvas = canvasNew;
-      setNeedRedrawPages(true);
-
-      return canvasNew;
-    },
-    [canvasSize]
-  );
-
-  /**
-   * [Canvas reset]
-   */
-  useEffect(() => {
-    if (canvasRef.current) {
-      fabricCanvasRef.current = initCanvas(canvasRef.current);
-      const canvas = fabricCanvasRef.current as fabric.Canvas & {
-        lastPosX?: number;
-        lastPosY?: number;
-      };
-
-      setCanvas(canvas);
-
-      const mousewheel = makeMouseWheel(canvas, { min: 0.02, max: 256 });
-      canvas.on('mouse:wheel', mousewheel);
-
-      const scrollbar = new Scrollbars(canvas, {
-        fill: 'rgba(255,255,0,.5)',
-        stroke: 'rgba(0,0,255,.5)',
-        lineWidth: 5,
-        scrollbarSize: 8,
-        offsetY: 62, // Footer height
-      });
-
-      return () => {
-        scrollbar.dispose();
-        canvas.off('mouse:wheel', mousewheel);
-        canvas.dispose();
-        fabricCanvasRef.current = null;
-      };
-    }
-  }, [initCanvas, setCanvas, spreadPages]);
-
-  /**
-   * [Canvas drawing].
-   * Draw pages, elements and page mask.
-   * The dependency array for pageCreation hook is only the canvas html reference.
-   * Be cause the canvas is reset on browser resize, page change, or container changes.
-   */
-  useEffect(() => {
-    if (canvas) {
-      if (needRedrawPages) {
-        const spreadSizeNew = canvasService.drawPagesElementsAndMask(
-          canvas,
-          spreadPages,
-          canvasSize
-        );
-
-        // Center spread when viewportTransform is not defined (on page mount)
-        if (spreadSizeNew) {
-          if (needPageCenter) {
-            const { x, y, scaleX, scaleY } =
-              canvasService.calculateCenteredSpread(canvasSize, spreadSizeNew);
-
-            // [scaleX, 0, 0, scaleY, x, y];
-            const vpt: TMat2D = [scaleX, 0, 0, scaleY, x, y];
-            setViewportTransform(vpt);
-            setNeedPageCenter(false);
-          }
-          setNeedRedrawPages(false);
-        }
-      }
-
-      if (viewportTransform) {
-        canvas.viewportTransform = viewportTransform;
-      }
-    }
-  }, [
+  useCanvasResize(canvas, canvasSize);
+  useEventHandlers(canvas);
+  useCanvasRedraw(
     canvas,
-    spreadPages,
-    canvasSize,
     viewportTransform,
-    needPageCenter,
+    setNeedRedrawPages,
     needRedrawPages,
-    setViewportTransform,
-  ]);
+    pages,
+    canvasSize
+  );
 
-  useEffect(() => {
-    if (canvas) {
-      console.log('#001 pageId has changed !!!', pageId);
+  const { disableFocusAnimation } = usePageAutoFocus(
+    canvas,
+    pageId,
+    viewportTransform
+  );
+  usePageFocus(canvas, pages, pageId, disableFocusAnimation);
 
-      // On page change, we reset the setViewportTransform
-      setViewportTransform(undefined);
-    }
-  }, [pageId]); // pageId: Triggered when a page changes
+  // FIXME: Finaliser ce useEffect, il faut charger toute les vignettes une seule fois
+  // lorsqu'elles n'existent pas et les stoquer quelque part. Peut être dans
+  // le navigateur avec storage.
+  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
     <div ref={containerRef} className="relative flex-1">
       <PagesNavigation />
       <canvas ref={canvasRef} />
+
+      <div
+        data-id="inline-toolbar"
+        className={`absolute bottom-20 right-12 z-10
+          rounded-full px-4 py-2
+         bg-secondary-500 dark:bg-secondary-500  text-white dark:text-white
+         text-sm flex gap-2`}
+      >
+        <button>Modification</button>
+        <button>Color</button>
+        <button>Border color</button>
+        <button>Border style</button>
+        <button>Border radius</button>
+        <button>Lock</button>
+        <button>Duplicate</button>
+        <button>Delete</button>
+        <button>Plus</button>
+      </div>
     </div>
   );
 };

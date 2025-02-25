@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Book } from '@apptypes/book';
 import { getMediaUrl } from '@/common/utils/api';
 import { Tooltip } from '@components/Tooltip';
+import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
 
 interface BookItemProps {
   index: number;
@@ -28,8 +29,8 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
       navigate(`/book/${book.id}`);
     }
   };
-
-  let cls = `${className} relative w-full aspect-[1/1.414] rounded-md overflow-hidden
+  const { width, height } = BookFormatHelper.getAspectRatio(book.format);
+  let cls = `${className} relative w-full rounded-md overflow-hidden
   `;
   const bookExist = book.id !== -1;
   if (bookExist) {
@@ -78,6 +79,7 @@ export const UserBookItem: React.FC<BookItemProps & { className?: string }> = ({
             backgroundRepeat: 'no-repeat',
             boxShadow:
               '0 0 5px -1px black, inset -1px 1px 2px rgba(255, 255, 255, 0.5)',
+            aspectRatio: `${width}/${height}`,
             margin: 'auto',
             borderRadius: '5px',
             backgroundSize: 'cover',

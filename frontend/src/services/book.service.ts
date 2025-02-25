@@ -103,7 +103,7 @@ export class BookService {
 
     return spreadPages[currentSpreadIndex];
   }
-  
+
   static getPageSpread(pageParams: BookPageParams, pages: Page[]) {
     const pageId =
       Number(pageParams.pageId) || BookService.getFirstPageId(pages);
@@ -176,6 +176,13 @@ export class BookService {
         }
       }
     }
+  }
+
+  public getNextPageId(pageId: number, pages: Page[]): number | undefined {
+    const currentIndex = pages.findIndex((p) => p.pageId === pageId);
+    return currentIndex < pages.length - 1
+      ? pages[currentIndex + 1].pageId
+      : pages[currentIndex - 1]?.pageId;
   }
 }
 

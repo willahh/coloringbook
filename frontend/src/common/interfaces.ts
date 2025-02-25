@@ -10,6 +10,11 @@ export type PageDimensions = {
   height: number;
 };
 
-export interface fabricRectPage extends fabric.Rect {
+export interface FabricRectPage extends fabric.Rect {
   pageId?: number;
+}
+
+export interface PageFabricObject extends fabric.Object {
+  isPage?: boolean;
+  pageId: number;
 }

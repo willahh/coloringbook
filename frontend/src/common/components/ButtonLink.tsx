@@ -20,12 +20,12 @@ const ButtonLink: React.FC<LinkProps> = ({
       ? 'text-secondary-600 hover:text-secondary-800'
       : 'text-gray-600 hover:text-gray-800';
   return href ? (
-    <a href={href} className={`${cls} hover:underline ${className || ''}`}>
+    <a href={href} className={`${cls} cursor-pointer underline ${className || ''}`}>
       {children}
     </a>
   ) : (
     <button
-      className={`${cls} hover:underline ${className || ''}`}
+      className={`${cls} cursor-pointer underline ${className || ''}`}
       onClick={onClick}
     >
       {children}

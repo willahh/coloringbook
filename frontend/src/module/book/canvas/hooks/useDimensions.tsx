@@ -6,7 +6,10 @@ export const useDimensions = (
   sidePanelWidth: number,
   pagesPanelWidth: number
 ) => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const [dimensions, setDimensions] = useState({
+    width: document.documentElement.clientWidth,
+    height: document.documentElement.clientHeight,
+  });
 
   const updateDimensions = useCallback(
     debounce(() => {
@@ -15,7 +18,7 @@ export const useDimensions = (
           document.documentElement.clientHeight,
           window.innerHeight || 0
         );
-        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth;
+        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
         setDimensions({
           width: width,
 

@@ -1,16 +1,17 @@
-import { useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion'; // Assuming you use framer-motion for animations
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import type { Page } from '@apptypes/book';
-import { BookService } from '@/services/book.service';
-import { ToolbarButton } from '../ToolbarButton';
+import { BookService, bookService } from '@/services/book.service';
+import { ToolbarButton } from '../../ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
-import { useDispatch } from '@/common/store';
+import { useDispatch, useSelector } from '@/common/store';
 import { PageService } from '@/services/page.service';
-import * as BookActions from '../../Book.actions';
+import * as BookActions from '../../../Book.actions';
 import { BookPageParams } from '@/common/interfaces';
+import { selectBookPages } from '../../../Book.slice';
 
 interface PageComponentProps {
   bookId: number;
@@ -19,15 +20,54 @@ interface PageComponentProps {
   onDeleteButtonClick?: (pageId: number) => void;
 }
 
+const useDeletePage = (bookId: number) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pages = useSelector(selectBookPages);
+
+  const useDeletePage = (pageIdToDelete: number) => {
+    if (confirm('Confirmer la suppression de la page ?')) {
+      dispatch(BookActions.deletePageAction({ pageId: pageIdToDelete }));
+      requestAnimationFrame(() => {
+        const nextPageId = bookService.getNextPageId(pageIdToDelete, pages);
+        if (nextPageId !== undefined && bookId) {
+          navigate(`/book/${bookId}/pages/${nextPageId}`);
+        }
+      });
+    }
+  };
+
+  return useDeletePage;
+};
+
+const useAddPage = (bookId: number) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const pages = useSelector(selectBookPages);
+
+  const useAddPage = () => {
+    const pageNew = PageService.getNewPage(pages);
+    dispatch(BookActions.addPageAction({ page: pageNew }));
+    requestAnimationFrame(() => {
+      if (bookId) {
+        navigate(`/book/${bookId}/pages/${pageNew.pageId}`);
+      }
+    });
+  };
+
+  return useAddPage;
+};
+
 const PageComponent: React.FC<PageComponentProps> = ({
   bookId,
   page: { pageNumber, pageId, thumbImageData, aspectRatio },
   selected,
 }) => {
-  const dispatch = useDispatch();
+  const deletePageFn = useDeletePage(bookId);
 
   return (
     <motion.div
+      data-id={`sp-page-${pageId}`}
       key={`pageCmp-${pageId}`}
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -37,7 +77,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
       }}
     >
       <Link
-        className={`flex flex-col w-full  rounded-sm group overflow-hidden
+        className={`flex flex-col w-full rounded-sm group overflow-hidden
         border-2 border-primary-200 dark:border-primary-800 
         hover:border-secondary-500
         active:ring-2 active:-ring-offset-4 ring-secondary-500
@@ -71,7 +111,7 @@ const PageComponent: React.FC<PageComponentProps> = ({
            bg-primary-200 dark:bg-primary-800 text-xs p-0.5 text-right
         ${
           selected
-            ? 'bg-secondary-300 dark:bg-secondary-900 text-secondary-700 dark:text-secondary-300 font-extrabold'
+            ? 'bg-secondary-300 dark:bg-secondary-500 text-secondary-800 dark:text-secondary-300 font-extrabold'
             : ''
         }`}
         >
@@ -89,16 +129,14 @@ const PageComponent: React.FC<PageComponentProps> = ({
                    : ''
                }`}
                 onClick={() => {
-                  if (confirm('Confirmer la suppression de la page ?')) {
-                    dispatch(BookActions.deletePageAction({ pageId: pageId }));
-                  }
+                  deletePageFn(pageId);
                 }}
               >
                 <TrashIcon className="w-4 h-4" />
               </button>
             </Tooltip>
           </div>
-          <div>{pageNumber}</div>
+          <div className="select-none">{pageNumber}</div>
         </div>
       </Link>
     </motion.div>
@@ -125,7 +163,35 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
       spreads = [pages];
     }
   }
-  // debugger;
+
+  /**
+   * Automatically scrolling to page feature
+   */
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const scrollToPage = (targetPageId: string) => {
+    const container = scrollContainerRef.current;
+    const pageElement: HTMLElement | null = document.querySelector(
+      'div[data-id="sp-page-' + targetPageId + '"]'
+    );
+
+    if (container && pageElement) {
+      const containerHeight = container.clientHeight;
+      const pageHeight = pageElement.offsetHeight;
+      const pageOffsetTop = pageElement.offsetTop;
+      const scrollPosition = pageOffsetTop - (containerHeight - pageHeight) / 2;
+
+      container.scrollTo({
+        top: scrollPosition,
+        behavior: 'smooth',
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (pageId) {
+      scrollToPage(pageId);
+    }
+  }, [pageId]);
 
   const renderSpreads = () => {
     return spreads.map((spread, index) => (
@@ -152,6 +218,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
   return (
     <div
+      ref={scrollContainerRef}
       className={`flex flex-col ${className || ''} rounded-md pt-4
  overflow-y-scroll scrollbar scrollbar-thumb-primary-300 
  dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
@@ -172,9 +239,11 @@ export const PagesPanel: React.FC<{
   pages: Page[];
   addPageButtonClick: (event: React.MouseEvent) => void;
 }> = ({ className, ref, pages }) => {
-  const { pageId } = useParams<{ pageId: string }>();
-  const dispatch = useDispatch();
   const panelRef = ref;
+  const { bookId, pageId } = useParams<{ bookId: string; pageId: string }>();
+  const dispatch = useDispatch();
+  const deletePageFn = useDeletePage(Number(bookId));
+  const addPageFn = useAddPage(Number(bookId));
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -182,18 +251,14 @@ export const PagesPanel: React.FC<{
         panelRef.current &&
         panelRef.current.contains(document.activeElement)
       ) {
+        event.preventDefault();
         if (event.key === 'Backspace' || event.key === 'Delete') {
           const selectedPage = pages.find(
             (page) => page.pageId === Number(pageId)
           );
-          if (
-            selectedPage &&
-            confirm('Confirmer la suppression de la page ?')
-          ) {
-            dispatch(
-              BookActions.deletePageAction({ pageId: selectedPage.pageId })
-            );
-            event.preventDefault();
+
+          if (selectedPage) {
+            deletePageFn(selectedPage.pageId);
           }
         }
       }
@@ -208,20 +273,17 @@ export const PagesPanel: React.FC<{
     <div
       data-id="pages-panel"
       ref={ref}
-      className={`${className || ''} flex flex-col gap-4 overflow-y-auto 
+      className={`${className || ''} flex flex-col gap-4 overflow-y-auto
        z-20
-      
       bg-primary-50 dark:bg-primary-950`}
     >
-      <Pages className="p-2" pages={pages} />
+      <Pages className="p-2 flex-1" pages={pages} />
       <div className="flex justify-center pt-4">
         <ToolbarButton
           className="!rounded-full"
           tooltipContent="Ajouter une page"
           onClick={() => {
-            dispatch(
-              BookActions.addPageAction({ page: PageService.getNewPage(pages) })
-            );
+            addPageFn();
           }}
         >
           <PlusIcon

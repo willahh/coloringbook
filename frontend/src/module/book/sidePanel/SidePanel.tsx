@@ -9,7 +9,7 @@ import TextIcon from '@assets/icons/icon_text.svg?react';
 import { TabType, Tab } from './Sidepanel.types';
 import Tabs from './Tabs';
 import UserContent from './user/UserContent';
-import ElementContent from './element/ElementContent';
+import ElementTabContent from './element/ElementContent';
 import useLocalStorage from '@/common/hooks/useLocalStorage';
 
 const tabs: Tab[] = [
@@ -18,7 +18,7 @@ const tabs: Tab[] = [
     label: 'Eléments',
     icon: PaintBrushIcon,
     active: true,
-    content: <ElementContent />,
+    content: <ElementTabContent />,
   },
   {
     id: TabType.Text,
@@ -33,6 +33,13 @@ const tabs: Tab[] = [
     icon: RectangleGroupIcon,
     active: false,
     content: <div>Formes</div>,
+  },
+  {
+    id: TabType.Draw,
+    label: 'Dessins',
+    icon: RectangleGroupIcon,
+    active: false,
+    content: <div>Dessins</div>,
   },
   {
     id: TabType.Background,
@@ -63,7 +70,7 @@ const SidePanel: React.FC<{
   children?: React.ReactNode;
   ref: React.RefObject<HTMLElement>;
   setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
-}> = (/*{ className, children }*/ { ref, setSidePanelWidth }) => {
+}> = ({ className, ref, setSidePanelWidth }) => {
   const [activeTab, setActiveTab] = useLocalStorage(
     'selectedTab',
     TabType.Element
@@ -110,7 +117,7 @@ const SidePanel: React.FC<{
     <aside
       ref={ref}
       data-id="sidepanel"
-      className={`h-full z-10 transition-all`}
+      className={`${className || ''} h-full z-10 transition-all`}
       style={{
         width: isSidebarOpen ? width : 0,
         filter: 'drop-shadow(0px 10px 8px rgba(0,0,0,0.3))',
@@ -130,7 +137,7 @@ const SidePanel: React.FC<{
         >
           <div className="p-4">
             {activeTab == TabType.Personal && <UserContent />}
-            {activeTab == TabType.Element && <ElementContent />}
+            {activeTab == TabType.Element && <ElementTabContent />}
           </div>
         </div>
         <Tabs tabs={tabs} activeTab={activeTab} onTabClick={handleTabClick} />

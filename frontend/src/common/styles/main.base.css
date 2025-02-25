@@ -1,7 +1,7 @@
 /* ———————————————————————————————————————————————————————————————————————————
   * Tailwind CSS utilities
-  * prefix "cb-" ([c]oloring[b]ook) for custom classes
   * ——————————————————————————————————————————————————————————————————————————*/
+@import 'tailwindcss';
 @theme {
   --container-4xs: 12rem;
 }
@@ -56,4 +56,11 @@ div[data-is-root-theme].light {
 #root {
   min-height: 100vh;
   min-width: 100vw;
+}
+
+:root {
+  font-size: 1rem; /* Redéfinit 1rem = 12px */
+}
+body {
+  font-family: 'Inter', serif;
 }

@@ -1,5 +1,5 @@
 import BreadCrumb from '@components/BreadCrumb';
-import Header from '@components/Header';
+import Header from '@/common/components/header/Header';
 import InlineEdit from '@components/InlineEdit';
 import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';

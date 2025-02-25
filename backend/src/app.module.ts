@@ -7,6 +7,7 @@ import { BooksModule } from '@/books/books.module';
 import { options } from '@/data-source';
 import { GraphicAssetsModule } from './graphic-assets/graphic-assets.module';
 import { ImageModule } from './image/image.module';
+import { NewsletterModule } from './newsletter/newsletter.module';
 @Module({
   imports: [
     UsersModule,
@@ -14,6 +15,7 @@ import { ImageModule } from './image/image.module';
     GraphicAssetsModule,
     ImageModule,
     TypeOrmModule.forRoot(options),
+    NewsletterModule,
   ],
   controllers: [AppController],
   providers: [AppService],

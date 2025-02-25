@@ -14,8 +14,6 @@ interface CanvasContextType {
 export const CanvasContext = React.createContext<CanvasContextType>({
   canvas: null,
   setCanvas: () => {},
-
-  // viewportTransform: null,
   setViewportTransform: () => {},
 });
 

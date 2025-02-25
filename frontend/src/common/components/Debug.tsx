@@ -1,6 +1,5 @@
-import { AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { MoonIcon, SunIcon } from '@heroicons/react/24/outline';
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
+import { Popover, PopoverPanel } from '@headlessui/react';
 import Switch from '@components/Switch';
 import { Tooltip } from '@components/Tooltip';
 
@@ -91,7 +90,7 @@ export const InterfaceControls = () => {
       <div className="flex items-center gap-4 relative">
         <AppearanceControl />
         <Popover className="">
-          <Tooltip content="Préférences">
+          {/* <Tooltip content="Préférences">
             <PopoverButton
               className={ToolbarButtonClassName('!rounded-full')}
               onClick={() => {
@@ -103,7 +102,7 @@ export const InterfaceControls = () => {
                 className="size-5"
               />
             </PopoverButton>
-          </Tooltip>
+          </Tooltip> */}
           <PopoverPanel anchor="bottom" className="flex flex-col pr-4">
             <div className="divide-y divide-gray-800 dark:divide-gray-200 overflow-hidden rounded-lg p-4 whitespace-nowrap bg-black dark:bg-white shadow">
               <div className="grid grid-cols-2 gap-2">

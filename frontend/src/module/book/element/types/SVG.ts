@@ -2,7 +2,7 @@ import { DrawableElement } from '../DrawableElement'; // Adjust the path as need
 import * as fabric from 'fabric';
 import { SVGElement } from '@apptypes/book';
 import { getAPIURL } from '@/common/utils/api';
-
+import { getSecondaryColor } from '@/common/utils/themeColors';
 export class SVG implements DrawableElement {
   private svgObjects: Promise<fabric.FabricObject> | null;
 
@@ -22,7 +22,6 @@ export class SVG implements DrawableElement {
   }
 
   private async createSVG(obj: SVGElement): Promise<fabric.FabricObject> {
-    console.log('#02 createSVG');
     let groupSVGElements: fabric.FabricObject | null = null;
     if (obj.attr.svgContent) {
       // Load from an inline svg
@@ -64,13 +63,15 @@ export class SVG implements DrawableElement {
       });
 
       const groupProps: Partial<fabric.GroupProps> = {
-        cornerColor: '#f43f5e',
-        borderColor: '#f43f5e',
-        cornerStrokeColor: 'red',
+        cornerColor: getSecondaryColor(),
+        borderColor: getSecondaryColor(),
+        hasBorders: true,
+        
         cornerSize: 10,
 
         cornerStyle: 'circle',
         borderScaleFactor: 2,
+        borderOpacityWhenMoving: 100,
 
         borderDashArray: null,
         transparentCorners: false,

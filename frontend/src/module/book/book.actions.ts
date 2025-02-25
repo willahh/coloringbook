@@ -5,6 +5,7 @@ import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
+
 /**
  * fetchBookByIdAction
  */
@@ -96,3 +97,10 @@ export const AddGraphicAssetToPageAction = createAsyncThunk<
   const element = ElementService.getElementFromGraphicAsset(graphicAsset);
   return { pageId: pageId, element: element };
 });
+
+/**
+ * updatePageThumbImageData
+ */
+export const updatePageThumbImageData = createAction<{
+  thumbnails: { [key: number]: string };
+}>('BOOKS/UPDATE_PAGE_THUMB_IMAGE_DATA');

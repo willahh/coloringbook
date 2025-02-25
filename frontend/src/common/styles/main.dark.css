@@ -1,31 +1,12 @@
 @import 'tailwindcss';
-
-@theme {
-  --color-primary-50: #E6F1FF;
-  --color-primary-100: #e2e0ff;
-  --color-primary-200: #cac7fe;
-  --color-primary-300: #aaa5fc;
-  --color-primary-400: #8881f8;
-  --color-primary-500: #6c63f1;
-  --color-primary-600: #5046e5;
-  --color-primary-700: #4138ca;
-  --color-primary-800: #3730a3;
-  --color-primary-900: #332e81;
-  --color-primary-950: #1d1b4b;
-
-  --color-secondary-50: #fff1f3;
-  --color-secondary-100: #ffe4e9;
-  --color-secondary-200: #fecdd5;
-  --color-secondary-300: #fda4b3;
-  --color-secondary-400: #fb7189;
-  --color-secondary-500: #f43f5e;
-  --color-secondary-600: #e11d3f;
-  --color-secondary-700: #be122f;
-  --color-secondary-800: #9f122a;
-  --color-secondary-900: #881327;
-  --color-secondary-950: #4c0511;
-}
-
-@config "./../../../tailwind.dark.config.js";
-@import './fonts.css';
+@config "./../../../tailwind.config.js";
+@import './themes/theme.bluered.css';
 @import './main.base.css';
+
+
+
+
+.btn {
+    @apply inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 transition-all;
+  }
+  

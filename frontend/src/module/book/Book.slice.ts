@@ -1,4 +1,6 @@
+import { shallowEqual } from 'react-redux'
 import { createSlice } from '@reduxjs/toolkit';
+import { createSelector } from 'reselect';
 import * as bookActions from './Book.actions.ts';
 import * as elementActions from './element/Element.action.ts';
 import { Book } from '@apptypes/book.ts';
@@ -33,6 +35,22 @@ const initialState: BookState = {
 
 export const selectIsLoading = (state: RootState) => state.book.isLoading;
 export const selectBook = (state: RootState) => state.book;
+export const selectBookPages = (state: RootState) => state.book.book.pages;
+
+// Sélecteur des éléments mémoïsé
+export const selectElements = createSelector(
+  [selectBookPages, (_: RootState, pageId: number) => pageId],
+  (pages, pageId) => {
+    return pages.find((p) => p.pageId === pageId)?.elements;
+  }
+);
+
+// Sélecteur pour tous les éléments de toutes les pages (pour détecter les changements)
+export const selectAllElements = createSelector([selectBookPages], (pages) =>
+  pages.map((p) => p.elements), {
+    argsMemoizeOptions: {resultEqualityCheck: shallowEqual}
+  }
+);
 
 const slice = createSlice({
   name: 'books',
@@ -157,6 +175,19 @@ const slice = createSlice({
         state.areLocalUpdatesSaved = false;
       }
     );
+
+    /**
+     * updatePageThumbImageData
+     */
+    builder.addCase(bookActions.updatePageThumbImageData, (state, action) => {
+      const { thumbnails } = action.payload;
+      
+      state.book.pages = state.book.pages.map((page) => ({
+        ...page,
+        thumbImageData: thumbnails[page.pageId] || page.thumbImageData,
+      }));
+      state.areLocalUpdatesSaved = false; // Marquer comme non sauvegardé
+    });
 
     /**
      * addElementToPage

@@ -8,6 +8,7 @@ export enum TabType {
   Current,
   Load,
   Parameters,
+  Draw,
 }
 
 export interface Tab {

@@ -11,13 +11,16 @@ export class ElementFactory {
   public static createElement(
     element: Element,
     offsetX: number,
+    offsetY: number,
     pageWidth: number,
     pageHeight: number
   ): DrawableElement {
     const relativeX = offsetX + element.x * pageWidth;
-    const relativeY = element.y * pageHeight;
+    const relativeY = offsetY + element.y * pageHeight;
     const relativeW = element.w * pageWidth;
     const relativeH = element.h * pageHeight;
+
+    console.debug('#a createElement', 'pageWidth: ', pageWidth, ' - pageHeight: ', pageHeight, ' - relativeX: ', relativeX, 'relativeY:', relativeY, 'relativeW:', relativeW, 'relativeH:', relativeH);
 
     switch (element.type) {
       case 'rectangle':
