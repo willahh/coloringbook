@@ -3,12 +3,9 @@ import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import SavePopOver from './SavePopOver';
-
+import AboutDialog from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
-const appVersion = packageJson.version;
-const buildDate = new Date(packageJson.buildDate).toLocaleDateString(); // Format simple, ex. : "25/02/2025"
 
 interface HeaderProps {
   className?: string;
@@ -42,6 +39,7 @@ const LoadingIcon = (
 const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
+  const appVersion = packageJson.version;
   const buildDate = new Date(packageJson.buildDate).toLocaleDateString('fr-FR', {
     day: '2-digit',
     month: 'short',
@@ -70,18 +68,12 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
             >
               williamravel.netlify.app
             </a>
-            <span>⸱</span> 
+            <span>⸱</span>
             <span title="Last build">
-              <span className='text-primary-400 font-semibold'>[alpha]</span> <span>v{appVersion}</span> ({buildDate})
+              <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
+              <span>v{appVersion}</span> ({buildDate})
             </span>
-            <div
-              className={`flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold
-            hover:bg-secondary-600 hover:text-white
-            cursor-pointer transition-all`}
-            >
-              <InformationCircleIcon className="w-4 h-4" />
-              About
-            </div>
+            <AboutDialog version={appVersion} buildDate={packageJson.buildDate} />
           </div>
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}

@@ -2,7 +2,11 @@
 @layer theme, base, components, utilities;
 @layer theme {
   :root, :host {
+    --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+      "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      "Liberation Mono", "Courier New", monospace;
     --color-red-50: oklch(0.971 0.013 17.38);
     --color-red-100: oklch(0.936 0.032 17.717);
     --color-red-200: oklch(0.885 0.062 18.334);
@@ -335,12 +339,18 @@
     --aspect-video: 16 / 9;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    --default-font-family: roboto, Arial, Sans-serif;
-    --default-font-feature-settings: normal;
-    --default-font-variation-settings: normal;
-    --default-mono-font-family: roboto-mono-regular, Courier New, Courier, monospace;
-    --default-mono-font-feature-settings: normal;
-    --default-mono-font-variation-settings: normal;
+    --default-font-family: var(--font-sans);
+    --default-font-feature-settings: var(--font-sans--font-feature-settings);
+    --default-font-variation-settings: var(
+      --font-sans--font-variation-settings
+    );
+    --default-mono-font-family: var(--font-mono);
+    --default-mono-font-feature-settings: var(
+      --font-mono--font-feature-settings
+    );
+    --default-mono-font-variation-settings: var(
+      --font-mono--font-variation-settings
+    );
     --color-primary-50: #f3f5fa;
     --color-primary-100: #eaecf5;
     --color-primary-200: #d9deec;
@@ -611,9 +621,6 @@
   }
   .z-20 {
     z-index: 20;
-  }
-  .z-30 {
-    z-index: 30;
   }
   .z-40 {
     z-index: 40;
@@ -1439,7 +1446,7 @@
     text-align: right;
   }
   .font-mono {
-    font-family: roboto-mono-regular, Courier New, Courier, monospace;
+    font-family: var(--font-mono);
   }
   .font-serif {
     font-family: var(--font-serif);
@@ -1744,14 +1751,6 @@
     --tw-duration: 100ms;
     transition-duration: 100ms;
   }
-  .duration-1000 {
-    --tw-duration: 1000ms;
-    transition-duration: 1000ms;
-  }
-  .duration-150 {
-    --tw-duration: 150ms;
-    transition-duration: 150ms;
-  }
   .duration-200 {
     --tw-duration: 200ms;
     transition-duration: 200ms;
@@ -1760,13 +1759,21 @@
     --tw-duration: 300ms;
     transition-duration: 300ms;
   }
-  .duration-400 {
-    --tw-duration: 400ms;
-    transition-duration: 400ms;
-  }
   .duration-500 {
     --tw-duration: 500ms;
     transition-duration: 500ms;
+  }
+  .duration-1000 {
+    --tw-duration: 1000ms;
+    transition-duration: 1000ms;
+  }
+  .duration-150 {
+    --tw-duration: 150ms;
+    transition-duration: 150ms;
+  }
+  .duration-400 {
+    --tw-duration: 400ms;
+    transition-duration: 400ms;
   }
   .ease-in {
     --tw-ease: var(--ease-in);
@@ -2896,11 +2903,6 @@
   .dark\:text-primary-300 {
     &:where(.dark, .dark *) {
       color: var(--color-primary-300);
-    }
-  }
-  .dark\:text-primary-500 {
-    &:where(.dark, .dark *) {
-      color: var(--color-primary-500);
     }
   }
   .dark\:text-secondary-50 {

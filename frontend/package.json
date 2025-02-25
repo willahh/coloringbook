@@ -1,7 +1,7 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.3.6",
+  "version": "0.3.7",
   "buildDate": "2025-02-25T14:49:06.608Z",
   "type": "module",
   "scripts": {
@@ -37,6 +37,7 @@
     "@tailwindcss/cli": "^4.0.4",
     "@tailwindcss/vite": "^4.0.4",
     "axios": "^1.7.9",
+    "date-fns": "^4.1.0",
     "fabric": "^6.5.4",
     "jspdf": "^2.5.2",
     "lodash": "^4.17.21",
