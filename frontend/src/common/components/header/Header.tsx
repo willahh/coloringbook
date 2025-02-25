@@ -8,6 +8,7 @@ import SavePopOver from './SavePopOver';
 
 import packageJson from '@/../package.json';
 const appVersion = packageJson.version;
+const buildDate = new Date(packageJson.buildDate).toLocaleDateString(); // Format simple, ex. : "25/02/2025"
 
 interface HeaderProps {
   className?: string;
@@ -41,6 +42,11 @@ const LoadingIcon = (
 const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
+  const buildDate = new Date(packageJson.buildDate).toLocaleDateString('fr-FR', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+  });
 
   return (
     <div className="relative h-0">
@@ -64,14 +70,15 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
             >
               williamravel.netlify.app
             </a>
-            <span>
-              alpha - <span>{appVersion}</span>
+            <span>⸱</span> 
+            <span title="Last build">
+              <span className='text-primary-400 font-semibold'>[alpha]</span> <span>v{appVersion}</span> ({buildDate})
             </span>
-            <div className={`flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold
+            <div
+              className={`flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold
             hover:bg-secondary-600 hover:text-white
-            cursor-pointer transition-all`
-
-            }>
+            cursor-pointer transition-all`}
+            >
               <InformationCircleIcon className="w-4 h-4" />
               About
             </div>
