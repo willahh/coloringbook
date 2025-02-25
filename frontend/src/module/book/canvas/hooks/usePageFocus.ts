@@ -13,14 +13,12 @@ const usePageFocus = (
    * [Focus page when pageId change]
    */
   useEffect(() => {
-    console.log('#c2 usePageFocus.ts', canvas)
     if (!canvas) return;
 
     if (disableFocusAnimation) {
       return;
     }
 
-    console.log('#c2 useEffecrt usePageFocus call pageFocus')
     const cancelAnimation = canvasService.pageFocus(canvas, pages, pageId);
 
     return cancelAnimation;

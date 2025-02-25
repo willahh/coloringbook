@@ -27,7 +27,7 @@ const useUpdatePageThumbnails = (
       pageId: number
     ) => {
       const page = PageService.getPageById(pages, pageId);
-      console.log('#a updateThumbnailForPage page:', page, canvas);
+      // console.log('#a updateThumbnailForPage page:', page, canvas);
 
       if (!canvas.upperCanvasEl) {
         console.error('Canvas not initialized');
@@ -35,7 +35,7 @@ const useUpdatePageThumbnails = (
 
       if (page) {
         const pageRect = canvasService.getPageRectbyPageId(canvas, page.pageId);
-        console.log('#a2 pageRect', pageRect);
+        // console.log('#a2 pageRect', pageRect);
         if (pageRect) {
           const dimensions = {
             width: 100, // Taille fixe pour la preview
@@ -98,7 +98,7 @@ const useUpdatePageThumbnails = (
       //   }
     };
 
-    console.log('#a add handler handleObjectModified', 'canvas:', canvas);
+    //console.log('#a add handler handleObjectModified', 'canvas:', canvas);
     //console.log('#a3 >>>>>> pages[1].elements[0]', pages[1].elements[0]);
 
     const handleObjectModifiedRef = () => {

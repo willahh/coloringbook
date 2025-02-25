@@ -181,9 +181,7 @@ const slice = createSlice({
      */
     builder.addCase(bookActions.updatePageThumbImageData, (state, action) => {
       const { thumbnails } = action.payload;
-      console.log('#a REDUCER updatePageThumbImageData', thumbnails);
-      console.log(thumbnails);
-
+      
       state.book.pages = state.book.pages.map((page) => ({
         ...page,
         thumbImageData: thumbnails[page.pageId] || page.thumbImageData,

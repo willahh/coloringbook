@@ -21,11 +21,8 @@ const useNavigateToFirstPage = (
 
   const page = PageService.getPageById(pages, pageId);
   
-  console.log('#r pageId', pageId)
-
   if (pageId === 0) {
     pageId = pages[0].pageId;
-    console.log('#r pageId is zero, get a new page id pageId:', pageId)
   }
 
   useEffect(() => {

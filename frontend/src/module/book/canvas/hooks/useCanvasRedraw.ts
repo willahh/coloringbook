@@ -44,7 +44,7 @@ export function useCanvasRedraw(
   useEffect(() => {
     if (!canvas) return;
     if (needRedrawPages) {
-      console.log('#c#z REDRAW PAGES');
+      console.log('#c REDRAW PAGES');
       canvasService.drawPagesElementsAndMask(
         canvas,
         pages,

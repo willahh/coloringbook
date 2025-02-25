@@ -22,7 +22,6 @@ export class SVG implements DrawableElement {
   }
 
   private async createSVG(obj: SVGElement): Promise<fabric.FabricObject> {
-    console.log('#02 createSVG');
     let groupSVGElements: fabric.FabricObject | null = null;
     if (obj.attr.svgContent) {
       // Load from an inline svg
