@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 import { formatDistanceToNow, format } from 'date-fns'; // Pour formater la date
 import { fr } from 'date-fns/locale'; // Locale française pour "il y a X jours"
 
@@ -11,8 +11,7 @@ interface AboutDialogProps {
 const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
   const [isOpen, setIsOpen] = useState(false);
   const buildDateObj = new Date(buildDate);
-
-  // Calculer "il y a X jours" ou "aujourd'hui à HH:mm"
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastBuildText =
     formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr }) ===
     'il y a moins d’une minute'
@@ -50,6 +49,8 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
           as="div"
           className="relative z-50"
           onClose={() => setIsOpen(false)}
+          initialFocus={closeButtonRef} // Ajoutez une ref au bouton Fermer
+          aria-labelledby="about-dialog-title"
         >
           <Transition.Child
             as={Fragment}
@@ -83,27 +84,27 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                   </Dialog.Title>
                   <div className="mt-2 space-y-2 text-sm text-gray-700 dark:text-gray-300">
                     <p>
-                      <span className="font-medium">Alpha</span> v{version}
+                      <span className="font-medium">Alpha: </span> v{version}
                     </p>
                     <p>
-                      <span className="font-medium">Version</span> {version}
+                      <span className="font-medium">Version: </span> {version}
                     </p>
                     <p>
-                      <span className="font-medium">Dernier build</span>{' '}
+                      <span className="font-medium">Dernier build: </span>{' '}
                       {lastBuildText}
                     </p>
                     <p>
-                      <span className="font-medium">Auteur</span>{' '}
+                      <span className="font-medium">Auteur: </span>{' '}
                       <a
                         href="https://williamravel.netlify.app/"
                         target="_blank"
                         className="text-blue-600 dark:text-blue-400 hover:underline"
                       >
-                        William Ravel
+                        William Ravel - williamravel.netlify.app
                       </a>
                     </p>
                     <p>
-                      <span className="font-medium">Signaler un problème</span>{' '}
+                      <span className="font-medium">Signaler un problème: </span>{' '}
                       <a
                         href="https://github.com/willahh/coloringbook/issues"
                         target="_blank"
@@ -135,8 +136,9 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
 
                   <div className="mt-4">
                     <button
+                      ref={closeButtonRef}
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2"
+                      className="inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 transition-all"
                       onClick={() => setIsOpen(false)}
                     >
                       Fermer
