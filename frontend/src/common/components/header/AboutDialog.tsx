@@ -1,13 +1,24 @@
-import { Dialog, Transition } from '@headlessui/react';
-import { Fragment, useRef, useState } from 'react';
+import {
+  Dialog,
+  Transition,
+  TransitionChild,
+  DialogPanel,
+  DialogTitle,
+} from '@headlessui/react';
+import { Fragment, useRef } from 'react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
-import { FaXTwitter } from 'react-icons/fa6'; // Pour l'icône de X (Twitter)
+import { FaXTwitter, FaWebAwesome, FaInternetExplorer } from 'react-icons/fa6'; // Pour l'icône de X (Twitter)
+import { useTheme } from '@/common/contexts/ThemeContext';
+import Newsletter from './Newsletter';
+import Button from './Button';
 
 interface AboutDialogProps {
   version: string;
   buildDate: string;
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export const getLastBuildText = (buildDate: Date) => {
   const buildDateObj = new Date(buildDate);
@@ -17,11 +28,16 @@ export const getLastBuildText = (buildDate: Date) => {
     : formatDistanceToNow(buildDateObj, { addSuffix: true, locale: fr });
 };
 
-const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const AboutDialog: React.FC<AboutDialogProps> = ({
+  version,
+  buildDate,
+  isOpen,
+  setIsOpen,
+}) => {
   const buildDateObj = new Date(buildDate);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const lastBuildText = getLastBuildText(buildDateObj);
+  const { appearance } = useTheme();
 
   return (
     <>
@@ -49,11 +65,11 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-50"
+          className={`${appearance} relative z-50`}
           onClose={() => setIsOpen(false)}
           initialFocus={closeButtonRef}
         >
-          <Transition.Child
+          <TransitionChild
             as={Fragment}
             enter="ease-out duration-300"
             enterFrom="opacity-0"
@@ -62,12 +78,12 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 bg-black bg-opacity-25" />
-          </Transition.Child>
+            <div className="fixed inset-0 bg-primary-50/90 dark:bg-primary-950/90" />
+          </TransitionChild>
 
           <div className="fixed inset-0 overflow-y-auto">
             <div className="flex min-h-full items-center justify-center p-4 text-center">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="ease-out duration-300"
                 enterFrom="opacity-0 scale-95"
@@ -76,11 +92,14 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <DialogPanel
+                  className={`w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 shadow-xl transition-all
+                  p-6 text-sm text-left align-middle text-gray-700 dark:text-gray-300`}
+                >
+                  <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Coloring Book
-                  </Dialog.Title>
-                  <ul className="list-disc list-inside mt-2 space-y-1 text-sm text-gray-700 dark:text-gray-300">
+                  </DialogTitle>
+                  <ul className="list-disc list-inside mt-2 space-y-1">
                     <li>
                       <span className="font-medium">Version: </span> v{version}
                     </li>
@@ -100,14 +119,42 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                         GitHub Issues
                       </a>
                     </li>
-                    <li className="flex items-center gap-2">
-                      <span>Auteur: </span>
+                    <li>
+                      <span className="font-medium">Auteur: </span>{' '}
                       <a
                         href="https://williamravel.netlify.app/"
                         target="_blank"
                         className="text-blue-600 dark:text-blue-400 hover:underline"
                       >
                         William Ravel
+                      </a>
+                    </li>
+                  </ul>
+
+                  <div className="mt-4">
+                    <Newsletter
+                      onSubscribe={(email: string) => {
+                        console.log('Newsletter', email);
+                      }}
+                    />
+                  </div>
+
+                  <div className="mt-4"></div>
+                  <div className="mt-4">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                      Un projet web ou une application en tête ?
+                    </h4>
+                    <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
+                      Je suis développeur freelance spécialisé en développement
+                      web et applications interactives. Discutons-en !
+                    </p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <a
+                        href="https://williamravel.netlify.app/"
+                        target="_blank"
+                        className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
+                      >
+                        <FaInternetExplorer size={18} />
                       </a>
                       <a
                         href="https://github.com/willahh"
@@ -140,35 +187,20 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                       >
                         <FaXTwitter size={18} />
                       </a>
-                    </li>
-                  </ul>
-
+                    </div>
+                  </div>
                   <div className="mt-4">
                     <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
                       Mentions légales
                     </h4>
                     <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                      Mentions légales Coloring Book © 2025 William Ravel. Tous
-                      droits réservés. Cette application et son code source sont
-                      protégés par le droit d’auteur. Toute reproduction,
-                      distribution ou modification non autorisée est interdite.
-                      Le code source disponible sur GitHub est fourni sous
-                      licence spécifique et ne peut être utilisé à des fins
-                      commerciales sans accord explicite de l’auteur.
-                    </p>
-                  </div>
-
-                  <div className="mt-4">
-                    <h4 className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      Vous avez un projet web ou une application interactive en
-                      tête ?
-                    </h4>
-                    <p className="mt-1 text-xs text-gray-600 dark:text-gray-400">
-                      Je suis développeur freelance spécialisé en développement
-                      web et applications interactives. Discutons-en ! Pour
-                      toute utilisation professionnelle de cette application ou
-                      demande de partenariat, contactez-moi via mon portfolio ou
-                      mon LinkedIn.
+                      Coloring Book © 2025 William Ravel. Tous droits réservés.
+                      Cette application et son code source sont protégés par le
+                      droit d’auteur. Toute reproduction, distribution ou
+                      modification non autorisée est interdite. Le code source
+                      disponible sur GitHub est fourni sous licence spécifique
+                      et ne peut être utilisé à des fins commerciales sans
+                      accord explicite de l’auteur.
                     </p>
                   </div>
 
@@ -176,14 +208,14 @@ const AboutDialog: React.FC<AboutDialogProps> = ({ version, buildDate }) => {
                     <button
                       ref={closeButtonRef}
                       type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 transition-all"
+                      className="btn"
                       onClick={() => setIsOpen(false)}
                     >
                       Fermer
                     </button>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </div>
         </Dialog>

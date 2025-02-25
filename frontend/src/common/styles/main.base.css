@@ -5,15 +5,6 @@
   --container-4xs: 12rem;
 }
 
-:root {
-  font-size: 0.9rem; /* Redéfinit 1rem = 12px */
-}
-body {
-  font-family: 'Inter', serif;
-}
-
-
-
 
 /* —————————————————————————————————————————————————————————————————————————————
   radix-ui configuration
@@ -65,4 +56,15 @@ div[data-is-root-theme].light {
 #root {
   min-height: 100vh;
   min-width: 100vw;
+}
+
+:root {
+  font-size: 1rem; /* Redéfinit 1rem = 12px */
+}
+body {
+  font-family: 'Inter', serif;
+}
+
+.btn {
+  @apply inline-flex justify-center rounded-md border border-transparent bg-secondary-500 px-4 py-2 text-sm font-medium text-white hover:bg-secondary-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary-500 focus-visible:ring-offset-2 transition-all;
 }

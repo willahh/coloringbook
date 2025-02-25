@@ -6,6 +6,9 @@ import { selectBook } from '@/module/book/Book.slice';
 import SavePopOver from './SavePopOver';
 import AboutDialog, { getLastBuildText } from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
+import { useEffect, useState } from 'react';
+import useLocalStorage from '@/common/hooks/useLocalStorage';
+import { useAutoOpenDialog } from './useAutoOpenDialog';
 
 interface HeaderProps {
   className?: string;
@@ -40,14 +43,46 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
-  const buildDate = new Date(packageJson.buildDate).toLocaleDateString(
-    'fr-FR',
-    {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    }
-  );
+  // const buildDate = new Date(packageJson.buildDate).toLocaleDateString(
+  //   'fr-FR',
+  //   {
+  //     day: '2-digit',
+  //     month: 'short',
+  //     year: 'numeric',
+  //   }
+  // );
+
+  // const [isOpen, setIsOpen] = useState(false);
+  const {isOpen, setIsOpen} = useAutoOpenDialog();
+
+  // const DELAY = 5000; // 5 secondes avant affichage auto
+  // // const SHOW_INTERVAL = 24 * 60 * 60 * 1000; // 24 heures
+  // const SHOW_INTERVAL = 1 * 1 * 10 * 1000; // 10 secondes
+  // const [lastSeen, setLastSeen] = useLocalStorage('about', 0);
+
+  // /**
+  //  * Open the about dialog to the user in x seconds
+  //  */
+  // useEffect(() => {
+  //   console.log('#a lastSeen', lastSeen);
+
+  //   const now = Date.now();
+  //   if (!lastSeen) {
+  //     console.log('#a 1');
+  //     setIsOpen(true);
+  //     setLastSeen(now);
+  //   } else {
+  //     console.log('#a 2');
+  //     // if (now - Number(lastSeen) > SHOW_INTERVAL) {
+  //       console.log('#a 2 1');
+  //       setTimeout(() => {
+  //         console.log('#a 2 1 1');
+  //         setLastSeen(Date.now());
+  //         setIsOpen(true);
+  //       }, DELAY);
+  //     // }
+  //   }
+  // }, []);
 
   return (
     <div className="relative h-0">
@@ -74,13 +109,15 @@ const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
             <span>⸱</span>
             <span title="Last build">
               <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
-              <span>v{appVersion}</span> <span>⸱</span> last build : {' '}
+              <span>v{appVersion}</span> <span>⸱</span> last build :{' '}
               {getLastBuildText(new Date(packageJson.buildDate))}
             </span>
 
             <AboutDialog
               version={appVersion}
               buildDate={packageJson.buildDate}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
             />
           </div>
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
