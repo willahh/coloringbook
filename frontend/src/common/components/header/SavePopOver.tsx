@@ -1,13 +1,13 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef } from 'react';
-// import { UnsavedChangesComponent } from '@/module/book/components/UnchangedModificationsToast';
+import { UnsavedChangesComponent } from '@/module/book/components/UnchangedModificationsToast';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
-// import { saveBookAction } from '@/module/book/Book.actions';
-// import { useDispatch, useSelector } from '@/common/store';
-// import { selectBook } from '@/module/book/Book.slice';
+import { saveBookAction } from '@/module/book/Book.actions';
+import { useDispatch, useSelector } from '@/common/store';
+import { selectBook } from '@/module/book/Book.slice';
 interface SavePopOverProps {
   areLocalUpdatesSaved: boolean;
 }
@@ -16,8 +16,8 @@ const SavePopOver: React.FC<SavePopOverProps> = ({ areLocalUpdatesSaved }) => {
   const popoverButtonRef = useRef<HTMLButtonElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const { appearance } = useTheme();
-  // const dispatch = useDispatch();
-  // const { book } = useSelector(selectBook);
+  const dispatch = useDispatch();
+  const { book } = useSelector(selectBook);
 
   return (
     <>
@@ -75,13 +75,13 @@ const SavePopOver: React.FC<SavePopOverProps> = ({ areLocalUpdatesSaved }) => {
                     }
                   }}
                 >
-                  {/* <UnsavedChangesComponent
+                  <UnsavedChangesComponent
                     areLocalUpdatesSaved={areLocalUpdatesSaved}
                     onDontShowAgain={() => {}}
                     onSave={() => {
                       dispatch(saveBookAction({ bookId: book.id, book: book }));
                     }}
-                  /> */}
+                  />
                 </PopoverPanel>
               )}
             </AnimatePresence>
