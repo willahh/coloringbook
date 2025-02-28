@@ -6,7 +6,7 @@ import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 
 interface UnsavedChangesToastProps {
-  isModified: boolean;
+  // isModified: boolean;
   areLocalUpdatesSaved: boolean;
   onSave: () => void;
   onDontShowAgain?: () => void;
