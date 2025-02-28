@@ -8,19 +8,19 @@ import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
 import { ExportQuality } from '@/common/types/book.enum';
 import canvasService from './canvas.service';
 export class BookService {
-  static async getBook(bookId: number): Promise<Book> {
-    const response = await fetch(`${getBooksUrl()}/${bookId}`);
-    return await response.json();
-  }
+  // static async getBook(bookId: number): Promise<Book> {
+  //   const response = await fetch(`${getBooksUrl()}/${bookId}`);
+  //   return await response.json();
+  // }
 
-  static async updateBook(bookId: number, book: Partial<Book>) {
-    const response = await fetch(`${getBooksUrl()}/${bookId}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(book),
-    });
-    return await response.json();
-  }
+  // static async updateBook(bookId: number, book: Partial<Book>) {
+  //   const response = await fetch(`${getBooksUrl()}/${bookId}`, {
+  //     method: 'PATCH',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify(book),
+  //   });
+  //   return await response.json();
+  // }
 
   static prepareBookData(book: Book): { book: Book; isModified: boolean } {
     let isModified = false;
