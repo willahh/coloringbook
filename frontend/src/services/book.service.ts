@@ -5,9 +5,8 @@ import { Book, Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
 import { getBooksUrl } from '@/common/utils/api';
 import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
+import { ExportQuality } from '@/common/types/book.enum';
 import canvasService from './canvas.service';
-import { PageService } from './page.service';
-
 export class BookService {
   static async getBook(bookId: number): Promise<Book> {
     const response = await fetch(`${getBooksUrl()}/${bookId}`);
@@ -125,19 +124,18 @@ export class BookService {
 
   private async getPDF(
     canvas: fabric.Canvas,
-    pages: Page[]
+    pages: Page[],
+    quality: ExportQuality = ExportQuality.MEDIUM
   ): Promise<jsPDF | undefined> {
     if (!canvas || !pages || pages.length === 0) {
       return undefined;
     }
 
-    // const pdf = new jsPDF('p', 'mm', [dimensions.width, dimensions.height]);
     let pdf: jsPDF | undefined;
 
     // Taille maximale en mm (basée sur la plus grande dimension d'A4)
     const MAX_DIMENSION_MM = 297; // Hauteur d'A4 portrait ou largeur d'A4 paysage
-    // const DPI = 96;
-    const DPI = 300; // Résolution standard d'écran (ajustez à 300 pour impression haute qualité)
+    const DPI = quality; // Utiliser la qualité passée en paramètre
 
     for (let i = 0; i < pages.length; i++) {
       const page = pages[i];
