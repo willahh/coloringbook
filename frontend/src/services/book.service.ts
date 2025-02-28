@@ -183,7 +183,7 @@ export class BookService {
           pdf?.addImage(dataUrl, 'PNG', 0, 0, pageWidthMm, pageHeightMm);
         } catch (error) {
           console.error(
-            `Erreur lors de la génération de la page ${page.id}:`,
+            `Erreur lors de la génération de la page ${page.pageId}:`,
             error
           );
         }

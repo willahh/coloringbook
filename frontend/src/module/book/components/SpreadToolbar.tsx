@@ -84,6 +84,7 @@ export const SpreadToolbar: React.FC<{
               if (canvas) {
                 bookService.printPDF({
                   canvas: canvas,
+                  pages: pages,
                 });
               }
             }}
