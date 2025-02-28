@@ -8,9 +8,12 @@ import {
 import { ToolbarButton } from '../components/ToolbarButton';
 import { bookService } from '@/services/book.service';
 import useCanvasContext from '../useCanvasContext';
+import { useSelector } from '@/common/store';
+import { selectBookPages } from '../Book.slice';
 
 const BookToolbar: React.FC = () => {
   const { canvas } = useCanvasContext();
+  const pages = useSelector(selectBookPages);
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,
@@ -39,7 +42,7 @@ const BookToolbar: React.FC = () => {
               if (canvas) {
                 bookService.exportToPDF({
                   canvas: canvas,
-                  dimensions: { width: 640, height: 480 },
+                  pages: pages,
                 });
               }
             }}
@@ -48,10 +51,11 @@ const BookToolbar: React.FC = () => {
           </ToolbarButton>
           <ToolbarButton
             tooltipContent="Print"
-            onClick={() => {
+            onClick={async () => {
               if (canvas) {
-                bookService.printPDF({
+                await bookService.printPDF({
                   canvas: canvas,
+                  pages: pages,
                 });
               }
             }}

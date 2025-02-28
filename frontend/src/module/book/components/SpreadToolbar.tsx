@@ -11,7 +11,7 @@ import {
 import { bookService } from '@/services/book.service';
 import { ToolbarButton } from './ToolbarButton';
 import { useSelector } from '@/common/store';
-import { selectBook } from '../Book.slice';
+import { selectBook, selectBookPages } from '../Book.slice';
 import { useParams } from 'react-router';
 import useCanvasContext from '../useCanvasContext';
 
@@ -25,9 +25,11 @@ export const SpreadToolbar: React.FC<{
   children?: React.ReactNode;
 }> = () => {
   const { canvas } = useCanvasContext();
+  const pages = useSelector(selectBookPages);
   const { book } = useSelector(selectBook);
   const { pageId } = useParams<{ pageId?: string }>();
   const totalPages = book.pages.length;
+
   const currentPage = pageId ? parseInt(pageId) : 1;
 
   return (
@@ -69,7 +71,7 @@ export const SpreadToolbar: React.FC<{
               if (canvas) {
                 bookService.exportToPDF({
                   canvas: canvas,
-                  dimensions: { width: 640, height: 480 },
+                  pages: pages,
                 });
               }
             }}

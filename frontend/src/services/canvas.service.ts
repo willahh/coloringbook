@@ -35,7 +35,7 @@ class CanvasService {
     appearance: Appearance
   ) {
     if (canvas) {
-      const me = this;
+      // const me = this;
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
@@ -102,11 +102,11 @@ class CanvasService {
             // Evite le focus lorsque l'on a sélectionnée un élément, et que
             // l'on click sur la page pour le désélectionner.
             if (canvas.getActiveObjects().length === 0) {
-              me.pageFocus(canvas, spreadPages, page.pageId);
+              this.pageFocus(canvas, spreadPages, page.pageId);
             }
           });
           pageRect.on('mousedblclick', () => {
-            me.pageFocus(canvas, spreadPages, page.pageId);
+            this.pageFocus(canvas, spreadPages, page.pageId);
           });
 
           // pageRect.on('mouseover', () => {
@@ -244,9 +244,7 @@ class CanvasService {
    * @param margin La marge entre chaque page (par défaut : 10 pixels)
    * @returns La hauteur totale avec marges
    */
-  getTotalPageHeightCumulated(
-    canvas: fabric.Canvas
-  ): number {
+  getTotalPageHeightCumulated(canvas: fabric.Canvas): number {
     const pages = canvasService.getPages(canvas);
     if (pages.length === 0) return 0;
 
@@ -318,7 +316,11 @@ class CanvasService {
     const deltaY = centerCanvasY - centerPageY * zoom;
 
     // Appliquer la contrainte horizontale
-    deltaX = this.constrainHorizontalMovement(canvasWidth, pageWidth * zoom, deltaX);
+    deltaX = this.constrainHorizontalMovement(
+      canvasWidth,
+      pageWidth * zoom,
+      deltaX
+    );
 
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
@@ -327,10 +329,9 @@ class CanvasService {
   pageFocus(
     canvas: fabric.Canvas,
     pages: Page[],
-    pageId: number,
+    pageId: number
     // previousPageId?: number
   ): (() => void) | void {
-    
     let focusPageId = pageId;
     if (focusPageId === 0) {
       focusPageId = pages[0].pageId;
@@ -393,7 +394,7 @@ class CanvasService {
       // const offsetX = 77; // Largeur des onglets a gauche
       const offsetX = 0;
       newX = (canvasWidth - maxPageWidth + offsetX) / 2; // Centrer
-      newX = (canvasWidth / 2) - (maxPageWidth / 2)
+      newX = canvasWidth / 2 - maxPageWidth / 2;
     } else {
       newX = Math.min(Math.max(x, minX), maxX);
     }
@@ -618,7 +619,7 @@ class CanvasService {
       }
     });
 
-    console.log('#c2 bestPageId:', bestPageId)
+    console.log('#c2 bestPageId:', bestPageId);
 
     if (bestPageId !== null) {
       callbackfn(bestPageId);
@@ -627,25 +628,25 @@ class CanvasService {
 
   public async generatePagePreview(
     page: Page,
-    dimensions: { width: number; height: number }
+    canvasDimensions: { width: number; height: number }
   ): Promise<string> {
     // Créer un canvas HTML temporaire
     const tempCanvasElement = document.createElement('canvas');
-    tempCanvasElement.width = dimensions.width;
-    tempCanvasElement.height = dimensions.height;
+    tempCanvasElement.width = canvasDimensions.width;
+    tempCanvasElement.height = canvasDimensions.height;
 
     // Initialiser Fabric.js avec cet élément canvas
     const tempCanvas = new fabric.Canvas(tempCanvasElement, {
-      width: dimensions.width,
-      height: dimensions.height,
+      width: canvasDimensions.width,
+      height: canvasDimensions.height,
     });
 
     // Dessiner le rectangle de page
     const pageRect = new fabric.Rect({
       isPage: true,
       pageId: page.pageId,
-      width: dimensions.width,
-      height: dimensions.height,
+      width: canvasDimensions.width,
+      height: canvasDimensions.height,
       left: 0,
       top: 0,
       fill: 'white',
@@ -660,8 +661,8 @@ class CanvasService {
         element,
         0,
         0,
-        dimensions.width,
-        dimensions.height
+        canvasDimensions.width,
+        canvasDimensions.height
       );
       const fabricObject = await drawableElement.getObject();
       if (fabricObject) {
@@ -675,8 +676,8 @@ class CanvasService {
      */
     const size = {
       width: Math.sqrt(
-        dimensions.width * dimensions.width +
-          dimensions.height * dimensions.height
+        canvasDimensions.width * canvasDimensions.width +
+          canvasDimensions.height * canvasDimensions.height
       ),
       height: 28,
     };
@@ -723,6 +724,8 @@ class CanvasService {
 
     return dataURL;
   }
+
+  
 }
 
 const canvasService = new CanvasService();

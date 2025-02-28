@@ -1,0 +1,1 @@
+export const ENV_PROD: boolean = import.meta.env.PROD;

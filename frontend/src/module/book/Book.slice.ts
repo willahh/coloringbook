@@ -1,4 +1,4 @@
-import { shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
 import * as bookActions from './Book.actions.ts';
@@ -46,9 +46,11 @@ export const selectElements = createSelector(
 );
 
 // Sélecteur pour tous les éléments de toutes les pages (pour détecter les changements)
-export const selectAllElements = createSelector([selectBookPages], (pages) =>
-  pages.map((p) => p.elements), {
-    argsMemoizeOptions: {resultEqualityCheck: shallowEqual}
+export const selectAllElements = createSelector(
+  [selectBookPages],
+  (pages) => pages.map((p) => p.elements),
+  {
+    argsMemoizeOptions: { resultEqualityCheck: shallowEqual },
   }
 );
 
@@ -181,7 +183,7 @@ const slice = createSlice({
      */
     builder.addCase(bookActions.updatePageThumbImageData, (state, action) => {
       const { thumbnails } = action.payload;
-      
+
       state.book.pages = state.book.pages.map((page) => ({
         ...page,
         thumbImageData: thumbnails[page.pageId] || page.thumbImageData,

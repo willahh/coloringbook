@@ -11,6 +11,7 @@ import { ThemeProvider, useTheme } from './common/contexts/ThemeContext';
 import { appStore } from './common/store';
 import AppRoutes from './AppRoutes.tsx';
 import RouteTracker from './RouteTracker';
+import { ENV_PROD } from './common/utils/EnvUtils.ts';
 
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
 import(`./common/styles/main.${defaultAppearance}.css`);
@@ -22,14 +23,14 @@ function RenderApp() {
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
-            <RouteTracker />
+            {ENV_PROD && <RouteTracker />}
             <Tooltip.Provider delayDuration={0}>
               <AppRoutes />
             </Tooltip.Provider>
           </BrowserRouter>
         </Theme>
       </Provider>
-   </StrictMode>
+    </StrictMode>
   );
 }
 
