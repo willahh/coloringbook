@@ -8,5 +8,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping Render Service
-        run: curl -s https://coloringbook-frontend.onrender.com
+      - name: Ping coloringbook-frontend and coloringbook-backend render.com services
+        run: |
+          curl -s https://coloringbook-frontend.onrender.com
+          curl -s https://coloringbook-backend.onrender.com
