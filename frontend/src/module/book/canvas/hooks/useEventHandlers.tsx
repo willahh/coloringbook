@@ -36,6 +36,12 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
       Object.entries(eventHandlers).forEach(([event, handler]) => {
         canvas.on(event as keyof fabric.CanvasEvents, handler); // @ts-nocheck
       });
+
+      
+      // [feature#02] WIP
+      // canvas.on('mousedblclick', () => {
+      //   canvasService.pageFocus(canvas, pages, pageId);
+      // });
       
       canvas.on('object:modified', (e: fabric.ModifiedEvent) => {
         console.log('#03 object:modified', e);

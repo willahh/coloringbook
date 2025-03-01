@@ -9,7 +9,7 @@ import BookHeader from './components/BookHeader';
 import * as bookActions from './Book.actions';
 import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
-import BookToolbar from './bookToolbar/BookToolbar';
+import BookToolbar from './components/BookToolbar';
 
 const BookPage: React.FC = () => {
   let { bookId = 0, pageId = 1 } = useParams<{
