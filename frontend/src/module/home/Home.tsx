@@ -90,7 +90,7 @@ const HomePage: React.FC = () => {
 
   // Books data
   const [books, setBooks] = useState<Book[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [highlightBookId, setHighlightBookId] = useState(0);
 
   const fetchBooks = async () => {
@@ -100,7 +100,7 @@ const HomePage: React.FC = () => {
     } catch (error) {
       console.error('Error fetching books:', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -114,89 +114,87 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <>
-      {loading ? (
-        <LoadingScreen />
+    <Layout>
+      {isLoading ? (
+        <LoadingScreen isLoading={isLoading} />
       ) : (
-        <Layout>
-          <div className="w-full h-screen items-center">
-            <div className="flex items-center h-full">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">
+        <div className="w-full h-screen items-center">
+          <div className="flex items-center h-full">
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-16 md:px-0 w-full">
+              <div
+                className={`md:col-span-2 xl:col-span-3  ${
+                  gridDebug ? gridBorderDebugCls : ''
+                }`}
+              ></div>
+              <div
+                className={`md:col-span-8 xl:col-span-6 w-full flex items-center  ${
+                  gridDebug ? gridBorderDebugCls : ''
+                }`}
+              >
                 <div
-                  className={`md:col-span-2 xl:col-span-3  ${
-                    gridDebug ? gridBorderDebugCls : ''
-                  }`}
-                ></div>
-                <div
-                  className={`md:col-span-8 xl:col-span-6 w-full flex items-center  ${
-                    gridDebug ? gridBorderDebugCls : ''
-                  }`}
-                >
-                  <div
-                    className="grid grid-cols-1 place-items-end
+                  className="grid grid-cols-1 place-items-end
           md:grid-cols-8 md:grid-rows-2
           xl:grid-cols-6 xl:grid-rows-3 gap-4 w-full"
-                  >
-                    {pageName === 'home' && (
-                      <>
-                        <UserBooks
-                          pageName={pageName}
-                          books={books}
-                          loading={loading}
-                          minItems={20}
-                          highlightBookId={highlightBookId}
-                          itemClassName={`col-span-1 bg-cover bg-center w-full px-2
+                >
+                  {pageName === 'home' && (
+                    <>
+                      <UserBooks
+                        pageName={pageName}
+                        books={books}
+                        loading={isLoading}
+                        minItems={20}
+                        highlightBookId={highlightBookId}
+                        itemClassName={`col-span-1 bg-cover bg-center w-full px-2
                     
   ${gridDebug ? 'border border-primary-500' : ''}`}
-                        />
+                      />
 
-                        <div
-                          className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
+                      <div
+                        className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
                          md:col-span-4 md:row-span-4 md:row-start-1 md:col-start-3 md:flex md:self-center"
-                        >
-                          <ContentDiv
-                            books={books}
-                            onBookCreationSuccess={onBookCreationSuccess}
-                          />
-                        </div>
-                      </>
-                    )}
-                    {pageName === 'library' && (
-                      <>
-                        <Link
-                          to={`/`}
-                          tabIndex={-1}
-                          className="flex items-center justify-center w-full h-full "
-                        >
-                          <ToolbarButton className="w-full h-full ">
-                            <ArrowLeftIcon className="w-8" />
-                          </ToolbarButton>
-                        </Link>
-                        <UserBooks
-                          pageName={pageName}
+                      >
+                        <ContentDiv
                           books={books}
-                          loading={loading}
-                          minItems={23}
-                          highlightBookId={highlightBookId}
-                          itemClassName={`flex justify-center items-center col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
+                          onBookCreationSuccess={onBookCreationSuccess}
+                        />
+                      </div>
+                    </>
+                  )}
+                  {pageName === 'library' && (
+                    <>
+                      <Link
+                        to={`/`}
+                        tabIndex={-1}
+                        className="flex items-center justify-center w-full h-full "
+                      >
+                        <ToolbarButton className="w-full h-full ">
+                          <ArrowLeftIcon className="w-8" />
+                        </ToolbarButton>
+                      </Link>
+                      <UserBooks
+                        pageName={pageName}
+                        books={books}
+                        loading={isLoading}
+                        minItems={23}
+                        highlightBookId={highlightBookId}
+                        itemClassName={`flex justify-center items-center col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
                     
 ${gridDebug ? 'border border-primary-500' : ''}`}
-                        />
-                      </>
-                    )}
-                  </div>
+                      />
+                    </>
+                  )}
                 </div>
-                <div
-                  className={`md:col-span-2 xl:col-span-3 w-full ${
-                    gridDebug ? gridBorderDebugCls : ''
-                  }`}
-                ></div>
               </div>
+              <div
+                className={`md:col-span-2 xl:col-span-3 w-full ${
+                  gridDebug ? gridBorderDebugCls : ''
+                }`}
+              ></div>
             </div>
           </div>
-        </Layout>
+        </div>
       )}
-    </>
+    </Layout>
   );
 };
 

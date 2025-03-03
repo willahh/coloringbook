@@ -52,53 +52,51 @@ const BookPage: React.FC = () => {
   }
 
   return (
-    <>
-      <Layout
-        className={`w-full  dark:bg-gray-700 bg-primary-400
+    <Layout
+      className={`w-full  dark:bg-gray-700 bg-primary-400
           
            bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
             dark:brightness-125
           `}
-        header={
-          <BookHeader
-            book={book}
-            onBookNameEdit={(newName) => {
-              dispatch(
-                bookActions.editBookNameAction({ bookId, bookName: newName })
-              );
-            }}
+      header={
+        <BookHeader
+          book={book}
+          onBookNameEdit={(newName) => {
+            dispatch(
+              bookActions.editBookNameAction({ bookId, bookName: newName })
+            );
+          }}
+        />
+      }
+    >
+      {!isLoading ? (
+        <>
+          <BookToolbar />
+          <PagesPanel
+            ref={pagesPanelRef}
+            className="w-16 md:w-24 xl:w-30 border-r border-primary-200 dark:border-primary-800"
+            pages={book.pages}
+            addPageButtonClick={() => {}}
+          ></PagesPanel>
+          <SidePanel
+            ref={sidePanelRef}
+            setSidePanelWidth={setSidePanelWidth}
+            className="relative z-20"
           />
-        }
-      >
-        {!isLoading ? (
-          <>
-            <BookToolbar />
-            <PagesPanel
-              ref={pagesPanelRef}
-              className="w-16 md:w-24 xl:w-30 border-r border-primary-200 dark:border-primary-800"
-              pages={book.pages}
-              addPageButtonClick={() => {}}
-            ></PagesPanel>
-            <SidePanel
-              ref={sidePanelRef}
-              setSidePanelWidth={setSidePanelWidth}
-              className="relative z-20"
-            />
 
-            {book.pages.length > 0 && (
-              <SpreadViewerCanvas
-                pages={book.pages}
-                sidePanelWidth={sidePanelWidth}
-                pagesPanelWidth={pagesPanelWidth}
-              />
-            )}
-            {/* <SpreadToolbar /> */}
-          </>
-        ) : (
-          <LoadingScreen />
-        )}
-      </Layout>
-    </>
+          {book.pages.length > 0 && (
+            <SpreadViewerCanvas
+              pages={book.pages}
+              sidePanelWidth={sidePanelWidth}
+              pagesPanelWidth={pagesPanelWidth}
+            />
+          )}
+          {/* <SpreadToolbar /> */}
+        </>
+      ) : (
+        <LoadingScreen isLoading={isLoading} />
+      )}
+    </Layout>
   );
 };
 
