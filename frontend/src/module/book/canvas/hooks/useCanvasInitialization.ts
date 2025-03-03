@@ -20,7 +20,9 @@ export function useCanvasInitialization(
 
     console.log('#c INSTANCIATE OF A NEW CANVAS');
 
-    const container = canvasRef.current.closest('main');
+    const container = canvasRef.current.closest(
+      'div[data-id="cb-canvas-wrapper"]'
+    );
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: container?.clientWidth,
       height: container?.clientHeight,

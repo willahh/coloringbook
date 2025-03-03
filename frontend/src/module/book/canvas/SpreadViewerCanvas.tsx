@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import { ErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router';
 
 import { Page } from '@apptypes/book';
@@ -76,28 +77,34 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
-    <div ref={containerRef} className="relative flex-1">
-      <PagesNavigation />
-      <canvas ref={canvasRef} />
-
+    <ErrorBoundary fallback={<div>sd</div>}>
       <div
-        data-id="inline-toolbar"
-        className={`absolute bottom-20 right-12 z-10
+        ref={containerRef}
+        data-id="cb-canvas-wrapper"
+        className="relative flex-1"
+      >
+        <PagesNavigation />
+        <canvas ref={canvasRef} className="w-full h-full" />
+
+        <div
+          data-id="inline-toolbar"
+          className={`absolute bottom-20 right-12 z-10
           rounded-full px-4 py-2
          bg-secondary-500 dark:bg-secondary-500  text-white dark:text-white
          text-sm flex gap-2`}
-      >
-        <button>Modification</button>
-        <button>Color</button>
-        <button>Border color</button>
-        <button>Border style</button>
-        <button>Border radius</button>
-        <button>Lock</button>
-        <button>Duplicate</button>
-        <button>Delete</button>
-        <button>Plus</button>
+        >
+          <button>Modification</button>
+          <button>Color</button>
+          <button>Border color</button>
+          <button>Border style</button>
+          <button>Border radius</button>
+          <button>Lock</button>
+          <button>Duplicate</button>
+          <button>Delete</button>
+          <button>Plus</button>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 };
 

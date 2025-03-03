@@ -34,8 +34,10 @@ class CanvasService {
     dimensions: { width: number; height: number },
     appearance: Appearance
   ) {
-    if (canvas) {
-      // const me = this;
+    if (canvas && canvas.elements.lower) {
+      // Ajout d'un garde fou personnalisé canvas.elements.lower car fabric.js
+      // peut plancer sur un canvas.getElement()
+      
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
@@ -321,7 +323,6 @@ class CanvasService {
       pageWidth * zoom,
       deltaX
     );
-
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
 
@@ -724,8 +725,6 @@ class CanvasService {
 
     return dataURL;
   }
-
-  
 }
 
 const canvasService = new CanvasService();

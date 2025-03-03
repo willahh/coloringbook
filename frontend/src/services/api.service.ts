@@ -8,8 +8,16 @@ class APIService {
   // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   // book
   // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  static async fetchBooks(): Promise<Book[]> {
+    const response = await axios.get<Book[]>(
+      `${getAPIURL()}/books`
+    );
+    return response.data;
+  }
   static async fetchBook(bookId: number): Promise<Book> {
-    const response = await axios.get<Book>(`${getAPIURL()}/books/${bookId}`);
+    const response = await axios.get<Book>(
+      `${getAPIURL()}/books/${bookId}`
+    );
     return response.data;
   }
 

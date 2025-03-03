@@ -1,8 +1,8 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.4.0",
-  "buildDate": "2025-02-28T19:20:40.696Z",
+  "version": "0.4.1",
+  "buildDate": "2025-03-03T14:05:03.868Z",
   "type": "module",
   "scripts": {
     "dev": "npm run build:css && vite --host",
@@ -44,6 +44,7 @@
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
     "react-dom": "^19.0.0",
+    "react-error-boundary": "^5.0.0",
     "react-ga4": "^2.1.0",
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.5.0",
