@@ -9,7 +9,7 @@ import { ToolbarButton } from '../../ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
 import { useDispatch, useSelector } from '@/common/store';
 import { PageService } from '@/services/page.service';
-import * as BookActions from '../../../Book.actions';
+import * as BookActions from '../../../book.actions';
 import { BookPageParams } from '@/common/interfaces';
 import { selectBookPages } from '../../../Book.slice';
 

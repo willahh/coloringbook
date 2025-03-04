@@ -1,4 +1,4 @@
-import { Tab, TabType } from './Sidepanel.types';
+import { Tab, TabType } from './sidepanel.types';
 import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 
 const Tabs: React.FC<{

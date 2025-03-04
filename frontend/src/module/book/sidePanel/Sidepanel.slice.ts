@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { TabType } from './Sidepanel.types';
+import { TabType } from './sidepanel.types';
 
 interface SidePanelState {
   isOpen: true;

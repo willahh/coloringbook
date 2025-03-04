@@ -1,7 +1,7 @@
 import { shallowEqual } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import * as bookActions from './Book.actions.ts';
+import * as bookActions from './book.actions.ts';
 import * as elementActions from './element/Element.action.ts';
 import { Book } from '@apptypes/book.ts';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity.ts';

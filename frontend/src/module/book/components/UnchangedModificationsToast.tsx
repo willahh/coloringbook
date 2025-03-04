@@ -83,17 +83,17 @@ export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
 };
 
 const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
-  isModified,
+  areLocalUpdatesSaved,
   onSave,
 }) => {
-  const [show, setIsShow] = useState(isModified);
+  const [show, setIsShow] = useState(areLocalUpdatesSaved);
   const [isClosed, setIsClosed] = useState(false);
   useEffect(() => {
-    setIsShow(isModified);
+    setIsShow(areLocalUpdatesSaved);
     if (show) {
       setIsClosed(false);
     }
-  }, [isModified, show]);
+  }, [areLocalUpdatesSaved, show]);
 
   const onDontShowAgain = () => {
     console.log('onDontShowAgain');
@@ -104,8 +104,7 @@ const UnsavedChangesToast: React.FC<UnsavedChangesToastProps> = ({
       autoClose={false}
       message={
         <UnsavedChangesComponent
-          areLocalUpdatesSaved={!isModified}
-          isModified={isModified}
+          areLocalUpdatesSaved={!areLocalUpdatesSaved}
           onDontShowAgain={onDontShowAgain}
           onSave={onSave}
         />

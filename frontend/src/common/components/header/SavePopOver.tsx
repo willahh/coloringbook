@@ -5,7 +5,7 @@ import { UnsavedChangesComponent } from '@/module/book/components/UnchangedModif
 import { useTheme } from '@/common/contexts/ThemeContext';
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
-import { saveBookAction } from '@/module/book/Book.actions';
+import { saveBookAction } from '@/module/book/book.actions';
 import { useDispatch, useSelector } from '@/common/store';
 import { selectBook } from '@/module/book/Book.slice';
 interface SavePopOverProps {

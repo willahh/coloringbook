@@ -4,7 +4,7 @@ import canvasService from '@/services/canvas.service';
 import { PageService } from '@/services/page.service';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { updatePageThumbImageData } from '../../Book.actions';
+import { updatePageThumbImageData } from '../../book.actions';
 
 const useUpdatePageThumbnails = (
   canvas: fabric.Canvas | null,

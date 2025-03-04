@@ -6,7 +6,7 @@ import Layout from '../layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import SidePanel from './sidePanel/SidePanel';
 import BookHeader from './components/BookHeader';
-import * as bookActions from './Book.actions';
+import * as bookActions from './book.actions';
 import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
 import BookToolbar from './components/BookToolbar';
