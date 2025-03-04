@@ -446,7 +446,7 @@ class CanvasService {
 
       // Ajouter les écouteurs pour l’effet de survol
       fabricObject.on('mouseover', (e: fabric.TPointerEventInfo) => {
-        console.log('#c2 mouseover');
+        //console.log('#c2 mouseover');
         e.target?.set({
           stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
           strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
@@ -464,7 +464,7 @@ class CanvasService {
       });
 
       fabricObject.on('mouseout', (e: fabric.TPointerEventInfo) => {
-        console.log('#c2 mouseout');
+        //console.log('#c2 mouseout');
         e.target?.set({
           stroke: null, // Supprimer la bordure
           strokeWidth: 0, // Réinitialiser l’épaisseur

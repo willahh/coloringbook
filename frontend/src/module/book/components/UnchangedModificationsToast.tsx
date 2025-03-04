@@ -21,10 +21,8 @@ const getCmdChar = () => {
 
 export const UnsavedChangesComponent: React.FC<UnsavedChangesToastProps> = ({
   areLocalUpdatesSaved,
-  // onDontShowAgain,
   onSave,
 }) => {
-  // areLocalUpdatesSaved = !areLocalUpdatesSaved;
   return (
     <div className="shadow-md z-20 rounded-2xl m-2 max-w-md transition-all text-lg border-2 border-secondary-500 overflow-hidden">
       <div className="flex items-center gap-4 bg-secondary-100 dark:bg-secondary-500 text-secondary-500 dark:text-white p-4">

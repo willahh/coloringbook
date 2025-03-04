@@ -13,12 +13,12 @@ import BookToolbar from './components/BookToolbar';
 import LoadingScreen from '@/common/components/LoadingScreen';
 
 const BookPage: React.FC = () => {
-  let { bookId = 0, pageId = 1 } = useParams<{
+  let { bookId = 0/*, pageId = 1 */} = useParams<{
     bookId: string;
     pageId?: string;
   }>();
   bookId = Number(bookId) || 0;
-  pageId = Number(pageId) || 1;
+  // pageId = Number(pageId) || 1;
 
   const dispatch = useDispatch();
   const { book, error, isLoading } = useSelector(selectBook);

@@ -9,7 +9,7 @@ import { Fragment, useRef } from 'react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
-import { FaXTwitter, FaInternetExplorer } from 'react-icons/fa6'; // Pour l'icône de X (Twitter)
+import { FaXTwitter, FaInternetExplorer } from 'react-icons/fa6';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import Newsletter from './Newsletter';
 

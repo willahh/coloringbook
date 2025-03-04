@@ -25,6 +25,8 @@ const initialState: BookState = {
     name: '',
     pageCount: 0,
     pages: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   areLocalUpdatesSaved: true,
   refreshGraphics: false,
@@ -93,6 +95,20 @@ const slice = createSlice({
         state.error = null;
         state.areLocalUpdatesSaved = true;
         state.book = book;
+      }
+    );
+
+    /**
+     * loadBookFromJson
+     */
+    builder.addCase(
+      bookActions.loadBookFromJson,
+      (state, { payload: book }) => {
+        console.log('loadBookFromJson book:', book)
+        state.book = book;
+        state.isLoading = false;
+        state.error = null;
+        state.areLocalUpdatesSaved = false;
       }
     );
 

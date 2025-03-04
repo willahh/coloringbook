@@ -5,15 +5,83 @@ import * as fabric from 'fabric';
 import { Book, Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
 import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
-import { ExportQuality } from '@/common/types/book.enum';
+import { BookFormat, ExportQuality } from '@/common/types/book.enum';
 import canvasService from './canvas.service';
+
+/**
+ * The version of the book data used in the application.
+ * This constant is used to ensure compatibility between different versions of book data.
+ */
+const DEFAULT_BOOK_DATA_VERSION = '1.0';
+const LATEST_BOOK_DATA_VERSION = '1.0';
+
 export class BookService {
-  static prepareBookData(book: Book): { book: Book; isModified: boolean } {
+  static migrateBookJson(
+    jsonData: Partial<Book>,
+    fileVersion: string
+  ): Partial<Book> {
+    const data = { ...jsonData };
+
+    if (fileVersion !== LATEST_BOOK_DATA_VERSION) {
+      throw new Error(
+        `The file version uploaded (${fileVersion}) is different from the latest book data version required: ${LATEST_BOOK_DATA_VERSION}`
+      );
+    }
+
+    // if (fileVersion === '1.0' && targetVersion === '1.1') {
+    //   data = {
+    //     ...data,
+    //     version: '1.1',
+    //     // Ajoute d’autres transformations ici
+    //   };
+    // }
+
+    return data;
+  }
+
+  static normalizeBookData(book: Partial<Book>): {
+    book: Book;
+    isModified: boolean;
+  } {
     let isModified = false;
-    if (!book.pages || book.pages.length === 0) {
-      const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
-      const defaultPages = Array.from(
-        { length: book.pageCount },
+    let normalizedBook: Partial<Book> = { ...book };
+
+    // 1. Vérifie et normalise la version
+    if (!normalizedBook.version) {
+      console.info(
+        `book.version is not defined, set it to the current default value ${LATEST_BOOK_DATA_VERSION}`
+      );
+      normalizedBook.version = LATEST_BOOK_DATA_VERSION;
+      // isModified = true;
+    }
+
+    // 2. Applique les migrations si la version est ancienne
+    if (
+      normalizedBook.version &&
+      normalizedBook.version !== LATEST_BOOK_DATA_VERSION
+    ) {
+      normalizedBook =
+        this.migrateBookJson(normalizedBook, LATEST_BOOK_DATA_VERSION) ||
+        normalizedBook;
+      // isModified = true;
+    }
+
+    // 3. Normalise les champs essentiels
+    // normalizedBook.id = normalizedBook.id || 0;
+    // normalizedBook.name = normalizedBook.name || 'Untitled Book';
+    normalizedBook.format = normalizedBook.format || BookFormat.A4_PORTRAIT;
+    normalizedBook.pageCount = normalizedBook.pageCount || 6;
+
+    // 4. Gère les pages
+    if (!normalizedBook.pages || normalizedBook.pages.length === 0) {
+      const aspectRatio = BookFormatHelper.getAspectRatio(
+        normalizedBook.format
+      );
+      if (!aspectRatio) {
+        throw new Error(`Format invalide : ${normalizedBook.format}`);
+      }
+      normalizedBook.pages = Array.from(
+        { length: normalizedBook.pageCount || 6 },
         (_, i): Page => ({
           pageId: i + 1,
           pageNumber: i + 1,
@@ -22,11 +90,73 @@ export class BookService {
         })
       );
       isModified = true;
-      book.pages = defaultPages;
+    } else {
+      // Normalise chaque page existante
+      normalizedBook.pages = normalizedBook.pages.map((page) => ({
+        pageId: page.pageId || 0,
+        pageNumber: page.pageNumber || 0,
+        aspectRatio:
+          page.aspectRatio ||
+          BookFormatHelper.getAspectRatio(
+            normalizedBook.format as BookFormat
+          ) ||
+          1,
+        elements: page.elements || [],
+      }));
     }
 
-    return { book: book, isModified: isModified };
+    // 5. Normalise createdAt et updatedAt
+    normalizedBook.createdAt =
+      normalizedBook.createdAt || new Date().toISOString();
+    normalizedBook.updatedAt =
+      normalizedBook.updatedAt || normalizedBook.createdAt;
+
+    // 6. Valide les données
+    if (
+      // normalizedBook.id < 0 ||
+      !normalizedBook.name ||
+      normalizedBook.pageCount < 0
+    ) {
+      throw new Error(
+        'Données du livre invalides : ID, nom ou pageCount invalides'
+      );
+    }
+
+    return {
+      book: normalizedBook as Book, // Cast explicite pour garantir le type Book
+      isModified: isModified,
+    };
   }
+
+  // static migrateBookJson(normalizedBook: Partial<Book>, LATEST_BOOK_DATA_VERSION: string): Partial<Book> {
+  //   throw new Error('Method not implemented.');
+  // }
+
+  // static prepareBookData(book: Book): { book: Book; isModified: boolean } {
+  //   let isModified = false;
+  //   if (!book.pages || book.pages.length === 0) {
+  //     const aspectRatio = BookFormatHelper.getAspectRatio(book.format);
+  //     const defaultPages = Array.from(
+  //       { length: book.pageCount },
+  //       (_, i): Page => ({
+  //         pageId: i + 1,
+  //         pageNumber: i + 1,
+  //         aspectRatio: aspectRatio,
+  //         elements: [],
+  //       })
+  //     );
+  //     isModified = true;
+  //     book.pages = defaultPages;
+  //   }
+  //   if (!book.version) {
+  //     console.info(
+  //       `book.version is not defined, set it to the current default value BOOK_DATA_VERSION: ${LATEST_BOOK_DATA_VERSION}`
+  //     );
+  //     book.version = LATEST_BOOK_DATA_VERSION;
+  //   }
+
+  //   return { book: book, isModified: isModified };
+  // }
 
   static transformPagesToSpread(pages: Page[]): Page[][] {
     if (pages.length > 0) {
@@ -227,7 +357,7 @@ export class BookService {
   public exportBookToFile(book: Book) {
     const now = new Date();
     const dateTimeStr = format(now, 'yyyy-MM-dd-HHmmss');
-    const fileName = `coloring-book-export-${dateTimeStr}.json`;
+    const fileName = `coloring-book-export-${book.id}-${dateTimeStr}.json`;
     const jsonContent = JSON.stringify(book, null, 2);
     const blob = new Blob([jsonContent], { type: 'application/json' });
     const url = window.URL.createObjectURL(blob);
@@ -239,6 +369,45 @@ export class BookService {
     link.click();
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
+  }
+
+  public importBookFromJson(fileContent: string, currentBookId: number): Book {
+    console.log('importBookFromJson')
+    try {
+      
+      const jsonData = JSON.parse(fileContent);
+      const fileVersion = jsonData.version || DEFAULT_BOOK_DATA_VERSION;
+      console.log('[importBookFromJson] File version detected:', fileVersion);
+
+      // Applique les migrations si nécessaire pour atteindre la version actuelle
+      const migratedData = BookService.migrateBookJson(jsonData, fileVersion);
+
+      // Normalise les données pour gérer les champs manquants ou optionnels
+      const { book: normalizedBook } =
+        BookService.normalizeBookData(migratedData);
+
+      // Valide les données normalisées
+      if (!normalizedBook.id || !normalizedBook.name) {
+        throw new Error(
+          'Données du livre invalides : ID, nom ou pages manquants'
+        );
+      }
+      if (normalizedBook.id && normalizedBook.id !== currentBookId) {
+        throw new Error(
+          `L’id importé (${normalizedBook.id}) diffère de l’id actuel (${currentBookId}). Génération d’un nouvel id unique.`
+        );
+      }
+
+      // Retourne le livre prêt à être utilisé
+      return normalizedBook;
+    } catch (error) {
+      console.error('Erreur lors de l’import du livre JSON:', error);
+      throw new Error(
+        `Impossible d’importer le livre : ${
+          error instanceof Error ? error.message : 'Format JSON invalide'
+        }`
+      );
+    }
   }
 }
 

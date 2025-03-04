@@ -19,7 +19,7 @@ export const fetchBookByIdAction = createAsyncThunk<
   FetchBookByIdActionPayload
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
-  const { book: newBook, isModified } = BookService.prepareBookData(book);
+  const { book: newBook, isModified } = BookService.normalizeBookData(book);
 
   return { book: newBook, isModified: isModified };
 });

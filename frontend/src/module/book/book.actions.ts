@@ -5,7 +5,6 @@ import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
-
 /**
  * fetchBookByIdAction
  */
@@ -19,8 +18,9 @@ export const fetchBookByIdAction = createAsyncThunk<
   }
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
   const book = await APIService.fetchBook(bookId);
-  const { book: newBook, isModified } = BookService.prepareBookData(book);
+  const { book: newBook, isModified } = BookService.normalizeBookData(book);
 
+  console.log('book', book);
   return { book: newBook, isModified };
 });
 
@@ -34,10 +34,17 @@ export const saveBookAction = createAsyncThunk<
     book: Book;
   }
 >('BOOKS/BOOKS_SAVE_BOOK', async ({ bookId, book }) => {
-  const savedBook = await APIService.saveBook(bookId, book);
+  const { book: newBook } = BookService.normalizeBookData(book);
+  const savedBook = await APIService.saveBook(bookId, newBook);
 
+  console.log('=> savedBook', savedBook);
   return savedBook;
 });
+
+/**
+ * loadBookFromJson
+ */
+export const loadBookFromJson = createAction<Book>('book/loadBookFromJson');
 
 /**
  * editBookNameAction

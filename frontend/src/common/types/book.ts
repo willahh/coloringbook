@@ -98,11 +98,16 @@ export interface Page {
 
 export interface Book {
   id: number;
+  version?: string;
   name: string;
   format: BookFormat;
   coverImage: string;
   pageCount: number;
   pages: Page[];
+  // createdAt: Date;
+  // updatedAt: Date;
+  createdAt: string; // ISO 8601
+  updatedAt: string; // ISO 8601
 }
 
 export function isShape(
