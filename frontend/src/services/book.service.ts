@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
+import { format } from 'date-fns'; // Importe la fonction format de date-fns
 import * as fabric from 'fabric';
 import { Book, Page } from '@apptypes/book';
 import { BookPageParams } from '@/common/interfaces';
@@ -7,7 +8,6 @@ import { BookFormatHelper } from '@/common/utils/BookFormatHelper';
 import { ExportQuality } from '@/common/types/book.enum';
 import canvasService from './canvas.service';
 export class BookService {
-
   static prepareBookData(book: Book): { book: Book; isModified: boolean } {
     let isModified = false;
     if (!book.pages || book.pages.length === 0) {
@@ -223,6 +223,25 @@ export class BookService {
       ? pages[currentIndex + 1].pageId
       : pages[currentIndex - 1]?.pageId;
   }
+
+  public exportBookToFile(book: Book) {
+    const now = new Date();
+    const dateTimeStr = format(now, 'yyyy-MM-dd-HHmmss');
+    const fileName = `coloring-book-export-${dateTimeStr}.json`;
+    const jsonContent = JSON.stringify(book, null, 2);
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }
 }
 
+// FIXME: Utiliser soit des méthodes statiques, soit instancier le service quelque part
+// la seconde approche est meilleur pour faire de l'injection de dépendance.
 export const bookService = new BookService();

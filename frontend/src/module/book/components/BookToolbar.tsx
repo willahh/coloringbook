@@ -9,11 +9,12 @@ import { ToolbarButton } from './ToolbarButton';
 import { bookService } from '@/services/book.service';
 import useCanvasContext from '../useCanvasContext';
 import { useSelector } from '@/common/store';
-import { selectBookPages } from '../Book.slice';
+import { selectBook, selectBookPages } from '../Book.slice';
 
 const BookToolbar: React.FC = () => {
   const { canvas } = useCanvasContext();
   const pages = useSelector(selectBookPages);
+  const { book } = useSelector(selectBook);
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,
@@ -30,7 +31,12 @@ const BookToolbar: React.FC = () => {
           <ToolbarButton tooltipContent="Save">
             <ArrowDownOnSquareStackIcon {...iconProps} />
           </ToolbarButton>
-          <ToolbarButton tooltipContent="Export">
+          <ToolbarButton
+            tooltipContent="Export"
+            onClick={() => {
+              bookService.exportBookToFile(book);
+            }}
+          >
             <DocumentArrowDownIcon {...iconProps} />
           </ToolbarButton>
           <ToolbarButton tooltipContent="Import">
