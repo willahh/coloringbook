@@ -11,23 +11,23 @@ import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
 import BookToolbar from './components/BookToolbar';
 import LoadingScreen from '@/common/components/LoadingScreen';
+import ErrorDialog from '@/common/components/ErrorDialog';
 
 const BookPage: React.FC = () => {
-  let { bookId = 0/*, pageId = 1 */} = useParams<{
+  let { bookId = 0 /*, pageId = 1 */ } = useParams<{
     bookId: string;
     pageId?: string;
   }>();
   bookId = Number(bookId) || 0;
-  // pageId = Number(pageId) || 1;
 
   const dispatch = useDispatch();
   const { book, error, isLoading } = useSelector(selectBook);
 
-  // Manage panels size
   const sidePanelRef = useRef<HTMLDivElement>(null);
   const pagesPanelRef = useRef<HTMLDivElement>(null);
   const [sidePanelWidth, setSidePanelWidth] = useState<number>(0);
   const [pagesPanelWidth, setPagesPanelWidth] = useState<number>(0);
+  const [isErrorDialogOpen, setIsErrorDialogOpen] = useState<boolean>(true);
 
   useEffect(() => {
     const updateWidths = () => {
@@ -47,10 +47,6 @@ const BookPage: React.FC = () => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]);
 
-  if (error) {
-    console.error('TODO: Display an error message', error);
-  }
-
   return (
     <Layout
       className={`w-full  dark:bg-gray-700 bg-primary-400
@@ -69,7 +65,16 @@ const BookPage: React.FC = () => {
         />
       }
     >
-      {!isLoading ? (
+      {error ? (
+        <ErrorDialog
+          title={`Erreur ${error.status}`}
+          message={error.message}
+          isOpen={isErrorDialogOpen}
+          onClose={() => {
+            setIsErrorDialogOpen(false);
+          }}
+        />
+      ) : !isLoading ? (
         <>
           <BookToolbar />
           <PagesPanel

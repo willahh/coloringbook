@@ -3,21 +3,29 @@ import axios from 'axios';
 import { Book } from '@apptypes/book';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { getAPIURL } from '@/common/utils/api';
+import { handleAxiosError } from '@/common/utils/errorUtils';
+
+// TODO: mettre api dans un autre fichier
+const api = axios.create({
+  baseURL: getAPIURL(),
+});
+
+// Intercepteur pour capturer les erreurs et les transformer
+api.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(handleAxiosError(error))
+);
 
 class APIService {
   // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   // book
   // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   static async fetchBooks(): Promise<Book[]> {
-    const response = await axios.get<Book[]>(
-      `${getAPIURL()}/books`
-    );
+    const response = await axios.get<Book[]>(`${getAPIURL()}/books`);
     return response.data;
   }
   static async fetchBook(bookId: number): Promise<Book> {
-    const response = await axios.get<Book>(
-      `${getAPIURL()}/books/${bookId}`
-    );
+    const response = await axios.get<Book>(`${getAPIURL()}/books/${bookId}`);
     return response.data;
   }
 

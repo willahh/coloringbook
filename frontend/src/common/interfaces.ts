@@ -18,3 +18,11 @@ export interface PageFabricObject extends fabric.Object {
   isPage?: boolean;
   pageId: number;
 }
+
+export interface AxiosErrorResponse {
+  status: number;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+export type BookError = AxiosErrorResponse | undefined;

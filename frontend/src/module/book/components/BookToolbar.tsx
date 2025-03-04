@@ -1,11 +1,10 @@
 import { useRef, useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit'; // Ajoute cette import
 import {
-  // ArrowDownOnSquareStackIcon,
-  ArrowDownTrayIcon,
   DocumentArrowDownIcon,
-  DocumentArrowUpIcon,
   PrinterIcon,
 } from '@heroicons/react/24/outline';
+import { PiFilePdfThin, PiExportThin } from 'react-icons/pi';
 
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
@@ -43,33 +42,30 @@ const BookToolbar: React.FC = () => {
 
       try {
         const content = e.target?.result as string;
-        const importedBook = bookService.importBookFromJson(content, book.id);
+        const importedBook = bookService.importBookFromJson(content/*, book.id*/);
         dispatch(loadBookFromJson(importedBook));
       } catch (error) {
         const errorMessage =
           error instanceof Error ? error.message : 'Erreur inconnue';
-        console.error('Erreur d’import:', error);
         setError(errorMessage);
       }
     };
     reader.readAsText(file);
 
-    // Réinitialise l’input pour permettre de sélectionner le même fichier à nouveau
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
   };
 
-  const closeError = () => {
-    setError(null);
-  };
-
   return (
     <>
       <ErrorDialog
-        errorMessage={error || ''}
+        title="Erreur d’import"
+        message={error || ''}
         isOpen={!!error}
-        onClose={closeError}
+        onClose={() => {
+          setError(null);
+        }}
       />
       <div>
         <div
@@ -77,71 +73,78 @@ const BookToolbar: React.FC = () => {
          bg-primary-50 dark:bg-primary-950
          border-r border-primary-100 dark:border-primary-900 `}
         >
-          <div>
-            <ToolbarButton
-              tooltipContent="Sauvegarder"
-              onClick={() => {
-                dispatch(saveBookAction({ bookId: book.id, book: book }));
-              }}
-            >
-              {areLocalUpdatesSaved ? (
-                <CloudSavedIcon className="w-6 h-6 fill-secondary-500 " />
-              ) : (
-                <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
-              )}
+          <ToolbarButton
+            tooltipContent="Sauvegarder"
+            onClick={async () => {
+              try {
+                console.log('#a before dispatch saveBookAction');
+                await dispatch(
+                  saveBookAction({ bookId: book.id, book: book })
+                ).then(unwrapResult);
+              } catch (error) {
+                const errorMessage =
+                  error instanceof Error ? error.message : 'Erreur inconnue';
+                setError(errorMessage);
+              }
+            }}
+          >
+            {areLocalUpdatesSaved ? (
+              <CloudSavedIcon className="w-6 h-6 fill-secondary-500 " />
+            ) : (
+              <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
+            )}
 
-              {/* <ArrowDownOnSquareStackIcon {...iconProps} /> */}
-            </ToolbarButton>
+            {/* <ArrowDownOnSquareStackIcon {...iconProps} /> */}
+          </ToolbarButton>
+          <ToolbarButton
+            tooltipContent="Export"
+            onClick={() => {
+              bookService.exportBookToFile(book);
+            }}
+          >
+            <PiExportThin {...iconProps} />
+          </ToolbarButton>
+          <label className="cursor-pointer">
             <ToolbarButton
-              tooltipContent="Export"
-              onClick={() => {
-                bookService.exportBookToFile(book);
-              }}
+              tooltipContent="Import"
+              onClick={() => fileInputRef.current?.click()}
             >
               <DocumentArrowDownIcon {...iconProps} />
             </ToolbarButton>
-            <label className="cursor-pointer">
-              <ToolbarButton
-                tooltipContent="Import"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                <DocumentArrowUpIcon {...iconProps} />
-              </ToolbarButton>
-              <input
-                type="file"
-                accept="application/json"
-                ref={fileInputRef}
-                onChange={handleFileChange}
-                style={{ display: 'none' }}
-              />
-            </label>
-            <ToolbarButton
-              tooltipContent="Download"
-              onClick={() => {
-                if (canvas) {
-                  bookService.exportToPDF({
-                    canvas: canvas,
-                    pages: pages,
-                  });
-                }
-              }}
-            >
-              <ArrowDownTrayIcon {...iconProps} />
-            </ToolbarButton>
-            <ToolbarButton
-              tooltipContent="Print"
-              onClick={async () => {
-                if (canvas) {
-                  await bookService.printPDF({
-                    canvas: canvas,
-                    pages: pages,
-                  });
-                }
-              }}
-            >
-              <PrinterIcon {...iconProps} />
-            </ToolbarButton>
-          </div>
+            <input
+              type="file"
+              accept="application/json"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              style={{ display: 'none' }}
+            />
+          </label>
+          <ToolbarButton
+            tooltipContent="Download"
+            onClick={() => {
+              if (canvas) {
+                bookService.exportToPDF({
+                  canvas: canvas,
+                  pages: pages,
+                });
+              }
+            }}
+          >
+            <PiFilePdfThin {...iconProps} />
+          </ToolbarButton>
+          <ToolbarButton
+            tooltipContent="Print"
+            onClick={async () => {
+              if (canvas) {
+                await bookService.printPDF({
+                  canvas: canvas,
+                  pages: pages,
+                });
+              }
+            }}
+          >
+            <PrinterIcon {...iconProps} />
+          </ToolbarButton>
         </div>
       </div>
     </>

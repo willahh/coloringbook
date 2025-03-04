@@ -9,13 +9,15 @@ import { Fragment, useRef } from 'react';
 import { useTheme } from '@/common/contexts/ThemeContext'; // Assure-toi que ce chemin est correct
 
 interface ErrorDialogProps {
-  errorMessage: string;
+  title?: string;
+  message: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
 const ErrorDialog: React.FC<ErrorDialogProps> = ({
-  errorMessage,
+  title = 'Erreur',
+  message,
   isOpen,
   onClose,
 }) => {
@@ -58,10 +60,10 @@ const ErrorDialog: React.FC<ErrorDialogProps> = ({
                     p-6 text-sm text-left align-middle text-gray-700 dark:text-gray-300`}
               >
                 <DialogTitle className="text-lg font-semibold text-red-700 dark:text-red-300 mb-4">
-                  Erreur d’import
+                  {title}
                 </DialogTitle>
                 <p className="text-gray-600 dark:text-gray-400 mb-6">
-                  {errorMessage}
+                  {message}
                 </p>
                 <div className="mt-4">
                   <button

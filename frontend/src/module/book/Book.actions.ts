@@ -4,6 +4,7 @@ import { BookService } from '@/services/book.service';
 import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
+import { AxiosErrorResponse, BookError } from '@/common/interfaces';
 
 /**
  * fetchBookByIdAction
@@ -15,13 +16,16 @@ export const fetchBookByIdAction = createAsyncThunk<
   },
   {
     bookId: number;
+  },
+  { rejectValue: BookError }
+>('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }, { rejectWithValue }) => {
+  try {
+    const book = await APIService.fetchBook(bookId);
+    const { book: newBook, isModified } = BookService.normalizeBookData(book);
+    return { book: newBook, isModified };
+  } catch (error) {
+    return rejectWithValue(error as AxiosErrorResponse);
   }
->('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }) => {
-  const book = await APIService.fetchBook(bookId);
-  const { book: newBook, isModified } = BookService.normalizeBookData(book);
-
-  console.log('book', book);
-  return { book: newBook, isModified };
 });
 
 /**
@@ -33,11 +37,10 @@ export const saveBookAction = createAsyncThunk<
     bookId: number;
     book: Book;
   }
->('BOOKS/BOOKS_SAVE_BOOK', async ({ bookId, book }) => {
+>('book/saveBookAction', async ({ bookId, book }) => {
   const { book: newBook } = BookService.normalizeBookData(book);
   const savedBook = await APIService.saveBook(bookId, newBook);
 
-  console.log('=> savedBook', savedBook);
   return savedBook;
 });
 
@@ -55,7 +58,7 @@ export const editBookNameAction = createAsyncThunk<
     bookId: number;
     bookName: string;
   }
->('BOOKS/EDIT_BOOK_NAME', async ({ bookId, bookName }) => {
+>('book/editBookNameAction', async ({ bookId, bookName }) => {
   const book = await APIService.updateBook(bookId, { name: bookName });
   return book;
 });
@@ -67,21 +70,21 @@ export const editBookNameAction = createAsyncThunk<
 export const updateBookAction = createAction<{
   bookId: number;
   book: Book;
-}>('BOOKS/UPDATE_BOOK');
+}>('book/updateBookAction');
 
 /**
  * addPageAction
  */
 export const addPageAction = createAction<{
   page: Page;
-}>('PAGES/ADD_PAGE');
+}>('page/addPageAction');
 
 /**
  * deletePageAction
  */
 export const deletePageAction = createAction<{
   pageId: number;
-}>('PAGES/DELETE_PAGE');
+}>('page/deletePageAction');
 
 /**
  * AddGraphicAssetToPageAction
@@ -100,7 +103,7 @@ export const AddGraphicAssetToPageAction = createAsyncThunk<
     graphicAsset: GraphicAsset;
     pageId: number;
   }
->('PAGES_ADD_GRAPHIC_ASSET_TO_PAGE', ({ pageId, graphicAsset }) => {
+>('asset/AddGraphicAssetToPageAction', ({ pageId, graphicAsset }) => {
   const element = ElementService.getElementFromGraphicAsset(graphicAsset);
   return { pageId: pageId, element: element };
 });
@@ -110,4 +113,4 @@ export const AddGraphicAssetToPageAction = createAsyncThunk<
  */
 export const updatePageThumbImageData = createAction<{
   thumbnails: { [key: number]: string };
-}>('BOOKS/UPDATE_PAGE_THUMB_IMAGE_DATA');
+}>('book/updatePageThumbImageData');

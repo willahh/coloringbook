@@ -371,7 +371,7 @@ export class BookService {
     window.URL.revokeObjectURL(url);
   }
 
-  public importBookFromJson(fileContent: string, currentBookId: number): Book {
+  public importBookFromJson(fileContent: string/*, currentBookId: number*/): Book {
     console.log('importBookFromJson');
     try {
       const jsonData = JSON.parse(fileContent);
@@ -391,11 +391,11 @@ export class BookService {
           'Données du livre invalides : ID, nom ou pages manquants'
         );
       }
-      if (normalizedBook.id && normalizedBook.id !== currentBookId) {
-        throw new Error(
-          `L’id importé (${normalizedBook.id}) diffère de l’id actuel (${currentBookId}).`
-        );
-      }
+      // if (normalizedBook.id && normalizedBook.id !== currentBookId) {
+      //   throw new Error(
+      //     `L’id importé (${normalizedBook.id}) diffère de l’id actuel (${currentBookId}).`
+      //   );
+      // }
 
       // Retourne le livre prêt à être utilisé
       return normalizedBook;

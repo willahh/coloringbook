@@ -1,5 +1,6 @@
 import { shallowEqual } from 'react-redux';
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { createSelector } from 'reselect';
 import * as bookActions from './book.actions.ts';
 import * as elementActions from './element/Element.action.ts';
@@ -7,6 +8,7 @@ import { Book } from '@apptypes/book.ts';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity.ts';
 import { BookFormat } from '@apptypes/book.enum.ts';
 import { RootState } from '@/common/store.ts';
+import { BookError } from '@/common/interfaces.ts';
 
 interface BookState {
   book: Book;
@@ -14,7 +16,7 @@ interface BookState {
   refreshGraphics: boolean;
   graphicAssets: GraphicAsset[];
   isLoading: boolean;
-  error: string | null;
+  error: BookError;
 }
 
 const initialState: BookState = {
@@ -32,7 +34,7 @@ const initialState: BookState = {
   refreshGraphics: false,
   graphicAssets: [],
   isLoading: false,
-  error: null,
+  error: undefined,
 };
 
 export const selectIsLoading = (state: RootState) => state.book.isLoading;
@@ -60,7 +62,7 @@ const slice = createSlice({
   name: 'books',
   initialState,
   reducers: {
-    // fill in primary logic here
+   
   },
   extraReducers: (builder) => {
     /**
@@ -68,15 +70,22 @@ const slice = createSlice({
      */
     builder.addCase(bookActions.fetchBookByIdAction.pending, (state) => {
       state.isLoading = true;
-      state.error = null;
+      state.error = undefined;
     });
     builder.addCase(
       bookActions.fetchBookByIdAction.fulfilled,
       (state, { payload: { book, isModified } }) => {
         state.isLoading = false;
-        state.error = null;
+        state.error = undefined;
         state.book = book;
         state.areLocalUpdatesSaved = !isModified;
+      }
+    );
+    builder.addCase(
+      bookActions.fetchBookByIdAction.rejected,
+      (state, action: PayloadAction<BookError>) => {
+        state.isLoading = false;
+        state.error = action.payload;
       }
     );
 
@@ -85,14 +94,14 @@ const slice = createSlice({
      */
     builder.addCase(bookActions.saveBookAction.pending, (state) => {
       state.isLoading = true;
-      state.error = null;
+      state.error = undefined;
       state.areLocalUpdatesSaved = false;
     });
     builder.addCase(
       bookActions.saveBookAction.fulfilled,
       (state, { payload: book }) => {
         state.isLoading = false;
-        state.error = null;
+        state.error = undefined;
         state.areLocalUpdatesSaved = true;
         state.book = book;
       }
@@ -104,10 +113,10 @@ const slice = createSlice({
     builder.addCase(
       bookActions.loadBookFromJson,
       (state, { payload: book }) => {
-        console.log('loadBookFromJson book:', book)
+        console.log('loadBookFromJson book:', book);
         state.book = book;
         state.isLoading = false;
-        state.error = null;
+        state.error = undefined;
         state.areLocalUpdatesSaved = false;
       }
     );
@@ -127,13 +136,13 @@ const slice = createSlice({
      */
     builder.addCase(bookActions.editBookNameAction.pending, (state) => {
       state.isLoading = true;
-      state.error = null;
+      state.error = undefined;
     });
     builder.addCase(
       bookActions.editBookNameAction.fulfilled,
       (state, { payload: book }) => {
         state.isLoading = false;
-        state.error = null;
+        state.error = undefined;
         state.book = book;
       }
     );

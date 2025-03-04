@@ -700,6 +700,9 @@
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
   }
+  .mb-6 {
+    margin-bottom: calc(var(--spacing) * 6);
+  }
   .-ml-1 {
     margin-left: calc(var(--spacing) * -1);
   }
@@ -1651,6 +1654,9 @@
   .text-red-600 {
     color: var(--color-red-600);
   }
+  .text-red-700 {
+    color: var(--color-red-700);
+  }
   .text-secondary-100 {
     color: var(--color-secondary-100);
   }
@@ -1819,6 +1825,14 @@
     --tw-duration: 100ms;
     transition-duration: 100ms;
   }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+  .duration-400 {
+    --tw-duration: 400ms;
+    transition-duration: 400ms;
+  }
   .duration-1000 {
     --tw-duration: 1000ms;
     transition-duration: 1000ms;
@@ -1827,17 +1841,9 @@
     --tw-duration: 150ms;
     transition-duration: 150ms;
   }
-  .duration-200 {
-    --tw-duration: 200ms;
-    transition-duration: 200ms;
-  }
   .duration-300 {
     --tw-duration: 300ms;
     transition-duration: 300ms;
-  }
-  .duration-400 {
-    --tw-duration: 400ms;
-    transition-duration: 400ms;
   }
   .duration-500 {
     --tw-duration: 500ms;
@@ -2146,6 +2152,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-primary-700);
+      }
+    }
+  }
+  .hover\:bg-red-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-red-600);
       }
     }
   }
@@ -2939,6 +2952,11 @@
       background-color: color-mix(in oklab, var(--color-primary-950) 90%, transparent);
     }
   }
+  .dark\:bg-red-700 {
+    &:where(.dark, .dark *) {
+      background-color: var(--color-red-700);
+    }
+  }
   .dark\:bg-secondary-500 {
     &:where(.dark, .dark *) {
       background-color: var(--color-secondary-500);
@@ -3029,6 +3047,11 @@
   .dark\:text-primary-300 {
     &:where(.dark, .dark *) {
       color: var(--color-primary-300);
+    }
+  }
+  .dark\:text-red-300 {
+    &:where(.dark, .dark *) {
+      color: var(--color-red-300);
     }
   }
   .dark\:text-secondary-50 {
@@ -3130,6 +3153,15 @@
       &:hover {
         @media (hover: hover) {
           background-color: var(--color-primary-950);
+        }
+      }
+    }
+  }
+  .dark\:hover\:bg-red-800 {
+    &:where(.dark, .dark *) {
+      &:hover {
+        @media (hover: hover) {
+          background-color: var(--color-red-800);
         }
       }
     }
