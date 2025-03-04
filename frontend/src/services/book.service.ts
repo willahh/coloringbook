@@ -372,9 +372,8 @@ export class BookService {
   }
 
   public importBookFromJson(fileContent: string, currentBookId: number): Book {
-    console.log('importBookFromJson')
+    console.log('importBookFromJson');
     try {
-      
       const jsonData = JSON.parse(fileContent);
       const fileVersion = jsonData.version || DEFAULT_BOOK_DATA_VERSION;
       console.log('[importBookFromJson] File version detected:', fileVersion);
@@ -394,7 +393,7 @@ export class BookService {
       }
       if (normalizedBook.id && normalizedBook.id !== currentBookId) {
         throw new Error(
-          `L’id importé (${normalizedBook.id}) diffère de l’id actuel (${currentBookId}). Génération d’un nouvel id unique.`
+          `L’id importé (${normalizedBook.id}) diffère de l’id actuel (${currentBookId}).`
         );
       }
 
