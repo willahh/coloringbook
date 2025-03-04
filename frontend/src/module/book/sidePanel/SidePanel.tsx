@@ -116,7 +116,8 @@ const SidePanel: React.FC<{
   return (
     <aside
       ref={ref}
-      data-id="sidepanel"
+      data-id="side-panel"
+      data-testid="side-panel"
       className={`${className || ''} h-full z-10 transition-all`}
       style={{
         width: isSidebarOpen ? width : 0,
