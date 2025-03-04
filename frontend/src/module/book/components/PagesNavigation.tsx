@@ -54,6 +54,7 @@ export const PagesNavigation: React.FC = () => {
       <Tooltip content="Page précédente">
         <Link
           to={`/book/${bookId}/pages/${previousPageId}`}
+          data-testid="pages-navigation-button-previous"
           className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
               ${isFirstPage ? ' opacity-0' : ''}
           text-primary-800 dark:text-primary-200
@@ -71,6 +72,7 @@ export const PagesNavigation: React.FC = () => {
       <Tooltip content="Page suivante">
         <Link
           to={`/book/${bookId}/pages/${nextPageId}`}
+          data-testid="pages-navigation-button-next"
           className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
               ${isLastPage ? ' opacity-0' : ''}
               text-primary-800 dark:text-primary-200

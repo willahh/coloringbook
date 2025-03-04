@@ -15,7 +15,8 @@ const Tabs: React.FC<{
       <div data-id="sp-tabs-items">
         {tabs.map((tab, index) => (
           <button
-            key={`tab-${index}`}
+            key={`side-panel-tab-${index}`}
+            data-testid={`side-panel-tab-${index}`}
             data-id={tab.id}
             onClick={() => onTabClick(tab.id)}
             className={`relative flex justify-center items-center w-18 h-18

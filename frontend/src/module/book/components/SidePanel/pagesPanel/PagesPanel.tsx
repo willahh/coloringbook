@@ -272,6 +272,7 @@ export const PagesPanel: React.FC<{
   return (
     <div
       data-id="pages-panel"
+      data-testid="pages-panel"
       ref={ref}
       className={`${className || ''} flex flex-col gap-4 overflow-y-auto
        z-20
