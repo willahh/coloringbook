@@ -21,7 +21,7 @@ export const Tooltip = ({
             <RadixTooltip.Portal>
               <RadixTooltip.Content
                 arrowPadding={10}
-                className="transition-all animate-slideUpAndFade duration-1000 ease-in-out select-none pointer-events-none"
+                className="transition-all animate-slideUpAndFade duration-1000 ease-in-out select-none pointer-events-none z-50"
               >
                 <RadixTooltip.Arrow className="fill-secondary-500"></RadixTooltip.Arrow>
 
