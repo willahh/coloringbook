@@ -1,40 +1,19 @@
-import BreadCrumb from '@components/BreadCrumb';
-import Header from '@/common/components/header/Header';
-import InlineEdit from '@components/InlineEdit';
-import { useSelector } from '@/common/store';
+import { useMediaQuery } from 'react-responsive';
+
 import { Book } from '@apptypes/book';
-import { selectIsLoading } from '../Book.slice';
+import BookHeaderMobile from './BookHeaderMobile';
+import BookHeaderDesktop from './BookHeaderDesktop';
 
 const BookHeader: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
-  const isLoading = useSelector(selectIsLoading);
+  const isMobile = useMediaQuery({ maxWidth: 767 }); // Breakpoint md - 1 (767px)
 
-  return (
-    <Header isLoading={isLoading}>
-      <BreadCrumb
-        pages={[
-          {
-            current: false,
-            href: '/library',
-            content: 'Bibliothèque',
-            description: 'Accéder à ma bibliothèque de livres',
-          },
-          ...(book
-            ? [
-                {
-                  current: true,
-                  href: '/books/' + book.id,
-                  content: (
-                    <InlineEdit value={book.name} onEdit={onBookNameEdit} />
-                  ),
-                },
-              ]
-            : []),
-        ]}
-      />
-    </Header>
-  );
+  if (isMobile) {
+    return <BookHeaderMobile book={book} onBookNameEdit={onBookNameEdit} />;
+  } else {
+    return <BookHeaderDesktop book={book} onBookNameEdit={onBookNameEdit} />;
+  }
 };
 export default BookHeader;

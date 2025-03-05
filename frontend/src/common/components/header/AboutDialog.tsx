@@ -41,7 +41,7 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
   return (
     <>
       <div
-        className="flex gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 font-semibold hover:bg-secondary-600 hover:text-white cursor-pointer transition-all"
+        className="flex items-center gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 text-sm font-semibold hover:bg-secondary-600 hover:text-white cursor-pointer transition-all"
         onClick={() => setIsOpen(true)}
       >
         <svg

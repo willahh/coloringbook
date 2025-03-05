@@ -13,7 +13,8 @@ import BookToolbar from './components/BookToolbar';
 import LoadingScreen from '@/common/components/LoadingScreen';
 import ErrorDialog from '@/common/components/ErrorDialog';
 
-const BookPage: React.FC = () => {
+
+const BookPageDesktop: React.FC = () => {
   let { bookId = 0 /*, pageId = 1 */ } = useParams<{
     bookId: string;
     pageId?: string;
@@ -47,13 +48,12 @@ const BookPage: React.FC = () => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]);
 
+
   return (
     <Layout
-      className={`w-full  dark:bg-gray-700 bg-primary-400
-          
-           bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
-            dark:brightness-125
-          `}
+      className={`w-screen h-screen overflow-hidden dark:bg-gray-700 bg-primary-400
+      bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
+      dark:brightness-125`}
       header={
         <BookHeader
           book={book}
@@ -105,4 +105,4 @@ const BookPage: React.FC = () => {
   );
 };
 
-export default BookPage;
+export default BookPageDesktop;

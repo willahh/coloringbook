@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
@@ -15,7 +13,6 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import { useToast } from '@/common/hooks/useToast';
-import { ToolbarButton } from '../book/components/ToolbarButton';
 import APIService from '@/services/api.service';
 import LoadingScreen from '@/common/components/LoadingScreen';
 
@@ -114,7 +111,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Layout>
+    <Layout className='h-screen overflow-y-auto overflow-x-hidden'>
       {isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
@@ -132,57 +129,30 @@ const HomePage: React.FC = () => {
                 }`}
               >
                 <div
-                  className="grid grid-cols-1 place-items-end
+                  className="grid grid-cols-1
           md:grid-cols-8 md:grid-rows-2
           xl:grid-cols-6 xl:grid-rows-3 gap-4 w-full"
                 >
-                  {pageName === 'home' && (
-                    <>
-                      <UserBooks
-                        pageName={pageName}
-                        books={books}
-                        loading={isLoading}
-                        minItems={20}
-                        highlightBookId={highlightBookId}
-                        itemClassName={`col-span-1 bg-cover bg-center w-full px-2
+                  <UserBooks
+                    pageName={pageName}
+                    books={books}
+                    loading={isLoading}
+                    minItems={20}
+                    highlightBookId={highlightBookId}
+                    itemClassName={`col-span-1 bg-cover bg-center w-full px-2
                     
   ${gridDebug ? 'border border-primary-500' : ''}`}
-                      />
+                  />
 
-                      <div
-                        className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
+                  <div
+                    className="xl:col-span-2 xl:row-span-2 xl:row-start-2 xl:col-start-3 
                          md:col-span-4 md:row-span-4 md:row-start-1 md:col-start-3 md:flex md:self-center"
-                      >
-                        <ContentDiv
-                          books={books}
-                          onBookCreationSuccess={onBookCreationSuccess}
-                        />
-                      </div>
-                    </>
-                  )}
-                  {pageName === 'library' && (
-                    <>
-                      <Link
-                        to={`/`}
-                        tabIndex={-1}
-                        className="flex items-center justify-center w-full h-full "
-                      >
-                        <ToolbarButton className="w-full h-full ">
-                          <ArrowLeftIcon className="w-8" />
-                        </ToolbarButton>
-                      </Link>
-                      <UserBooks
-                        pageName={pageName}
-                        books={books}
-                        loading={isLoading}
-                        minItems={23}
-                        highlightBookId={highlightBookId}
-                        itemClassName={`flex justify-center items-center col-span-1 bg-cover bg-center w-full aspect-[1/1.414]  px-2
-                    
-${gridDebug ? 'border border-primary-500' : ''}`}
-                      />
-                    </>
-                  )}
+                  >
+                    <ContentDiv
+                      books={books}
+                      onBookCreationSuccess={onBookCreationSuccess}
+                    />
+                  </div>
                 </div>
               </div>
               <div
