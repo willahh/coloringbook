@@ -102,9 +102,11 @@ class CanvasService {
 
           pageRect.on('mousedown:before', () => {
             if (
-              canvas.getActiveObject() // Désactiver le pan si un objet est en édition
+              isMobile || // Désactivation du focus sur la page au clic sur la page sur mobile
+              canvas.getActiveObject() // Désactivation du focus sur la page si un objet est activé (mode édition)
             )
               return;
+
             // Focus sur la page, uniquement si aucune sélection n'est présente.
             // Evite le focus lorsque l'on a sélectionnée un élément, et que
             // l'on click sur la page pour le désélectionner.
@@ -342,35 +344,6 @@ class CanvasService {
     if (focusPageId === 0) {
       focusPageId = pages[0].pageId;
     }
-
-    // // Restaurer la bordure de la page précédente, si elle existe
-    // if (previousPageId && previousPageId !== focusPageId) {
-    //   const previousPageRect = this.getPageRectbyPageId(canvas, previousPageId);
-    //   if (previousPageRect) {
-    //     // const initialState = this.pageBorderStates.get(previousPageId) || {
-    //     const initialState = {
-    //       stroke: null,
-    //       strokeWidth: 0,
-    //       strokeDashArray: null,
-    //     };
-    //     previousPageRect.set({
-    //       stroke: initialState.stroke,
-    //       strokeWidth: initialState.strokeWidth,
-    //       strokeDashArray: initialState.strokeDashArray,
-    //     });
-    //     canvas.renderAll();
-    //   }
-    // }
-
-    // const currentPageRect = this.getPageRectbyPageId(canvas, focusPageId);
-    // if (currentPageRect) {
-    //   currentPageRect.set({
-    //     stroke: themeColors.getSecondaryColor(),
-    //     strokeWidth: 2,
-    //     strokeDashArray: [5, 5],
-    //   });
-    //   canvas.renderAll();
-    // }
 
     const vpt = this.getPageFocusCoordinates(canvas, focusPageId);
     if (vpt) {
