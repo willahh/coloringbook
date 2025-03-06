@@ -40,7 +40,6 @@ const Layout: React.FC<LayoutProps> = ({
       {griddDebug && <GridDebug />}
       <div
         data-id="page-layout-container"
-        // className={`flex flex-col min-h-screen`}
         style={{
           background: 'url(assets/home_background.svg) bottom right no-repeat',
         }}

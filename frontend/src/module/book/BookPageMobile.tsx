@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '@/common/store';
 import * as bookActions from './book.actions';
 import { selectBook } from './Book.slice';
-import BookToolbar from './components/BookToolbar';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { useParams } from 'react-router-dom';
 import Layout from '../layout';

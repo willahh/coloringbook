@@ -1,7 +1,3 @@
-import Logo from '@assets/coloring-book-logo-wide.svg?react';
-import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
-import LogoIcon from '@assets/coloring-book-icon.svg?react';
-import { useTheme } from '@/common/contexts/ThemeContext';
 import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
 import SavePopOver from './SavePopOver';

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importe AnimatePresence
 import {
   DocumentArrowDownIcon,
@@ -18,7 +18,11 @@ import useCanvasContext from '@/module/book/useCanvasContext';
 import { footerButtonClasses } from '../utils/buttonStyles';
 import { Link } from 'react-router-dom';
 import { Tooltip } from './Tooltip';
-import { backgroundRadialStyles, mobileSideBarBackgroundRadialStyles } from '../utils/backgroundStyles';
+import {
+  backgroundRadialStyles,
+  mobileSideBarBackgroundRadialStyles,
+} from '../utils/backgroundStyles';
+import { ANALYTICS_EVENTS, trackEvent } from '../utils/analyticsEvents';
 
 interface MobileSidebarMenuProps {
   isOpen: boolean;
@@ -41,6 +45,14 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
     className: 'w-8 h-8',
     strokeWidth: 0.5,
   };
+
+  useEffect(() => {
+    if (isOpen) {
+      trackEvent(ANALYTICS_EVENTS.MENU_OPENED);
+    } else {
+      trackEvent(ANALYTICS_EVENTS.MENU_CLOSED);
+    }
+  }, [isOpen]);
 
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
