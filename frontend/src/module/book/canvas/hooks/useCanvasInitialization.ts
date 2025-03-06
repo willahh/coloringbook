@@ -1,20 +1,19 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import * as fabric from 'fabric';
 import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
 import canvasService from '@/services/canvas.service';
 import useCanvasContext from '../../useCanvasContext';
 import { getSecondaryColor } from '@/common/utils/themeColors';
+import { useTouchControls } from './useTouchControls';
 
 export function useCanvasInitialization(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
 ) {
   const { setCanvas, setViewportTransform } = useCanvasContext();
+  const canvasInstance = useRef<fabric.Canvas | null>(null);
+  const scrollbarInstance = useRef<Scrollbars | null>(null);
 
-  /**
-   * [Canvas.initialize]
-   * Only one instanciation on component mount
-   */
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -31,10 +30,10 @@ export function useCanvasInitialization(
       allowTouchScrolling: true,
     });
 
+    canvasInstance.current = canvas;
     setCanvas(canvas);
     canvasService.canvas = canvas;
 
-    // Gestion du zoom et du scroll
     const mousewheel = makeMouseWheelWithAnimation(
       canvas,
       { min: 0.02, max: 256 },
@@ -43,20 +42,27 @@ export function useCanvasInitialization(
     );
     canvas.on('mouse:wheel', mousewheel);
 
-    // Ajout des scrollbars
     const scrollbar = new Scrollbars(canvas, {
       fill: getSecondaryColor(),
-      // fill: '#f43f5f',
       stroke: 'rgba(0,0,255,.5)',
       lineWidth: 5,
       scrollbarSize: 8,
-      offsetY: 62, // Footer height
+      offsetY: 62,
     });
+    scrollbarInstance.current = scrollbar;
 
     return () => {
       scrollbar.dispose();
       canvas.off('mouse:wheel', mousewheel);
       canvas.dispose();
+      canvasInstance.current = null;
+      scrollbarInstance.current = null;
     };
-  }, []);
+  }, [canvasRef, setCanvas, setViewportTransform]);
+
+  useTouchControls({
+    canvas: canvasInstance.current,
+    scrollbar: scrollbarInstance.current,
+    setViewportTransform,
+  });
 }

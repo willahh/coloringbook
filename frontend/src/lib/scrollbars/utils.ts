@@ -6,9 +6,6 @@ interface CustomPointerEventInfo<EventType extends Event> {
   viewportPoint: { x: number; y: number };
 }
 
-/**
- * makeMouseWheelWithAnimation, fonctionne mais il y a du flickering.
- */
 export const makeMouseWheelWithAnimation =
   (
     canvas: fabric.Canvas,
