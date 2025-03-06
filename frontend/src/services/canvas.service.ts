@@ -26,7 +26,7 @@ class CanvasService {
   private registerEventListeners() {}
 
   getVerticalSpaceBetweenPages(isMobile: boolean) {
-    console.log('getVerticalSpaceBetweenPages isMobile', isMobile)
+    console.log('getVerticalSpaceBetweenPages isMobile', isMobile);
     return isMobile ? 60 : 200;
   }
   drawPagesElementsAndMask(
@@ -100,8 +100,11 @@ class CanvasService {
             }),
           });
 
-          pageRect.on('mouseup', () => {
-            canvas.getActiveObjects();
+          pageRect.on('mousedown:before', () => {
+            if (
+              canvas.getActiveObject() // Désactiver le pan si un objet est en édition
+            )
+              return;
             // Focus sur la page, uniquement si aucune sélection n'est présente.
             // Evite le focus lorsque l'on a sélectionnée un élément, et que
             // l'on click sur la page pour le désélectionner.
@@ -245,7 +248,10 @@ class CanvasService {
   /**
    * Calcule la hauteur totale cumulée des pages avec une marge entre elles.
    */
-  getTotalPageHeightCumulated(canvas: fabric.Canvas, isMobile: boolean): number {
+  getTotalPageHeightCumulated(
+    canvas: fabric.Canvas,
+    isMobile: boolean
+  ): number {
     const pages = canvasService.getPages(canvas);
     if (pages.length === 0) return 0;
 
