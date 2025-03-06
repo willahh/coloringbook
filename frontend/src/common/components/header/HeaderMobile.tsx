@@ -64,7 +64,6 @@ const HeaderMobile: React.FC<HeaderProps> = ({
           />
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
-          {/* <LogoIcon className="w-6" /> */}
         </div>
       </header>
     </div>

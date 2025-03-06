@@ -1,11 +1,11 @@
 import React from 'react';
-import { useMediaQuery } from 'react-responsive';
 
+import useIsMobile from '@/common/hooks/useIsMobile';
 import BookPageMobile from './BookPageMobile';
 import BookPageDesktop from './BookPageDesktop';
 
 const BookPage: React.FC = () => {
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Breakpoint md - 1 (767px)
+  const isMobile = useIsMobile();
 
   if (isMobile) {
     return <BookPageMobile />;

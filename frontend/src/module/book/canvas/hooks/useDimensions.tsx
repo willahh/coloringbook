@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, RefObject } from 'react';
 import { debounce } from 'lodash';
+import useIsMobile from '@/common/hooks/useIsMobile';
 
 export const useDimensions = (
   containerRef: RefObject<HTMLElement | null>,
@@ -10,6 +11,7 @@ export const useDimensions = (
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
   });
+  const isMobile = useIsMobile();
 
   const updateDimensions = useCallback(
     debounce(() => {
@@ -18,7 +20,14 @@ export const useDimensions = (
           document.documentElement.clientHeight,
           window.innerHeight || 0
         );
-        const width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
+
+        // Ajoute un offset de 50 en desktop pour compenser la toolbar à gauche
+        let offset = 0;
+        if (!isMobile) {
+          offset = 50;
+        }
+        const width =
+          window.innerWidth - sidePanelWidth - pagesPanelWidth - offset;
         setDimensions({
           width: width,
 

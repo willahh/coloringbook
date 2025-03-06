@@ -1,5 +1,7 @@
 import { Bars3Icon } from '@heroicons/react/24/outline';
-import { GrUndo, GrRedo } from "react-icons/gr";
+import { LuUndo, LuRedo } from 'react-icons/lu';
+import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
+
 import Header from '@/common/components/header/Header';
 import MobileSidebarMenu from '@components/MobileSidebarMenu';
 import { footerButtonClasses } from '@/common/utils/buttonStyles';
@@ -10,7 +12,6 @@ import { selectIsLoading } from '../Book.slice';
 import MobileDrawer from './MobileDrawer'; // Importe le nouveau composant
 
 import { useState } from 'react';
-
 
 const BookFooterMobile: React.FC<{
   book: Book | null;
@@ -30,36 +31,28 @@ const BookFooterMobile: React.FC<{
           <Bars3Icon className="w-6 h-6" />
         </button>
         <button
-          className={`${footerButtonClasses}`}
-          onClick={() => {}}
-        >
-          <GrUndo className="w-6 h-6" />
-        </button>
-        <button
-          className={`${footerButtonClasses}`}
-          onClick={() => {}}
-        >
-          <GrRedo className="w-6 h-6" />
-        </button>
-
-        <button
           className={`${footerButtonClasses} `}
           onClick={() => setIsDrawerOpen(true)}
         >
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+          {isDrawerOpen ? (
+            <IoIosArrowDown className="w-6 h-6" />
+          ) : (
+            <IoIosArrowUp className="w-6 h-6" />
+          )}
+        </button>
+        <button
+          className={`${footerButtonClasses}`}
+          disabled={true}
+          onClick={() => {}}
+        >
+          <LuUndo className="w-6 h-6" />
+        </button>
+        <button
+          className={`${footerButtonClasses}`}
+          disabled={true}
+          onClick={() => {}}
+        >
+          <LuRedo className="w-6 h-6" />
         </button>
       </div>
       <MobileDrawer

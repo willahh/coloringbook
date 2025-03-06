@@ -1,6 +1,6 @@
 import HeaderMobile from './HeaderMobile';
 import HeaderDesktop from './HeaderDesktop';
-import { useMediaQuery } from 'react-responsive';
+import useIsMobile from '@/common/hooks/useIsMobile';
 interface HeaderProps {
   className?: string;
   children?: React.ReactNode;
@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
-  const isMobile = useMediaQuery({ maxWidth: 767 }); // Breakpoint md - 1 (767px)
+  const isMobile = useIsMobile();
 
   if (isMobile) {
     return (

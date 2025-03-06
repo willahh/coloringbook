@@ -42,7 +42,9 @@ const BookToolbar: React.FC = () => {
 
       try {
         const content = e.target?.result as string;
-        const importedBook = bookService.importBookFromJson(content/*, book.id*/);
+        const importedBook = bookService.importBookFromJson(
+          content /*, book.id*/
+        );
         dispatch(loadBookFromJson(importedBook));
       } catch (error) {
         const errorMessage =
@@ -67,85 +69,81 @@ const BookToolbar: React.FC = () => {
           setError(null);
         }}
       />
-      <div>
-        <div
-          className={`flex flex-col relative h-full z-20  justify-center gap-4
+      <div
+        data-id="book-toolbar"
+        className={`flex flex-col relative h-full z-20  justify-center gap-4
          bg-primary-50 dark:bg-primary-950
          border-r border-primary-100 dark:border-primary-900 `}
+      >
+        <ToolbarButton
+          tooltipContent="Sauvegarder"
+          onClick={async () => {
+            try {
+              await dispatch(
+                saveBookAction({ bookId: book.id, book: book })
+              ).then(unwrapResult);
+            } catch (error) {
+              const errorMessage =
+                error instanceof Error ? error.message : 'Erreur inconnue';
+              setError(errorMessage);
+            }
+          }}
         >
+          {areLocalUpdatesSaved ? (
+            <CloudSavedIcon className="w-6 h-6 fill-secondary-500 " />
+          ) : (
+            <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
+          )}
+        </ToolbarButton>
+        <ToolbarButton
+          tooltipContent="Export"
+          onClick={() => {
+            bookService.exportBookToFile(book);
+          }}
+        >
+          <PiExportThin {...iconProps} />
+        </ToolbarButton>
+        <label className="cursor-pointer">
           <ToolbarButton
-            tooltipContent="Sauvegarder"
-            onClick={async () => {
-              try {
-                console.log('#a before dispatch saveBookAction');
-                await dispatch(
-                  saveBookAction({ bookId: book.id, book: book })
-                ).then(unwrapResult);
-              } catch (error) {
-                const errorMessage =
-                  error instanceof Error ? error.message : 'Erreur inconnue';
-                setError(errorMessage);
-              }
-            }}
+            tooltipContent="Import"
+            onClick={() => fileInputRef.current?.click()}
           >
-            {areLocalUpdatesSaved ? (
-              <CloudSavedIcon className="w-6 h-6 fill-secondary-500 " />
-            ) : (
-              <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
-            )}
-
-            {/* <ArrowDownOnSquareStackIcon {...iconProps} /> */}
+            <DocumentArrowDownIcon {...iconProps} />
           </ToolbarButton>
-          <ToolbarButton
-            tooltipContent="Export"
-            onClick={() => {
-              bookService.exportBookToFile(book);
-            }}
-          >
-            <PiExportThin {...iconProps} />
-          </ToolbarButton>
-          <label className="cursor-pointer">
-            <ToolbarButton
-              tooltipContent="Import"
-              onClick={() => fileInputRef.current?.click()}
-            >
-              <DocumentArrowDownIcon {...iconProps} />
-            </ToolbarButton>
-            <input
-              type="file"
-              accept="application/json"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              style={{ display: 'none' }}
-            />
-          </label>
-          <ToolbarButton
-            tooltipContent="Download"
-            onClick={() => {
-              if (canvas) {
-                bookService.exportToPDF({
-                  canvas: canvas,
-                  pages: pages,
-                });
-              }
-            }}
-          >
-            <PiFilePdfThin {...iconProps} />
-          </ToolbarButton>
-          <ToolbarButton
-            tooltipContent="Print"
-            onClick={async () => {
-              if (canvas) {
-                await bookService.printPDF({
-                  canvas: canvas,
-                  pages: pages,
-                });
-              }
-            }}
-          >
-            <PrinterIcon {...iconProps} />
-          </ToolbarButton>
-        </div>
+          <input
+            type="file"
+            accept="application/json"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+        </label>
+        <ToolbarButton
+          tooltipContent="Download"
+          onClick={() => {
+            if (canvas) {
+              bookService.exportToPDF({
+                canvas: canvas,
+                pages: pages,
+              });
+            }
+          }}
+        >
+          <PiFilePdfThin {...iconProps} />
+        </ToolbarButton>
+        <ToolbarButton
+          tooltipContent="Print"
+          onClick={async () => {
+            if (canvas) {
+              await bookService.printPDF({
+                canvas: canvas,
+                pages: pages,
+              });
+            }
+          }}
+        >
+          <PrinterIcon {...iconProps} />
+        </ToolbarButton>
       </div>
     </>
   );

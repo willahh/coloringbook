@@ -1,6 +1,9 @@
 export const footerButtonClasses = `
-  px-2 py-1 bg-transparent text-white rounded-full shadow-md transition-all cursor-pointer
-  hover:bg-secondary-700 active:bg-secondary-800 focus:outline-none
-  focus:ring-2 focus:ring-secondary-300 disabled:bg-gray-400
-  disabled:cursor-not-allowed
+  px-2 py-1 flex gap-4 items-center
+  bg-transparent text-black dark:text-white rounded-full transition-all cursor-pointer
+
+  hover:shadow-md hover:bg-secondary-700 
+  active:bg-secondary-800 focus:outline-none
+  focus:ring-2 focus:ring-secondary-300 
+  disabled:opacity-25 disabled:cursor-not-allowed
 `.trim();

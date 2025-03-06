@@ -1,4 +1,3 @@
-// BookPageMobile.tsx
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '@/common/store';
 import * as bookActions from './book.actions';
@@ -10,7 +9,6 @@ import Layout from '../layout';
 import BookFooter from './components/BookFooter';
 import ErrorDialog from '@/common/components/ErrorDialog';
 import LoadingScreen from '@/common/components/LoadingScreen';
-
 
 const BookPageMobile: React.FC = () => {
   const { bookId = '0' } = useParams<{ bookId: string }>();
@@ -52,7 +50,6 @@ const BookPageMobile: React.FC = () => {
         />
       ) : !isLoading ? (
         <>
-          <BookToolbar />
           {book?.pages.length > 0 && (
             <SpreadViewerCanvas
               pages={book.pages}
@@ -60,8 +57,6 @@ const BookPageMobile: React.FC = () => {
               pagesPanelWidth={0}
             />
           )}
-
-          
         </>
       ) : (
         <LoadingScreen isLoading={isLoading} />
