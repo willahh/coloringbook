@@ -107,35 +107,13 @@ export class SVG implements DrawableElement {
 
   draw(canvas: fabric.Canvas): void {
     console.log('draw', canvas);
-    // if (this.svgObjects) {
-    //   this.svgObjects.forEach((obj) => canvas.add(obj));
-    //   return this.svgObjects;
-    // } else {
-    //   console.error('SVG group is not initialized yet');
-    //   return null;
-    // }
   }
 
   update(obj: SVGElement): void {
     console.log('obj', obj);
-    // if ('svgContent' in obj && typeof obj.svgContent === 'string') {
-    //   this.attrs.svgContent = obj.svgContent;
-    //   this.createSVG();
-    // }
-    // if (this.svgGroup) {
-    //   this.svgGroup.set({
-    //     left: obj.x ?? this.svgGroup.left,
-    //     top: obj.y ?? this.svgGroup.top,
-    //     scaleX: obj.scaleX ?? this.svgGroup.scaleX,
-    //     scaleY: obj.scaleY ?? this.svgGroup.scaleY,
-    //   });
-    // }
   }
 
   delete(): void {
-    // if (this.svgObjects) {
-    //   this.svgObjects.remove();
-    // }
   }
 
   async getObject(): Promise<fabric.Object> {

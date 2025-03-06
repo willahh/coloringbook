@@ -141,6 +141,7 @@ class CanvasService {
           const pageInfo = new fabric.Text(
             `Page ${page.pageNumber} / ${spreadPages.length}`,
             {
+              selectable: false,
               left: offsetX,
               top: offsetY + pageHeight + 8,
               fontSize: 16,
@@ -170,14 +171,8 @@ class CanvasService {
             }
           });
 
-          // canvas.getObjects()
-
-          // await selectedActiveObject
-          // console.log('#02 selectedActiveObject', selectedActiveObject);
-
           if (activeFabricObject) {
             canvas.setActiveObject(activeFabricObject);
-            // debugger;
           }
         });
 

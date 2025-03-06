@@ -15,8 +15,8 @@ interface UseTouchControlsProps {
 declare module 'fabric' {
   interface Canvas {
     __isPanning?: boolean;
-    lastTapTime?: number; // Temps du dernier tap
-    lastTapTarget?: fabric.Object | null; // Cible du dernier tap
+    lastTapTime?: number;
+    lastTapTarget?: fabric.Object | null;
   }
 }
 
@@ -35,6 +35,15 @@ export function useTouchControls({
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
+
+    const maxTop = 0;
+    const getMaxBottom = () => {
+      const totalHeight =
+        canvasService.getTotalPageHeightCumulated(canvas, isMobile) *
+        canvas.getZoom();
+      const canvasHeight = canvas.getHeight();
+      return totalHeight > canvasHeight ? totalHeight - canvasHeight : 0;
+    };
 
     const updateObjectControls = (isPanning: boolean) => {
       canvas.getObjects().forEach((obj) => {
@@ -59,19 +68,24 @@ export function useTouchControls({
       canvas.__isPanning = false;
       updateObjectControls(false);
 
+      const target = canvas.findTarget(e, false);
       if (e.touches.length === 1) {
-        // Détection du double tap
-        const target = canvas.findTarget(e, false); // Trouve l'objet sous le toucher
-        const currentTime = Date.now();
-        const doubleTapThreshold = 300; // 300ms pour un double tap
+        // // Sélection d'objet si target est selectable
+        // if (target && target.selectable && !canvas.getActiveObject()) {
+        //   canvas.setActiveObject(target);
+        //   canvas.renderAll();
+        //   return; // Arrête ici pour ne pas déclencher le pan
+        // }
 
+        // Double tap sur pageRect
+        const currentTime = Date.now();
+        const doubleTapThreshold = 300;
         if (
           canvas.lastTapTime &&
           currentTime - canvas.lastTapTime < doubleTapThreshold &&
           canvas.lastTapTarget === target &&
-          target?.isPage // Vérifie que c'est une pageRect
+          target?.isPage
         ) {
-          // Double tap détecté sur une pageRect
           const pageId = target.get('pageId');
           if (pageId !== undefined) {
             canvasService.pageFocus(
@@ -82,7 +96,7 @@ export function useTouchControls({
               pageId
             );
           }
-          canvas.lastTapTime = 0; // Réinitialise pour éviter des détections multiples
+          canvas.lastTapTime = 0;
         } else {
           canvas.lastTapTime = currentTime;
           canvas.lastTapTarget = target || null;
