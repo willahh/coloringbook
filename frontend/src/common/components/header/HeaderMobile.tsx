@@ -48,7 +48,7 @@ const HeaderMobile: React.FC<HeaderProps> = ({
   const { isOpen, setIsOpen } = useAutoOpenDialog();
 
   return (
-    <div className="relative h-0">
+    <div data-id="header-mobile" className="relative h-0">
       <header
         className={`relative -top-16 rounded-tl-4xl rounded-tr-4xl z-20 overflow-hidden ${className} 
          bg-primary-50 dark:bg-primary-950 border-t border-primary-100 dark:border-primary-900 

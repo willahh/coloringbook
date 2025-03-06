@@ -1,15 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
+import { LuLibrary } from 'react-icons/lu';
+import {
+  PlusIcon,
+} from '@heroicons/react/24/outline';
+
 
 import AnimatedText from '@components/AnimatedText';
 import Button from '@components/Button';
-import {
-  QueueListIcon,
-  PlusIcon,
-} from '@heroicons/react/24/outline';
+
 import { Tooltip } from '@components/Tooltip';
 import { Book } from '@apptypes/book';
+
 
 interface DescriptionSectionProps {
   onClick: () => void;
@@ -55,7 +58,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
                     className="rounded-tr-none rounded-br-none"
                   >
                     <span className="text-md">Bibliothèque</span>
-                    <QueueListIcon aria-hidden="true" className="size-6" />
+                    <LuLibrary aria-hidden="true" className="size-6" />
                   </Button>
                 </Link>
                 <Tooltip content="Ajouter un nouveau livre">

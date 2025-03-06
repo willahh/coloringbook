@@ -26,6 +26,7 @@ const BookFooterMobile: React.FC<{
       <div className="flex gap-4">
         <button
           className={`${footerButtonClasses}`}
+          autoFocus={true}
           onClick={() => setIsSidebarOpen(true)}
         >
           <Bars3Icon className="w-6 h-6" />
