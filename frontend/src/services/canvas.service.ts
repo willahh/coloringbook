@@ -114,6 +114,7 @@ class CanvasService {
               this.pageFocus(canvas, spreadPages, page.pageId);
             }
           });
+          
           pageRect.on('mousedblclick', () => {
             this.pageFocus(canvas, spreadPages, page.pageId);
           });

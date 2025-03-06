@@ -3660,6 +3660,9 @@ body {
   margin: 0;
   overflow: hidden;
 }
+#root, canvas {
+  touch-action: none;
+}
 div[data-is-root-theme].dark {
   background: radial-gradient( circle at top left, var(--color-secondary-800) 2%, var(--color-primary-950) 50% );
 }

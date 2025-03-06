@@ -15,6 +15,8 @@ interface UseTouchControlsProps {
 declare module 'fabric' {
   interface Canvas {
     __isPanning?: boolean;
+    lastTapTime?: number; // Temps du dernier tap
+    lastTapTarget?: fabric.Object | null; // Cible du dernier tap
   }
 }
 
@@ -32,16 +34,7 @@ export function useTouchControls({
     let velocityX = 0;
     let velocityY = 0;
     let animationFrameId: number | null = null;
-    let initialPinchDistance: number | null = null; // Distance initiale pour le pinch
-
-    const maxTop = 0;
-    const getMaxBottom = () => {
-      const totalHeight =
-        canvasService.getTotalPageHeightCumulated(canvas, isMobile) *
-        canvas.getZoom();
-      const canvasHeight = canvas.getHeight();
-      return totalHeight > canvasHeight ? totalHeight - canvasHeight : 0;
-    };
+    let initialPinchDistance: number | null = null;
 
     const updateObjectControls = (isPanning: boolean) => {
       canvas.getObjects().forEach((obj) => {
@@ -58,16 +51,43 @@ export function useTouchControls({
     };
 
     const handleTouchStart = (e: TouchEvent) => {
-      e.preventDefault(); // Bloque les comportements natifs
+      e.preventDefault();
       if (e.touches.length > 2) return;
 
-      lastTouch = {
-        x: e.touches[0].clientX,
-        y: e.touches[0].clientY,
-        timestamp: Date.now(),
-      };
+      const touch = e.touches[0];
+      lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: Date.now() };
       canvas.__isPanning = false;
       updateObjectControls(false);
+
+      if (e.touches.length === 1) {
+        // Détection du double tap
+        const target = canvas.findTarget(e, false); // Trouve l'objet sous le toucher
+        const currentTime = Date.now();
+        const doubleTapThreshold = 300; // 300ms pour un double tap
+
+        if (
+          canvas.lastTapTime &&
+          currentTime - canvas.lastTapTime < doubleTapThreshold &&
+          canvas.lastTapTarget === target &&
+          target?.isPage // Vérifie que c'est une pageRect
+        ) {
+          // Double tap détecté sur une pageRect
+          const pageId = target.get('pageId');
+          if (pageId !== undefined) {
+            canvasService.pageFocus(
+              canvas,
+              canvasService.canvas
+                ?.getObjects('rect')
+                .filter((r) => r.isPage) || [],
+              pageId
+            );
+          }
+          canvas.lastTapTime = 0; // Réinitialise pour éviter des détections multiples
+        } else {
+          canvas.lastTapTime = currentTime;
+          canvas.lastTapTarget = target || null;
+        }
+      }
 
       if (e.touches.length === 2) {
         const [touch1, touch2] = e.touches;
@@ -88,10 +108,9 @@ export function useTouchControls({
     const handleTouchMove = (e: TouchEvent) => {
       if (!canvas.viewportTransform || scrollbar['_bar']) return;
 
-      e.preventDefault(); // Bloque le pinch/scroll natif
+      e.preventDefault();
 
       if (e.touches.length === 1 && !canvas.getActiveObject()) {
-        // Pan à un doigt
         const touch = e.touches[0];
         const now = Date.now();
         const deltaTime = lastTouch ? (now - lastTouch.timestamp) / 1000 : 0;
@@ -137,7 +156,6 @@ export function useTouchControls({
 
         lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: now };
       } else if (e.touches.length === 2 && !canvas.getActiveObject()) {
-        // Pinch à deux doigts
         const [touch1, touch2] = e.touches;
         const currentDistance = Math.hypot(
           touch1.clientX - touch2.clientX,
@@ -147,7 +165,7 @@ export function useTouchControls({
         if (initialPinchDistance) {
           const zoomFactor = currentDistance / initialPinchDistance;
           let zoom = canvas.getZoom() * zoomFactor;
-          zoom = Math.max(0.02, Math.min(256, zoom)); // Limites identiques à makeMouseWheelWithAnimation
+          zoom = Math.max(0.02, Math.min(256, zoom));
 
           const centerX = (touch1.clientX + touch2.clientX) / 2;
           const centerY = (touch1.clientY + touch2.clientY) / 2;
@@ -179,7 +197,7 @@ export function useTouchControls({
           canvas.setViewportTransform(vpt);
           canvas.requestRenderAll();
 
-          initialPinchDistance = currentDistance; // Mise à jour pour la prochaine itération
+          initialPinchDistance = currentDistance;
         }
       }
     };
@@ -263,6 +281,8 @@ export function useTouchControls({
       upperCanvas.removeEventListener('touchmove', handleTouchMove);
       upperCanvas.removeEventListener('touchend', handleTouchEnd);
       delete canvas.__isPanning;
+      delete canvas.lastTapTime;
+      delete canvas.lastTapTarget;
       updateObjectControls(false);
     };
   }, [canvas, scrollbar, setViewportTransform, isMobile]);
