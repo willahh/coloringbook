@@ -13,7 +13,8 @@ export const makeMouseWheelWithAnimation =
     enableZoomAnimation = true,
     setViewportTransform: React.Dispatch<
       React.SetStateAction<fabric.TMat2D | undefined>
-    >
+    >,
+    isMobile: boolean
   ) =>
   (options: CustomPointerEventInfo<WheelEvent>) => {
     const e = options.e;
@@ -27,7 +28,10 @@ export const makeMouseWheelWithAnimation =
 
     const isTouchScale = Math.floor(e.deltaY) !== Math.ceil(e.deltaY);
     const totalWidth = canvasService.getMaxPageWidth(canvas);
-    const totalHeight = canvasService.getTotalPageHeightCumulated(canvas);
+    const totalHeight = canvasService.getTotalPageHeightCumulated(
+      canvas,
+      isMobile
+    );
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight();
 

@@ -8,6 +8,7 @@ import { Page } from '@apptypes/book';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { RootState, useSelector } from '@/common/store';
 import { selectAllElements } from '../../Book.slice';
+import useIsMobile from '@/common/hooks/useIsMobile';
 
 export function useCanvasRedraw(
   canvas: fabric.Canvas | null,
@@ -18,9 +19,8 @@ export function useCanvasRedraw(
   pages: Page[],
   canvasSize: { width: number; height: number }
 ) {
-  // const pageParams = useParams<BookPageParams>();
-  // const navigate = useNavigate();
   const { appearance } = useTheme();
+  const isMobile = useIsMobile();
 
   /**
    * Redessine le canvas après mise à jour d'un élément d'une page
@@ -49,7 +49,8 @@ export function useCanvasRedraw(
         canvas,
         pages,
         canvasSize,
-        appearance
+        appearance,
+        isMobile
       );
       setNeedRedrawPages(false);
     }
@@ -58,9 +59,5 @@ export function useCanvasRedraw(
     //   canvas.viewportTransform = viewportTransform;
     //   canvas.requestRenderAll();
     // }
-  }, [
-    canvas,
-    viewportTransform,
-    needRedrawPages
-  ]);
+  }, [canvas, viewportTransform, needRedrawPages]);
 }

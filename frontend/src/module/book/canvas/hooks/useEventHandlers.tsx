@@ -9,7 +9,7 @@ import {
   handleDocumentKeyUp,
 } from '../canvas.events';
 import { Element } from '@/common/types/book';
-import { useDispatch} from '@/common/store';
+import { useDispatch } from '@/common/store';
 import canvasService from '@/services/canvas.service';
 import { updateElementByElementId } from '../../element/Element.action';
 
@@ -25,23 +25,11 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
         'mouse:down': handleMouseDown(canvas),
         'mouse:over': handleMouseOver(canvas),
         'mouse:out': handleMouseOut(canvas),
-        'selection:created': (e: fabric.ObjectEvents) =>
-          console.log('Selected:', e.selected),
-        'selection:updated': (e: fabric.ObjectEvents) =>
-          console.log('Selection Updated:', e.selected),
-        'selection:cleared': (e: fabric.ObjectEvents) =>
-          console.log('Selection Cleared', e),
       };
 
       Object.entries(eventHandlers).forEach(([event, handler]) => {
         canvas.on(event as keyof fabric.CanvasEvents, handler); // @ts-nocheck
       });
-
-      
-      // [feature#02] WIP
-      // canvas.on('mousedblclick', () => {
-      //   canvasService.pageFocus(canvas, pages, pageId);
-      // });
       
       canvas.on('object:modified', (e: fabric.ModifiedEvent) => {
         console.log('#03 object:modified', e);

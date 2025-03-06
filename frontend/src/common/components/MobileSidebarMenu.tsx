@@ -124,25 +124,8 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
             onClick={(e) => e.stopPropagation()} // Empêche la fermeture quand on clique dans le menu
           >
             <div className="flex flex-col w-full divide-y-2 divide-primary-200 dark:divide-primary-900/50 ">
-              <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
-                <li>
-                  <Tooltip content="Accueil">
-                    <Link className={footerButtonClasses} to="/">
-                      <HomeIcon aria-hidden="true" className="size-6" />
-                      <span>Accueil</span>
-                    </Link>
-                  </Tooltip>
-                </li>
-                <li>
-                  <Tooltip content="Bibliothèque">
-                    <Link className={footerButtonClasses} to="/library">
-                      <LuLibrary aria-hidden="true" className="size-6" />
-                      <span>Bibliothèque</span>
-                    </Link>
-                  </Tooltip>
-                </li>
-              </ul>
-              <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
+              
+              <ul className="flex flex-col-reverse gap-4 p-4 overflow-y-auto">
                 <li>
                   <button
                     className={footerButtonClasses}
@@ -228,6 +211,24 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     <PrinterIcon {...iconProps} />
                     <span>Imprimer</span>
                   </button>
+                </li>
+              </ul>
+              <ul className="flex flex-col-reverse gap-4 p-4 overflow-y-auto">
+                <li>
+                  <Tooltip content="Accueil">
+                    <Link className={footerButtonClasses} to="/">
+                      <HomeIcon aria-hidden="true" className="size-6" />
+                      <span>Accueil</span>
+                    </Link>
+                  </Tooltip>
+                </li>
+                <li>
+                  <Tooltip content="Bibliothèque">
+                    <Link className={footerButtonClasses} to="/library">
+                      <LuLibrary aria-hidden="true" className="size-6" />
+                      <span>Bibliothèque</span>
+                    </Link>
+                  </Tooltip>
                 </li>
               </ul>
               <div className="p-4">

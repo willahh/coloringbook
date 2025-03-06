@@ -6,6 +6,7 @@ import canvasService from '@/services/canvas.service';
 import useCanvasContext from '../../useCanvasContext';
 import { getSecondaryColor } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
+import useIsMobile from '@/common/hooks/useIsMobile';
 
 export function useCanvasInitialization(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
@@ -13,6 +14,7 @@ export function useCanvasInitialization(
   const { setCanvas, setViewportTransform } = useCanvasContext();
   const canvasInstance = useRef<fabric.Canvas | null>(null);
   const scrollbarInstance = useRef<Scrollbars | null>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -38,7 +40,8 @@ export function useCanvasInitialization(
       canvas,
       { min: 0.02, max: 256 },
       true,
-      setViewportTransform
+      setViewportTransform,
+      isMobile
     );
     canvas.on('mouse:wheel', mousewheel);
 

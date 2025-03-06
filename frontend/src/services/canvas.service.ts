@@ -25,19 +25,21 @@ class CanvasService {
 
   private registerEventListeners() {}
 
-  getVerticalSpaceBetweenPages() {
-    return 200;
+  getVerticalSpaceBetweenPages(isMobile: boolean) {
+    console.log('getVerticalSpaceBetweenPages isMobile', isMobile)
+    return isMobile ? 60 : 200;
   }
   drawPagesElementsAndMask(
     canvas: fabric.Canvas,
     spreadPages: Page[],
     dimensions: { width: number; height: number },
-    appearance: Appearance
+    appearance: Appearance,
+    isMobile: boolean
   ) {
     if (canvas && canvas.elements.lower) {
       // Ajout d'un garde fou personnalisé canvas.elements.lower car fabric.js
       // peut plancer sur un canvas.getElement()
-      
+
       let activeFabricObject: fabric.FabricObject | null = null;
       if (canvas && canvas.getWidth() > 0) {
         console.info('#c CANVAS DRAW PAGES AND OBJECTS');
@@ -66,7 +68,7 @@ class CanvasService {
           }
 
           // const scaleY = pageHeight / canvas.height;
-          const spaceBetweenPages = this.getVerticalSpaceBetweenPages();
+          const spaceBetweenPages = this.getVerticalSpaceBetweenPages(isMobile);
           const offsetX = 0;
           const offsetY = index * (pageHeight + spaceBetweenPages);
 
@@ -98,12 +100,12 @@ class CanvasService {
             }),
           });
 
-          pageRect.on('mousedown:before', () => {
+          pageRect.on('mouseup', () => {
             canvas.getActiveObjects();
             // Focus sur la page, uniquement si aucune sélection n'est présente.
             // Evite le focus lorsque l'on a sélectionnée un élément, et que
             // l'on click sur la page pour le désélectionner.
-            if (canvas.getActiveObjects().length === 0) {
+            if (!canvas.__isPanning && canvas.getActiveObjects().length === 0) {
               this.pageFocus(canvas, spreadPages, page.pageId);
             }
           });
@@ -242,11 +244,8 @@ class CanvasService {
 
   /**
    * Calcule la hauteur totale cumulée des pages avec une marge entre elles.
-   * @param canvas Le canvas Fabric.js
-   * @param margin La marge entre chaque page (par défaut : 10 pixels)
-   * @returns La hauteur totale avec marges
    */
-  getTotalPageHeightCumulated(canvas: fabric.Canvas): number {
+  getTotalPageHeightCumulated(canvas: fabric.Canvas, isMobile: boolean): number {
     const pages = canvasService.getPages(canvas);
     if (pages.length === 0) return 0;
 
@@ -255,7 +254,7 @@ class CanvasService {
     pages.forEach((page, index) => {
       totalHeight += page.height || 0;
       if (index < pages.length - 1) {
-        totalHeight += this.getVerticalSpaceBetweenPages();
+        totalHeight += this.getVerticalSpaceBetweenPages(isMobile);
       }
     });
 
@@ -443,6 +442,30 @@ class CanvasService {
     if (fabricObject && canvas) {
       fabricObject.set('objet', element);
       fabricObject.set('pageId', pageId);
+
+      fabricObject.on('mousedown:before', (event: fabric.TPointerEventInfo) => {
+        console.log('mousedown:before');
+
+        // event.e.preventDefault();
+        // event.e.stopPropagation();
+        event.e.stopImmediatePropagation();
+        event.e.cancelBubble = true;
+
+        return false;
+      });
+      // fabricObject.on('mousedown', (event: fabric.TPointerEventInfo) => {
+      //   console.log('mousedown')
+
+      //   event.e.preventDefault();
+      //   event.e.stopPropagation();
+      //   event.e.stopImmediatePropagation();
+
+      //   return false;
+      // });
+
+      // fabricObject.on('mousedown', (event: fabric.TPointerEventInfo) => {
+      //   event.e.preventDefault();
+      // })
 
       // Ajouter les écouteurs pour l’effet de survol
       fabricObject.on('mouseover', (e: fabric.TPointerEventInfo) => {
