@@ -9,7 +9,7 @@ import { Book } from '@/common/types/book'; // Ajuste le chemin selon ton projet
 interface MobileDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  book?: Book; // Passe le livre pour accéder aux pages dans PagesPanel
+  book?: Book | null; // Passe le livre pour accéder aux pages dans PagesPanel
 }
 
 const MobileDrawer: React.FC<MobileDrawerProps> = ({

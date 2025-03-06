@@ -25,7 +25,7 @@ const BreadCrumb: React.FC<BreadCrumbProps> = function ({ pages }) {
           </Tooltip>
         </li>
         {pages.map((page) => (
-          <li key={page.href} className="flex items-center hidden sm:visible">
+          <li key={page.href} className="items-center hidden sm:flex">
             <ChevronRightIcon
               aria-hidden="true"
               className="size-5 shrink-0 text-gray-400"

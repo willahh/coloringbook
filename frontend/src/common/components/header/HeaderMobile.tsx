@@ -1,5 +1,6 @@
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
+import LogoIcon from '@assets/coloring-book-icon.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { useSelector } from '../../store';
 import { selectBook } from '@/module/book/Book.slice';
@@ -42,22 +43,19 @@ const HeaderMobile: React.FC<HeaderProps> = ({
   children,
   isLoading,
 }) => {
-  const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
-
   const { isOpen, setIsOpen } = useAutoOpenDialog();
 
   return (
     <div className="relative h-0">
       <header
-        className={`relative h-32 -top-16 rounded-4xl z-20 ${className} 
+        className={`relative -top-16 rounded-tl-4xl rounded-tr-4xl z-20 overflow-hidden ${className} 
          bg-primary-50 dark:bg-primary-950 border-t border-primary-100 dark:border-primary-900 
         `}
       >
         <div className="relative h-16 px-6 flex items-center justify-end gap-4">
           <div className="flex-1">{children}</div>
-
           <AboutDialog
             version={appVersion}
             buildDate={packageJson.buildDate}
@@ -66,11 +64,7 @@ const HeaderMobile: React.FC<HeaderProps> = ({
           />
           <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
-          {appearance === 'dark' ? (
-            <Logo className="w-24 xl:w-36" />
-          ) : (
-            <LogoLight className="w-24 xl:w-36" />
-          )}
+          {/* <LogoIcon className="w-6" /> */}
         </div>
       </header>
     </div>

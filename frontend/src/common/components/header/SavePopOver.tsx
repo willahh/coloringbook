@@ -1,8 +1,11 @@
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useRef } from 'react';
+
 import { UnsavedChangesComponent } from '@/module/book/components/UnchangedModificationsToast';
 import { useTheme } from '@/common/contexts/ThemeContext';
+import { footerButtonClasses } from '@/common/utils/buttonStyles';
+
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 import { saveBookAction } from '@/module/book/book.actions';
@@ -19,6 +22,8 @@ const SavePopOver: React.FC<SavePopOverProps> = ({ areLocalUpdatesSaved }) => {
   const dispatch = useDispatch();
   const { book } = useSelector(selectBook);
 
+
+
   return (
     <>
       <Popover className="group">
@@ -26,7 +31,7 @@ const SavePopOver: React.FC<SavePopOverProps> = ({ areLocalUpdatesSaved }) => {
           <>
             <PopoverButton
               ref={popoverButtonRef}
-              className="flex items-center gap-2"
+              className={`${footerButtonClasses} flex items-center gap-2`}
               onMouseEnter={() => {
                 if (timeoutRef.current) clearTimeout(timeoutRef.current);
                 if (!open) {

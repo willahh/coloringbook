@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from '@/common/store';
 import Layout from '../layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import SidePanel from './sidePanel/SidePanel';
-import BookHeader from './components/BookHeader';
+import BookFooter from './components/BookFooter';
 import * as bookActions from './book.actions';
 import { selectBook } from './Book.slice';
 import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
@@ -55,7 +55,7 @@ const BookPageDesktop: React.FC = () => {
       bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900
       dark:brightness-125`}
       header={
-        <BookHeader
+        <BookFooter
           book={book}
           onBookNameEdit={(newName) => {
             dispatch(

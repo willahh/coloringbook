@@ -12,6 +12,7 @@ import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter, FaInternetExplorer } from 'react-icons/fa6';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import Newsletter from './Newsletter';
+import { footerButtonClasses } from '@/common/utils/buttonStyles';
 
 interface AboutDialogProps {
   version: string;
@@ -40,12 +41,12 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
 
   return (
     <>
-      <div
-        className="flex items-center gap-1 bg-secondary-500 rounded-md px-1 py-0.5 text-secondary-100 text-sm font-semibold hover:bg-secondary-600 hover:text-white cursor-pointer transition-all"
+      <button
+        className={`${footerButtonClasses} flex items-center gap-1 text-secondary-500`}
         onClick={() => setIsOpen(true)}
       >
         <svg
-          className="w-4 h-4"
+          className="w-6 h-6 sm:w-4 sm:h-4"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -58,8 +59,8 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
             d="M13 16h-1v-4h-1m1-4h.01M12 3a9 9 0 100 18 9 9 0 000-18z"
           />
         </svg>
-        About
-      </div>
+        <span className="hidden sm:inline">About</span>
+      </button>
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog

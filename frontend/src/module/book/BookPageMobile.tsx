@@ -7,7 +7,7 @@ import BookToolbar from './components/BookToolbar';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { useParams } from 'react-router-dom';
 import Layout from '../layout';
-import BookHeader from './components/BookHeader';
+import BookFooter from './components/BookFooter';
 import ErrorDialog from '@/common/components/ErrorDialog';
 import LoadingScreen from '@/common/components/LoadingScreen';
 
@@ -19,7 +19,6 @@ const BookPageMobile: React.FC = () => {
   const dispatch = useDispatch();
   const { book, error, isLoading } = useSelector(selectBook);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState<boolean>(false);
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: numericBookId }));
@@ -29,7 +28,7 @@ const BookPageMobile: React.FC = () => {
     <Layout
       className={`w-screen h-screen overflow-hidden dark:bg-gray-700 bg-primary-400 bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900 dark:brightness-125`}
       header={
-        <BookHeader
+        <BookFooter
           book={book}
           onBookNameEdit={(newName) => {
             dispatch(

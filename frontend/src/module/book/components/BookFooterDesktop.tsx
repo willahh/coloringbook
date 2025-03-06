@@ -5,7 +5,7 @@ import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
 import { selectIsLoading } from '../Book.slice';
 
-const BookHeaderDesktop: React.FC<{
+const BookFooterDesktop: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book, onBookNameEdit }) => {
@@ -37,4 +37,4 @@ const BookHeaderDesktop: React.FC<{
     </Header>
   );
 };
-export default BookHeaderDesktop;
+export default BookFooterDesktop;
