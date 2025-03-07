@@ -40,7 +40,6 @@ export const saveBookAction = createAsyncThunk<
 >('book/saveBookAction', async ({ bookId, book }) => {
   const { book: newBook } = BookService.normalizeBookData(book);
   const savedBook = await APIService.saveBook(bookId, newBook);
-
   return savedBook;
 });
 

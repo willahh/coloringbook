@@ -1,5 +1,15 @@
 import _ from 'lodash';
+import { Capacitor } from '@capacitor/core';
+// import { Browser } from '@capacitor/browser';
+import { Share } from '@capacitor/share';
+import {
+  FileOpener,
+  // FileOpenerOptions,
+} from '@capacitor-community/file-opener';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
+
 import { format } from 'date-fns'; // Importe la fonction format de date-fns
 import * as fabric from 'fabric';
 import { Book, Page } from '@apptypes/book';
@@ -320,10 +330,189 @@ export class BookService {
     if (canvas) {
       const pdf = await this.getPDF(canvas, pages);
       if (pdf) {
-        pdf.save('canvas.pdf');
+        if (Capacitor.isNativePlatform()) {
+          try {
+            // Convertir le PDF en Blob
+            const pdfBlob = new Blob([pdf.output('arraybuffer')], {
+              type: 'application/pdf',
+            });
+
+            // Lire le blob en base64
+            const reader = new FileReader();
+            reader.readAsDataURL(pdfBlob);
+            reader.onloadend = async () => {
+              const base64Data = reader.result?.toString().split(',')[1];
+
+              if (base64Data) {
+                console.log('Base64 généré :', base64Data?.substring(0, 50)); // Affiche les 50 premiers caractères
+                const fileName = 'canvas.pdf';
+                // const filePath = `Documents/${fileName}`;
+                const filePath = fileName; // Juste "canvas.pdf"
+
+                console.log('filePath', filePath);
+                // Vérifier si le dossier Documents existe
+                const directoryExists = await this.checkDirectoryExists(
+                  Directory.Documents
+                );
+                console.log('directoryExists', directoryExists);
+
+                if (!directoryExists) {
+                  // Créer le répertoire Documents si nécessaire
+                  await Filesystem.mkdir({
+                    path: 'Documents',
+                    directory: Directory.Documents,
+                    recursive: true, // Crée également les répertoires parents si nécessaire
+                  });
+                }
+
+                // Enregistrer le fichier PDF
+                console.log(
+                  'Tentative d’écriture dans',
+                  Directory.Documents,
+                  'avec chemin',
+                  filePath
+                );
+                let writeResult;
+                try {
+                  // const filePath = fileName; // Juste "canvas.pdf"
+                  writeResult = await Filesystem.writeFile({
+                    path: filePath,
+                    data: base64Data,
+                    directory: Directory.Documents,
+                    encoding: Encoding.UTF8,
+                  });
+                  console.log('PDF enregistré avec succès dans', filePath);
+                } catch (error) {
+                  console.error(
+                    'Détail de l’erreur :',
+                    JSON.stringify(error, null, 2)
+                  );
+                }
+
+                // Utiliser l’URI complet pour ouvrir le fichier
+                if (writeResult) {
+                  const fullFilePath = writeResult.uri; // URI absolu (ex. : file://...)
+
+                  // Remplace FileOpener.open par Share.share
+                  console.log('Tentative de partage du fichier:', fullFilePath);
+                  try {
+                    await Share.share({
+                      title: 'Ton PDF',
+                      url: fullFilePath,
+                      dialogTitle: 'Partager le PDF',
+                    });
+                    console.log('PDF partagé avec succès');
+                  } catch (error) {
+                    console.error(
+                      'Erreur lors du partage du PDF :',
+                      JSON.stringify(error, null, 2)
+                    );
+                  }
+
+                  // console.log(
+                  //   'Tentative d’ouverture du fichier avec FileOpener:',
+                  //   fullFilePath
+                  // );
+                  // console.log('FileOpener.open appelé avec:', {
+                  //   filePath: fullFilePath,
+                  //   contentType: 'application/pdf',
+                  // });
+                  // try {
+                  //   await FileOpener.open({
+                  //     filePath: fullFilePath,
+                  //     contentType: 'application/pdf',
+                  //   });
+                  //   console.log('PDF ouvert avec succès');
+                  // } catch (error) {
+                  //   console.error(
+                  //     'Erreur lors de l’ouverture du PDF :',
+                  //     JSON.stringify(error, null, 2)
+                  //   );
+                  // }
+                }
+              }
+            };
+          } catch (error) {
+            console.error('Erreur lors de l’enregistrement du PDF :', error);
+          }
+        } else {
+          pdf.save('canvas.pdf'); // Pour desktop
+        }
       }
     }
   }
+
+  // Fonction pour vérifier si un répertoire existe
+  async checkDirectoryExists(directory: Directory): Promise<boolean> {
+    try {
+      const result = await Filesystem.readdir({
+        path: '',
+        directory,
+      });
+      return result.files.some((file) => file.name === 'Documents');
+    } catch (error) {
+      console.error('Erreur lors de la vérification du dossier :', error);
+      return false;
+    }
+  }
+
+  // private async savePDFToFilesystem(pdfBlob: Blob) {
+  //   console.log('savePDFToFilesystem');
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(pdfBlob);
+  //   reader.onloadend = async () => {
+  //     console.log('savePDFToFilesystem reader.onloadend');
+  //     const base64Data = reader.result?.toString().split(',')[1]; // Retirer "data:application/pdf;base64,"
+
+  //     if (base64Data) {
+  //       const fileName = 'canvas.pdf';
+
+  //       console.log('before writeFile 2');
+  //       try {
+  //         await Filesystem.writeFile({
+  //           path: fileName,
+  //           data: base64Data,
+  //           directory: Directory.Documents,
+  //         });
+  //       } catch (error) {
+  //         console.error('Error in writeFile:', error);
+  //       }
+  //       console.log('after writeFile');
+
+  //       // Récupérer l'URI et tenter d'ouvrir le fichier
+  //       console.log("// Récupérer l URI et tenter d'ouvrir le fichier");
+  //       const fileUri = await Filesystem.getUri({
+  //         directory: Directory.Documents,
+  //         path: fileName,
+  //       });
+
+  //       // Essayer d'ouvrir avec le navigateur natif de l'appareil
+  //       // window.open(fileUri.uri, '_system');
+  //       // await Share.share({
+  //       //   title: 'Mon PDF',
+  //       //   text: 'Voici votre document PDF.',
+  //       //   url: fileUri.uri,
+  //       //   dialogTitle: 'Partager le PDF',
+  //       // });
+
+  //       console.log('fileUri', fileUri)
+  //       console.log('before Browser.open');
+  //       await Browser.open({ url: fileUri.uri });
+  //       console.log('after Browser.open');
+
+  //       // try {
+  //       //   const fileOpenerOptions: FileOpenerOptions = {
+  //       //     filePath: fileName,
+  //       //     contentType: 'application/pdf',
+  //       //     openWithDefault: true,
+  //       //   };
+  //       //   await FileOpener.open(fileOpenerOptions);
+  //       // } catch (e) {
+  //       //   console.log('Error opening file', e);
+  //       // }
+  //     }
+  //   };
+  // }
 
   public async printPDF({
     canvas,
@@ -371,7 +560,9 @@ export class BookService {
     window.URL.revokeObjectURL(url);
   }
 
-  public importBookFromJson(fileContent: string/*, currentBookId: number*/): Book {
+  public importBookFromJson(
+    fileContent: string /*, currentBookId: number*/
+  ): Book {
     console.log('importBookFromJson');
     try {
       const jsonData = JSON.parse(fileContent);

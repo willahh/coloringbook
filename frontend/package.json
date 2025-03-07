@@ -2,7 +2,7 @@
   "name": "coloringbook",
   "private": true,
   "version": "0.7.4",
-  "buildDate": "2025-03-06T23:27:45.023Z",
+  "buildDate": "2025-03-07T14:37:27.447Z",
   "type": "module",
   "scripts": {
     "dev": "npm run build:css && vite --host",
@@ -25,6 +25,10 @@
     "serve:prod": "serve dist --config ./../serve.json"
   },
   "dependencies": {
+    "@capacitor-community/file-opener": "^7.0.1",
+    "@capacitor/browser": "^7.0.0",
+    "@capacitor/filesystem": "^7.0.0",
+    "@capacitor/share": "^7.0.0",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",

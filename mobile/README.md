@@ -28,6 +28,15 @@ Once you've created your native projects, you can sync your web application to y
 `npx cap sync`
 
 
+### Modification de la config mobile 
+Modifier la config `capacitor.config.ts`, puis synchroniser les informations : 
+```sh
+cd ./mobile
+npx cap copy
+npx cap sync ios
+npx cap open ios
+```
+
 
 ## Contact
 - [@twitter](https://twitter.com/willahhravel)

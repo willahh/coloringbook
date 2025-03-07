@@ -1,13 +1,14 @@
 /**
  * https://tailwindcss.com/docs/installation/using-vite
  */
-import { defineConfig } from 'vite';
-import tailwindcss from '@tailwindcss/vite';
-
-import react from '@vitejs/plugin-react';
-import svgr from 'vite-plugin-svgr';
+// import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { defineConfig } from 'vite';
+
+import svgr from 'vite-plugin-svgr';
+import tailwindcss from '@tailwindcss/vite';
+import react from '@vitejs/plugin-react';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -46,5 +47,17 @@ export default defineConfig(() => {
         '@shared': path.resolve(__dirname, './src/common/shared'),
       },
     },
+    // server: {
+    //   host: '0.0.0.0', // Permet l'accès via IP locale (192.168.1.67)
+    //   port: 5173,
+    //   https: {
+    //     cert: fs.readFileSync(
+    //       path.resolve(__dirname, '../documents/cert/192.168.1.67.pem')
+    //     ),
+    //     key: fs.readFileSync(
+    //       path.resolve(__dirname, '../documents/cert/192.168.1.67-key.pem')
+    //     ),
+    //   },
+    // },
   };
 });
