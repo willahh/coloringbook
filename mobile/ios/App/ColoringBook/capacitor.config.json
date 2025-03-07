@@ -1,0 +1,6 @@
+{
+	"appId": "fr.onywave.coloringbook",
+	"appName": "ColoringBook",
+	"webDir": "../frontend/dist",
+	"packageClassList": []
+}
