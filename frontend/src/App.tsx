@@ -16,6 +16,10 @@ import { ENV_PROD } from './common/utils/EnvUtils.ts';
 const defaultAppearance = localStorage.getItem('theme') || 'dark';
 import(`./common/styles/main.${defaultAppearance}.css`);
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service-worker.js');
+}
+
 function RenderApp() {
   const { appearance } = useTheme();
   return (

@@ -18,6 +18,10 @@ declare module 'fabric' {
     lastTapTime?: number;
     lastTapTarget?: fabric.Object | null;
   }
+
+  interface Object {
+    isPage?: boolean;
+  }
 }
 
 export function useTouchControls({
@@ -35,15 +39,6 @@ export function useTouchControls({
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
-
-    const maxTop = 0;
-    const getMaxBottom = () => {
-      const totalHeight =
-        canvasService.getTotalPageHeightCumulated(canvas, isMobile) *
-        canvas.getZoom();
-      const canvasHeight = canvas.getHeight();
-      return totalHeight > canvasHeight ? totalHeight - canvasHeight : 0;
-    };
 
     const updateObjectControls = (isPanning: boolean) => {
       canvas.getObjects().forEach((obj) => {
@@ -68,7 +63,7 @@ export function useTouchControls({
       canvas.__isPanning = false;
       updateObjectControls(false);
 
-      const target = canvas.findTarget(e, false);
+      const target = canvas.findTarget(e);
       if (e.touches.length === 1) {
         // // Sélection d'objet si target est selectable
         // if (target && target.selectable && !canvas.getActiveObject()) {
@@ -92,7 +87,13 @@ export function useTouchControls({
               canvas,
               canvasService.canvas
                 ?.getObjects('rect')
-                .filter((r) => r.isPage) || [],
+                .filter((r) => r.isPage)
+                .map((r) => ({
+                  pageId: r.get('pageId'),
+                  pageNumber: r.get('pageNumber'),
+                  aspectRatio: r.get('aspectRatio'),
+                  elements: r.get('elements'),
+                })) || [],
               pageId
             );
           }

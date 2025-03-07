@@ -1,5 +1,4 @@
 import ReactGA from 'react-ga4';
-import { ENV_PROD } from './EnvUtils';
 
 type EventCategory = 'Menu' | 'Coloring' | 'User' | 'Tools' | 'Navigation';
 type EventAction =

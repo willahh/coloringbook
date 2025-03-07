@@ -19,7 +19,6 @@ import { footerButtonClasses } from '../utils/buttonStyles';
 import { Link } from 'react-router-dom';
 import { Tooltip } from './Tooltip';
 import {
-  backgroundRadialStyles,
   mobileSideBarBackgroundRadialStyles,
 } from '../utils/backgroundStyles';
 import { ANALYTICS_EVENTS, trackEvent } from '../utils/analyticsEvents';

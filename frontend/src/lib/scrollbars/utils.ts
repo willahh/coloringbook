@@ -132,7 +132,7 @@ export const makeMouseWheel =
       React.SetStateAction<fabric.TMat2D | undefined>
     >
   ) =>
-  (options: CustomPointerEventInfo<WheelEvent>) => {
+  (options: CustomPointerEventInfo<WheelEvent>, isMobile: boolean) => {
     const e = options.e;
     if (
       'upperCanvasEl' in canvas &&
@@ -144,7 +144,10 @@ export const makeMouseWheel =
 
     const isTouchScale = Math.floor(e.deltaY) !== Math.ceil(e.deltaY);
     const maxPageWidth = canvasService.getMaxPageWidth(canvas);
-    const maxPageHeight = canvasService.getTotalPageHeightCumulated(canvas); // Ajout de la hauteur totale
+    const maxPageHeight = canvasService.getTotalPageHeightCumulated(
+      canvas,
+      isMobile
+    ); // Ajout de la hauteur totale
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight(); // Ajout de la hauteur du canvas
 
