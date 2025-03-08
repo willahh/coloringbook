@@ -5,7 +5,7 @@ import AboutDialog from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
 import { useAutoOpenDialog } from './useAutoOpenDialog';
 
-interface HeaderProps {
+interface FooterMobileProps {
   className?: string;
   children?: React.ReactNode;
   isLoading?: boolean;
@@ -34,7 +34,7 @@ const LoadingIcon = (
   </svg>
 );
 
-const HeaderMobile: React.FC<HeaderProps> = ({
+const FooterMobile: React.FC<FooterMobileProps> = ({
   className,
   children,
   isLoading,
@@ -66,4 +66,4 @@ const HeaderMobile: React.FC<HeaderProps> = ({
   );
 };
 
-export default HeaderMobile;
+export default FooterMobile;

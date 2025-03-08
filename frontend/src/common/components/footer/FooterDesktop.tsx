@@ -37,7 +37,7 @@ const LoadingIcon = (
   </svg>
 );
 
-const HeaderDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
+const FooterDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
   const { appearance } = useTheme();
   const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
@@ -86,4 +86,4 @@ const HeaderDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }
   );
 };
 
-export default HeaderDesktop;
+export default FooterDesktop;

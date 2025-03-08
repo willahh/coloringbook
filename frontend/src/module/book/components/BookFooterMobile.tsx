@@ -2,7 +2,7 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import { LuUndo, LuRedo } from 'react-icons/lu';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
-import Header from '@/common/components/header/Header';
+import Footer from '@/common/components/footer/Footer';
 import MobileSidebarMenu from '@components/MobileSidebarMenu';
 import { footerButtonClasses } from '@/common/utils/buttonStyles';
 
@@ -22,7 +22,7 @@ const BookFooterMobile: React.FC<{
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   return (
-    <Header isLoading={isLoading}>
+    <Footer isLoading={isLoading}>
       <div className="flex gap-4">
         <button
           className={`${footerButtonClasses}`}
@@ -66,7 +66,7 @@ const BookFooterMobile: React.FC<{
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-    </Header>
+    </Footer>
   );
 };
 export default BookFooterMobile;

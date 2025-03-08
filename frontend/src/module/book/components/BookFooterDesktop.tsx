@@ -1,5 +1,5 @@
 import BreadCrumb from '@components/BreadCrumb';
-import Header from '@/common/components/header/Header';
+import Footer from '@/common/components/footer/Footer';
 import InlineEdit from '@components/InlineEdit';
 import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
@@ -12,7 +12,7 @@ const BookFooterDesktop: React.FC<{
   const isLoading = useSelector(selectIsLoading);
 
   return (
-    <Header isLoading={isLoading}>
+    <Footer isLoading={isLoading}>
       <BreadCrumb
         pages={[
           {
@@ -34,7 +34,7 @@ const BookFooterDesktop: React.FC<{
             : []),
         ]}
       />
-    </Header>
+    </Footer>
   );
 };
 export default BookFooterDesktop;
