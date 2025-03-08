@@ -1,6 +1,6 @@
 import APIService from '@/services/api.service';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { BookService } from '@/services/book.service';
+import { bookDataService } from '@/services/services';
 import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/element.service';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
@@ -21,7 +21,7 @@ export const fetchBookByIdAction = createAsyncThunk<
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }, { rejectWithValue }) => {
   try {
     const book = await APIService.fetchBook(bookId);
-    const { book: newBook, isModified } = BookService.normalizeBookData(book);
+    const { book: newBook, isModified } = bookDataService.normalizeBookData(book);
     return { book: newBook, isModified };
   } catch (error) {
     return rejectWithValue(error as AxiosErrorResponse);
@@ -38,7 +38,7 @@ export const saveBookAction = createAsyncThunk<
     book: Book;
   }
 >('book/saveBookAction', async ({ bookId, book }) => {
-  const { book: newBook } = BookService.normalizeBookData(book);
+  const { book: newBook } = bookDataService.normalizeBookData(book);
   const savedBook = await APIService.saveBook(bookId, newBook);
   return savedBook;
 });

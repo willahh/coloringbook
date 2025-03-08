@@ -4,7 +4,6 @@ import { motion } from 'framer-motion'; // Assuming you use framer-motion for an
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import type { Page } from '@apptypes/book';
-import { BookService, bookService } from '@/services/book.service';
 import { ToolbarButton } from '../../ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
 import { useDispatch, useSelector } from '@/common/store';
@@ -12,6 +11,7 @@ import { PageService } from '@/services/page.service';
 import * as BookActions from '../../../book.actions';
 import { BookPageParams } from '@/common/interfaces';
 import { selectBookPages } from '../../../Book.slice';
+import { useServices } from '@/common/contexts/ServiceContext';
 
 interface PageComponentProps {
   bookId: number;
@@ -24,12 +24,13 @@ const useDeletePage = (bookId: number) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const pages = useSelector(selectBookPages);
+  const { bookDataService } = useServices();
 
   const useDeletePage = (pageIdToDelete: number) => {
     if (confirm('Confirmer la suppression de la page ?')) {
       dispatch(BookActions.deletePageAction({ pageId: pageIdToDelete }));
       requestAnimationFrame(() => {
-        const nextPageId = bookService.getNextPageId(pageIdToDelete, pages);
+        const nextPageId = bookDataService.getNextPageId(pageIdToDelete, pages);
         if (nextPageId !== undefined && bookId) {
           navigate(`/book/${bookId}/pages/${nextPageId}`);
         }
@@ -151,6 +152,7 @@ interface PagesProps {
 
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   const { bookId, pageId } = useParams<BookPageParams>();
+  const { bookDataService } = useServices();
 
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
@@ -158,7 +160,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
 
   if (pages.length > 0) {
     if (useSpread) {
-      spreads = BookService.transformPagesToSpread(pages);
+      spreads = bookDataService.transformPagesToSpread(pages);
     } else {
       spreads = [pages];
     }

@@ -14,7 +14,7 @@ import { useCanvasInitialization } from './hooks/useCanvasInitialization';
 import { useCanvasResize } from './hooks/useCanvasResize';
 import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
-import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
+// import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
 import usePageAutoFocus from './hooks/usePageAutofocus';
 import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 

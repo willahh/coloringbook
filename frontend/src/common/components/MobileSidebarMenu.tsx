@@ -13,15 +13,13 @@ import { useDispatch, useSelector } from '../store';
 import { saveBookAction, loadBookFromJson } from '@/module/book/book.actions';
 import { selectBook, selectBookPages } from '@/module/book/Book.slice';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { bookService } from '@/services/book.service';
 import useCanvasContext from '@/module/book/useCanvasContext';
 import { footerButtonClasses } from '../utils/buttonStyles';
 import { Link } from 'react-router-dom';
 import { Tooltip } from './Tooltip';
-import {
-  mobileSideBarBackgroundRadialStyles,
-} from '../utils/backgroundStyles';
+import { mobileSideBarBackgroundRadialStyles } from '../utils/backgroundStyles';
 import { ANALYTICS_EVENTS, trackEvent } from '../utils/analyticsEvents';
+import { useServices } from '../contexts/ServiceContext';
 
 interface MobileSidebarMenuProps {
   isOpen: boolean;
@@ -37,6 +35,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
 
   const { book, areLocalUpdatesSaved } = useSelector(selectBook);
   const pages = useSelector(selectBookPages);
+  const { bookDataService, bookExportService } = useServices();
 
   const [, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -60,12 +59,13 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
     if (!file) return;
 
     const reader = new FileReader();
+
     reader.onload = (e) => {
       if (!e.target?.result) return;
 
       try {
         const content = e.target.result as string;
-        const importedBook = bookService.importBookFromJson(content);
+        const importedBook = bookDataService.importBookFromJson(content);
         dispatch(loadBookFromJson(importedBook));
       } catch (error) {
         const errorMessage =
@@ -123,7 +123,6 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
             onClick={(e) => e.stopPropagation()} // Empêche la fermeture quand on clique dans le menu
           >
             <div className="flex flex-col w-full divide-y-2 divide-primary-200 dark:divide-primary-900/50 ">
-              
               <ul className="flex flex-col-reverse gap-4 p-4 overflow-y-auto">
                 <li>
                   <button
@@ -154,7 +153,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                   <button
                     className={footerButtonClasses}
                     onClick={() => {
-                      bookService.exportBookToFile(book);
+                      bookDataService.exportBookToFile(book);
                     }}
                   >
                     <PiExportThin {...iconProps} />
@@ -184,7 +183,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     className={footerButtonClasses}
                     onClick={() => {
                       if (canvas) {
-                        bookService.exportToPDF({
+                        bookExportService.exportToPDF({
                           canvas: canvas,
                           pages: pages,
                         });
@@ -200,7 +199,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     className={footerButtonClasses}
                     onClick={async () => {
                       if (canvas) {
-                        await bookService.printPDF({
+                        await bookExportService.printPDF({
                           canvas: canvas,
                           pages: pages,
                         });
