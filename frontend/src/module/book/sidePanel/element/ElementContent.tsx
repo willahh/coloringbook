@@ -7,7 +7,7 @@ import Loader from '@components/Loader';
 import { useDispatch } from '@/common/store';
 import { addElementToPage } from '../../element/Element.action';
 import { useParams } from 'react-router';
-import { ElementService } from '@/services/element.service';
+import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
 // Définition des imports lazy pour chaque SVG
 const svgs = [

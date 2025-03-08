@@ -94,8 +94,8 @@ const Newsletter: React.FC<NewsletterProps> = ({ onSubscribe }) => {
                   placeholder="you@example.com"
                   className={`col-start-1 row-start-1 block w-full rounded-md pl-10 pr-3 text-base
                     bg-white py-1.5 text-gray-900
-                    outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400
-                    focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:pl-9 sm:text-sm/6
+                    outline -outline-offset-1 outline-gray-300 placeholder:text-gray-400
+                    focus:outline focus:-outline-offset-2 focus:outline-indigo-600 sm:pl-9 sm:text-sm/6
                     ${error ? 'border-red-500' : ''}`} // Ajouter une bordure rouge en cas d’erreur
                 />
                 <EnvelopeIcon

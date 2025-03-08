@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import * as fabric from 'fabric';
 import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import useCanvasContext from '../../useCanvasContext';
 import { getSecondaryColor } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';

@@ -13,11 +13,10 @@ import ErrorDialog from '@/common/components/ErrorDialog'; // Ajuste l
 import { ToolbarButton } from './ToolbarButton';
 import useCanvasContext from '../useCanvasContext';
 import { useDispatch, useSelector } from '@/common/store';
-import { selectBook, selectBookPages } from '../Book.slice';
-import { saveBookAction, loadBookFromJson } from '../book.actions';
-import { BookDataService } from '@/services/book-data.service';
-import { bookDataService, bookExportService } from '@/services/services';
-// import { BookExportService } from '@/services/book-export.service';
+import { selectBook, selectBookPages } from '../BookSlice';
+import { saveBookAction, loadBookFromJson } from '../BookActions';
+import { useServices } from '@/common/contexts/ServiceContext';
+import { BookDataService } from '@/services/book/BookDataService';
 
 const BookToolbar: React.FC = () => {
   const { canvas } = useCanvasContext();
@@ -26,6 +25,7 @@ const BookToolbar: React.FC = () => {
   const { book, areLocalUpdatesSaved } = useSelector(selectBook);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { bookDataService, bookExportService } = useServices();
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,

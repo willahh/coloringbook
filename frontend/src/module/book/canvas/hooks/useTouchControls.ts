@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import * as fabric from 'fabric';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { Scrollbars } from '@/lib/scrollbars';
 import useIsMobile from '@/common/hooks/useIsMobile';
 

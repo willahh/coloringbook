@@ -91,7 +91,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
           className={`hidden sm:block absolute bottom-20 right-12 z-10
           rounded-full px-4 py-2
          bg-secondary-500 dark:bg-secondary-500  text-white dark:text-white
-         text-sm flex gap-2`}
+         text-sm  gap-2`}
         >
           <button>Modification</button>
           <button>Color</button>

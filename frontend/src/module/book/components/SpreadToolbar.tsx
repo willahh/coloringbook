@@ -10,7 +10,7 @@ import {
 
 import { ToolbarButton } from './ToolbarButton';
 import { useSelector } from '@/common/store';
-import { selectBook, selectBookPages } from '../Book.slice';
+import { selectBook, selectBookPages } from '../BookSlice';
 import { useParams } from 'react-router';
 import useCanvasContext from '../useCanvasContext';
 import { useServices } from '@/common/contexts/ServiceContext';

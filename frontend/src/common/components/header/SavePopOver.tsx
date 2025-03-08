@@ -8,9 +8,9 @@ import { footerButtonClasses } from '@/common/utils/buttonStyles';
 
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
-import { saveBookAction } from '@/module/book/book.actions';
+import { saveBookAction } from '@/module/book/BookActions';
 import { useDispatch, useSelector } from '@/common/store';
-import { selectBook } from '@/module/book/Book.slice';
+import { selectBook } from '@/module/book/BookSlice';
 interface SavePopOverProps {
   areLocalUpdatesSaved: boolean;
 }

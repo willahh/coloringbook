@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import * as fabric from 'fabric';
 // import { useNavigate, useParams } from 'react-router-dom';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { Page } from '@apptypes/book';
 // import { BookPageParams } from '@/common/interfaces';
 
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { RootState, useSelector } from '@/common/store';
-import { selectAllElements } from '../../Book.slice';
+import { selectAllElements } from '../../BookSlice';
 import useIsMobile from '@/common/hooks/useIsMobile';
 
 export function useCanvasRedraw(

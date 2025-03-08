@@ -8,7 +8,7 @@ import { Book } from '@apptypes/book';
 import Layout from '../../layout';
 import UserBooks from './../UserBooks';
 import { ToolbarButton } from '../../book/components/ToolbarButton';
-import APIService from '@/services/api.service';
+import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
 
 const Library: React.FC = () => {

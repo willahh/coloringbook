@@ -13,7 +13,7 @@ import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import { useToast } from '@/common/hooks/useToast';
-import APIService from '@/services/api.service';
+import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
 
 interface ContentDivProps {

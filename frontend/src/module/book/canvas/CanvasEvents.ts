@@ -1,6 +1,4 @@
-// import canvasService from '@/services/canvas.service';
 import * as fabric from 'fabric';
-// import { Position, Scale } from './canvas.context';
 
 declare module 'fabric' {
   interface Canvas {

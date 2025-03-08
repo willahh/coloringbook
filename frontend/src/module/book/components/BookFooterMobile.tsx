@@ -8,7 +8,7 @@ import { footerButtonClasses } from '@/common/utils/buttonStyles';
 
 import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
-import { selectIsLoading } from '../Book.slice';
+import { selectIsLoading } from '../BookSlice';
 import MobileDrawer from './MobileDrawer'; // Importe le nouveau composant
 
 import { useState } from 'react';

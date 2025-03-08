@@ -1,5 +1,5 @@
 import { useSelector } from '../../store';
-import { selectBook } from '@/module/book/Book.slice';
+import { selectBook } from '@/module/book/BookSlice';
 import SavePopOver from './SavePopOver';
 import AboutDialog from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';

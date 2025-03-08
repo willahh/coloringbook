@@ -1,6 +1,6 @@
 import * as fabric from 'fabric';
 import { Page } from '@/common/types/book';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { useEffect } from 'react';
 
 const usePageFocus = (

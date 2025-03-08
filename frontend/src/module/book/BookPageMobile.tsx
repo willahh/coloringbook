@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from '@/common/store';
-import * as bookActions from './book.actions';
-import { selectBook } from './Book.slice';
+import * as bookActions from './BookActions';
+import { selectBook } from './BookSlice';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import { useParams } from 'react-router-dom';
 import Layout from '../layout';

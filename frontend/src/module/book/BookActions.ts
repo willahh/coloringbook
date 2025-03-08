@@ -1,8 +1,8 @@
-import APIService from '@/services/api.service';
+import APIService from '@/services/APIService';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { bookDataService } from '@/services/services';
 import { Book, Page, Element } from '@apptypes/book';
-import { ElementService } from '@/services/element.service';
+import { ElementService } from '@/services/ElementService';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { AxiosErrorResponse, BookError } from '@/common/interfaces';
 

@@ -3,7 +3,7 @@ import Header from '@/common/components/header/Header';
 import InlineEdit from '@components/InlineEdit';
 import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
-import { selectIsLoading } from '../Book.slice';
+import { selectIsLoading } from '../BookSlice';
 
 const BookFooterDesktop: React.FC<{
   book: Book | null;

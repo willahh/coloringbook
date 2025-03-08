@@ -7,10 +7,10 @@ import type { Page } from '@apptypes/book';
 import { ToolbarButton } from '../../ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
 import { useDispatch, useSelector } from '@/common/store';
-import { PageService } from '@/services/page.service';
-import * as BookActions from '../../../book.actions';
+import { PageService } from '@/services/PageService';
+import * as BookActions from '../../../BookActions';
 import { BookPageParams } from '@/common/interfaces';
-import { selectBookPages } from '../../../Book.slice';
+import { selectBookPages } from '../../../BookSlice';
 import { useServices } from '@/common/contexts/ServiceContext';
 
 interface PageComponentProps {

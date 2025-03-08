@@ -22,7 +22,6 @@ export class BookDataService {
     return data;
   }
 
-  //   static normalizeBookData(book: Partial<Book>): {
   normalizeBookData(book: Partial<Book>): {
     book: Book;
     isModified: boolean;

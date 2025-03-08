@@ -4,7 +4,7 @@ import { Tooltip } from '@components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
 import { useSelector } from '@/common/store';
-import { selectBook } from '../Book.slice';
+import { selectBook } from '../BookSlice';
 
 export const PagesNavigation: React.FC = () => {
   const { bookId, pageId } = useParams<{ bookId?: string; pageId?: string }>();

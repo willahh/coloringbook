@@ -1,30 +1,19 @@
-// ServiceContext.tsx
 import { createContext, useContext, ReactNode } from 'react';
-import { BookDataService } from '@/services/book-data.service';
-import { BookExportService } from '@/services/book-export.service';
+import { BookDataService } from '@/services/book/BookDataService';
+import { BookExport } from '@/services/book/BookExportInterface'; // Importer l'interface BookExport
 
 // Définir le type des services
 interface Services {
   bookDataService: BookDataService;
-  bookExportService: BookExportService;
+  bookExportService: BookExport; // Utiliser l'interface BookExport
 }
 
 // Créer le contexte
 const ServiceContext = createContext<Services | undefined>(undefined);
 
 // Provider pour injecter les services
-export const ServiceProvider = ({
-  children,
-  services,
-}: {
-  children: ReactNode;
-  services: Services;
-}) => {
-  return (
-    <ServiceContext.Provider value={services}>
-      {children}
-    </ServiceContext.Provider>
-  );
+export const ServiceProvider = ({ children, services }: { children: ReactNode; services: Services }) => {
+  return <ServiceContext.Provider value={services}>{children}</ServiceContext.Provider>;
 };
 
 // Hook pour accéder aux services

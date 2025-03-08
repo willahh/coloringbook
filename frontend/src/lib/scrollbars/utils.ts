@@ -1,4 +1,4 @@
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import * as fabric from 'fabric';
 
 interface CustomPointerEventInfo<EventType extends Event> {
