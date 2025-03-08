@@ -74,7 +74,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   // FIXME: Finaliser ce useEffect, il faut charger toute les vignettes une seule fois
   // lorsqu'elles n'existent pas et les stoquer quelque part. Peut être dans
   // le navigateur avec storage.
-  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
+  // useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
     <ErrorBoundary fallback={<div>sd</div>}>

@@ -2,10 +2,10 @@ import _ from 'lodash';
 import { Capacitor } from '@capacitor/core';
 // import { Browser } from '@capacitor/browser';
 import { Share } from '@capacitor/share';
-import {
-  FileOpener,
-  // FileOpenerOptions,
-} from '@capacitor-community/file-opener';
+// import {
+//   FileOpener,
+//   // FileOpenerOptions,
+// } from '@capacitor-community/file-opener';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 import jsPDF from 'jspdf'; // ou toute autre bibliothèque que vous utilisez pour PDF
@@ -332,114 +332,69 @@ export class BookService {
       if (pdf) {
         if (Capacitor.isNativePlatform()) {
           try {
-            // Convertir le PDF en Blob
-            const pdfBlob = new Blob([pdf.output('arraybuffer')], {
-              type: 'application/pdf',
+            const pdfOutput = pdf.output('arraybuffer'); // Obtenir l’ArrayBuffer
+            console.log('Taille du PDF (bytes) :', pdfOutput.byteLength);
+
+            // Convertir l’ArrayBuffer en base64
+            const base64Data = this.arrayBufferToBase64(pdfOutput);
+            console.log('Base64 généré (début) :', base64Data.substring(0, 50));
+
+            const fileName = 'canvas.pdf';
+            const filePath = fileName;
+
+            console.log('filePath', filePath);
+            const directoryExists = await this.checkDirectoryExists(
+              Directory.Documents
+            );
+            console.log('directoryExists', directoryExists);
+
+            if (!directoryExists) {
+              await Filesystem.mkdir({
+                path: 'Documents',
+                directory: Directory.Documents,
+                recursive: true,
+              });
+            }
+
+            console.log(
+              'Tentative d’écriture dans',
+              Directory.Documents,
+              'avec chemin',
+              filePath
+            );
+            const writeResult = await Filesystem.writeFile({
+              path: filePath,
+              data: base64Data, // Utiliser la chaîne base64
+              directory: Directory.Documents
+              // encoding: Encoding.UTF8, // Encoding.UTF8 est correct pour base64
             });
+            console.log('PDF enregistré avec succès à :', writeResult.uri);
 
-            // Lire le blob en base64
-            const reader = new FileReader();
-            reader.readAsDataURL(pdfBlob);
-            reader.onloadend = async () => {
-              const base64Data = reader.result?.toString().split(',')[1];
-
-              if (base64Data) {
-                console.log('Base64 généré :', base64Data?.substring(0, 50)); // Affiche les 50 premiers caractères
-                const fileName = 'canvas.pdf';
-                // const filePath = `Documents/${fileName}`;
-                const filePath = fileName; // Juste "canvas.pdf"
-
-                console.log('filePath', filePath);
-                // Vérifier si le dossier Documents existe
-                const directoryExists = await this.checkDirectoryExists(
-                  Directory.Documents
-                );
-                console.log('directoryExists', directoryExists);
-
-                if (!directoryExists) {
-                  // Créer le répertoire Documents si nécessaire
-                  await Filesystem.mkdir({
-                    path: 'Documents',
-                    directory: Directory.Documents,
-                    recursive: true, // Crée également les répertoires parents si nécessaire
-                  });
-                }
-
-                // Enregistrer le fichier PDF
-                console.log(
-                  'Tentative d’écriture dans',
-                  Directory.Documents,
-                  'avec chemin',
-                  filePath
-                );
-                let writeResult;
-                try {
-                  // const filePath = fileName; // Juste "canvas.pdf"
-                  writeResult = await Filesystem.writeFile({
-                    path: filePath,
-                    data: base64Data,
-                    directory: Directory.Documents,
-                    encoding: Encoding.UTF8,
-                  });
-                  console.log('PDF enregistré avec succès dans', filePath);
-                } catch (error) {
-                  console.error(
-                    'Détail de l’erreur :',
-                    JSON.stringify(error, null, 2)
-                  );
-                }
-
-                // Utiliser l’URI complet pour ouvrir le fichier
-                if (writeResult) {
-                  const fullFilePath = writeResult.uri; // URI absolu (ex. : file://...)
-
-                  // Remplace FileOpener.open par Share.share
-                  console.log('Tentative de partage du fichier:', fullFilePath);
-                  try {
-                    await Share.share({
-                      title: 'Ton PDF',
-                      url: fullFilePath,
-                      dialogTitle: 'Partager le PDF',
-                    });
-                    console.log('PDF partagé avec succès');
-                  } catch (error) {
-                    console.error(
-                      'Erreur lors du partage du PDF :',
-                      JSON.stringify(error, null, 2)
-                    );
-                  }
-
-                  // console.log(
-                  //   'Tentative d’ouverture du fichier avec FileOpener:',
-                  //   fullFilePath
-                  // );
-                  // console.log('FileOpener.open appelé avec:', {
-                  //   filePath: fullFilePath,
-                  //   contentType: 'application/pdf',
-                  // });
-                  // try {
-                  //   await FileOpener.open({
-                  //     filePath: fullFilePath,
-                  //     contentType: 'application/pdf',
-                  //   });
-                  //   console.log('PDF ouvert avec succès');
-                  // } catch (error) {
-                  //   console.error(
-                  //     'Erreur lors de l’ouverture du PDF :',
-                  //     JSON.stringify(error, null, 2)
-                  //   );
-                  // }
-                }
-              }
-            };
+            // Partager le fichier
+            await Share.share({
+              title: 'Ton PDF',
+              url: writeResult.uri,
+              dialogTitle: 'Partager le PDF',
+            });
+            console.log('PDF partagé avec succès');
           } catch (error) {
-            console.error('Erreur lors de l’enregistrement du PDF :', error);
+            console.error('Erreur :', JSON.stringify(error, null, 2));
           }
         } else {
           pdf.save('canvas.pdf'); // Pour desktop
         }
       }
     }
+  }
+
+  // Fonction utilitaire pour convertir ArrayBuffer en base64
+  arrayBufferToBase64(buffer: ArrayBuffer): string {
+    const bytes = new Uint8Array(buffer);
+    let binary = '';
+    for (let i = 0; i < bytes.byteLength; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
   }
 
   // Fonction pour vérifier si un répertoire existe
@@ -455,64 +410,6 @@ export class BookService {
       return false;
     }
   }
-
-  // private async savePDFToFilesystem(pdfBlob: Blob) {
-  //   console.log('savePDFToFilesystem');
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(pdfBlob);
-  //   reader.onloadend = async () => {
-  //     console.log('savePDFToFilesystem reader.onloadend');
-  //     const base64Data = reader.result?.toString().split(',')[1]; // Retirer "data:application/pdf;base64,"
-
-  //     if (base64Data) {
-  //       const fileName = 'canvas.pdf';
-
-  //       console.log('before writeFile 2');
-  //       try {
-  //         await Filesystem.writeFile({
-  //           path: fileName,
-  //           data: base64Data,
-  //           directory: Directory.Documents,
-  //         });
-  //       } catch (error) {
-  //         console.error('Error in writeFile:', error);
-  //       }
-  //       console.log('after writeFile');
-
-  //       // Récupérer l'URI et tenter d'ouvrir le fichier
-  //       console.log("// Récupérer l URI et tenter d'ouvrir le fichier");
-  //       const fileUri = await Filesystem.getUri({
-  //         directory: Directory.Documents,
-  //         path: fileName,
-  //       });
-
-  //       // Essayer d'ouvrir avec le navigateur natif de l'appareil
-  //       // window.open(fileUri.uri, '_system');
-  //       // await Share.share({
-  //       //   title: 'Mon PDF',
-  //       //   text: 'Voici votre document PDF.',
-  //       //   url: fileUri.uri,
-  //       //   dialogTitle: 'Partager le PDF',
-  //       // });
-
-  //       console.log('fileUri', fileUri)
-  //       console.log('before Browser.open');
-  //       await Browser.open({ url: fileUri.uri });
-  //       console.log('after Browser.open');
-
-  //       // try {
-  //       //   const fileOpenerOptions: FileOpenerOptions = {
-  //       //     filePath: fileName,
-  //       //     contentType: 'application/pdf',
-  //       //     openWithDefault: true,
-  //       //   };
-  //       //   await FileOpener.open(fileOpenerOptions);
-  //       // } catch (e) {
-  //       //   console.log('Error opening file', e);
-  //       // }
-  //     }
-  //   };
-  // }
 
   public async printPDF({
     canvas,
