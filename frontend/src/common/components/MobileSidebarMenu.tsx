@@ -107,7 +107,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
           />
           <motion.div
             className={`fixed top-0 left-0 h-full w-64 z-50
-              flex flex-row items-end
+              flex flex-row items-start
               ${mobileSideBarBackgroundRadialStyles}
               border-r-1 border-gray-300 dark:border-gray-700 shadow-lg`}
             variants={sidebarVariants}
@@ -123,7 +123,47 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
             onClick={(e) => e.stopPropagation()} // Empêche la fermeture quand on clique dans le menu
           >
             <div className="flex flex-col w-full divide-y-2 divide-primary-200 dark:divide-primary-900/50 ">
-              <ul className="flex flex-col-reverse gap-4 p-4 overflow-y-auto">
+              <div className="p-4">
+                <button
+                  autoFocus={true}
+                  className={`${footerButtonClasses}`}
+                  onClick={onClose}
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
+                <li>
+                  <Tooltip content="Accueil">
+                    <Link className={footerButtonClasses} to="/">
+                      <HomeIcon aria-hidden="true" className="size-6" />
+                      <span>Accueil</span>
+                    </Link>
+                  </Tooltip>
+                </li>
+                <li>
+                  <Tooltip content="Bibliothèque">
+                    <Link className={footerButtonClasses} to="/library">
+                      <LuLibrary aria-hidden="true" className="size-6" />
+                      <span>Bibliothèque</span>
+                    </Link>
+                  </Tooltip>
+                </li>
+              </ul>
+              <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
                 <li>
                   <button
                     className={footerButtonClasses}
@@ -148,35 +188,6 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     )}
                     <span>Sauvegarder</span>
                   </button>
-                </li>
-                <li>
-                  <button
-                    className={footerButtonClasses}
-                    onClick={() => {
-                      bookDataService.exportBookToFile(book);
-                    }}
-                  >
-                    <PiExportThin {...iconProps} />
-                    <span>Exporter</span>
-                  </button>
-                </li>
-                <li>
-                  <label className="cursor-pointer">
-                    <button
-                      className={footerButtonClasses}
-                      onClick={() => fileInputRef.current?.click()}
-                    >
-                      <DocumentArrowDownIcon {...iconProps} />
-                      <span>Importer</span>
-                    </button>
-                    <input
-                      type="file"
-                      accept="application/json"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
                 </li>
                 <li>
                   <button
@@ -210,47 +221,36 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     <span>Imprimer</span>
                   </button>
                 </li>
-              </ul>
-              <ul className="flex flex-col-reverse gap-4 p-4 overflow-y-auto">
                 <li>
-                  <Tooltip content="Accueil">
-                    <Link className={footerButtonClasses} to="/">
-                      <HomeIcon aria-hidden="true" className="size-6" />
-                      <span>Accueil</span>
-                    </Link>
-                  </Tooltip>
-                </li>
-                <li>
-                  <Tooltip content="Bibliothèque">
-                    <Link className={footerButtonClasses} to="/library">
-                      <LuLibrary aria-hidden="true" className="size-6" />
-                      <span>Bibliothèque</span>
-                    </Link>
-                  </Tooltip>
-                </li>
-              </ul>
-              <div className="p-4">
-                <button
-                  autoFocus={true}
-                  className={`${footerButtonClasses}`}
-                  onClick={onClose}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <button
+                    className={footerButtonClasses}
+                    onClick={() => {
+                      bookDataService.exportBookToFile(book);
+                    }}
                   >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
+                    <PiExportThin {...iconProps} />
+                    <span>Exporter</span>
+                  </button>
+                </li>
+                <li>
+                  <label className="cursor-pointer">
+                    <button
+                      className={footerButtonClasses}
+                      onClick={() => fileInputRef.current?.click()}
+                    >
+                      <DocumentArrowDownIcon {...iconProps} />
+                      <span>Importer</span>
+                    </button>
+                    <input
+                      type="file"
+                      accept="application/json"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      style={{ display: 'none' }}
                     />
-                  </svg>
-                </button>
-              </div>
+                  </label>
+                </li>
+              </ul>
             </div>
           </motion.div>
         </>

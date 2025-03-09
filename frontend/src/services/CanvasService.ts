@@ -26,7 +26,6 @@ class CanvasService {
   private registerEventListeners() {}
 
   getVerticalSpaceBetweenPages(isMobile: boolean) {
-    console.log('getVerticalSpaceBetweenPages isMobile', isMobile);
     return isMobile ? 60 : 200;
   }
   drawPagesElementsAndMask(
@@ -281,7 +280,8 @@ class CanvasService {
   getPageFocusCoordinates(
     canvas: fabric.Canvas,
     pageId: number,
-    margin = 40
+    // margin = 40
+    margin = 20
   ): fabric.TMat2D | null {
     const page = canvas
       .getObjects()
@@ -341,11 +341,10 @@ class CanvasService {
       focusPageId = pages[0].pageId;
     }
 
-    const vpt = this.getPageFocusCoordinates(canvas, focusPageId);
-    if (vpt) {
+    const targetVpt = this.getPageFocusCoordinates(canvas, focusPageId);
+    if (targetVpt) {
       console.log('#c2 FOCUS ON PAGE pageId:', pageId);
       const currentVpt = [...canvas.viewportTransform];
-      const targetVpt = vpt;
 
       return this.animateViewportTransform(canvas, currentVpt, targetVpt);
     }

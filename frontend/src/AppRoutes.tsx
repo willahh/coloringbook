@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 
 import BookPage from './module/book/BookPage';
-import HomePage from './module/home/Home';
+import HomePage from './module/home/HomePage';
 import { CanvasProvider } from './module/book/CanvasContext';
 import Library from './module/home/library/Library';
 

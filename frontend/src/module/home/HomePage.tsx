@@ -8,13 +8,15 @@ import Toast from '@components/Toast';
 import { Book } from '@apptypes/book';
 import { useTheme } from '@/common/contexts/ThemeContext';
 
-import Layout from '../layout';
+// import Layout from '../../common/components/Layout';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
 import { useToast } from '@/common/hooks/useToast';
 import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
+import LayoutMobile from '@/common/components/LayoutMobile';
+import HeaderMobile from '@/common/components/header/HeaderMobile';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;
@@ -111,7 +113,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <Layout className='h-screen overflow-y-auto overflow-x-hidden'>
+    <LayoutMobile header={<HeaderMobile />}>
       {isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
@@ -164,7 +166,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       )}
-    </Layout>
+    </LayoutMobile>
   );
 };
 
