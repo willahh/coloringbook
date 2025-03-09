@@ -48,12 +48,14 @@ export const makeMouseWheelWithAnimation =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           adjustedTotalWidth,
-          vpt[4]
+          vpt[4],
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           adjustedTotalHeight,
-          vpt[5]
+          vpt[5],
+          isMobile
         );
 
         vpt[4] = newX;
@@ -106,12 +108,14 @@ export const makeMouseWheelWithAnimation =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           totalWidth * canvas.getZoom(),
-          x
+          x,
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           totalHeight * canvas.getZoom(),
-          y
+          y,
+          isMobile
         );
 
         console.log('#z totalHeight:', totalHeight);
@@ -195,12 +199,14 @@ export const makeMouseWheel =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           maxPageWidth,
-          x
+          x,
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           maxPageHeight,
-          y
+          y,
+          isMobile
         ); // Contrainte verticale
 
         vpt[4] = newX;

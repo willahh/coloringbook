@@ -110,12 +110,12 @@ class CanvasService {
             // Evite le focus lorsque l'on a sélectionnée un élément, et que
             // l'on click sur la page pour le désélectionner.
             if (!canvas.__isPanning && canvas.getActiveObjects().length === 0) {
-              this.pageFocus(canvas, spreadPages, page.pageId);
+              this.pageFocus(canvas, spreadPages, page.pageId, isMobile);
             }
           });
-          
+
           pageRect.on('mousedblclick', () => {
-            this.pageFocus(canvas, spreadPages, page.pageId);
+            this.pageFocus(canvas, spreadPages, page.pageId, isMobile);
           });
 
           // pageRect.on('mouseover', () => {
@@ -280,6 +280,7 @@ class CanvasService {
   getPageFocusCoordinates(
     canvas: fabric.Canvas,
     pageId: number,
+    isMobile: boolean,
     // margin = 40
     margin = 20
   ): fabric.TMat2D | null {
@@ -324,7 +325,8 @@ class CanvasService {
     deltaX = this.constrainHorizontalMovement(
       canvasWidth,
       pageWidth * zoom,
-      deltaX
+      deltaX,
+      isMobile
     );
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
@@ -333,7 +335,8 @@ class CanvasService {
   pageFocus(
     canvas: fabric.Canvas,
     pages: Page[],
-    pageId: number
+    pageId: number,
+    isMobile: boolean
     // previousPageId?: number
   ): (() => void) | void {
     let focusPageId = pageId;
@@ -341,7 +344,11 @@ class CanvasService {
       focusPageId = pages[0].pageId;
     }
 
-    const targetVpt = this.getPageFocusCoordinates(canvas, focusPageId);
+    const targetVpt = this.getPageFocusCoordinates(
+      canvas,
+      focusPageId,
+      isMobile
+    );
     if (targetVpt) {
       console.log('#c2 FOCUS ON PAGE pageId:', pageId);
       const currentVpt = [...canvas.viewportTransform];
@@ -354,12 +361,13 @@ class CanvasService {
   constrainHorizontalMovement(
     canvasWidth: number,
     maxPageWidth: number,
-    x: number
+    x: number,
+    isMobile: boolean
   ): number {
     let newX = x;
 
     // Limite de déplacement horizontal
-    const margin = 100;
+    const margin = isMobile ? 20 : 100;
     const maxX = margin; // Si le contenu est aligné à gauche par défaut
     const minX = canvasWidth - maxPageWidth - margin; // Si le contenu dépasse la taille du canvas
 
@@ -378,14 +386,25 @@ class CanvasService {
   constrainVerticalMovement(
     canvasHeight: number,
     maxPageHeight: number,
-    y: number
+    y: number,
+    isMobile: boolean
   ): number {
     let newY = y;
 
+    console.log('isMobile', isMobile);
+
     // Limite de déplacement vertical
-    const margin = 100;
-    const maxY = margin;
-    const minY = canvasHeight - maxPageHeight - margin;
+    const headerHeight = 64;
+    const footerHeight = 64;
+    const footerPageOptionsHeight = 10;
+    const marginTop = isMobile ? 20 : 100;
+    const marginBottom = isMobile ? 20 : 100;
+    const maxY = marginTop;
+    const minY =
+      canvasHeight -
+      maxPageHeight -
+      (headerHeight + footerHeight + 2 + footerPageOptionsHeight) -
+      marginBottom;
 
     if (maxPageHeight <= canvasHeight) {
       const offsetY = 77;
