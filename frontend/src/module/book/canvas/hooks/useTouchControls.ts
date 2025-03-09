@@ -21,6 +21,9 @@ declare module 'fabric' {
 
   interface Object {
     isPage?: boolean;
+    pageNumber?: number;
+    height?: number;
+    top?: number;
   }
 }
 
@@ -39,6 +42,7 @@ export function useTouchControls({
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
+    let lastVerticalOffset = 0;
 
     const updateObjectControls = (isPanning: boolean) => {
       canvas.getObjects().forEach((obj) => {
@@ -65,14 +69,6 @@ export function useTouchControls({
 
       const target = canvas.findTarget(e);
       if (e.touches.length === 1) {
-        // // Sélection d'objet si target est selectable
-        // if (target && target.selectable && !canvas.getActiveObject()) {
-        //   canvas.setActiveObject(target);
-        //   canvas.renderAll();
-        //   return; // Arrête ici pour ne pas déclencher le pan
-        // }
-
-        // Double tap sur pageRect
         const currentTime = Date.now();
         const doubleTapThreshold = 300;
         if (
@@ -85,8 +81,8 @@ export function useTouchControls({
           if (pageId !== undefined) {
             canvasService.pageFocus(
               canvas,
-              canvasService.canvas
-                ?.getObjects('rect')
+              canvas
+                .getObjects('rect')
                 .filter((r) => r.isPage)
                 .map((r) => ({
                   pageId: r.get('pageId'),
@@ -94,7 +90,8 @@ export function useTouchControls({
                   aspectRatio: r.get('aspectRatio'),
                   elements: r.get('elements'),
                 })) || [],
-              pageId
+              pageId,
+              isMobile
             );
           }
           canvas.lastTapTime = 0;
@@ -157,18 +154,21 @@ export function useTouchControls({
         vpt[4] = canvasService.constrainHorizontalMovement(
           canvasWidth,
           totalWidth * canvas.getZoom(),
-          x
+          x,
+          isMobile
         );
         vpt[5] = canvasService.constrainVerticalMovement(
           canvasHeight,
           totalHeight * canvas.getZoom(),
-          y
+          y,
+          isMobile
         );
 
         setViewportTransform([...vpt]);
         canvas.setViewportTransform(vpt);
         canvas.requestRenderAll();
 
+        lastVerticalOffset = vpt[5];
         lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: now };
       } else if (e.touches.length === 2 && !canvas.getActiveObject()) {
         const [touch1, touch2] = e.touches;
@@ -200,65 +200,107 @@ export function useTouchControls({
           vpt[4] = canvasService.constrainHorizontalMovement(
             canvasWidth,
             totalWidth * zoom,
-            vpt[4]
+            vpt[4],
+            isMobile
           );
           vpt[5] = canvasService.constrainVerticalMovement(
             canvasHeight,
             totalHeight * zoom,
-            vpt[5]
+            vpt[5],
+            isMobile
           );
 
           setViewportTransform([...vpt]);
           canvas.setViewportTransform(vpt);
           canvas.requestRenderAll();
 
+          lastVerticalOffset = vpt[5];
           initialPinchDistance = currentDistance;
         }
       }
     };
 
-    const applyMomentum = () => {
-      if (
-        !canvas.viewportTransform ||
-        (Math.abs(velocityX) < 1 && Math.abs(velocityY) < 1)
-      ) {
-        animationFrameId = null;
-        canvas.__isPanning = false;
-        updateObjectControls(false);
+    const snapToNearestPage = (startVpt: fabric.TMat2D) => {
+      if (!canvas) return;
+
+      const canvasHeight = canvas.getHeight();
+      const zoom = canvas.getZoom();
+      const centerY = -startVpt[5] / zoom + canvasHeight / 2 / zoom;
+
+      const pages = canvas
+        .getObjects('rect')
+        .filter((obj) => obj.isPage)
+        .sort((a, b) => (a.top || 0) - (b.top || 0));
+
+      if (pages.length === 0) {
+        console.warn('No pages found for snapping');
         return;
       }
 
-      const vpt = canvas.viewportTransform.slice(0) as fabric.TMat2D;
-      const totalWidth = canvasService.getMaxPageWidth(canvas);
-      const totalHeight = canvasService.getTotalPageHeightCumulated(
-        canvas,
-        isMobile
-      );
-      const canvasWidth = canvas.getWidth();
-      const canvasHeight = canvas.getHeight();
+      let nearestPage: fabric.Object | null = null;
+      let minDistance = Infinity;
 
-      const x = vpt[4] + velocityX * 0.016;
-      const y = vpt[5] + velocityY * 0.016;
+      pages.forEach((page) => {
+        const pageTop = (page.top || 0) / zoom;
+        const pageHeight = (page.height || 0) / zoom;
+        const pageCenter = pageTop + pageHeight / 2;
+        const distance = Math.abs(pageCenter - centerY);
+        console.log(`Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`);
 
-      vpt[4] = canvasService.constrainHorizontalMovement(
-        canvasWidth,
-        totalWidth * canvas.getZoom(),
-        x
-      );
-      vpt[5] = canvasService.constrainVerticalMovement(
-        canvasHeight,
-        totalHeight * canvas.getZoom(),
-        y
-      );
+        if (distance < minDistance) {
+          minDistance = distance;
+          nearestPage = page;
+        }
+      });
 
-      setViewportTransform([...vpt]);
-      canvas.setViewportTransform(vpt);
-      canvas.requestRenderAll();
+      if (!nearestPage) {
+        console.warn('No nearest page found');
+        return;
+      }
 
-      velocityX *= 0.95;
-      velocityY *= 0.95;
+      const pageTop = (nearestPage.top || 0) / zoom;
+      const pageHeight = (nearestPage.height || 0) / zoom;
+      const targetY = -(pageTop + pageHeight / 2 - canvasHeight / 2 / zoom) * zoom;
+      console.log(`Snapping to page ${nearestPage.pageNumber}, TargetY=${targetY}`);
 
-      animationFrameId = requestAnimationFrame(applyMomentum);
+      const startY = startVpt[5];
+      const duration = 300; // Animation duration in ms
+      const startTime = performance.now();
+
+      const animateSnap = (currentTime: number) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Ease-out cubic function
+        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+        const easedProgress = easeOutCubic(progress);
+
+        const newY = startY + (targetY - startY) * easedProgress;
+
+        const vpt = startVpt.slice(0) as fabric.TMat2D;
+        vpt[5] = canvasService.constrainVerticalMovement(
+          canvasHeight,
+          canvasService.getTotalPageHeightCumulated(canvas, isMobile) * zoom,
+          newY,
+          isMobile
+        );
+
+        setViewportTransform([...vpt]);
+        canvas.setViewportTransform(vpt);
+        canvas.requestRenderAll();
+        console.log(`Animating: Progress=${progress}, NewY=${newY}`);
+
+        if (progress < 1) {
+          animationFrameId = requestAnimationFrame(animateSnap);
+        } else {
+          canvas.__isPanning = false;
+          updateObjectControls(false);
+          console.log('Snap animation completed');
+        }
+      };
+
+      if (animationFrameId) cancelAnimationFrame(animationFrameId);
+      animationFrameId = requestAnimationFrame(animateSnap);
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
@@ -269,12 +311,18 @@ export function useTouchControls({
           return;
         }
 
-        if (Math.abs(velocityX) > 50 || Math.abs(velocityY) > 50) {
-          animationFrameId = requestAnimationFrame(applyMomentum);
-        } else {
-          canvas.__isPanning = false;
-          updateObjectControls(false);
+        if (animationFrameId) {
+          cancelAnimationFrame(animationFrameId);
+          animationFrameId = null;
         }
+
+        const vpt = canvas.viewportTransform?.slice(0) as fabric.TMat2D;
+        if (!vpt) {
+          console.warn('Viewport transform not available');
+          return;
+        }
+
+        snapToNearestPage(vpt);
 
         lastTouch = null;
         initialPinchDistance = null;
