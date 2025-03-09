@@ -2,27 +2,24 @@ import { Bars3Icon } from '@heroicons/react/24/outline';
 import { LuUndo, LuRedo } from 'react-icons/lu';
 import { IoIosArrowUp, IoIosArrowDown } from 'react-icons/io';
 
-import Footer from '@/common/components/footer/Footer';
 import MobileSidebarMenu from '@components/MobileSidebarMenu';
 import { footerButtonClasses } from '@/common/utils/buttonStyles';
-
 import { useSelector } from '@/common/store';
 import { Book } from '@apptypes/book';
 import { selectIsLoading } from '../BookSlice';
-import MobileDrawer from './MobileDrawer'; // Importe le nouveau composant
-
 import { useState } from 'react';
+import FooterMobile from '@/common/components/footer/FooterMobile';
 
 const BookFooterMobile: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
 }> = ({ book }) => {
   const isLoading = useSelector(selectIsLoading);
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isTabsPanelOpen, setIsTabsPanelOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   return (
-    <Footer isLoading={isLoading}>
+    <FooterMobile isLoading={isLoading}>
       <div className="flex gap-4">
         <button
           className={`${footerButtonClasses}`}
@@ -32,10 +29,10 @@ const BookFooterMobile: React.FC<{
           <Bars3Icon className="w-6 h-6" />
         </button>
         <button
-          className={`${footerButtonClasses} `}
-          onClick={() => setIsDrawerOpen(true)}
+          className={`${footerButtonClasses}`}
+          onClick={() => setIsTabsPanelOpen(!isTabsPanelOpen)}
         >
-          {isDrawerOpen ? (
+          {isTabsPanelOpen ? (
             <IoIosArrowDown className="w-6 h-6" />
           ) : (
             <IoIosArrowUp className="w-6 h-6" />
@@ -56,17 +53,17 @@ const BookFooterMobile: React.FC<{
           <LuRedo className="w-6 h-6" />
         </button>
       </div>
-      <MobileDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        book={book}
-      />
-
+      {/* {isTabsPanelOpen && (
+        <div className="absolute bottom-16 right-4 w-80 h-96 bg-white rounded-lg shadow-lg">
+          <FooterTabsPanelMobile />
+        </div>
+      )} */}
       <MobileSidebarMenu
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
       />
-    </Footer>
+    </FooterMobile>
   );
 };
+
 export default BookFooterMobile;

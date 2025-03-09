@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+
 import { useDispatch, useSelector } from '@/common/store';
 import * as bookActions from './BookActions';
 import { selectBook } from './BookSlice';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
-import { useParams } from 'react-router-dom';
+
 import Layout from '../layout';
-import BookFooter from './components/BookFooter';
 import ErrorDialog from '@/common/components/ErrorDialog';
 import LoadingScreen from '@/common/components/LoadingScreen';
+import FooterTabsPanelMobile from './components/SidePanel/FooterTabsPanelMobile';
+import BookFooterMobile from './components/BookFooterMobile';
 
 const BookPageMobile: React.FC = () => {
   const { bookId = '0' } = useParams<{ bookId: string }>();
@@ -26,17 +29,23 @@ const BookPageMobile: React.FC = () => {
       className={`w-screen h-screen overflow-hidden select-none
          dark:bg-gray-700 bg-primary-400 bg-radial-[at_0_300%] from-1% to-70% from-secondary-100 to-primary-100 dark:from-secondary-900 dark:to-primary-900 dark:brightness-125`}
       header={
-        <BookFooter
-          book={book}
-          onBookNameEdit={(newName) => {
-            dispatch(
-              bookActions.editBookNameAction({
-                bookId: numericBookId,
-                bookName: newName,
-              })
-            );
-          }}
-        />
+        <div>
+          <FooterTabsPanelMobile className="fixed bottom-0 relative -top-32" />
+
+          <div className="fixed bottom-0 z-20">
+            <BookFooterMobile
+              book={book}
+              onBookNameEdit={(newName) => {
+                dispatch(
+                  bookActions.editBookNameAction({
+                    bookId: numericBookId,
+                    bookName: newName,
+                  })
+                );
+              }}
+            />
+          </div>
+        </div>
       }
     >
       {error ? (
@@ -53,7 +62,7 @@ const BookPageMobile: React.FC = () => {
           {book?.pages.length > 0 && (
             <SpreadViewerCanvas
               pages={book.pages}
-              sidePanelWidth={0} // Pas de panneaux sur mobile
+              sidePanelWidth={0} // Adjust width as needed
               pagesPanelWidth={0}
             />
           )}
