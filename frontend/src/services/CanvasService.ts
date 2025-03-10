@@ -141,6 +141,7 @@ class CanvasService {
             `Page ${page.pageNumber} / ${spreadPages.length}`,
             {
               selectable: false,
+              evented: false, // Disable events for text
               left: offsetX,
               top: offsetY + pageHeight + 8,
               fontSize: 16,
@@ -152,8 +153,7 @@ class CanvasService {
 
           // TODO, gérer la sauvegarde de la sélection ICI
 
-          // Create page elements
-
+          // Ajoute les éléments au canvas
           page.elements.forEach(async (element) => {
             const fabricObject = await canvasService.addElementToCanvas(
               canvas,
@@ -166,6 +166,28 @@ class CanvasService {
             );
 
             if (fabricObject) {
+              // Disable immediate selection
+              fabricObject.set({
+                evented: true,
+                hasControls: true, // Allow controls but only activate on release
+                selectable: true,
+              });
+
+              // Enable selection on release
+              // fabricObject.on('mouseup', () => {
+              //   console.log('fabricObject mouseup')
+              //   if (!canvas.__isPanning) {
+              //     canvas.setActiveObject(fabricObject);
+              //     canvas.renderAll();
+              //   }
+              // });
+              // fabricObject.on('touchend', () => {
+              //   if (!canvas.__isPanning) {
+              //     canvas.setActiveObject(fabricObject);
+              //     canvas.renderAll();
+              //   }
+              // });
+
               activeFabricObject = fabricObject;
             }
           });
@@ -303,9 +325,26 @@ class CanvasService {
     const pageHeight = pageRect.height || 0;
 
     // Dimensions du canvas
-    const canvasWidth = canvas.getWidth();
-    const canvasHeight = canvas.getHeight() - 66; // 66 = Hauteur du footer
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = Math.min(
+      document.documentElement.clientHeight,
+      window.innerHeight || 0
+    );
 
+    const headerHeight = 64;
+    const footerHeight = 64;
+    let canvasWidth = viewportWidth;
+    let canvasHeight = viewportHeight; // 66 = Hauteur du footer
+
+    if (isMobile) {
+      canvasWidth = viewportWidth;
+      canvasHeight = viewportHeight - headerHeight - footerHeight;
+    } else {
+      canvasWidth = viewportWidth;
+      canvasHeight = viewportHeight - headerHeight;
+    }
+
+    console.log('#1.1 canvasHeight', canvasHeight);
     // Calculer le zoom nécessaire pour voir toute la page avec des marges
     const zoomX = (canvasWidth - 2 * margin) / pageWidth;
     const zoomY = (canvasHeight - 2 * margin) / pageHeight;
@@ -407,7 +446,8 @@ class CanvasService {
       marginBottom;
 
     if (maxPageHeight <= canvasHeight) {
-      const offsetY = 77;
+      // const offsetY = 77;
+      const offsetY = 0;
       newY = (canvasHeight - maxPageHeight + offsetY) / 2;
     } else {
       newY = Math.min(Math.max(y, minY), maxY);
@@ -436,62 +476,27 @@ class CanvasService {
       fabricObject.set('objet', element);
       fabricObject.set('pageId', pageId);
 
-      fabricObject.on('mousedown:before', (event: fabric.TPointerEventInfo) => {
-        console.log('mousedown:before');
+      // Ajouter les écouteurs pour l’effet de survol
+      // fabricObject.on('mouseover', (e: fabric.TPointerEventInfo) => {
+      //   //console.log('#c2 mouseover');
+      //   e.target?.set({
+      //     stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
+      //     strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
+      //     strokeDashArray: [5, 5], // Bordure pointillée (optionnel, pour un style plus subt
 
-        // event.e.preventDefault();
-        // event.e.stopPropagation();
-        event.e.stopImmediatePropagation();
-        event.e.cancelBubble = true;
-
-        return false;
-      });
-      // fabricObject.on('mousedown', (event: fabric.TPointerEventInfo) => {
-      //   console.log('mousedown')
-
-      //   event.e.preventDefault();
-      //   event.e.stopPropagation();
-      //   event.e.stopImmediatePropagation();
-
-      //   return false;
+      //   });
       // });
 
-      // fabricObject.on('mousedown', (event: fabric.TPointerEventInfo) => {
-      //   event.e.preventDefault();
-      // })
-
-      // Ajouter les écouteurs pour l’effet de survol
-      fabricObject.on('mouseover', (e: fabric.TPointerEventInfo) => {
-        //console.log('#c2 mouseover');
-        e.target?.set({
-          stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
-          strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
-          strokeDashArray: [5, 5], // Bordure pointillée (optionnel, pour un style plus subt
-
-          // borderColor: '#000',
-          // cornerColor: '#DDD',
-          // cornerStyle: 'circle',
-          // cornerSize: 5,
-
-          // stroke: '#ff0000', // Bordure rouge (ajustez selon votre thème, par exemple, tailwindColors.primary[700])
-          // strokeWidth: 2, // Épaisseur de la bordure (ajustez selon vos besoins)
-          // strokeDashArray: [5, 5], // Bordure pointillée (optionnel, pour un style plus subtil)
-        });
-      });
-
-      fabricObject.on('mouseout', (e: fabric.TPointerEventInfo) => {
-        //console.log('#c2 mouseout');
-        e.target?.set({
-          stroke: null, // Supprimer la bordure
-          strokeWidth: 0, // Réinitialiser l’épaisseur
-          strokeDashArray: null, // Réinitialiser le style pointillé
-        });
-        canvas.renderAll();
-        // object.canvas?.renderAll(); // Forcer le rendu pour afficher les changements
-      });
-
-      // fabricObject.stroke = '#ff0000';
-      // fabricObject.strokeWidth = 20;
+      // fabricObject.on('mouseout', (e: fabric.TPointerEventInfo) => {
+      //   //console.log('#c2 mouseout');
+      //   e.target?.set({
+      //     stroke: null, // Supprimer la bordure
+      //     strokeWidth: 0, // Réinitialiser l’épaisseur
+      //     strokeDashArray: null, // Réinitialiser le style pointillé
+      //   });
+      //   canvas.renderAll();
+      //   // object.canvas?.renderAll(); // Forcer le rendu pour afficher les changements
+      // });
 
       canvas.add(fabricObject);
     }
@@ -621,13 +626,13 @@ class CanvasService {
 
     pages.forEach((page) => {
       const pageTop = page.getY() * zoom + offsetY;
-      const pageBottom = (page.getY() + page.height) * zoom + offsetY;
+      const pageBottom = (page.getY() + (page.height ?? 0)) * zoom + offsetY;
       const viewportHeight = canvas.getHeight();
 
       // Calcul de la visibilité de la page dans la fenêtre
       const visibleHeight =
         Math.min(viewportHeight, pageBottom) - Math.max(0, pageTop);
-      const visibilityRatio = visibleHeight / page.height;
+      const visibilityRatio = visibleHeight / (page.height ?? 1);
 
       // Sélectionner la page la plus visible
       if (visibilityRatio > bestVisibility) {

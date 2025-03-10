@@ -176,12 +176,14 @@ export const makeMouseWheel =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           maxPageWidth * zoomRatio,
-          vpt[4]
+          vpt[4],
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           maxPageHeight * zoomRatio,
-          vpt[5]
+          vpt[5],
+          isMobile
         ); // Contrainte verticale
 
         vpt[4] = newX;

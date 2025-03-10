@@ -50,7 +50,7 @@ export function useCanvasInitialization(
       stroke: 'rgba(0,0,255,.5)',
       lineWidth: 5,
       scrollbarSize: 8,
-      offsetY: 62,
+      offsetY: isMobile ? 0 : 62,
     });
     scrollbarInstance.current = scrollbar;
 

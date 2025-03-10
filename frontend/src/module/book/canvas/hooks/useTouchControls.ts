@@ -3,6 +3,8 @@ import * as fabric from 'fabric';
 import canvasService from '@/services/CanvasService';
 import { Scrollbars } from '@/lib/scrollbars';
 import useIsMobile from '@/common/hooks/useIsMobile';
+import { useSelector } from '@/common/store';
+import { selectBookPages } from '../../BookSlice';
 
 interface UseTouchControlsProps {
   canvas: fabric.Canvas | null;
@@ -33,27 +35,36 @@ export function useTouchControls({
   setViewportTransform,
 }: UseTouchControlsProps) {
   const isMobile = useIsMobile();
+  const pages = useSelector(selectBookPages);
 
   useEffect(() => {
     if (!canvas || !scrollbar) return;
 
     let lastTouch: { x: number; y: number; timestamp: number } | null = null;
-    let startTouch: { x: number; y: number; timestamp: number } | null = null; // Track the start of the touch
-    let velocityX = 0;
+    let startTouch: { x: number; y: number; timestamp: number } | null = null;
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
-    let lastVerticalOffset = 0;
 
     const updateObjectControls = (isPanning: boolean) => {
+      const activeObject = canvas.getActiveObject();
       canvas.getObjects().forEach((obj) => {
         if (obj.type !== 'rect' || !obj.isPage) {
-          obj.set({
-            hasControls: !isPanning,
-            hasBorders: !isPanning,
-            selectable: !isPanning,
-            evented: !isPanning,
-          });
+          if (obj === activeObject) {
+            obj.set({
+              hasControls: true,
+              hasBorders: true,
+              selectable: true,
+              evented: true,
+            });
+          } else {
+            obj.set({
+              hasControls: !isPanning,
+              hasBorders: !isPanning,
+              selectable: !isPanning,
+              evented: true,
+            });
+          }
         }
       });
       canvas.renderAll();
@@ -65,9 +76,16 @@ export function useTouchControls({
 
       const touch = e.touches[0];
       lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: Date.now() };
-      startTouch = { x: touch.clientX, y: touch.clientY, timestamp: Date.now() }; // Record the start position
+      startTouch = {
+        x: touch.clientX,
+        y: touch.clientY,
+        timestamp: Date.now(),
+      };
       canvas.__isPanning = false;
       updateObjectControls(false);
+
+      canvas.discardActiveObject();
+      canvas.renderAll();
 
       const target = canvas.findTarget(e);
       if (e.touches.length === 1) {
@@ -81,20 +99,7 @@ export function useTouchControls({
         ) {
           const pageId = target.get('pageId');
           if (pageId !== undefined) {
-            canvasService.pageFocus(
-              canvas,
-              canvas
-                .getObjects('rect')
-                .filter((r) => r.isPage)
-                .map((r) => ({
-                  pageId: r.get('pageId'),
-                  pageNumber: r.get('pageNumber'),
-                  aspectRatio: r.get('aspectRatio'),
-                  elements: r.get('elements'),
-                })) || [],
-              pageId,
-              isMobile
-            );
+            canvasService.pageFocus(canvas, pages, pageId, isMobile);
           }
           canvas.lastTapTime = 0;
         } else {
@@ -124,7 +129,12 @@ export function useTouchControls({
 
       e.preventDefault();
 
-      if (e.touches.length === 1 && !canvas.getActiveObject()) {
+      const activeObject = canvas.getActiveObject();
+      if (activeObject) {
+        return;
+      }
+
+      if (e.touches.length === 1) {
         const touch = e.touches[0];
         const now = Date.now();
         const deltaTime = lastTouch ? (now - lastTouch.timestamp) / 1000 : 0;
@@ -137,7 +147,6 @@ export function useTouchControls({
         }
 
         if (deltaTime > 0) {
-          velocityX = deltaX / deltaTime;
           velocityY = deltaY / deltaTime;
         }
 
@@ -170,9 +179,8 @@ export function useTouchControls({
         canvas.setViewportTransform(vpt);
         canvas.requestRenderAll();
 
-        lastVerticalOffset = vpt[5];
         lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: now };
-      } else if (e.touches.length === 2 && !canvas.getActiveObject()) {
+      } else if (e.touches.length === 2) {
         const [touch1, touch2] = e.touches;
         const currentDistance = Math.hypot(
           touch1.clientX - touch2.clientX,
@@ -216,59 +224,9 @@ export function useTouchControls({
           canvas.setViewportTransform(vpt);
           canvas.requestRenderAll();
 
-          lastVerticalOffset = vpt[5];
           initialPinchDistance = currentDistance;
         }
       }
-    };
-
-    const snapToPage = (targetPage: fabric.Object, vpt: fabric.TMat2D) => {
-      if (!canvas) return;
-
-      const canvasHeight = canvas.getHeight();
-      const zoom = canvas.getZoom();
-      const pageTop = (targetPage.top || 0) / zoom;
-      const pageHeight = (targetPage.height || 0) / zoom;
-      const targetY = -(pageTop + pageHeight / 2 - canvasHeight / 2 / zoom) * zoom;
-      console.log(`Snapping to page ${targetPage.pageNumber}, TargetY=${targetY}`);
-
-      const startY = vpt[5];
-      const duration = 300; // Animation duration in ms
-      const startTime = performance.now();
-
-      const animateSnap = (currentTime: number) => {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-
-        const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-        const easedProgress = easeOutCubic(progress);
-
-        const newY = startY + (targetY - startY) * easedProgress;
-
-        const newVpt = vpt.slice(0) as fabric.TMat2D;
-        newVpt[5] = canvasService.constrainVerticalMovement(
-          canvasHeight,
-          canvasService.getTotalPageHeightCumulated(canvas, isMobile) * zoom,
-          newY,
-          isMobile
-        );
-
-        setViewportTransform([...newVpt]);
-        canvas.setViewportTransform(newVpt);
-        canvas.requestRenderAll();
-        console.log(`Animating: Progress=${progress}, NewY=${newY}`);
-
-        if (progress < 1) {
-          animationFrameId = requestAnimationFrame(animateSnap);
-        } else {
-          canvas.__isPanning = false;
-          updateObjectControls(false);
-          console.log('Snap animation completed');
-        }
-      };
-
-      if (animationFrameId) cancelAnimationFrame(animationFrameId);
-      animationFrameId = requestAnimationFrame(animateSnap);
     };
 
     const snapToNearestPage = (startVpt: fabric.TMat2D) => {
@@ -296,7 +254,13 @@ export function useTouchControls({
         const pageHeight = (page.height || 0) / zoom;
         const pageCenter = pageTop + pageHeight / 2;
         const distance = Math.abs(pageCenter - centerY);
-        console.log(`Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`);
+        console.log(
+          `Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`
+        );
+
+        console.log('\n#1.1 pageCenter:', pageCenter)
+        console.log('#1.1 distance:', distance)
+        console.log('#1.1 minDistance:', minDistance)
 
         if (distance < minDistance) {
           minDistance = distance;
@@ -309,10 +273,31 @@ export function useTouchControls({
         return;
       }
 
-      snapToPage(nearestPage, startVpt);
+      const pageId = nearestPage.get('pageId');
+      
+      if (pageId !== undefined) {
+        const targetVpt = canvasService.getPageFocusCoordinates(
+          canvas,
+          pageId,
+          isMobile
+        );
+        if (targetVpt) {
+          canvasService.animateViewportTransform(
+            canvas,
+            startVpt,
+            targetVpt,
+            300
+          );
+          canvas.__isPanning = false;
+          updateObjectControls(false);
+        }
+      }
     };
 
-    const snapToAdjacentPage = (startVpt: fabric.TMat2D, direction: 'up' | 'down') => {
+    const snapToAdjacentPage = (
+      startVpt: fabric.TMat2D,
+      direction: 'up' | 'down'
+    ) => {
       if (!canvas) return;
 
       const canvasHeight = canvas.getHeight();
@@ -359,20 +344,41 @@ export function useTouchControls({
       }
 
       if (targetPage) {
-        console.log(`Flick detected, snapping to ${direction === 'up' ? 'previous' : 'next'} page`);
-        snapToPage(targetPage, startVpt);
+        console.log(
+          `Flick detected, snapping to ${
+            direction === 'up' ? 'previous' : 'next'
+          } page`
+        );
+        const pageId = targetPage.get('pageId');
+        if (pageId !== undefined) {
+          const targetVpt = canvasService.getPageFocusCoordinates(
+            canvas,
+            pageId,
+            isMobile
+          );
+          if (targetVpt) {
+            canvasService.animateViewportTransform(
+              canvas,
+              startVpt,
+              targetVpt,
+              300
+            );
+            canvas.__isPanning = false;
+            updateObjectControls(false);
+          }
+        }
       } else {
         console.log('No adjacent page to snap to');
-        snapToNearestPage(startVpt); // Fallback to nearest page if at the boundary
+        snapToNearestPage(startVpt);
       }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (e.touches.length === 0 && lastTouch && startTouch) {
-        if (canvas.getActiveObject()) {
-          lastTouch = null;
-          startTouch = null;
-          initialPinchDistance = null;
+        const activeObject = canvas.getActiveObject();
+        const target = canvas.findTarget(e);
+
+        if (activeObject && target === activeObject) {
           return;
         }
 
@@ -396,32 +402,46 @@ export function useTouchControls({
           lastTouch.y - startTouch.y
         );
 
-        const tapThreshold = 10; // Maximum distance in pixels for a tap
-        const tapDurationThreshold = 300; // Maximum duration in ms for a tap
+        const tapThreshold = 10;
+        const tapDurationThreshold = 300;
 
         const isTap =
           distanceMoved < tapThreshold && touchDuration < tapDurationThreshold;
 
         if (isTap) {
-          console.log('Tap detected, skipping snap');
+          console.log('Tap detected');
+          if (target) {
+            if (target.isPage) {
+              const pageId = target.get('pageId');
+              if (
+                pageId !== undefined &&
+                canvas.getActiveObjects().length === 0
+              ) {
+                canvasService.pageFocus(canvas, pages, pageId, isMobile);
+              }
+            } else {
+              canvas.setActiveObject(target);
+              canvas.renderAll();
+            }
+          } else {
+            canvas.discardActiveObject();
+            canvas.renderAll();
+          }
           lastTouch = null;
           startTouch = null;
           initialPinchDistance = null;
           return;
         }
 
-        const flickThreshold = 1000; // Velocity threshold for flick (pixels per second)
-        const minimumVelocityThreshold = 50; // Minimum velocity to trigger any snapping
+        const flickThreshold = 500;
 
         if (Math.abs(velocityY) > flickThreshold) {
-          // Flick detected
-          const direction = velocityY > 0 ? 'up' : 'down'; // Positive velocity = swipe up, negative = swipe down
+          // Flick
+          const direction = velocityY > 0 ? 'up' : 'down';
           snapToAdjacentPage(vpt, direction);
-        } else if (Math.abs(velocityY) > minimumVelocityThreshold) {
-          // Normal scroll, snap to nearest page
-          snapToNearestPage(vpt);
         } else {
-          console.log('Velocity too low, skipping snap');
+          // Relâchement lent
+          snapToNearestPage(vpt);
         }
 
         lastTouch = null;
