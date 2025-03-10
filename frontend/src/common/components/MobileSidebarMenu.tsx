@@ -7,6 +7,15 @@ import {
 import { HomeIcon } from '@heroicons/react/24/outline';
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import { LuLibrary } from 'react-icons/lu';
+
+import {
+  EXPORT_BOOK_DATA,
+  EXPORT_PDF,
+  MENU_CLOSED,
+  MENU_OPENED,
+  PRINT_PDF,
+  trackEvent,
+} from '@/common/utils/analyticsEvents';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 import { PiFilePdfThin, PiExportThin } from 'react-icons/pi';
 import { useDispatch, useSelector } from '../store';
@@ -18,7 +27,7 @@ import { footerButtonClasses } from '../utils/buttonStyles';
 import { Link, useLocation } from 'react-router-dom'; // Ajout de useLocation
 import { Tooltip } from './Tooltip';
 import { mobileSideBarBackgroundRadialStyles } from '../utils/backgroundStyles';
-import { ANALYTICS_EVENTS, trackEvent } from '../utils/analyticsEvents';
+
 import { useServices } from '../contexts/ServiceContext';
 
 interface MobileSidebarMenuProps {
@@ -47,9 +56,9 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      trackEvent(ANALYTICS_EVENTS.MENU_OPENED);
+      trackEvent(MENU_OPENED);
     } else {
-      trackEvent(ANALYTICS_EVENTS.MENU_CLOSED);
+      trackEvent(MENU_CLOSED);
     }
   }, [isOpen]);
 
@@ -199,6 +208,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={() => {
                         if (canvas) {
+                          trackEvent(EXPORT_PDF);
                           bookExportService.exportToPDF({
                             canvas: canvas,
                             pages: pages,
@@ -215,6 +225,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={async () => {
                         if (canvas) {
+                          trackEvent(PRINT_PDF);
                           await bookExportService.printPDF({
                             canvas: canvas,
                             pages: pages,
@@ -230,6 +241,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     <button
                       className={footerButtonClasses}
                       onClick={() => {
+                        trackEvent(EXPORT_BOOK_DATA);
                         bookDataService.exportBookToFile(book);
                       }}
                     >

@@ -3,10 +3,14 @@ import {
   useSelector as useSelectorRedux,
 } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
+
 import rootReducer from './root.reducer';
+import { analyticsMiddleware } from './analyticsMiddleware';
 
 export const appStore = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(analyticsMiddleware),
 });
 
 // Settings from https://redux.js.org/tutorials/essentials/part-2-app-structure

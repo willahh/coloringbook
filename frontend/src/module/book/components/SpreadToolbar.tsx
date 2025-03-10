@@ -14,6 +14,11 @@ import { selectBook, selectBookPages } from '../BookSlice';
 import { useParams } from 'react-router';
 import useCanvasContext from '../useCanvasContext';
 import { useServices } from '@/common/contexts/ServiceContext';
+import {
+  EXPORT_PDF,
+  PRINT_PDF,
+  trackEvent,
+} from '@/common/utils/analyticsEvents';
 
 const iconProps = {
   className: 'w-12 h-12',
@@ -70,6 +75,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Download"
             onClick={() => {
               if (canvas) {
+                trackEvent(EXPORT_PDF);
                 bookExportService.exportToPDF({
                   canvas: canvas,
                   pages: pages,
@@ -83,6 +89,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Print"
             onClick={() => {
               if (canvas) {
+                trackEvent(PRINT_PDF);
                 bookExportService.printPDF({
                   canvas: canvas,
                   pages: pages,

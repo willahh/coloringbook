@@ -10,6 +10,12 @@ import { formatDistanceToNow, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa';
 import { FaXTwitter, FaInternetExplorer } from 'react-icons/fa6';
+
+import {
+  ABOUT_OPENED,
+  CHANGELOG_OPENED,
+  trackEvent,
+} from '@/common/utils/analyticsEvents';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import Newsletter from './Newsletter';
 import { footerButtonClasses } from '@/common/utils/buttonStyles';
@@ -53,7 +59,10 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
       <li>
         <span className="font-medium">Changelog: </span>
         <button
-          onClick={() => setShowChangelog(true)}
+          onClick={() => {
+            trackEvent(CHANGELOG_OPENED);
+            setShowChangelog(true);
+          }}
           className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none"
         >
           Voir les changements
@@ -160,7 +169,10 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
     <>
       <button
         className={`${footerButtonClasses} flex items-center gap-2`}
-        onClick={() => setIsOpen(true)}
+        onClick={() => {
+          trackEvent(ABOUT_OPENED);
+          setIsOpen(true);
+        }}
       >
         <svg
           className="w-6 h-6 sm:w-5 sm:h-5 text-secondary-500"
@@ -182,7 +194,9 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
         <Dialog
           as="div"
           className={`${appearance} relative z-50`}
-          onClose={() => setIsOpen(false)}
+          onClose={() => {
+            setIsOpen(false);
+          }}
           initialFocus={closeButtonRef}
         >
           <TransitionChild

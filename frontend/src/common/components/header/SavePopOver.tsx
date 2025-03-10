@@ -22,8 +22,6 @@ const SavePopOver: React.FC<SavePopOverProps> = ({ areLocalUpdatesSaved }) => {
   const dispatch = useDispatch();
   const { book } = useSelector(selectBook);
 
-
-
   return (
     <>
       <Popover className="group">

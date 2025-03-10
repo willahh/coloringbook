@@ -17,6 +17,13 @@ import { selectBook, selectBookPages } from '../BookSlice';
 import { saveBookAction, loadBookFromJson } from '../BookActions';
 import { useServices } from '@/common/contexts/ServiceContext';
 import { BookDataService } from '@/services/book/BookDataService';
+import {
+  EXPORT_BOOK_DATA,
+  EXPORT_PDF,
+  IMPORT_BOOK_DATA,
+  PRINT_PDF,
+  trackEvent,
+} from '@/common/utils/analyticsEvents';
 
 const BookToolbar: React.FC = () => {
   const { canvas } = useCanvasContext();
@@ -101,6 +108,7 @@ const BookToolbar: React.FC = () => {
         <ToolbarButton
           tooltipContent="Export"
           onClick={() => {
+            trackEvent(EXPORT_BOOK_DATA);
             bookDataService.exportBookToFile(book);
           }}
         >
@@ -109,7 +117,10 @@ const BookToolbar: React.FC = () => {
         <label className="cursor-pointer">
           <ToolbarButton
             tooltipContent="Import"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => {
+              trackEvent(IMPORT_BOOK_DATA);
+              fileInputRef.current?.click();
+            }}
           >
             <DocumentArrowDownIcon {...iconProps} />
           </ToolbarButton>
@@ -127,6 +138,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Download"
           onClick={() => {
             if (canvas) {
+              trackEvent(EXPORT_PDF);
               bookExportService.exportToPDF({
                 canvas: canvas,
                 pages: pages,
@@ -140,6 +152,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Print"
           onClick={async () => {
             if (canvas) {
+              trackEvent(PRINT_PDF);
               await bookExportService.printPDF({
                 canvas: canvas,
                 pages: pages,

@@ -739,9 +739,6 @@
   .inline-flex {
     display: inline-flex;
   }
-  .table {
-    display: table;
-  }
   .aspect-\[1\/1\.414\] {
     aspect-ratio: 1/1.414;
   }

@@ -3,6 +3,12 @@ import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import axios, { AxiosError, AxiosResponse } from 'axios'; // Importer axios
 import useLocalStorage from '@/common/hooks/useLocalStorage';
 import { getAPIURL } from '@/common/utils/api';
+import {
+  EventAction,
+  EventCategory,
+  NEWSLETTER_SUBSCRIBED,
+  trackEvent,
+} from '@/common/utils/analyticsEvents';
 
 interface NewsletterProps {
   onSubscribe: (email: string) => void; // Fonction callback (optionnelle, à ajuster selon vos besoins)
@@ -29,6 +35,7 @@ const Newsletter: React.FC<NewsletterProps> = ({ onSubscribe }) => {
     setError(null);
 
     try {
+      trackEvent(NEWSLETTER_SUBSCRIBED);
       const response: AxiosResponse = await axios.post(
         getAPIURL() + '/newsletter/subscribe',
         {
@@ -53,6 +60,11 @@ const Newsletter: React.FC<NewsletterProps> = ({ onSubscribe }) => {
           setError(
             Array.isArray(errorMessage) ? errorMessage.join(' ') : errorMessage
           );
+          trackEvent({
+            action: EventAction.Error,
+            category: EventCategory.Newsletter,
+            label: 'email: ' + email + ' - error: ' + errorMessage,
+          });
         } else {
           setError('Une erreur réseau est survenue. Veuillez réessayer.');
         }
