@@ -1,7 +1,7 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.8.5",
+  "version": "0.8.6",
   "buildDate": "2025-03-10T14:25:28.023Z",
   "type": "module",
   "scripts": {
