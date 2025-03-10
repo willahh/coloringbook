@@ -46,6 +46,10 @@ export function useTouchControls({
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
     let isPinching = false;
+    let isZoomed = canvas.getZoom() !== 1.0; // Initialisation basée sur le zoom par défaut
+
+    const DEFAULT_ZOOM = 1.0; // Définir le zoom par défaut
+    const ZOOM_THRESHOLD = 0.01; // Tolérance pour considérer le zoom comme "par défaut"
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -69,6 +73,10 @@ export function useTouchControls({
         }
       });
       canvas.renderAll();
+    };
+
+    const updateZoomState = () => {
+      isZoomed = canvas.getZoom() > 1;
     };
 
     const handleTouchStart = (e: TouchEvent) => {
@@ -96,11 +104,13 @@ export function useTouchControls({
           canvas.lastTapTime &&
           currentTime - canvas.lastTapTime < doubleTapThreshold &&
           canvas.lastTapTarget === target &&
-          target?.isPage
+          target?.isPage &&
+          !isZoomed // Empêcher pageFocus si zoomé
         ) {
           const pageId = target.get('pageId');
           if (pageId !== undefined) {
             canvasService.pageFocus(canvas, pages, pageId, isMobile);
+            updateZoomState();
           }
           canvas.lastTapTime = 0;
         } else {
@@ -116,6 +126,7 @@ export function useTouchControls({
           touch1.clientY - touch2.clientY
         );
         isPinching = true; // Indiquer qu'un pincement commence
+        updateZoomState();
       } else {
         initialPinchDistance = null;
       }
@@ -290,6 +301,7 @@ export function useTouchControls({
           );
           canvas.__isPanning = false;
           updateObjectControls(false);
+          updateZoomState();
         }
       }
     };
@@ -365,6 +377,7 @@ export function useTouchControls({
             );
             canvas.__isPanning = false;
             updateObjectControls(false);
+            updateZoomState();
           }
         }
       } else {
@@ -380,6 +393,7 @@ export function useTouchControls({
 
         console.log('handleTouchEnd x2');
         console.log('isPinching: ', isPinching);
+        console.log('canvas.getZoom(): ', canvas.getZoom());
 
         if (activeObject && target === activeObject) {
           isPinching = false; // Réinitialiser après un pincement
@@ -414,7 +428,8 @@ export function useTouchControls({
           distanceMoved < tapThreshold && touchDuration < tapDurationThreshold;
 
         console.log('isPinching', isPinching);
-        if (isTap && !isPinching) {
+        console.log('isZoomed', isZoomed);
+        if (isTap && !isPinching && !isZoomed) {
           console.log('Tap detected');
           if (target) {
             if (target.isPage) {
@@ -424,6 +439,7 @@ export function useTouchControls({
                 canvas.getActiveObjects().length === 0
               ) {
                 canvasService.pageFocus(canvas, pages, pageId, isMobile);
+                isZoomed = canvas.getZoom() !== DEFAULT_ZOOM; // Mettre à jour après pageFocus
               }
             } else {
               canvas.setActiveObject(target);
@@ -440,7 +456,7 @@ export function useTouchControls({
           return;
         }
 
-        if (!isPinching) {
+        if (!isPinching && !isZoomed) {
           const flickThreshold = 500;
 
           if (Math.abs(velocityY) > flickThreshold) {
@@ -469,11 +485,18 @@ export function useTouchControls({
     });
     upperCanvas.addEventListener('touchend', handleTouchEnd, { passive: true });
 
+    // Ajouter un listener pour détecter les changements de zoom en dehors des touch events
+    const handleZoomChange = () => {
+      updateZoomState();
+    };
+    canvas.on('after:render', handleZoomChange); // Utiliser un événement Fabric.js
+
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
       upperCanvas.removeEventListener('touchstart', handleTouchStart);
       upperCanvas.removeEventListener('touchmove', handleTouchMove);
       upperCanvas.removeEventListener('touchend', handleTouchEnd);
+      canvas.off('after:render', handleZoomChange); // Nettoyer le listener
       delete canvas.__isPanning;
       delete canvas.lastTapTime;
       delete canvas.lastTapTarget;
