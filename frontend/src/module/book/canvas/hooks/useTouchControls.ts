@@ -45,6 +45,7 @@ export function useTouchControls({
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
+    let isPinching = false;
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -114,6 +115,7 @@ export function useTouchControls({
           touch1.clientX - touch2.clientX,
           touch1.clientY - touch2.clientY
         );
+        isPinching = true; // Indiquer qu'un pincement commence
       } else {
         initialPinchDistance = null;
       }
@@ -180,6 +182,7 @@ export function useTouchControls({
         canvas.requestRenderAll();
 
         lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: now };
+        isPinching = false;
       } else if (e.touches.length === 2) {
         const [touch1, touch2] = e.touches;
         const currentDistance = Math.hypot(
@@ -225,6 +228,7 @@ export function useTouchControls({
           canvas.requestRenderAll();
 
           initialPinchDistance = currentDistance;
+          isPinching = true; // Confirmer que le pincement est en cours
         }
       }
     };
@@ -258,10 +262,6 @@ export function useTouchControls({
           `Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`
         );
 
-        console.log('\n#1.1 pageCenter:', pageCenter)
-        console.log('#1.1 distance:', distance)
-        console.log('#1.1 minDistance:', minDistance)
-
         if (distance < minDistance) {
           minDistance = distance;
           nearestPage = page;
@@ -274,7 +274,7 @@ export function useTouchControls({
       }
 
       const pageId = nearestPage.get('pageId');
-      
+
       if (pageId !== undefined) {
         const targetVpt = canvasService.getPageFocusCoordinates(
           canvas,
@@ -378,7 +378,11 @@ export function useTouchControls({
         const activeObject = canvas.getActiveObject();
         const target = canvas.findTarget(e);
 
+        console.log('handleTouchEnd x2');
+        console.log('isPinching: ', isPinching);
+
         if (activeObject && target === activeObject) {
+          isPinching = false; // Réinitialiser après un pincement
           return;
         }
 
@@ -393,6 +397,7 @@ export function useTouchControls({
           lastTouch = null;
           startTouch = null;
           initialPinchDistance = null;
+          isPinching = false;
           return;
         }
 
@@ -408,7 +413,8 @@ export function useTouchControls({
         const isTap =
           distanceMoved < tapThreshold && touchDuration < tapDurationThreshold;
 
-        if (isTap) {
+        console.log('isPinching', isPinching);
+        if (isTap && !isPinching) {
           console.log('Tap detected');
           if (target) {
             if (target.isPage) {
@@ -430,23 +436,27 @@ export function useTouchControls({
           lastTouch = null;
           startTouch = null;
           initialPinchDistance = null;
+          isPinching = false;
           return;
         }
 
-        const flickThreshold = 500;
+        if (!isPinching) {
+          const flickThreshold = 500;
 
-        if (Math.abs(velocityY) > flickThreshold) {
-          // Flick
-          const direction = velocityY > 0 ? 'up' : 'down';
-          snapToAdjacentPage(vpt, direction);
-        } else {
-          // Relâchement lent
-          snapToNearestPage(vpt);
+          if (Math.abs(velocityY) > flickThreshold) {
+            // Flick
+            const direction = velocityY > 0 ? 'up' : 'down';
+            snapToAdjacentPage(vpt, direction);
+          } else {
+            // Relâchement lent
+            snapToNearestPage(vpt);
+          }
+
+          lastTouch = null;
+          startTouch = null;
+          initialPinchDistance = null;
+          isPinching = false;
         }
-
-        lastTouch = null;
-        startTouch = null;
-        initialPinchDistance = null;
       }
     };
 
