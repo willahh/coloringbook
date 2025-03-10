@@ -28,4 +28,19 @@ export class SvgConversionController {
       );
     }
   }
+
+  // Nouvel endpoint pour récupérer le contenu brut du SVG
+  @Get('svg-content/:svgPath(*)')
+  async getSvgContent(@Param('svgPath') svgPath: string, @Res() res: Response) {
+    try {
+      const svgContent = await this.svgConversionService.getSvgContent(svgPath);
+      res.setHeader('Content-Type', 'text/plain');
+      res.send(svgContent);
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Failed to retrieve SVG content',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
 }

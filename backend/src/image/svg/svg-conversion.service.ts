@@ -59,4 +59,16 @@ export class SvgConversionService {
 
     return pngBuffer;
   }
+
+  async getSvgContent(svgPath: string): Promise<string> {
+    const svgFullPath = path.isAbsolute(svgPath)
+      ? svgPath
+      : path.join(this.svgDir, svgPath);
+
+    if (!fs.existsSync(svgFullPath)) {
+      throw new Error(`SVG file not found: ${svgFullPath}`);
+    }
+
+    return fs.readFileSync(svgFullPath, 'utf-8');
+  }
 }

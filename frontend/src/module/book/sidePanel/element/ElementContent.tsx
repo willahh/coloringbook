@@ -11,63 +11,19 @@ import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
 import { getAPIURL } from '@/common/utils/api';
 
-// Liste des SVG (sans les imports de composants React)
+// Liste des SVG (sans imports locaux)
 const svgs = [
-  {
-    name: 'Castle',
-    file: 'castle.svg',
-    rawContentLoader: () => import('@assets/elements/castle.svg?raw'),
-  },
-  {
-    name: 'Cat',
-    file: 'cat.svg',
-    rawContentLoader: () => import('@assets/elements/cat.svg?raw'),
-  },
-  {
-    name: 'Cochon',
-    file: 'cochon.svg',
-    rawContentLoader: () => import('@assets/elements/cochon.svg?raw'),
-  },
-  {
-    name: 'Dinosaure',
-    file: 'dinosaure.svg',
-    rawContentLoader: () => import('@assets/elements/dinosaure.svg?raw'),
-  },
-  {
-    name: 'Flower',
-    file: 'flower.svg',
-    rawContentLoader: () => import('@assets/elements/flower.svg?raw'),
-  },
-  {
-    name: 'Hibou',
-    file: 'hibou.svg',
-    rawContentLoader: () => import('@assets/elements/hibou.svg?raw'),
-  },
-  {
-    name: 'Hippocampe',
-    file: 'hippocampe.svg',
-    rawContentLoader: () => import('@assets/elements/hippocampe.svg?raw'),
-  },
-  {
-    name: 'Lapin',
-    file: 'lapin.svg',
-    rawContentLoader: () => import('@assets/elements/lapin.svg?raw'),
-  },
-  {
-    name: 'Perroquet',
-    file: 'perroquet.svg',
-    rawContentLoader: () => import('@assets/elements/perroquet.svg?raw'),
-  },
-  {
-    name: 'Pieuvre',
-    file: 'pieuvre.svg',
-    rawContentLoader: () => import('@assets/elements/pieuvre.svg?raw'),
-  },
-  {
-    name: 'Dinosaure2',
-    file: 'dinosaure2.svg',
-    rawContentLoader: () => import('@assets/elements/dinosaure2.svg?raw'),
-  },
+  { name: 'Castle', file: 'castle.svg' },
+  { name: 'Cat', file: 'cat.svg' },
+  { name: 'Cochon', file: 'cochon.svg' },
+  { name: 'Dinosaure', file: 'dinosaure.svg' },
+  { name: 'Flower', file: 'flower.svg' },
+  { name: 'Hibou', file: 'hibou.svg' },
+  { name: 'Hippocampe', file: 'hippocampe.svg' },
+  { name: 'Lapin', file: 'lapin.svg' },
+  { name: 'Perroquet', file: 'perroquet.svg' },
+  { name: 'Pieuvre', file: 'pieuvre.svg' },
+  { name: 'Dinosaure2', file: 'dinosaure2.svg' },
 ];
 
 const API_BASE_URL = getAPIURL();
@@ -121,12 +77,29 @@ const LazyElementItem: React.FC<{
   dispatch: ReturnType<typeof useDispatch>;
 }> = ({ svg, pageId, dispatch }) => {
   const [rawContent, setRawContent] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    svg.rawContentLoader().then((module) => {
-      setRawContent(module.default);
-    });
-  }, [svg.rawContentLoader]);
+    const fetchSvgContent = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/image/svg-content/${svg.file}`
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch SVG content: ${response.statusText}`
+          );
+        }
+        const content = await response.text();
+        setRawContent(content);
+      } catch (err) {
+        setError(err.message);
+        console.error(`Error fetching SVG content for ${svg.file}:`, err);
+      }
+    };
+
+    fetchSvgContent();
+  }, [svg.file]);
 
   const handleClick = () => {
     if (rawContent) {
@@ -141,6 +114,14 @@ const LazyElementItem: React.FC<{
       dispatch(addElementToPage({ element: element, pageId: pageId }));
     }
   };
+
+  if (error) {
+    return (
+      <div>
+        Error loading {svg.name}: {error}
+      </div>
+    );
+  }
 
   return (
     <ElementItem onClick={handleClick} className="relative group">
