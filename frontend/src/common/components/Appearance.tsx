@@ -40,7 +40,7 @@ const Appearance: React.FC = () => {
 
       <MenuItems
         transition
-        className={`absolute right-0 z-10 overflow-hidden origin-top-right rounded-md
+        className={`absolute md:bottom-12 right-0 z-10 overflow-hidden origin-top-right rounded-md
            bg-white dark:bg-black shadow-lg ring-1 ring-black/5 
            transition 
            focus:outline-none 
@@ -71,12 +71,6 @@ const Appearance: React.FC = () => {
             Dark
           </a>
         </MenuItem>
-        {/* <MenuItem>
-          <a href="#" className={itemCls(appearance, 'dark')}>
-            <ComputerDesktopIcon className="w-5 h-5" />
-            Système
-          </a>
-        </MenuItem> */}
       </MenuItems>
     </Menu>
   );

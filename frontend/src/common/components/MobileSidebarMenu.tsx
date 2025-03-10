@@ -15,7 +15,7 @@ import { selectBook, selectBookPages } from '@/module/book/BookSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import useCanvasContext from '@/module/book/useCanvasContext';
 import { footerButtonClasses } from '../utils/buttonStyles';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom'; // Ajout de useLocation
 import { Tooltip } from './Tooltip';
 import { mobileSideBarBackgroundRadialStyles } from '../utils/backgroundStyles';
 import { ANALYTICS_EVENTS, trackEvent } from '../utils/analyticsEvents';
@@ -32,6 +32,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
 }) => {
   const { canvas } = useCanvasContext();
   const dispatch = useDispatch();
+  const location = useLocation(); // Utilisation de useLocation pour obtenir l'URL actuelle
 
   const { book, areLocalUpdatesSaved } = useSelector(selectBook);
   const pages = useSelector(selectBookPages);
@@ -92,6 +93,9 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
     visible: { opacity: 1 },
     exit: { opacity: 0, transition: { duration: 0.2 } },
   };
+
+  // Vérifie si la route actuelle est /book/ (ou une sous-route)
+  const isBookRoute = location.pathname.startsWith('/book/');
 
   return (
     <AnimatePresence>
@@ -163,94 +167,96 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                   </Tooltip>
                 </li>
               </ul>
-              <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
-                <li>
-                  <button
-                    className={footerButtonClasses}
-                    onClick={async () => {
-                      try {
-                        await dispatch(
-                          saveBookAction({ bookId: book.id, book: book })
-                        ).then(unwrapResult);
-                      } catch (error) {
-                        const errorMessage =
-                          error instanceof Error
-                            ? error.message
-                            : 'Erreur inconnue';
-                        setError(errorMessage);
-                      }
-                    }}
-                  >
-                    {areLocalUpdatesSaved ? (
-                      <CloudSavedIcon className="w-6 h-6 fill-secondary-500" />
-                    ) : (
-                      <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
-                    )}
-                    <span>Sauvegarder</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className={footerButtonClasses}
-                    onClick={() => {
-                      if (canvas) {
-                        bookExportService.exportToPDF({
-                          canvas: canvas,
-                          pages: pages,
-                        });
-                      }
-                    }}
-                  >
-                    <PiFilePdfThin {...iconProps} />
-                    <span>Télécharger</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className={footerButtonClasses}
-                    onClick={async () => {
-                      if (canvas) {
-                        await bookExportService.printPDF({
-                          canvas: canvas,
-                          pages: pages,
-                        });
-                      }
-                    }}
-                  >
-                    <PrinterIcon {...iconProps} />
-                    <span>Imprimer</span>
-                  </button>
-                </li>
-                <li>
-                  <button
-                    className={footerButtonClasses}
-                    onClick={() => {
-                      bookDataService.exportBookToFile(book);
-                    }}
-                  >
-                    <PiExportThin {...iconProps} />
-                    <span>Exporter</span>
-                  </button>
-                </li>
-                <li>
-                  <label className="cursor-pointer">
+              {isBookRoute && (
+                <ul className="flex flex-col gap-4 p-4 overflow-y-auto">
+                  <li>
                     <button
                       className={footerButtonClasses}
-                      onClick={() => fileInputRef.current?.click()}
+                      onClick={async () => {
+                        try {
+                          await dispatch(
+                            saveBookAction({ bookId: book.id, book: book })
+                          ).then(unwrapResult);
+                        } catch (error) {
+                          const errorMessage =
+                            error instanceof Error
+                              ? error.message
+                              : 'Erreur inconnue';
+                          setError(errorMessage);
+                        }
+                      }}
                     >
-                      <DocumentArrowDownIcon {...iconProps} />
-                      <span>Importer</span>
+                      {areLocalUpdatesSaved ? (
+                        <CloudSavedIcon className="w-6 h-6 fill-secondary-500" />
+                      ) : (
+                        <CloudNotSavedIcon className="w-6 h-6 fill-secondary-500" />
+                      )}
+                      <span>Sauvegarder</span>
                     </button>
-                    <input
-                      type="file"
-                      accept="application/json"
-                      ref={fileInputRef}
-                      onChange={handleFileChange}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                </li>
-              </ul>
+                  </li>
+                  <li>
+                    <button
+                      className={footerButtonClasses}
+                      onClick={() => {
+                        if (canvas) {
+                          bookExportService.exportToPDF({
+                            canvas: canvas,
+                            pages: pages,
+                          });
+                        }
+                      }}
+                    >
+                      <PiFilePdfThin {...iconProps} />
+                      <span>Télécharger</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className={footerButtonClasses}
+                      onClick={async () => {
+                        if (canvas) {
+                          await bookExportService.printPDF({
+                            canvas: canvas,
+                            pages: pages,
+                          });
+                        }
+                      }}
+                    >
+                      <PrinterIcon {...iconProps} />
+                      <span>Imprimer</span>
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className={footerButtonClasses}
+                      onClick={() => {
+                        bookDataService.exportBookToFile(book);
+                      }}
+                    >
+                      <PiExportThin {...iconProps} />
+                      <span>Exporter</span>
+                    </button>
+                  </li>
+                  <li>
+                    <label className="cursor-pointer">
+                      <button
+                        className={footerButtonClasses}
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <DocumentArrowDownIcon {...iconProps} />
+                        <span>Importer</span>
+                      </button>
+                      <input
+                        type="file"
+                        accept="application/json"
+                        ref={fileInputRef}
+                        onChange={handleFileChange}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                  </li>
+                </ul>
+              )}
             </div>
           </motion.div>
         </>

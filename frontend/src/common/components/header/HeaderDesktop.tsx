@@ -44,7 +44,6 @@ const HeaderDesktop: React.FC<HeaderProps> = ({
   isLoading,
 }) => {
   const { appearance } = useTheme();
-  // const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
 
   const { isOpen, setIsOpen } = useAutoOpenDialog();

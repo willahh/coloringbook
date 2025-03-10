@@ -18,7 +18,7 @@ const BookFooterDesktop: React.FC<{
 
   return (
     <HeaderDesktop isLoading={isLoading}>
-      <BreadCrumb
+      <BreadCrumb className='mr-6'
         pages={[
           {
             current: false,
