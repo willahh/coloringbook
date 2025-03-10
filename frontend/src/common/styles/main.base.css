@@ -78,6 +78,13 @@ body {
 .custom-scrollbar {
   /* Assure que la scrollbar est visible et personnalisable */
   scrollbar-width: thin; /* Pour Firefox */
+}
+
+.custom-scrollbar {
+  scrollbar-color: var(--color-primary-500) var(--color-primary-200); /* Pouce et piste pour Firefox */
+}
+
+.dark .custom-scrollbar {
   scrollbar-color: var(--color-primary-500) var(--color-primary-800); /* Pouce et piste pour Firefox */
 }
 
@@ -87,17 +94,29 @@ body {
   height: 8px; /* Hauteur pour les scrollbars horizontales si présentes */
 }
 
+/* */
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: var(--color-primary-800); /* Couleur de la piste, bleu foncé */
+  background: var(--color-primary-200); /* Couleur de la piste, bleu foncé */
   border-radius: 4px; /* Coins arrondis */
+}
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-primary-800); /* Couleur de la piste, bleu foncé */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-primary-500); /* Couleur du pouce, bleu clair */
+  background: var(--color-primary-500);
   border-radius: 4px; /* Coins arrondis */
   transition: background 0.3s; /* Transition douce au survol */
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #60a5fa; /* Bleu plus foncé au survol */
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-primary-500);
 }
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-200);
+}
+.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-800);
+}
+

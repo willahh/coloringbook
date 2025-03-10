@@ -1,6 +1,3 @@
-import { ToolbarButton } from '@/module/book/components/ToolbarButton';
-import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
-
 import Item from '../Item';
 import { Suspense, useEffect, useState } from 'react';
 import Loader from '@components/Loader';
@@ -88,7 +85,7 @@ const LazyElementItem: React.FC<{
         const content = await response.text();
         setRawContent(content);
       } catch (err) {
-        setError(err.message);
+        setError((err as Error).message);
         console.error(`Error fetching SVG content for ${svg.file}:`, err);
       }
     };
