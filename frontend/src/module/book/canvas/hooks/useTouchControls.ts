@@ -42,18 +42,13 @@ export function useTouchControls({
 
     let lastTouch: { x: number; y: number; timestamp: number } | null = null;
     let startTouch: { x: number; y: number; timestamp: number } | null = null;
-    let velocityX = 0;
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
     let isPinching = false;
-    let wasPinching = false;
-    // let isZoomed = canvas.getZoom() !== 1.0;
-    let isZoomed = canvas.getZoom() > 1;
+    let isZoomed = canvas.getZoom() !== 1.0; // Initialisation basée sur le zoom par défaut
 
-    const DEFAULT_ZOOM = 1.0;
-    const MOMENTUM_THRESHOLD = 200; // Seuil pour déclencher le momentum
-    const MOMENTUM_DAMPING = 0.95; // Facteur de décélération
+    const DEFAULT_ZOOM = 1.0; // Définir le zoom par défaut
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -109,7 +104,7 @@ export function useTouchControls({
           currentTime - canvas.lastTapTime < doubleTapThreshold &&
           canvas.lastTapTarget === target &&
           target?.isPage &&
-          !isZoomed
+          !isZoomed // Empêcher pageFocus si zoomé
         ) {
           const pageId = target.get('pageId');
           if (pageId !== undefined) {
@@ -129,7 +124,8 @@ export function useTouchControls({
           touch1.clientX - touch2.clientX,
           touch1.clientY - touch2.clientY
         );
-        isPinching = true;
+        isPinching = true; // Indiquer qu'un pincement commence
+        updateZoomState();
       } else {
         initialPinchDistance = null;
       }
@@ -146,7 +142,9 @@ export function useTouchControls({
       e.preventDefault();
 
       const activeObject = canvas.getActiveObject();
-      if (activeObject) return;
+      if (activeObject) {
+        return;
+      }
 
       if (e.touches.length === 1) {
         const touch = e.touches[0];
@@ -161,7 +159,6 @@ export function useTouchControls({
         }
 
         if (deltaTime > 0) {
-          velocityX = deltaX / deltaTime;
           velocityY = deltaY / deltaTime;
         }
 
@@ -195,7 +192,7 @@ export function useTouchControls({
         canvas.requestRenderAll();
 
         lastTouch = { x: touch.clientX, y: touch.clientY, timestamp: now };
-        wasPinching = false; // Réinitialiser après un déplacement simple
+        isPinching = false;
       } else if (e.touches.length === 2) {
         const [touch1, touch2] = e.touches;
         const currentDistance = Math.hypot(
@@ -241,53 +238,8 @@ export function useTouchControls({
           canvas.requestRenderAll();
 
           initialPinchDistance = currentDistance;
-          isPinching = true;
-          wasPinching = true; // Marquer qu’on vient de pincer
+          isPinching = true; // Confirmer que le pincement est en cours
         }
-      }
-    };
-
-    const animateMomentum = (startVpt: fabric.TMat2D) => {
-      const totalWidth = canvasService.getMaxPageWidth(canvas);
-      const totalHeight = canvasService.getTotalPageHeightCumulated(
-        canvas,
-        isMobile
-      );
-      const canvasWidth = canvas.getWidth();
-      const canvasHeight = canvas.getHeight();
-      const zoom = canvas.getZoom();
-
-      const vpt = startVpt.slice(0) as fabric.TMat2D;
-
-      vpt[4] += velocityX * 0.016;
-      vpt[5] += velocityY * 0.016;
-
-      vpt[4] = canvasService.constrainHorizontalMovement(
-        canvasWidth,
-        totalWidth * zoom,
-        vpt[4],
-        isMobile
-      );
-      vpt[5] = canvasService.constrainVerticalMovement(
-        canvasHeight,
-        totalHeight * zoom,
-        vpt[5],
-        isMobile
-      );
-
-      setViewportTransform([...vpt]);
-      canvas.setViewportTransform(vpt);
-      canvas.requestRenderAll();
-
-      velocityX *= MOMENTUM_DAMPING;
-      velocityY *= MOMENTUM_DAMPING;
-
-      if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
-        animationFrameId = requestAnimationFrame(() => animateMomentum(vpt));
-      } else {
-        animationFrameId = null;
-        canvas.__isPanning = false;
-        updateObjectControls(false);
       }
     };
 
@@ -316,6 +268,9 @@ export function useTouchControls({
         const pageHeight = (page.height || 0) / zoom;
         const pageCenter = pageTop + pageHeight / 2;
         const distance = Math.abs(pageCenter - centerY);
+        console.log(
+          `Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`
+        );
 
         if (distance < minDistance) {
           minDistance = distance;
@@ -328,7 +283,8 @@ export function useTouchControls({
         return;
       }
 
-      const pageId = nearestPage.get('pageId');
+      const pageId = (nearestPage as fabric.Object).get('pageId');
+
       if (pageId !== undefined) {
         const targetVpt = canvasService.getPageFocusCoordinates(
           canvas,
@@ -393,12 +349,17 @@ export function useTouchControls({
       let targetPage: fabric.Object | null = null;
 
       if (direction === 'up' && currentIndex > 0) {
-        targetPage = pages[currentIndex - 1];
+        targetPage = pages[currentIndex - 1]; // Previous page
       } else if (direction === 'down' && currentIndex < pages.length - 1) {
-        targetPage = pages[currentIndex + 1];
+        targetPage = pages[currentIndex + 1]; // Next page
       }
 
       if (targetPage) {
+        console.log(
+          `Flick detected, snapping to ${
+            direction === 'up' ? 'previous' : 'next'
+          } page`
+        );
         const pageId = targetPage.get('pageId');
         if (pageId !== undefined) {
           const targetVpt = canvasService.getPageFocusCoordinates(
@@ -419,6 +380,7 @@ export function useTouchControls({
           }
         }
       } else {
+        console.log('No adjacent page to snap to');
         snapToNearestPage(startVpt);
       }
     };
@@ -428,8 +390,12 @@ export function useTouchControls({
         const activeObject = canvas.getActiveObject();
         const target = canvas.findTarget(e);
 
+        console.log('handleTouchEnd x2');
+        console.log('isPinching: ', isPinching);
+        console.log('canvas.getZoom(): ', canvas.getZoom());
+
         if (activeObject && target === activeObject) {
-          isPinching = false;
+          isPinching = false; // Réinitialiser après un pincement
           return;
         }
 
@@ -445,7 +411,6 @@ export function useTouchControls({
           startTouch = null;
           initialPinchDistance = null;
           isPinching = false;
-          wasPinching = false;
           return;
         }
 
@@ -457,9 +422,12 @@ export function useTouchControls({
 
         const tapThreshold = 10;
         const tapDurationThreshold = 300;
+
         const isTap =
           distanceMoved < tapThreshold && touchDuration < tapDurationThreshold;
 
+        console.log('isPinching', isPinching);
+        console.log('isZoomed', isZoomed);
         if (isTap && !isPinching && !isZoomed) {
           console.log('Tap detected');
           if (target) {
@@ -470,7 +438,7 @@ export function useTouchControls({
                 canvas.getActiveObjects().length === 0
               ) {
                 canvasService.pageFocus(canvas, pages, pageId, isMobile);
-                updateZoomState();
+                isZoomed = canvas.getZoom() !== DEFAULT_ZOOM; // Mettre à jour après pageFocus
               }
             } else {
               canvas.setActiveObject(target);
@@ -484,46 +452,25 @@ export function useTouchControls({
           startTouch = null;
           initialPinchDistance = null;
           isPinching = false;
-          wasPinching = false;
           return;
         }
 
-        console.log('isPinching', isPinching)
-
-        if (!isPinching) {
+        if (!isPinching && !isZoomed) {
           const flickThreshold = 500;
 
-          console.log('isZoomed', isZoomed)
-
-          if (isZoomed && !wasPinching) {
-            // Momentum pour déplacement zoomé avec un seul doigt
-            if (
-              Math.abs(velocityX) > MOMENTUM_THRESHOLD ||
-              Math.abs(velocityY) > MOMENTUM_THRESHOLD
-            ) {
-              console.log('Momentum triggered');
-              animationFrameId = requestAnimationFrame(() =>
-                animateMomentum(vpt)
-              );
-            } else {
-              canvas.__isPanning = false;
-              updateObjectControls(false);
-            }
-          } else if (!isZoomed) {
-            // Snapping pour cas non zoomé
-            if (Math.abs(velocityY) > flickThreshold) {
-              const direction = velocityY > 0 ? 'up' : 'down';
-              snapToAdjacentPage(vpt, direction);
-            } else {
-              snapToNearestPage(vpt);
-            }
+          if (Math.abs(velocityY) > flickThreshold) {
+            // Flick
+            const direction = velocityY > 0 ? 'up' : 'down';
+            snapToAdjacentPage(vpt, direction);
+          } else {
+            // Relâchement lent
+            snapToNearestPage(vpt);
           }
 
           lastTouch = null;
           startTouch = null;
           initialPinchDistance = null;
           isPinching = false;
-          wasPinching = false;
         }
       }
     };
@@ -537,14 +484,18 @@ export function useTouchControls({
     });
     upperCanvas.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    canvas.on('after:render', updateZoomState);
+    // Ajouter un listener pour détecter les changements de zoom en dehors des touch events
+    const handleZoomChange = () => {
+      updateZoomState();
+    };
+    canvas.on('after:render', handleZoomChange); // Utiliser un événement Fabric.js
 
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
       upperCanvas.removeEventListener('touchstart', handleTouchStart);
       upperCanvas.removeEventListener('touchmove', handleTouchMove);
       upperCanvas.removeEventListener('touchend', handleTouchEnd);
-      canvas.off('after:render', updateZoomState);
+      canvas.off('after:render', handleZoomChange); // Nettoyer le listener
       delete canvas.__isPanning;
       delete canvas.lastTapTime;
       delete canvas.lastTapTarget;
