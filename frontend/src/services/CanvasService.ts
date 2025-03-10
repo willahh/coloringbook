@@ -340,11 +340,22 @@ class CanvasService {
       canvasWidth = viewportWidth;
       canvasHeight = viewportHeight - headerHeight - footerHeight;
     } else {
-      canvasWidth = viewportWidth;
+      const bookToolbarEl = document.querySelector(
+        'div[data-id="book-toolbar"]'
+      );
+      const pagesPanelEl = document.querySelector('div[data-id="pages-panel"]');
+      const sidePanelEl = document.querySelector('aside[data-id="sidepanel"]');
+      const bookToolbarWidth = bookToolbarEl?.clientWidth || 0;
+      const pagesPanelElWidth = pagesPanelEl?.clientWidth || 0;
+      const sidePanelWidth = sidePanelEl?.clientWidth || 0;
+      // const { x } = canvas.getElement().getBoundingClientRect();
+      canvasWidth =
+        viewportWidth - bookToolbarWidth - pagesPanelElWidth - sidePanelWidth;
       canvasHeight = viewportHeight - headerHeight;
     }
 
-    console.log('#1.1 canvasHeight', canvasHeight);
+    console.log('#1.1 canvasWidth', canvasWidth);
+    // console.log('#1.1 canvasHeight', canvasHeight);
     // Calculer le zoom nécessaire pour voir toute la page avec des marges
     const zoomX = (canvasWidth - 2 * margin) / pageWidth;
     const zoomY = (canvasHeight - 2 * margin) / pageHeight;
@@ -429,8 +440,6 @@ class CanvasService {
     isMobile: boolean
   ): number {
     let newY = y;
-
-    console.log('isMobile', isMobile);
 
     // Limite de déplacement vertical
     const headerHeight = 64;

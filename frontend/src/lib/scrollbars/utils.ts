@@ -118,7 +118,7 @@ export const makeMouseWheelWithAnimation =
           isMobile
         );
 
-        console.log('#z totalHeight:', totalHeight);
+        // console.log('#z totalHeight:', totalHeight);
 
         vpt[4] = newX;
         vpt[5] = newY;

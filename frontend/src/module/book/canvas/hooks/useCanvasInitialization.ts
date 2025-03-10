@@ -4,7 +4,7 @@ import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
 import canvasService from '@/services/CanvasService';
 import useCanvasContext from '../../useCanvasContext';
-import { getSecondaryColor } from '@/common/utils/themeColors';
+import { getPrimary700Color, getPrimaryColor, getSecondaryColor } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
 import useIsMobile from '@/common/hooks/useIsMobile';
 
@@ -47,7 +47,8 @@ export function useCanvasInitialization(
 
     const scrollbar = new Scrollbars(canvas, {
       fill: getSecondaryColor(),
-      stroke: 'rgba(0,0,255,.5)',
+      // stroke: 'rgba(0,0,255,.5)',
+      stroke: getPrimary700Color(),
       lineWidth: 5,
       scrollbarSize: 8,
       offsetY: isMobile ? 0 : 62,
