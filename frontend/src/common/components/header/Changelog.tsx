@@ -1,4 +1,3 @@
-// src/module/home/Changelog.tsx
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 

@@ -2,7 +2,7 @@ import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { useDispatch, useSelector } from '@/common/store';
 import { selectAllGraphicAssets } from './GraphicAssets.slice';
 import { useEffect } from 'react';
-import * as graphicAssetsAction from './GraphicAssets.actions';
+import * as graphicAssetsAction from './graphicAssets.actions';
 import { Tooltip } from '@components/Tooltip';
 
 const Item: React.FC<{ graphicAsset: GraphicAsset }> = ({ graphicAsset }) => (

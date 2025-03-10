@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import * as graphicAssetsActions from './GraphicAssets.actions.ts';
+import * as graphicAssetsActions from './graphicAssets.actions.ts';
 import { RootState } from '@/common/store';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 
