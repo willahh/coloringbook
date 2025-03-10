@@ -11,6 +11,8 @@ export const useDimensions = (
     width: document.documentElement.clientWidth,
     height: document.documentElement.clientHeight,
   });
+
+ 
   const isMobile = useIsMobile();
 
   const updateDimensions = useCallback(
@@ -21,22 +23,22 @@ export const useDimensions = (
           window.innerHeight || 0
         );
 
-        // Ajoute un offset de 50 en desktop pour compenser la toolbar à gauche
-        let offset = 0;
-        if (!isMobile) {
-          offset = 50;
+        const headerHeight = 64;
+        const footerHeight = 64;
+        let width = 0;
+        let height = 0;
+        if (isMobile) {
+          width = window.innerWidth;
+          height = viewportHeight - headerHeight - footerHeight;
+        } else {
+          // Ajoute un offset de 50 en desktop pour compenser la toolbar à gauche
+          width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
+          height = window.innerHeight;
         }
-        const width =
-          window.innerWidth - sidePanelWidth - pagesPanelWidth - offset;
+
         setDimensions({
           width: width,
-
-          /**
-           * height: viewportHeight - 64 (height of the bottom toolbar).
-           * The height is converted into an offset within the canvas to achieve
-           * the toolbar card overlay effect.
-           */
-          height: viewportHeight,
+          height: height,
         });
       }
     }, 50),

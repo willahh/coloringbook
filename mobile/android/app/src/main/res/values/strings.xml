@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ColoringBook</string>
+    <string name="title_activity_main">ColoringBook</string>
+    <string name="package_name">fr.onywave.coloringbook</string>
+    <string name="custom_url_scheme">fr.onywave.coloringbook</string>
+</resources>

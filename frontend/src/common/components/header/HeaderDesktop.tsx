@@ -1,12 +1,10 @@
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
-import { useSelector } from '../../store';
-import { selectBook } from '@/module/book/Book.slice';
-import SavePopOver from './SavePopOver';
 import AboutDialog, { getLastBuildText } from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
 import { useAutoOpenDialog } from './useAutoOpenDialog';
+import Appearance from '../Appearance';
 
 interface HeaderProps {
   className?: string;
@@ -37,9 +35,12 @@ const LoadingIcon = (
   </svg>
 );
 
-const HeaderDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }) => {
+const HeaderDesktop: React.FC<HeaderProps> = ({
+  className,
+  children,
+  isLoading,
+}) => {
   const { appearance } = useTheme();
-  const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
 
   const { isOpen, setIsOpen } = useAutoOpenDialog();
@@ -52,14 +53,13 @@ const HeaderDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }
         `}
       >
         <div className="relative h-16 px-6 flex items-center justify-end gap-4">
-          <div className="flex-1">{children}</div>
+          <div className="flex flex-1 flex-row gap-2">{children}</div>
 
           <div
-            className={`flex items-center gap-4 font-mono text-xs px-1 py-0.5 rounded-sm 
-              bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 
-              border border-primary-300 dark:border-primary-700`}
+            className={`flex items-center gap-4 font-mono text-xs py-0.5 px-4 rounded-sm 
+               text-primary-800 dark:text-primary-200 
+              border border-primary-100 dark:border-primary-900/50`}
           >
-            
             <span title="Last build">
               <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
               <span>v{appVersion}</span> <span>⸱</span> last build :{' '}
@@ -73,8 +73,8 @@ const HeaderDesktop: React.FC<HeaderProps> = ({ className, children, isLoading }
               setIsOpen={setIsOpen}
             />
           </div>
-          <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
           {isLoading && LoadingIcon}
+          <Appearance />
           {appearance === 'dark' ? (
             <Logo className="w-24 xl:w-36" />
           ) : (

@@ -2,17 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from '@/common/store';
-import Layout from '../layout';
+import Layout from '@/common/components/Layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import SidePanel from './sidePanel/SidePanel';
-import BookFooter from './components/BookFooter';
-import * as bookActions from './book.actions';
-import { selectBook } from './Book.slice';
+import * as bookActions from './BookActions';
+import { selectBook } from './BookSlice';
 import { PagesPanel } from './components/SidePanel/pagesPanel/PagesPanel';
 import BookToolbar from './components/BookToolbar';
 import LoadingScreen from '@/common/components/LoadingScreen';
 import ErrorDialog from '@/common/components/ErrorDialog';
 import { backgroundRadialStyles } from '@/common/utils/backgroundStyles';
+import BookFooterDesktop from './components/BookFooterDesktop';
 
 const BookPageDesktop: React.FC = () => {
   let { bookId = 0 /*, pageId = 1 */ } = useParams<{
@@ -52,7 +52,7 @@ const BookPageDesktop: React.FC = () => {
     <Layout
       className={`w-screen h-screen overflow-hidden ${backgroundRadialStyles}`}
       header={
-        <BookFooter
+        <BookFooterDesktop
           book={book}
           onBookNameEdit={(newName) => {
             dispatch(
@@ -74,12 +74,14 @@ const BookPageDesktop: React.FC = () => {
       ) : !isLoading ? (
         <>
           <BookToolbar />
-          <PagesPanel
-            ref={pagesPanelRef}
-            className="w-16 md:w-24 xl:w-30 border-r border-primary-200 dark:border-primary-800"
-            pages={book.pages}
-            addPageButtonClick={() => {}}
-          ></PagesPanel>
+          <div className='bg-red-500'>
+            <PagesPanel
+              ref={pagesPanelRef}
+              className="w-16 md:w-24 xl:w-30 h-full border-r border-primary-200 dark:border-primary-800"
+              pages={book.pages}
+              addPageButtonClick={() => {}}
+            ></PagesPanel>
+          </div>
           <SidePanel
             ref={sidePanelRef}
             setSidePanelWidth={setSidePanelWidth}

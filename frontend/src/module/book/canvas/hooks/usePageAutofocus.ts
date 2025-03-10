@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import * as fabric from 'fabric';
 import { debounce } from 'lodash';
 
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { BookPageParams } from '@/common/interfaces';
 // import useCanvasContext from '../../useCanvasContext';
 

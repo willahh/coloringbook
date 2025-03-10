@@ -14,9 +14,10 @@ import { useCanvasInitialization } from './hooks/useCanvasInitialization';
 import { useCanvasResize } from './hooks/useCanvasResize';
 import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
-import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
+// import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
 import usePageAutoFocus from './hooks/usePageAutofocus';
 import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
+import useIsMobile from '@/common/hooks/useIsMobile';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -34,6 +35,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   const pageParams = useParams<BookPageParams>();
   const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const { canvas, viewportTransform } = useCanvasContext();
+  const isMobile = useIsMobile();
 
   // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
@@ -53,6 +55,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     sidePanelWidth,
     pagesPanelWidth
   );
+  
   useCanvasResize(canvas, canvasSize);
   useEventHandlers(canvas);
   useCanvasRedraw(
@@ -69,12 +72,12 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     pageId,
     viewportTransform
   );
-  usePageFocus(canvas, pages, pageId, disableFocusAnimation);
+  usePageFocus(canvas, pages, pageId, isMobile, disableFocusAnimation);
 
   // FIXME: Finaliser ce useEffect, il faut charger toute les vignettes une seule fois
   // lorsqu'elles n'existent pas et les stoquer quelque part. Peut être dans
   // le navigateur avec storage.
-  useUpdatePageThumbnails(canvas, pages, needRedrawPages);
+  // useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
   return (
     <ErrorBoundary fallback={<div>sd</div>}>
@@ -84,14 +87,17 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         className="relative flex-1"
       >
         <PagesNavigation />
-        <canvas ref={canvasRef} className="w-full h-full" />
+        <canvas
+          ref={canvasRef}
+          className="w-full h-full"
+        />
 
         <div
           data-id="inline-toolbar"
           className={`hidden sm:block absolute bottom-20 right-12 z-10
           rounded-full px-4 py-2
          bg-secondary-500 dark:bg-secondary-500  text-white dark:text-white
-         text-sm flex gap-2`}
+         text-sm  gap-2`}
         >
           <button>Modification</button>
           <button>Color</button>

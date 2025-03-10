@@ -10,11 +10,16 @@ interface Page {
 }
 interface BreadCrumbProps {
   pages: Page[];
+  className?: string;
 }
 
-const BreadCrumb: React.FC<BreadCrumbProps> = function ({ pages }) {
+const BreadCrumb: React.FC<BreadCrumbProps> = function ({ pages, className }) {
   return (
-    <nav data-id="BreadCrumb" aria-label="Breadcrumb" className="flex">
+    <nav
+      data-id="bread-crumb"
+      aria-label="bread-crumb"
+      className={`${className || ''} flex`}
+    >
       <ol role="list" className="flex items-center space-x-4">
         <li>
           <Tooltip content="Accueil">

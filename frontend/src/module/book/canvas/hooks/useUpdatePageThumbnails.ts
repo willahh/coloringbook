@@ -1,10 +1,10 @@
 import { useDispatch } from '@/common/store';
 import { Page } from '@/common/types/book';
-import canvasService from '@/services/canvas.service';
-import { PageService } from '@/services/page.service';
+import canvasService from '@/services/CanvasService';
+import { PageService } from '@/services/PageService';
 import * as fabric from 'fabric';
 import { useEffect, useState } from 'react';
-import { updatePageThumbImageData } from '../../book.actions';
+import { updatePageThumbImageData } from '../../BookActions';
 
 const useUpdatePageThumbnails = (
   canvas: fabric.Canvas | null,

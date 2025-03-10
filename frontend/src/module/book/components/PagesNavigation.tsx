@@ -4,7 +4,7 @@ import { Tooltip } from '@components/Tooltip';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router';
 import { useSelector } from '@/common/store';
-import { selectBook } from '../Book.slice';
+import { selectBook } from '../BookSlice';
 
 export const PagesNavigation: React.FC = () => {
   const { bookId, pageId } = useParams<{ bookId?: string; pageId?: string }>();
@@ -61,7 +61,7 @@ export const PagesNavigation: React.FC = () => {
            transition-all duration-400
          hover:bg-primary-50  hover:ring-primary-200
          dark:hover:bg-primary-950  dark:hover:ring-primary-800 
-         active:ring-primary-950 dark:active:ring-primary-50
+         active:bg-primary-200 dark:active:bg-primary-700 active:scale-85
           `}
         >
           <ArrowUpIcon />
@@ -74,11 +74,11 @@ export const PagesNavigation: React.FC = () => {
           className={`w-12 h-12 rounded-full z-10 p-2 pointer-events-auto
               ${isLastPage ? ' opacity-0' : ''}
               text-primary-800 dark:text-primary-200 bg-primary-100/75 dark:bg-primary-700/75
-               transition-all duration-400
+               transition-all duration-700
              hover:ring-1 
              hover:bg-primary-50  hover:ring-primary-200
              dark:hover:bg-primary-950  dark:hover:ring-primary-800 
-             active:ring-primary-950 dark:active:ring-primary-50
+             active:bg-primary-200 dark:active:bg-primary-700 active:scale-85
               `}
         >
           <ArrowDownIcon />

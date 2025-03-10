@@ -1,12 +1,13 @@
 import * as fabric from 'fabric';
 import { Page } from '@/common/types/book';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { useEffect } from 'react';
 
 const usePageFocus = (
   canvas: fabric.Canvas | null,
   pages: Page[],
   pageId: number,
+  isMobile: boolean,
   disableFocusAnimation?: boolean // Paramètre optionnel pour désactiver l'animation
 ) => {
   /**
@@ -19,7 +20,12 @@ const usePageFocus = (
       return;
     }
 
-    const cancelAnimation = canvasService.pageFocus(canvas, pages, pageId);
+    const cancelAnimation = canvasService.pageFocus(
+      canvas,
+      pages,
+      pageId,
+      isMobile
+    );
 
     return cancelAnimation;
   }, [canvas, pageId]); // Canvas et pageId doivent être présent

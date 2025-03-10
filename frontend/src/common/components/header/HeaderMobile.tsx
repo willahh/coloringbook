@@ -1,11 +1,14 @@
-import { useSelector } from '../../store';
-import { selectBook } from '@/module/book/Book.slice';
-import SavePopOver from './SavePopOver';
-import AboutDialog from './AboutDialog'; // Importez le nouveau composant
-import packageJson from '@/../package.json';
-import { useAutoOpenDialog } from './useAutoOpenDialog';
+import { useState } from 'react';
+import { Bars3Icon } from '@heroicons/react/24/outline';
 
-interface HeaderProps {
+import packageJson from '@/../package.json';
+import Appearance from '../Appearance';
+import AboutDialog from './AboutDialog'; // Importez le nouveau composant
+import { useAutoOpenDialog } from './useAutoOpenDialog';
+import { footerButtonClasses } from '@/common/utils/buttonStyles';
+import MobileSidebarMenu from '../MobileSidebarMenu';
+
+interface FooterMobileProps {
   className?: string;
   children?: React.ReactNode;
   isLoading?: boolean;
@@ -13,7 +16,7 @@ interface HeaderProps {
 
 const LoadingIcon = (
   <svg
-    className="mr-3 -ml-1 size-5 animate-spin text-white transition-all"
+    className="size-5 animate-spin text-primary-800 dark:text-primary-200 transition-all"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -34,35 +37,51 @@ const LoadingIcon = (
   </svg>
 );
 
-const HeaderMobile: React.FC<HeaderProps> = ({
+const HeaderMobile: React.FC<FooterMobileProps> = ({
   className,
   children,
   isLoading,
 }) => {
-  const { areLocalUpdatesSaved } = useSelector(selectBook);
   const appVersion = packageJson.version;
   const { isOpen, setIsOpen } = useAutoOpenDialog();
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
+  // isLoading = true;
   return (
-    <div data-id="header-mobile" className="relative h-0">
+    <>
       <header
-        className={`relative -top-16 rounded-tl-4xl rounded-tr-4xl z-20 overflow-hidden ${className} 
-         bg-primary-50 dark:bg-primary-950 border-t border-primary-100 dark:border-primary-900 
+        data-id="header-mobile"
+        className={`${className} 
+         bg-primary-50 dark:bg-primary-950 border-b border-primary-100 dark:border-primary-900 
         `}
       >
-        <div className="relative h-16 px-6 flex items-center justify-end gap-4">
-          <div className="flex-1">{children}</div>
+        <div className="p-2 flex items-center justify-end gap-2">
+          <button
+            className={`${footerButtonClasses}`}
+            autoFocus={true}
+            onClick={() => setIsSidebarOpen(true)}
+          >
+            <Bars3Icon className="w-6 h-6" />
+          </button>
+          <div className="flex flex-row flex-1 gap-2">{children}</div>
+          <div className="flex w-10 h-10 items-center justify-center border-red-100">
+            {isLoading && LoadingIcon}
+          </div>
           <AboutDialog
             version={appVersion}
             buildDate={packageJson.buildDate}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
           />
-          <SavePopOver areLocalUpdatesSaved={areLocalUpdatesSaved} />
-          {isLoading && LoadingIcon}
+
+          <Appearance />
         </div>
       </header>
-    </div>
+      <MobileSidebarMenu
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+      />
+    </>
   );
 };
 

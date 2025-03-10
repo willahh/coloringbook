@@ -11,11 +11,12 @@ import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 
 import ErrorDialog from '@/common/components/ErrorDialog'; // Ajuste l
 import { ToolbarButton } from './ToolbarButton';
-import { bookService } from '@/services/book.service';
 import useCanvasContext from '../useCanvasContext';
 import { useDispatch, useSelector } from '@/common/store';
-import { selectBook, selectBookPages } from '../Book.slice';
-import { saveBookAction, loadBookFromJson } from '../book.actions';
+import { selectBook, selectBookPages } from '../BookSlice';
+import { saveBookAction, loadBookFromJson } from '../BookActions';
+import { useServices } from '@/common/contexts/ServiceContext';
+import { BookDataService } from '@/services/book/BookDataService';
 
 const BookToolbar: React.FC = () => {
   const { canvas } = useCanvasContext();
@@ -24,13 +25,15 @@ const BookToolbar: React.FC = () => {
   const { book, areLocalUpdatesSaved } = useSelector(selectBook);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const { bookDataService, bookExportService } = useServices();
   const iconProps = {
     className: 'w-8 h-8',
     strokeWidth: 0.5,
   };
 
   const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
+    bookDataService: BookDataService
   ) => {
     console.log('handleFileChange');
     const file = event.target.files?.[0];
@@ -42,7 +45,7 @@ const BookToolbar: React.FC = () => {
 
       try {
         const content = e.target?.result as string;
-        const importedBook = bookService.importBookFromJson(
+        const importedBook = bookDataService.importBookFromJson(
           content /*, book.id*/
         );
         dispatch(loadBookFromJson(importedBook));
@@ -98,7 +101,7 @@ const BookToolbar: React.FC = () => {
         <ToolbarButton
           tooltipContent="Export"
           onClick={() => {
-            bookService.exportBookToFile(book);
+            bookDataService.exportBookToFile(book);
           }}
         >
           <PiExportThin {...iconProps} />
@@ -114,7 +117,9 @@ const BookToolbar: React.FC = () => {
             type="file"
             accept="application/json"
             ref={fileInputRef}
-            onChange={handleFileChange}
+            onChange={(event) => {
+              handleFileChange(event, bookDataService);
+            }}
             style={{ display: 'none' }}
           />
         </label>
@@ -122,7 +127,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Download"
           onClick={() => {
             if (canvas) {
-              bookService.exportToPDF({
+              bookExportService.exportToPDF({
                 canvas: canvas,
                 pages: pages,
               });
@@ -135,7 +140,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Print"
           onClick={async () => {
             if (canvas) {
-              await bookService.printPDF({
+              await bookExportService.printPDF({
                 canvas: canvas,
                 pages: pages,
               });

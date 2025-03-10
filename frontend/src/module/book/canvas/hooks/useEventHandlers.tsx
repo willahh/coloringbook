@@ -7,10 +7,10 @@ import {
   handleMouseDown,
   handleDocumentKeyDown,
   handleDocumentKeyUp,
-} from '../canvas.events';
+} from '../CanvasEvents';
 import { Element } from '@/common/types/book';
 import { useDispatch } from '@/common/store';
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import { updateElementByElementId } from '../../element/Element.action';
 
 export const useEventHandlers = (canvas: fabric.Canvas | null) => {

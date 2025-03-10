@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import bookReducer from '@/module/book/Book.slice';
+import bookReducer from '@/module/book/BookSlice';
 import graphicAssetsReducer from '@/module/book/sidePanel/graphicAssets/GraphicAssets.slice';
 
 const rootReducer = combineReducers({

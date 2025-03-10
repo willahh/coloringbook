@@ -5,11 +5,12 @@ import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
 import { Book } from '@apptypes/book';
 
-import Layout from '../../layout';
 import UserBooks from './../UserBooks';
 import { ToolbarButton } from '../../book/components/ToolbarButton';
-import APIService from '@/services/api.service';
+import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
+import LayoutMobile from '@/common/components/LayoutMobile';
+import HeaderMobile from '@/common/components/header/HeaderMobile';
 
 const Library: React.FC = () => {
   const location = useLocation();
@@ -36,7 +37,7 @@ const Library: React.FC = () => {
   }, []);
 
   return (
-    <Layout className='h-screen overflow-y-auto'>
+    <LayoutMobile header={<HeaderMobile />} className='h-screen overflow-y-auto'>
       {isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
@@ -63,7 +64,7 @@ ${gridDebug ? 'border border-primary-500' : ''}`}
           </div>
         </div>
       )}
-    </Layout>
+    </LayoutMobile>
   );
 };
 

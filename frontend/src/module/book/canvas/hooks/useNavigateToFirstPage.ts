@@ -3,7 +3,7 @@ import { Page } from '@/common/types/book';
 // import { PageService } from '@/services/page.service';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import { PageService } from '@/services/page.service';
+import { PageService } from '@/services/PageService';
 import { BookPageParams } from '@/common/interfaces';
 
 const useNavigateToFirstPage = (

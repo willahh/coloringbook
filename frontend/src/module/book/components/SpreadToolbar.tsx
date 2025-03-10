@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {
   ArrowDownOnSquareStackIcon,
   MagnifyingGlassIcon,
@@ -8,12 +7,13 @@ import {
   ArrowDownTrayIcon,
   PrinterIcon,
 } from '@heroicons/react/24/outline';
-import { bookService } from '@/services/book.service';
+
 import { ToolbarButton } from './ToolbarButton';
 import { useSelector } from '@/common/store';
-import { selectBook, selectBookPages } from '../Book.slice';
+import { selectBook, selectBookPages } from '../BookSlice';
 import { useParams } from 'react-router';
 import useCanvasContext from '../useCanvasContext';
+import { useServices } from '@/common/contexts/ServiceContext';
 
 const iconProps = {
   className: 'w-12 h-12',
@@ -27,6 +27,7 @@ export const SpreadToolbar: React.FC<{
   const { canvas } = useCanvasContext();
   const pages = useSelector(selectBookPages);
   const { book } = useSelector(selectBook);
+  const { bookExportService } = useServices();
   const { pageId } = useParams<{ pageId?: string }>();
   const totalPages = book.pages.length;
 
@@ -69,7 +70,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Download"
             onClick={() => {
               if (canvas) {
-                bookService.exportToPDF({
+                bookExportService.exportToPDF({
                   canvas: canvas,
                   pages: pages,
                 });
@@ -82,7 +83,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Print"
             onClick={() => {
               if (canvas) {
-                bookService.printPDF({
+                bookExportService.printPDF({
                   canvas: canvas,
                   pages: pages,
                 });

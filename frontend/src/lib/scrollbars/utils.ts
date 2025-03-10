@@ -1,4 +1,4 @@
-import canvasService from '@/services/canvas.service';
+import canvasService from '@/services/CanvasService';
 import * as fabric from 'fabric';
 
 interface CustomPointerEventInfo<EventType extends Event> {
@@ -48,12 +48,14 @@ export const makeMouseWheelWithAnimation =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           adjustedTotalWidth,
-          vpt[4]
+          vpt[4],
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           adjustedTotalHeight,
-          vpt[5]
+          vpt[5],
+          isMobile
         );
 
         vpt[4] = newX;
@@ -106,15 +108,17 @@ export const makeMouseWheelWithAnimation =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           totalWidth * canvas.getZoom(),
-          x
+          x,
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           totalHeight * canvas.getZoom(),
-          y
+          y,
+          isMobile
         );
 
-        console.log('#z totalHeight:', totalHeight);
+        // console.log('#z totalHeight:', totalHeight);
 
         vpt[4] = newX;
         vpt[5] = newY;
@@ -132,7 +136,7 @@ export const makeMouseWheel =
       React.SetStateAction<fabric.TMat2D | undefined>
     >
   ) =>
-  (options: CustomPointerEventInfo<WheelEvent>) => {
+  (options: CustomPointerEventInfo<WheelEvent>, isMobile: boolean) => {
     const e = options.e;
     if (
       'upperCanvasEl' in canvas &&
@@ -144,7 +148,10 @@ export const makeMouseWheel =
 
     const isTouchScale = Math.floor(e.deltaY) !== Math.ceil(e.deltaY);
     const maxPageWidth = canvasService.getMaxPageWidth(canvas);
-    const maxPageHeight = canvasService.getTotalPageHeightCumulated(canvas); // Ajout de la hauteur totale
+    const maxPageHeight = canvasService.getTotalPageHeightCumulated(
+      canvas,
+      isMobile
+    ); // Ajout de la hauteur totale
     const canvasWidth = canvas.getWidth();
     const canvasHeight = canvas.getHeight(); // Ajout de la hauteur du canvas
 
@@ -169,12 +176,14 @@ export const makeMouseWheel =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           maxPageWidth * zoomRatio,
-          vpt[4]
+          vpt[4],
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           maxPageHeight * zoomRatio,
-          vpt[5]
+          vpt[5],
+          isMobile
         ); // Contrainte verticale
 
         vpt[4] = newX;
@@ -192,12 +201,14 @@ export const makeMouseWheel =
         const newX = canvasService.constrainHorizontalMovement(
           canvasWidth,
           maxPageWidth,
-          x
+          x,
+          isMobile
         );
         const newY = canvasService.constrainVerticalMovement(
           canvasHeight,
           maxPageHeight,
-          y
+          y,
+          isMobile
         ); // Contrainte verticale
 
         vpt[4] = newX;

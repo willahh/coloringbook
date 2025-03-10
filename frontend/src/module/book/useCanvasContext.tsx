@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CanvasContext } from './Canvas.context';
+import { CanvasContext } from './CanvasContext';
 
 const useCanvasContext = () => {
   const context = useContext(CanvasContext);
