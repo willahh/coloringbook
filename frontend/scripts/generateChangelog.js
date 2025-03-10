@@ -1,6 +1,5 @@
 import { execSync } from 'child_process';
-import { writeFileSync } from 'fs';
-import { type } from 'os';
+import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -8,11 +7,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = join(__filename, '..');
 
-// Charger package.json dynamiquement avec import()
-const packageJson = await import('../package.json', {
-    with: {type: 'json'}
-});
-const { version, buildDate } = packageJson.default;
+// Charger package.json dynamiquement avec l'attribut 'with'
+const { default: packageJson } = await import('../package.json', { with: { type: 'json' } });
+const { version, buildDate } = packageJson;
 
 const changelogPath = join(__dirname, '../CHANGELOG.md');
 
@@ -23,13 +20,60 @@ const formattedBuildDate = new Date(buildDate).toLocaleDateString('fr-FR', {
   day: 'numeric',
 });
 
-// Récupérer les commits
-const gitLog = execSync('git log --pretty=format:"* %h %s" -n 50').toString();
+// Récupérer tous les commits depuis le début (on filtrera ensuite)
+const allCommits = execSync('git log --pretty=format:"%h %s"').toString().split('\n');
 
-// Générer le contenu du changelog
-const changelogContent = `# Changelog\n\n## Version ${version} - ${formattedBuildDate}\n\n${gitLog}\n`;
+// Lire le contenu existant de CHANGELOG.md (s'il existe)
+let existingContent = '';
+try {
+  existingContent = readFileSync(changelogPath, 'utf8');
+} catch (error) {
+  console.log('Aucun CHANGELOG.md existant trouvé, création d’un nouveau.');
+}
 
-// Écrire dans CHANGELOG.md
-writeFileSync(changelogPath, changelogContent, 'utf8');
+// Extraire les hashes des commits déjà dans le changelog
+const existingCommitHashes = new Set(
+  existingContent.match(/[0-9a-f]{7}/g) || []
+);
 
-console.log('Changelog généré avec succès dans public/CHANGELOG.md');
+// Filtrer les nouveaux commits non présents dans le changelog
+const newCommits = allCommits
+  .filter((commit) => {
+    const [hash] = commit.split(' ');
+    return !existingCommitHashes.has(hash);
+  })
+  .map((commit) => `* ${commit}`) // Ajouter le préfixe '*'
+  .join('\n');
+
+// Générer la nouvelle section pour cette version (si nouveaux commits)
+let newSection = '';
+if (newCommits) {
+  newSection = `## Version ${version} - ${formattedBuildDate}\n\n${newCommits}\n`;
+} else {
+  console.log('Aucun nouveau commit à ajouter pour cette version.');
+}
+
+// Si pas de nouveaux commits et la version existe déjà, ne rien faire
+const versionHeader = `## Version ${version}`;
+if (!newSection && existingContent.includes(versionHeader)) {
+  console.log(`La version ${version} est déjà à jour, rien à ajouter.`);
+  process.exit(0);
+}
+
+// Mettre à jour le changelog
+if (existingContent.includes(versionHeader)) {
+  console.log(`Mise à jour de la section existante pour la version ${version}.`);
+  const regex = new RegExp(`## Version ${version}.*?(?=## Version|$)`, 's');
+  existingContent = existingContent.replace(regex, newSection);
+} else {
+  console.log(`Ajout d’une nouvelle section pour la version ${version}.`);
+  existingContent = existingContent.replace(
+    '# Changelog\n',
+    `# Changelog\n\n${newSection}`
+  ) || `# Changelog\n\n${newSection}`;
+}
+
+// Écrire le contenu mis à jour dans CHANGELOG.md
+writeFileSync(changelogPath, existingContent, 'utf8');
+
+console.log('Changelog mis à jour avec succès dans CHANGELOG.md');
