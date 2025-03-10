@@ -71,3 +71,33 @@ div[data-is-root-theme].light {
 body {
   font-family: 'Inter', serif;
 }
+
+/* —————————————————————————————————————————————————————————————————————————————
+  Scrollbar
+  ———————————————————————————————————————————————————————————————————————————— */
+.custom-scrollbar {
+  /* Assure que la scrollbar est visible et personnalisable */
+  scrollbar-width: thin; /* Pour Firefox */
+  scrollbar-color: var(--color-primary-500) var(--color-primary-800); /* Pouce et piste pour Firefox */
+}
+
+/* Styles spécifiques WebKit (Chrome, Safari, Edge) */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px; /* Largeur de la scrollbar */
+  height: 8px; /* Hauteur pour les scrollbars horizontales si présentes */
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--color-primary-800); /* Couleur de la piste, bleu foncé */
+  border-radius: 4px; /* Coins arrondis */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--color-primary-500); /* Couleur du pouce, bleu clair */
+  border-radius: 4px; /* Coins arrondis */
+  transition: background 0.3s; /* Transition douce au survol */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #60a5fa; /* Bleu plus foncé au survol */
+}

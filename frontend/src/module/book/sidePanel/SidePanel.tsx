@@ -135,7 +135,7 @@ const SidePanel: React.FC<{
             height: `calc(100vh)`,
           }}
         >
-          <div className="p-4">
+          <div className="h-full p-4 pb-20"> {/* pb-20 => desktop footer height  */}
             {activeTab == TabType.Personal && <UserContent />}
             {activeTab == TabType.Element && <ElementTabContent />}
           </div>

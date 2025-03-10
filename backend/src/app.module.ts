@@ -8,6 +8,7 @@ import { options } from '@/data-source';
 import { GraphicAssetsModule } from './graphic-assets/graphic-assets.module';
 import { ImageModule } from './image/image.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
+
 @Module({
   imports: [
     UsersModule,

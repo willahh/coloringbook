@@ -2,71 +2,31 @@ import { ToolbarButton } from '@/module/book/components/ToolbarButton';
 import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
 
 import Item from '../Item';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Loader from '@components/Loader';
 import { useDispatch } from '@/common/store';
 import { addElementToPage } from '../../element/Element.action';
 import { useParams } from 'react-router';
 import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
-// Définition des imports lazy pour chaque SVG
+import { getAPIURL } from '@/common/utils/api';
+
+// Liste des SVG (sans imports locaux)
 const svgs = [
-  {
-    name: 'Castle',
-    component: lazy(() => import('@assets/elements/castle.svg?react')),
-    rawContentLoader: () => import('@assets/elements/castle.svg?raw'),
-  },
-  {
-    name: 'Cat',
-    component: lazy(() => import('@assets/elements/cat.svg?react')),
-    rawContentLoader: () => import('@assets/elements/cat.svg?raw'),
-  },
-  {
-    name: 'Cochon',
-    component: lazy(() => import('@assets/elements/cochon.svg?react')),
-    rawContentLoader: () => import('@assets/elements/cochon.svg?raw'),
-  },
-  {
-    name: 'Dinosaure',
-    component: lazy(() => import('@assets/elements/dinosaure.svg?react')),
-    rawContentLoader: () => import('@assets/elements/dinosaure.svg?raw'),
-  },
-  {
-    name: 'Flower',
-    component: lazy(() => import('@assets/elements/flower.svg?react')),
-    rawContentLoader: () => import('@assets/elements/flower.svg?raw'),
-  },
-  {
-    name: 'Hibou',
-    component: lazy(() => import('@assets/elements/hibou.svg?react')),
-    rawContentLoader: () => import('@assets/elements/hibou.svg?raw'),
-  },
-  {
-    name: 'Hippocampe',
-    component: lazy(() => import('@assets/elements/hippocampe.svg?react')),
-    rawContentLoader: () => import('@assets/elements/hippocampe.svg?raw'),
-  },
-  {
-    name: 'Lapin',
-    component: lazy(() => import('@assets/elements/lapin.svg?react')),
-    rawContentLoader: () => import('@assets/elements/lapin.svg?raw'),
-  },
-  {
-    name: 'Perroquet',
-    component: lazy(() => import('@assets/elements/perroquet.svg?react')),
-    rawContentLoader: () => import('@assets/elements/perroquet.svg?raw'),
-  },
-  {
-    name: 'Pieuvre',
-    component: lazy(() => import('@assets/elements/pieuvre.svg?react')),
-    rawContentLoader: () => import('@assets/elements/pieuvre.svg?raw'),
-  },
-  {
-    name: 'Dinosaure2',
-    component: lazy(() => import('@assets/elements/dinosaure2.svg?react')),
-    rawContentLoader: () => import('@assets/elements/dinosaure2.svg?raw'),
-  },
+  { name: 'Castle', file: 'castle.svg' },
+  { name: 'Cat', file: 'cat.svg' },
+  { name: 'Cochon', file: 'cochon.svg' },
+  { name: 'Dinosaure', file: 'dinosaure.svg' },
+  { name: 'Flower', file: 'flower.svg' },
+  { name: 'Hibou', file: 'hibou.svg' },
+  { name: 'Hippocampe', file: 'hippocampe.svg' },
+  { name: 'Lapin', file: 'lapin.svg' },
+  { name: 'Perroquet', file: 'perroquet.svg' },
+  { name: 'Pieuvre', file: 'pieuvre.svg' },
+  { name: 'Dinosaure2', file: 'dinosaure2.svg' },
 ];
+
+const API_BASE_URL = getAPIURL();
 
 const ElementItem: React.FC<{
   className?: string;
@@ -77,7 +37,7 @@ const ElementItem: React.FC<{
     <Item
       className={`flex justify-center w-full aspect-square object-cover p-2
         dark:fill-white
-        bg-primary-100 dark:bg-primary-800 ${className || ''}`}
+        bg-primary-100 dark:bg-primary-700 ${className || ''}`}
       onClick={onClick}
     >
       {children}
@@ -91,14 +51,9 @@ const ElementTabContent: React.FC = () => {
   const pageId = Number(params.pageId);
 
   return (
-    <div>
-      <div className="absolute top-4 right-4 flex justify-end">
-        <ToolbarButton tooltipContent="Fermer">
-          <ArrowDownOnSquareStackIcon />
-        </ToolbarButton>
-      </div>
-      <div className="@container">
-        <div>Ressources graphiques</div>
+    <div className="flex flex-col @container h-full">
+      <div>Ressources graphiques</div>
+      <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
         <div className="grid grid-cols-1 @4xs:grid-cols-2 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>
@@ -111,19 +66,35 @@ const ElementTabContent: React.FC = () => {
   );
 };
 
-// Composant intermédiaire pour gérer le chargement lazy du rawContent
 const LazyElementItem: React.FC<{
   svg: (typeof svgs)[number];
   pageId: number;
   dispatch: ReturnType<typeof useDispatch>;
 }> = ({ svg, pageId, dispatch }) => {
   const [rawContent, setRawContent] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    svg.rawContentLoader().then((module) => {
-      setRawContent(module.default);
-    });
-  }, [svg.rawContentLoader]);
+    const fetchSvgContent = async () => {
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/image/svg-content/${svg.file}`
+        );
+        if (!response.ok) {
+          throw new Error(
+            `Failed to fetch SVG content: ${response.statusText}`
+          );
+        }
+        const content = await response.text();
+        setRawContent(content);
+      } catch (err) {
+        setError(err.message);
+        console.error(`Error fetching SVG content for ${svg.file}:`, err);
+      }
+    };
+
+    fetchSvgContent();
+  }, [svg.file]);
 
   const handleClick = () => {
     if (rawContent) {
@@ -139,12 +110,25 @@ const LazyElementItem: React.FC<{
     }
   };
 
+  if (error) {
+    return (
+      <div>
+        Error loading {svg.name}: {error}
+      </div>
+    );
+  }
+
   return (
     <ElementItem onClick={handleClick} className="relative group">
-      <button className="absolute top-2 right-2  opacity-0  group-hover:opacity-100 transition-all duration-300">
+      <button className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
         <HeartIcon className="w-4 h-4 text-pink-500" />
       </button>
-      <svg.component className="h-full" />
+      <img
+        src={`${API_BASE_URL}/image/2png/${svg.file}`}
+        loading="lazy"
+        alt={svg.name}
+        className="h-full object-contain"
+      />
     </ElementItem>
   );
 };

@@ -1,4 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router';
 
@@ -18,6 +24,8 @@ import usePageFocus from './hooks/usePageFocus';
 import usePageAutoFocus from './hooks/usePageAutofocus';
 import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 import useIsMobile from '@/common/hooks/useIsMobile';
+import { debounce } from 'lodash';
+import canvasService from '@/services/CanvasService';
 
 interface SpreadCanvasProps {
   width?: number;
@@ -55,7 +63,25 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
     sidePanelWidth,
     pagesPanelWidth
   );
-  
+
+  // usePageFocusOnWindowResize
+  useEffect(() => {
+    const updateCustom = debounce(() => {
+      if (canvas) {
+        if (canvas?.getZoom() <= 1) {
+          canvasService.pageFocus(canvas, pages, pageId, isMobile);
+        }
+      }
+    }, 200);
+
+    updateCustom();
+
+    return () => {
+      updateCustom.cancel();
+    };
+  }, [canvasSize]);
+
+
   useCanvasResize(canvas, canvasSize);
   useEventHandlers(canvas);
   useCanvasRedraw(
@@ -87,10 +113,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
         className="relative flex-1"
       >
         <PagesNavigation />
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full"
-        />
+        <canvas ref={canvasRef} className="w-full h-full" />
 
         <div
           data-id="inline-toolbar"
