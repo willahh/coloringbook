@@ -37,7 +37,7 @@ const ElementItem: React.FC<{
     <Item
       className={`flex justify-center w-full aspect-square object-cover p-2
         dark:fill-white
-        bg-primary-100 dark:bg-primary-800 ${className || ''}`}
+        bg-primary-100 dark:bg-primary-700 ${className || ''}`}
       onClick={onClick}
     >
       {children}
@@ -51,14 +51,9 @@ const ElementTabContent: React.FC = () => {
   const pageId = Number(params.pageId);
 
   return (
-    <div>
-      <div className="absolute top-4 right-4 flex justify-end">
-        <ToolbarButton tooltipContent="Fermer">
-          <ArrowDownOnSquareStackIcon />
-        </ToolbarButton>
-      </div>
-      <div className="@container">
-        <div>Ressources graphiques</div>
+    <div className="flex flex-col @container h-full">
+      <div>Ressources graphiques</div>
+      <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
         <div className="grid grid-cols-1 @4xs:grid-cols-2 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>
@@ -130,6 +125,7 @@ const LazyElementItem: React.FC<{
       </button>
       <img
         src={`${API_BASE_URL}/image/2png/${svg.file}`}
+        loading="lazy"
         alt={svg.name}
         className="h-full object-contain"
       />

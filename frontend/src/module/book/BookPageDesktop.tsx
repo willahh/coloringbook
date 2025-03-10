@@ -74,14 +74,7 @@ const BookPageDesktop: React.FC = () => {
       ) : !isLoading ? (
         <>
           <BookToolbar />
-          <div className='bg-red-500'>
-            <PagesPanel
-              ref={pagesPanelRef}
-              className="w-16 md:w-24 xl:w-30 h-full border-r border-primary-200 dark:border-primary-800"
-              pages={book.pages}
-              addPageButtonClick={() => {}}
-            ></PagesPanel>
-          </div>
+
           <SidePanel
             ref={sidePanelRef}
             setSidePanelWidth={setSidePanelWidth}
@@ -95,6 +88,14 @@ const BookPageDesktop: React.FC = () => {
               pagesPanelWidth={pagesPanelWidth}
             />
           )}
+          <div>
+            <PagesPanel
+              ref={pagesPanelRef}
+              className="w-16 md:w-24 xl:w-30 h-full border-r border-primary-200 dark:border-primary-800"
+              pages={book.pages}
+              addPageButtonClick={() => {}}
+            ></PagesPanel>
+          </div>
           {/* <SpreadToolbar /> */}
         </>
       ) : (
