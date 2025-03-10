@@ -7,12 +7,14 @@ import { GraphicAssetType } from '@/graphic-assets/entities/graphic-asset-type.e
 import { GraphicAssetsService } from '@/graphic-assets/graphic-assets.service';
 import * as sharp from 'sharp';
 import { SupabaseService } from '@/supabase.service';
+import { SvgConversionService } from './svg/svg-conversion.service';
 
 @Injectable()
 export class ImageService {
   constructor(
     private readonly graphicAssetsService: GraphicAssetsService,
     private readonly supabaseService: SupabaseService,
+    private readonly svgConversionService: SvgConversionService,
   ) {}
 
   private async uploadToSupabase(
@@ -31,7 +33,6 @@ export class ImageService {
       throw new Error(`Failed to upload file to Supabase: ${error.message}`);
     }
 
-    // Get public URL for the uploaded file
     const { data } = supabase.storage
       .from(bucketName)
       .getPublicUrl(`${folder}/${fileName}`);
@@ -43,7 +44,6 @@ export class ImageService {
     const pathToImage = file.path;
     const filenameWithoutExtension = path.parse(file.filename).name;
 
-    // Define paths
     const fullDir = path.join(file.destination, '/..', 'full');
     const convertedDir = path.join(file.destination, '/..', 'vect');
     const thumbnailDir = path.join(file.destination, '/..', 'thumbnails');
@@ -61,7 +61,6 @@ export class ImageService {
       `${filenameWithoutExtension}.jpg`,
     );
 
-    // Create directories if they do not exist
     try {
       [fullDir, convertedDir, thumbnailDir].forEach((dir) => {
         if (!fs.existsSync(dir)) {
@@ -84,35 +83,27 @@ export class ImageService {
     };
 
     try {
-      // Convert bitmap image to svg
       const svg = await new Promise<string>((resolve, reject) => {
         potrace.trace(pathToImage, options, (err, svg) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(svg);
-          }
+          if (err) reject(err);
+          else resolve(svg);
         });
       });
 
-      // Write the image svg into a file
       fs.writeFileSync(pathToConvertedImage, svg);
 
-      // Create thumbnail
       await sharp(pathToImage)
         .jpeg({ quality: 80 })
         .resize(150, 150)
         .toFile(pathToThumbnail);
 
-      // Upload files to Supabase Storage
-      const bucketName = 'uploads/graphic_asset'; // Replace with your bucket name
+      const bucketName = 'uploads/graphic_asset';
       await Promise.all([
         this.uploadToSupabase(bucketName, 'full', pathToFullImage),
         this.uploadToSupabase(bucketName, 'vect', pathToConvertedImage),
         this.uploadToSupabase(bucketName, 'thumbnails', pathToThumbnail),
       ]);
 
-      // Create a new GraphicAsset with the svg file
       const graphicAssetDTO = new CreateGraphicAssetDto();
       graphicAssetDTO.type = GraphicAssetType.SVG;
       graphicAssetDTO.name = filenameWithoutExtension;
@@ -121,6 +112,12 @@ export class ImageService {
       graphicAssetDTO.vectPath = pathToConvertedImage;
 
       await this.graphicAssetsService.create(graphicAssetDTO);
+
+      // Générer un PNG à partir du SVG créé
+      const pngBuffer = await this.svgConversionService.convertSvgToPng(
+        pathToConvertedImage, // Passer le chemin absolu directement
+      );
+      // Vous pouvez utiliser pngBuffer si nécessaire (ex. upload à Supabase)
 
       return pathToConvertedImage;
     } catch (error) {

@@ -3,6 +3,8 @@ import {
   Controller,
   FileTypeValidator,
   Get,
+  HttpException,
+  HttpStatus,
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
@@ -14,6 +16,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ImageService } from './image.service';
+import { SvgConversionService } from './svg/svg-conversion.service'; // Ajout
 import {
   ApiBody,
   ApiConsumes,
@@ -24,7 +27,10 @@ import { getMulterOptions } from '@/config/multer.config';
 
 @Controller('image')
 export class ImageController {
-  constructor(private readonly imageService: ImageService) {}
+  constructor(
+    private readonly imageService: ImageService,
+    private readonly svgConversionService: SvgConversionService, // Ajout
+  ) {}
 
   @Post('convert')
   @UseInterceptors(
@@ -44,9 +50,7 @@ export class ImageController {
     description: 'Image file to convert to vector format',
     examples: {
       'example-1': {
-        value: {
-          image: '<binary-data>',
-        },
+        value: { image: '<binary-data>' },
         description: 'Send an image file for conversion',
       },
     },
@@ -67,7 +71,30 @@ export class ImageController {
     return { message: 'Conversion réussie', svgPath };
   }
 
-  @Get('/:url(*)?')
+  @Get('2png/:svgPath(*)')
+  @ApiOperation({
+    summary: 'Convert local SVG to PNG',
+    description: 'Converts a local SVG file to PNG and serves it.',
+  })
+  @ApiResponse({ status: 200, description: 'Returns the PNG content.' })
+  async getSvgToPng(
+    @Param('svgPath') svgPath: string,
+    @Res() res: ExpressResponse,
+  ) {
+    try {
+      const pngBuffer =
+        await this.svgConversionService.convertSvgToPng(svgPath); // Utiliser SvgConversionService
+      res.setHeader('Content-Type', 'image/png');
+      res.send(pngBuffer);
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Failed to convert SVG to PNG',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  @Get('proxy/:url(*)')
   @ApiOperation({
     summary: 'Proxy for loading SVG from external URL with CORS handling',
     description: `Charge une image depuis Supabase Storage. L'URL doit commencer par le nom du bucket. 
@@ -82,7 +109,6 @@ export class ImageController {
     try {
       const urlPart1 =
         'https://sdliwenpdqycibocgdzv.supabase.co/storage/v1/object/public/';
-
       const fullUrl = decodeURIComponent(urlPart1 + url);
       const svgContent = await this.imageService.fetchSVGFromURL(fullUrl);
 

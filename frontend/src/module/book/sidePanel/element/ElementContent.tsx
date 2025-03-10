@@ -2,71 +2,75 @@ import { ToolbarButton } from '@/module/book/components/ToolbarButton';
 import { ArrowDownOnSquareStackIcon } from '@heroicons/react/24/outline';
 
 import Item from '../Item';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import Loader from '@components/Loader';
 import { useDispatch } from '@/common/store';
 import { addElementToPage } from '../../element/Element.action';
 import { useParams } from 'react-router';
 import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
-// Définition des imports lazy pour chaque SVG
+import { getAPIURL } from '@/common/utils/api';
+
+// Liste des SVG (sans les imports de composants React)
 const svgs = [
   {
     name: 'Castle',
-    component: lazy(() => import('@assets/elements/castle.svg?react')),
+    file: 'castle.svg',
     rawContentLoader: () => import('@assets/elements/castle.svg?raw'),
   },
   {
     name: 'Cat',
-    component: lazy(() => import('@assets/elements/cat.svg?react')),
+    file: 'cat.svg',
     rawContentLoader: () => import('@assets/elements/cat.svg?raw'),
   },
   {
     name: 'Cochon',
-    component: lazy(() => import('@assets/elements/cochon.svg?react')),
+    file: 'cochon.svg',
     rawContentLoader: () => import('@assets/elements/cochon.svg?raw'),
   },
   {
     name: 'Dinosaure',
-    component: lazy(() => import('@assets/elements/dinosaure.svg?react')),
+    file: 'dinosaure.svg',
     rawContentLoader: () => import('@assets/elements/dinosaure.svg?raw'),
   },
   {
     name: 'Flower',
-    component: lazy(() => import('@assets/elements/flower.svg?react')),
+    file: 'flower.svg',
     rawContentLoader: () => import('@assets/elements/flower.svg?raw'),
   },
   {
     name: 'Hibou',
-    component: lazy(() => import('@assets/elements/hibou.svg?react')),
+    file: 'hibou.svg',
     rawContentLoader: () => import('@assets/elements/hibou.svg?raw'),
   },
   {
     name: 'Hippocampe',
-    component: lazy(() => import('@assets/elements/hippocampe.svg?react')),
+    file: 'hippocampe.svg',
     rawContentLoader: () => import('@assets/elements/hippocampe.svg?raw'),
   },
   {
     name: 'Lapin',
-    component: lazy(() => import('@assets/elements/lapin.svg?react')),
+    file: 'lapin.svg',
     rawContentLoader: () => import('@assets/elements/lapin.svg?raw'),
   },
   {
     name: 'Perroquet',
-    component: lazy(() => import('@assets/elements/perroquet.svg?react')),
+    file: 'perroquet.svg',
     rawContentLoader: () => import('@assets/elements/perroquet.svg?raw'),
   },
   {
     name: 'Pieuvre',
-    component: lazy(() => import('@assets/elements/pieuvre.svg?react')),
+    file: 'pieuvre.svg',
     rawContentLoader: () => import('@assets/elements/pieuvre.svg?raw'),
   },
   {
     name: 'Dinosaure2',
-    component: lazy(() => import('@assets/elements/dinosaure2.svg?react')),
+    file: 'dinosaure2.svg',
     rawContentLoader: () => import('@assets/elements/dinosaure2.svg?raw'),
   },
 ];
+
+const API_BASE_URL = getAPIURL();
 
 const ElementItem: React.FC<{
   className?: string;
@@ -111,7 +115,6 @@ const ElementTabContent: React.FC = () => {
   );
 };
 
-// Composant intermédiaire pour gérer le chargement lazy du rawContent
 const LazyElementItem: React.FC<{
   svg: (typeof svgs)[number];
   pageId: number;
@@ -141,10 +144,14 @@ const LazyElementItem: React.FC<{
 
   return (
     <ElementItem onClick={handleClick} className="relative group">
-      <button className="absolute top-2 right-2  opacity-0  group-hover:opacity-100 transition-all duration-300">
+      <button className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
         <HeartIcon className="w-4 h-4 text-pink-500" />
       </button>
-      <svg.component className="h-full" />
+      <img
+        src={`${API_BASE_URL}/image/2png/${svg.file}`}
+        alt={svg.name}
+        className="h-full object-contain"
+      />
     </ElementItem>
   );
 };
