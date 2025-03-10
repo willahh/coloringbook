@@ -222,7 +222,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
     <div
       ref={scrollContainerRef}
       className={`flex flex-col ${className || ''} rounded-md pt-4
- overflow-y-scroll scrollbar scrollbar-thumb-primary-300 
+ overflow-y-scroll custom-scrollbar
  dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
       style={{
         maxHeight: 'calc(100vh - 10em)', // FIXME: magic number 10em
