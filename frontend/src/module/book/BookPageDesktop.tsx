@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useDispatch, useSelector } from '@/common/store';
-import Layout from '../../common/components/layout';
+import Layout from '@/common/components/Layout';
 import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import SidePanel from './sidePanel/SidePanel';
 import * as bookActions from './BookActions';

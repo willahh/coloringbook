@@ -1,9 +1,6 @@
 import Logo from '@assets/coloring-book-logo-wide.svg?react';
 import LogoLight from '@assets/coloring-book-logo-wide-light.svg?react';
 import { useTheme } from '@/common/contexts/ThemeContext';
-import { useSelector } from '../../store';
-import { selectBook } from '@/module/book/BookSlice';
-import SavePopOver from './SavePopOver';
 import AboutDialog, { getLastBuildText } from './AboutDialog'; // Importez le nouveau composant
 import packageJson from '@/../package.json';
 import { useAutoOpenDialog } from './useAutoOpenDialog';

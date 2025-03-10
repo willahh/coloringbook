@@ -13,7 +13,7 @@ import SavePopOver from '@/common/components/header/SavePopOver';
 const BookHeaderMobile: React.FC<{
   book: Book | null;
   onBookNameEdit: (newName: string) => void;
-}> = ({ book }) => {
+}> = () => {
   const isLoading = useSelector(selectIsLoading);
   const { areLocalUpdatesSaved } = useSelector(selectBook);
 

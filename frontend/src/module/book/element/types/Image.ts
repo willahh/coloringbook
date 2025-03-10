@@ -40,7 +40,7 @@ export class Image implements DrawableElement {
     const img = await fabric.FabricImage.fromURL(url, {
       crossOrigin: 'anonymous',
     });
-    return img.set({
+    return (img as unknown as fabric.FabricObject).set({
       scaleX: 2,
       cropX: 2,
       left: relativeX,

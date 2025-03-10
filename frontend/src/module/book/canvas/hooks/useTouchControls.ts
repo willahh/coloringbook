@@ -49,7 +49,6 @@ export function useTouchControls({
     let isZoomed = canvas.getZoom() !== 1.0; // Initialisation basée sur le zoom par défaut
 
     const DEFAULT_ZOOM = 1.0; // Définir le zoom par défaut
-    const ZOOM_THRESHOLD = 0.01; // Tolérance pour considérer le zoom comme "par défaut"
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -284,7 +283,7 @@ export function useTouchControls({
         return;
       }
 
-      const pageId = nearestPage.get('pageId');
+      const pageId = (nearestPage as fabric.Object).get('pageId');
 
       if (pageId !== undefined) {
         const targetVpt = canvasService.getPageFocusCoordinates(

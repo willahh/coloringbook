@@ -4,7 +4,7 @@ import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
 import canvasService from '@/services/CanvasService';
 import useCanvasContext from '../../useCanvasContext';
-import { getPrimary700Color, getPrimaryColor, getSecondaryColor } from '@/common/utils/themeColors';
+import { getPrimary700Color, getSecondaryColor } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
 import useIsMobile from '@/common/hooks/useIsMobile';
 

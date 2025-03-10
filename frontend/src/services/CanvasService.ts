@@ -238,7 +238,7 @@ class CanvasService {
     if (pageRect) {
       pageDimensions = {
         width: pageRect.width,
-        height: pageRect.height,
+        height: pageRect.height ?? 0,
       };
     }
 

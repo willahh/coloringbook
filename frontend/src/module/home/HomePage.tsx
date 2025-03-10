@@ -19,7 +19,7 @@ import LayoutMobile from '@/common/components/LayoutMobile';
 import HeaderMobile from '@/common/components/header/HeaderMobile';
 import useIsMobile from '@/common/hooks/useIsMobile';
 import HeaderDesktop from '@/common/components/header/HeaderDesktop';
-import Layout from '@/common/components/layout';
+import Layout from '@/common/components/Layout';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;
