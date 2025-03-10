@@ -42,6 +42,7 @@ export function useTouchControls({
 
     let lastTouch: { x: number; y: number; timestamp: number } | null = null;
     let startTouch: { x: number; y: number; timestamp: number } | null = null;
+    let velocityX = 0;
     let velocityY = 0;
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
@@ -49,6 +50,8 @@ export function useTouchControls({
     let isZoomed = canvas.getZoom() !== 1.0; // Initialisation basée sur le zoom par défaut
 
     const DEFAULT_ZOOM = 1.0; // Définir le zoom par défaut
+    const MOMENTUM_THRESHOLD = 100;
+    const MOMENTUM_DAMPING = 0.95;
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -159,6 +162,7 @@ export function useTouchControls({
         }
 
         if (deltaTime > 0) {
+          velocityX = deltaX / deltaTime;
           velocityY = deltaY / deltaTime;
         }
 
@@ -385,6 +389,52 @@ export function useTouchControls({
       }
     };
 
+    const animateMomentum = (startVpt: fabric.TMat2D) => {
+      const totalWidth = canvasService.getMaxPageWidth(canvas);
+      const totalHeight = canvasService.getTotalPageHeightCumulated(
+        canvas,
+        isMobile
+      );
+      const canvasWidth = canvas.getWidth();
+      const canvasHeight = canvas.getHeight();
+      const zoom = canvas.getZoom();
+
+      const vpt = startVpt.slice(0) as fabric.TMat2D;
+
+      vpt[4] += velocityX * 0.016;
+      vpt[5] += velocityY * 0.016;
+
+      vpt[4] = canvasService.constrainHorizontalMovement(
+        canvasWidth,
+        totalWidth * zoom,
+        vpt[4],
+        isMobile
+      );
+      vpt[5] = canvasService.constrainVerticalMovement(
+        canvasHeight,
+        totalHeight * zoom,
+        vpt[5],
+        isMobile
+      );
+
+      setViewportTransform([...vpt]);
+      canvas.setViewportTransform(vpt);
+      canvas.requestRenderAll();
+
+      velocityX *= MOMENTUM_DAMPING;
+      velocityY *= MOMENTUM_DAMPING;
+
+      console.log(`Momentum - velocityX: ${velocityX}, velocityY: ${velocityY}`);
+
+      if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
+        animationFrameId = requestAnimationFrame(() => animateMomentum(vpt));
+      } else {
+        animationFrameId = null;
+        canvas.__isPanning = false;
+        updateObjectControls(false);
+      }
+    };
+
     const handleTouchEnd = (e: TouchEvent) => {
       if (e.touches.length === 0 && lastTouch && startTouch) {
         const activeObject = canvas.getActiveObject();
@@ -455,22 +505,39 @@ export function useTouchControls({
           return;
         }
 
-        if (!isPinching && !isZoomed) {
-          const flickThreshold = 500;
+        if (!isPinching) {
+          if (!isZoomed) {
+            const flickThreshold = 500;
 
-          if (Math.abs(velocityY) > flickThreshold) {
-            // Flick
-            const direction = velocityY > 0 ? 'up' : 'down';
-            snapToAdjacentPage(vpt, direction);
+            if (Math.abs(velocityY) > flickThreshold) {
+              // Flick
+              const direction = velocityY > 0 ? 'up' : 'down';
+              snapToAdjacentPage(vpt, direction);
+            } else {
+              // Relâchement lent
+              snapToNearestPage(vpt);
+            }
+
+            lastTouch = null;
+            startTouch = null;
+            initialPinchDistance = null;
+            isPinching = false;
           } else {
-            // Relâchement lent
-            snapToNearestPage(vpt);
+            // Momentum pour déplacement zoomé avec un seul doigt
+            if (
+              Math.abs(velocityX) > MOMENTUM_THRESHOLD ||
+              Math.abs(velocityY) > MOMENTUM_THRESHOLD
+            ) {
+              console.log('Momentum triggered');
+              animationFrameId = requestAnimationFrame(() =>
+                animateMomentum(vpt)
+              );
+            } else {
+              console.log('Momentum not triggered - velocity too low');
+              canvas.__isPanning = false;
+              updateObjectControls(false);
+            }
           }
-
-          lastTouch = null;
-          startTouch = null;
-          initialPinchDistance = null;
-          isPinching = false;
         }
       }
     };
