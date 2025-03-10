@@ -44,14 +44,19 @@ export function useTouchControls({
     let startTouch: { x: number; y: number; timestamp: number } | null = null;
     let velocityX = 0;
     let velocityY = 0;
+    let velocityZoom = 0; // Nouvelle variable pour la vitesse de zoom
+    let lastZoom = 1.0; // Stocker le dernier zoom pour calculer la vitesse
+    let lastPinchCenter: fabric.Point | null = null; // Stocker le dernier centre du pincement
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
     let isPinching = false;
-    let isZoomed = canvas.getZoom() !== 1.0; // Initialisation basée sur le zoom par défaut
+    let isZoomed = canvas.getZoom() !== 1.0;
 
-    const DEFAULT_ZOOM = 1.0; // Définir le zoom par défaut
+    const DEFAULT_ZOOM = 1.0;
     const MOMENTUM_THRESHOLD = 100;
     const MOMENTUM_DAMPING = 0.95;
+    const ZOOM_MOMENTUM_THRESHOLD = 0.1; // Seuil pour déclencher le momentum de zoom
+    const ZOOM_MOMENTUM_DAMPING = 0.92; // Amortissement plus doux pour le zoom
 
     const updateObjectControls = (isPanning: boolean) => {
       const activeObject = canvas.getActiveObject();
@@ -107,7 +112,7 @@ export function useTouchControls({
           currentTime - canvas.lastTapTime < doubleTapThreshold &&
           canvas.lastTapTarget === target &&
           target?.isPage &&
-          !isZoomed // Empêcher pageFocus si zoomé
+          !isZoomed
         ) {
           const pageId = target.get('pageId');
           if (pageId !== undefined) {
@@ -127,8 +132,13 @@ export function useTouchControls({
           touch1.clientX - touch2.clientX,
           touch1.clientY - touch2.clientY
         );
-        isPinching = true; // Indiquer qu'un pincement commence
+        isPinching = true;
         updateZoomState();
+        lastZoom = canvas.getZoom(); // Initialiser le dernier zoom
+        lastPinchCenter = new fabric.Point(
+          (touch1.clientX + touch2.clientX) / 2,
+          (touch1.clientY + touch2.clientY) / 2
+        );
       } else {
         initialPinchDistance = null;
       }
@@ -205,15 +215,24 @@ export function useTouchControls({
         );
 
         if (initialPinchDistance) {
+          const now = Date.now();
+          const deltaTime = lastTouch ? (now - lastTouch.timestamp) / 1000 : 0;
+          const currentZoom = canvas.getZoom();
           const zoomFactor = currentDistance / initialPinchDistance;
-          let zoom = canvas.getZoom() * zoomFactor;
+          let zoom = currentZoom * zoomFactor;
           zoom = Math.max(0.02, Math.min(256, zoom));
 
+          // Calculer la vitesse de zoom
+          if (deltaTime > 0 && lastTouch) {
+            velocityZoom = (zoom - lastZoom) / deltaTime;
+          }
+
+          // Calculer le centre du pincement
           const centerX = (touch1.clientX + touch2.clientX) / 2;
           const centerY = (touch1.clientY + touch2.clientY) / 2;
-          const point = new fabric.Point(centerX, centerY);
+          lastPinchCenter = new fabric.Point(centerX, centerY);
 
-          canvas.zoomToPoint(point, zoom);
+          canvas.zoomToPoint(lastPinchCenter, zoom);
 
           const vpt = canvas.viewportTransform.slice(0) as fabric.TMat2D;
           const totalWidth = canvasService.getMaxPageWidth(canvas);
@@ -242,7 +261,9 @@ export function useTouchControls({
           canvas.requestRenderAll();
 
           initialPinchDistance = currentDistance;
-          isPinching = true; // Confirmer que le pincement est en cours
+          lastZoom = zoom;
+          lastTouch = { x: touch1.clientX, y: touch1.clientY, timestamp: now };
+          isPinching = true;
         }
       }
     };
@@ -353,9 +374,9 @@ export function useTouchControls({
       let targetPage: fabric.Object | null = null;
 
       if (direction === 'up' && currentIndex > 0) {
-        targetPage = pages[currentIndex - 1]; // Previous page
+        targetPage = pages[currentIndex - 1];
       } else if (direction === 'down' && currentIndex < pages.length - 1) {
-        targetPage = pages[currentIndex + 1]; // Next page
+        targetPage = pages[currentIndex + 1];
       }
 
       if (targetPage) {
@@ -424,7 +445,9 @@ export function useTouchControls({
       velocityX *= MOMENTUM_DAMPING;
       velocityY *= MOMENTUM_DAMPING;
 
-      console.log(`Momentum - velocityX: ${velocityX}, velocityY: ${velocityY}`);
+      console.log(
+        `Momentum - velocityX: ${velocityX}, velocityY: ${velocityY}`
+      );
 
       if (Math.abs(velocityX) > 1 || Math.abs(velocityY) > 1) {
         animationFrameId = requestAnimationFrame(() => animateMomentum(vpt));
@@ -432,6 +455,53 @@ export function useTouchControls({
         animationFrameId = null;
         canvas.__isPanning = false;
         updateObjectControls(false);
+      }
+    };
+
+    const animateZoomMomentum = (startZoom: number) => {
+      if (!lastPinchCenter) return;
+
+      let currentZoom = startZoom;
+      currentZoom += velocityZoom * 0.016; // Appliquer la vitesse de zoom
+      currentZoom = Math.max(0.02, Math.min(256, currentZoom)); // Contraindre le zoom
+
+      canvas.zoomToPoint(lastPinchCenter, currentZoom);
+
+      const vpt = canvas.viewportTransform.slice(0) as fabric.TMat2D;
+      const totalWidth = canvasService.getMaxPageWidth(canvas);
+      const totalHeight = canvasService.getTotalPageHeightCumulated(
+        canvas,
+        isMobile
+      );
+      const canvasWidth = canvas.getWidth();
+      const canvasHeight = canvas.getHeight();
+
+      vpt[4] = canvasService.constrainHorizontalMovement(
+        canvasWidth,
+        totalWidth * currentZoom,
+        vpt[4],
+        isMobile
+      );
+      vpt[5] = canvasService.constrainVerticalMovement(
+        canvasHeight,
+        totalHeight * currentZoom,
+        vpt[5],
+        isMobile
+      );
+
+      setViewportTransform([...vpt]);
+      canvas.setViewportTransform(vpt);
+      canvas.requestRenderAll();
+
+      velocityZoom *= ZOOM_MOMENTUM_DAMPING; // Amortir la vitesse de zoom
+
+      if (Math.abs(velocityZoom) > ZOOM_MOMENTUM_THRESHOLD) {
+        animationFrameId = requestAnimationFrame(() =>
+          animateZoomMomentum(currentZoom)
+        );
+      } else {
+        animationFrameId = null;
+        updateZoomState();
       }
     };
 
@@ -445,7 +515,7 @@ export function useTouchControls({
         console.log('canvas.getZoom(): ', canvas.getZoom());
 
         if (activeObject && target === activeObject) {
-          isPinching = false; // Réinitialiser après un pincement
+          isPinching = false;
           return;
         }
 
@@ -488,7 +558,7 @@ export function useTouchControls({
                 canvas.getActiveObjects().length === 0
               ) {
                 canvasService.pageFocus(canvas, pages, pageId, isMobile);
-                isZoomed = canvas.getZoom() !== DEFAULT_ZOOM; // Mettre à jour après pageFocus
+                isZoomed = canvas.getZoom() !== DEFAULT_ZOOM;
               }
             } else {
               canvas.setActiveObject(target);
@@ -505,38 +575,51 @@ export function useTouchControls({
           return;
         }
 
-        if (!isPinching) {
-          if (!isZoomed) {
-            const flickThreshold = 500;
-
-            if (Math.abs(velocityY) > flickThreshold) {
-              // Flick
-              const direction = velocityY > 0 ? 'up' : 'down';
-              snapToAdjacentPage(vpt, direction);
-            } else {
-              // Relâchement lent
-              snapToNearestPage(vpt);
-            }
-
-            lastTouch = null;
-            startTouch = null;
-            initialPinchDistance = null;
-            isPinching = false;
+        if (isPinching) {
+          // Lancer l'animation de momentum pour le zoom
+          if (
+            Math.abs(velocityZoom) > ZOOM_MOMENTUM_THRESHOLD &&
+            lastPinchCenter
+          ) {
+            console.log('Zoom momentum triggered with velocity:', velocityZoom);
+            animationFrameId = requestAnimationFrame(() =>
+              animateZoomMomentum(canvas.getZoom())
+            );
           } else {
-            // Momentum pour déplacement zoomé avec un seul doigt
-            if (
-              Math.abs(velocityX) > MOMENTUM_THRESHOLD ||
-              Math.abs(velocityY) > MOMENTUM_THRESHOLD
-            ) {
-              console.log('Momentum triggered');
-              animationFrameId = requestAnimationFrame(() =>
-                animateMomentum(vpt)
-              );
-            } else {
-              console.log('Momentum not triggered - velocity too low');
-              canvas.__isPanning = false;
-              updateObjectControls(false);
-            }
+            console.log('Zoom momentum not triggered - velocity too low');
+            updateZoomState();
+          }
+          lastTouch = null;
+          startTouch = null;
+          initialPinchDistance = null;
+          isPinching = false;
+        } else if (!isZoomed) {
+          const flickThreshold = 500;
+
+          if (Math.abs(velocityY) > flickThreshold) {
+            const direction = velocityY > 0 ? 'up' : 'down';
+            snapToAdjacentPage(vpt, direction);
+          } else {
+            snapToNearestPage(vpt);
+          }
+
+          lastTouch = null;
+          startTouch = null;
+          initialPinchDistance = null;
+          isPinching = false;
+        } else {
+          if (
+            Math.abs(velocityX) > MOMENTUM_THRESHOLD ||
+            Math.abs(velocityY) > MOMENTUM_THRESHOLD
+          ) {
+            console.log('Momentum triggered');
+            animationFrameId = requestAnimationFrame(() =>
+              animateMomentum(vpt)
+            );
+          } else {
+            console.log('Momentum not triggered - velocity too low');
+            canvas.__isPanning = false;
+            updateObjectControls(false);
           }
         }
       }
@@ -551,18 +634,17 @@ export function useTouchControls({
     });
     upperCanvas.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    // Ajouter un listener pour détecter les changements de zoom en dehors des touch events
     const handleZoomChange = () => {
       updateZoomState();
     };
-    canvas.on('after:render', handleZoomChange); // Utiliser un événement Fabric.js
+    canvas.on('after:render', handleZoomChange);
 
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);
       upperCanvas.removeEventListener('touchstart', handleTouchStart);
       upperCanvas.removeEventListener('touchmove', handleTouchMove);
       upperCanvas.removeEventListener('touchend', handleTouchEnd);
-      canvas.off('after:render', handleZoomChange); // Nettoyer le listener
+      canvas.off('after:render', handleZoomChange);
       delete canvas.__isPanning;
       delete canvas.lastTapTime;
       delete canvas.lastTapTarget;
