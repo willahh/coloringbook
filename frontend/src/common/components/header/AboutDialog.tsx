@@ -42,11 +42,11 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
   return (
     <>
       <button
-        className={`${footerButtonClasses} flex items-center gap-1 text-secondary-500`}
+        className={`${footerButtonClasses} flex items-center gap-2`}
         onClick={() => setIsOpen(true)}
       >
         <svg
-          className="w-6 h-6 sm:w-4 sm:h-4"
+          className="w-6 h-6 sm:w-5 sm:h-5 text-secondary-500"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -59,7 +59,7 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
             d="M13 16h-1v-4h-1m1-4h.01M12 3a9 9 0 100 18 9 9 0 000-18z"
           />
         </svg>
-        <span className="hidden sm:inline">About</span>
+        {/* <span className="hidden sm:inline">About</span> */}
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>

@@ -17,6 +17,9 @@ import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
 import LayoutMobile from '@/common/components/LayoutMobile';
 import HeaderMobile from '@/common/components/header/HeaderMobile';
+import useIsMobile from '@/common/hooks/useIsMobile';
+import HeaderDesktop from '@/common/components/header/HeaderDesktop';
+import Layout from '@/common/components/layout';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;
@@ -86,6 +89,9 @@ const HomePage: React.FC = () => {
     'border-4 sm:border-green-500 md:border-red-500 xl:border-yellow-500';
 
   const pageName = location.pathname === '/' ? 'home' : 'library';
+  const isMobile = useIsMobile();
+  const LayoutComponent = isMobile ? LayoutMobile : Layout;
+  const HeaderComponent = isMobile ? HeaderMobile : HeaderDesktop;
 
   // Books data
   const [books, setBooks] = useState<Book[]>([]);
@@ -113,7 +119,7 @@ const HomePage: React.FC = () => {
   };
 
   return (
-    <LayoutMobile header={<HeaderMobile />}>
+    <LayoutComponent header={<HeaderComponent />}>
       {isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
@@ -166,7 +172,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       )}
-    </LayoutMobile>
+    </LayoutComponent>
   );
 };
 

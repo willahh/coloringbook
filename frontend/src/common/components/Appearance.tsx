@@ -40,7 +40,7 @@ const Appearance: React.FC = () => {
 
       <MenuItems
         transition
-        className={`absolute md:bottom-12 right-0 z-10 overflow-hidden origin-top-right rounded-md
+        className={`absolute lg:bottom-12 right-0 z-10 overflow-hidden origin-top-right rounded-md
            bg-white dark:bg-black shadow-lg ring-1 ring-black/5 
            transition 
            focus:outline-none 

@@ -59,9 +59,9 @@ const HeaderDesktop: React.FC<HeaderProps> = ({
           <div className="flex flex-1 flex-row gap-2">{children}</div>
 
           <div
-            className={`flex items-center gap-4 font-mono text-xs px-1 py-0.5 rounded-sm 
-              bg-primary-200 dark:bg-primary-800 text-primary-800 dark:text-primary-200 
-              border border-primary-300 dark:border-primary-700`}
+            className={`flex items-center gap-4 font-mono text-xs py-0.5 px-4 rounded-sm 
+               text-primary-800 dark:text-primary-200 
+              border border-primary-100 dark:border-primary-900/50`}
           >
             <span title="Last build">
               <span className="text-primary-400 font-semibold">[alpha]</span>{' '}
