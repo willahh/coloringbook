@@ -47,14 +47,6 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
     strokeWidth: 0.5,
   };
 
-  useEffect(() => {
-    if (isOpen) {
-      trackEvent('MENU_OPEN');
-    } else {
-      trackEvent('MENU_CLOSE');
-    }
-  }, [isOpen]);
-
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

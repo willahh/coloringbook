@@ -20,6 +20,15 @@ export class AnalyticsService {
     eventName: string,
     params?: Record<string, any>,
   ) {
+    console.log(
+      'trackEvent',
+      'clientId:',
+      clientId,
+      ' eventName: ',
+      eventName,
+      ' params:',
+      params,
+    );
     try {
       const response = await axios.post(this.ga4Endpoint, {
         client_id: clientId,
