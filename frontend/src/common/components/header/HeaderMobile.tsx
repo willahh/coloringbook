@@ -7,6 +7,7 @@ import AboutDialog from './AboutDialog'; // Importez le nouveau composant
 import { useAutoOpenDialog } from './useAutoOpenDialog';
 import { footerButtonClasses } from '@/common/utils/buttonStyles';
 import MobileSidebarMenu from '../MobileSidebarMenu';
+import { trackEvent } from '@/common/utils/analyticsEvents';
 
 interface FooterMobileProps {
   className?: string;
@@ -59,7 +60,10 @@ const HeaderMobile: React.FC<FooterMobileProps> = ({
           <button
             className={`${footerButtonClasses}`}
             autoFocus={true}
-            onClick={() => setIsSidebarOpen(true)}
+            onClick={() => {
+              trackEvent('MENU_OPEN');
+              setIsSidebarOpen(true);
+            }}
           >
             <Bars3Icon className="w-6 h-6" />
           </button>
@@ -79,7 +83,10 @@ const HeaderMobile: React.FC<FooterMobileProps> = ({
       </header>
       <MobileSidebarMenu
         isOpen={isSidebarOpen}
-        onClose={() => setIsSidebarOpen(false)}
+        onClose={() => {
+          trackEvent('MENU_CLOSE');
+          setIsSidebarOpen(false);
+        }}
       />
     </>
   );
