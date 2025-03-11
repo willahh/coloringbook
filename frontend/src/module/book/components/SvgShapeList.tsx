@@ -3,7 +3,7 @@ import * as fabric from 'fabric';
 
 interface SvgShapeListProps {
   canvas: fabric.Canvas | null;
-  selectedObject: fabric.Object | null; // Utiliser fabric.Object cohérent
+  selectedObject: fabric.Object | null;
   onClose: () => void;
 }
 
@@ -31,7 +31,7 @@ const SvgShapeList: React.FC<SvgShapeListProps> = ({
 
   // Calculer la position pour centrer la liste près de l'objet sélectionné
   const getPosition = () => {
-    if (!canvas || !selectedObject) return { top: 0, left: 0 };
+    if (!canvas || !selectedObject) return { top: 0, left: 0, right: 0 };
     const canvasRect = canvas.getElement().getBoundingClientRect();
     const objectCenter = selectedObject.getCenterPoint();
     const zoom = canvas.getZoom();
@@ -44,16 +44,40 @@ const SvgShapeList: React.FC<SvgShapeListProps> = ({
   const position = getPosition();
   console.log('position', position);
 
+  // Positionnement fixe
   position.left = 0;
   position.top = 40;
   position.right = 40;
+
+  // Gestion du survol pour changer la couleur du tracé
+  const handleMouseEnter = (shape: fabric.Object) => {
+    if (!shape) return;
+
+    // Sauvegarder la couleur d'origine (si ce n'est pas déjà fait)
+    if (!shape.get('originalStroke')) {
+      shape.set('originalStroke', shape.stroke || 'black'); // Par défaut à 'black' si stroke est null
+    }
+
+    // Changer la couleur du tracé en rouge
+    shape.set('stroke', 'red');
+    canvas?.renderAll();
+  };
+
+  const handleMouseLeave = (shape: fabric.Object) => {
+    if (!shape) return;
+
+    // Restaurer la couleur d'origine
+    const originalStroke =
+      shape.get('originalStroke') || shape.stroke || 'black';
+    shape.set('stroke', originalStroke);
+    canvas?.renderAll();
+  };
 
   return (
     <div
       style={{
         position: 'absolute',
         top: position.top,
-        // left: position.left,
         right: position.right,
         zIndex: 1000,
         background: 'white',
@@ -82,7 +106,13 @@ const SvgShapeList: React.FC<SvgShapeListProps> = ({
           shapes.map((shape, index) => (
             <li
               key={index}
-              style={{ padding: '5px 0', borderBottom: '1px solid #eee' }}
+              style={{
+                padding: '5px 0',
+                borderBottom: '1px solid #eee',
+                cursor: 'pointer', // Indiquer que l'élément est interactif
+              }}
+              onMouseEnter={() => handleMouseEnter(shape)}
+              onMouseLeave={() => handleMouseLeave(shape)}
             >
               {shape.type} (ID: {shape.get('id') || 'N/A'})
               <br />
