@@ -57,8 +57,6 @@ export const ANALYTICS_EVENTS = {
   BOOK_ELEMENT_ADD_TO_PAGE: 'BOOK_ELEMENT_ADD_TO_PAGE',
 } as const;
 
-const GA_MEASUREMENT_ID = 'G-HMZMXBTT09';
-
 export type AnalyticsEvent =
   (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
 
@@ -118,26 +116,30 @@ export const sendAnalyticsWithProxy = async (
   // }
 
   const clientId = getClientId();
+  const params = label ? { label } : {};
 
-  const params = {
-    client_id: clientId,
-    event_name: event,
-    params: label ? { label } : {},
-  };
-  console.info('[GA.proxy] trackEvent', params);
+  console.info('[GA.proxy] trackEvent: ', event, params);
 
   try {
-    const response = await fetch(getAPIURL() + '/track', {
+    fetch(getAPIURL() + '/track', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(params),
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to track event');
-    }
+      body: JSON.stringify({
+        client_id: clientId,
+        event_name: event,
+        params: params,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to track pageview');
+        }
+      })
+      .catch((error) => {
+        console.error('Error sending pageview to proxy:', error);
+      });
   } catch (error) {
     console.error('Error sending event to proxy:', error);
   }
