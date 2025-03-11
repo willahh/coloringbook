@@ -71,7 +71,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Download"
             onClick={() => {
               if (canvas) {
-                trackBookEvent('PDF_EXPORT_START', book);
+                trackBookEvent('BOOK_PDF_EXPORT_START', book);
                 bookExportService.exportToPDF({
                   canvas: canvas,
                   pages: pages,
@@ -85,7 +85,7 @@ export const SpreadToolbar: React.FC<{
             tooltipContent="Print"
             onClick={() => {
               if (canvas) {
-                trackBookEvent('PDF_PRINT_START', book);
+                trackBookEvent('BOOK_PDF_PRINT_START', book);
                 bookExportService.printPDF({
                   canvas: canvas,
                   pages: pages,
