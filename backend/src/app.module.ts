@@ -8,6 +8,7 @@ import { options } from '@/data-source';
 import { GraphicAssetsModule } from './graphic-assets/graphic-assets.module';
 import { ImageModule } from './image/image.module';
 import { NewsletterModule } from './newsletter/newsletter.module';
+import { AnalyticsModule } from './analytics/analytics.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { NewsletterModule } from './newsletter/newsletter.module';
     ImageModule,
     TypeOrmModule.forRoot(options),
     NewsletterModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

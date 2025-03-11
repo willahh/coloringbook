@@ -1,6 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
 import ReactGA from 'react-ga4';
 import { ENV_PROD } from '@/common/utils/EnvUtils';
 import { Book } from '../types/book';
+import { getAPIURL } from './api';
 
 export const ANALYTICS_EVENTS = {
   // ———————————————————————————————————————————————————————————————————————————
@@ -55,6 +57,8 @@ export const ANALYTICS_EVENTS = {
   BOOK_ELEMENT_ADD_TO_PAGE: 'BOOK_ELEMENT_ADD_TO_PAGE',
 } as const;
 
+const GA_MEASUREMENT_ID = 'G-HMZMXBTT09';
+
 export type AnalyticsEvent =
   (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
 
@@ -65,14 +69,89 @@ export const trackBookEvent = (
   const label = JSON.stringify({ id: book.id, name: book.name });
   trackEvent(analyticsEvent, label);
 };
-export const trackEvent = (event: AnalyticsEvent, label?: string) => {
-  if (ENV_PROD) {
-    ReactGA.event({
-      category: 'User Interaction', // Catégorie globale pour simplifier
-      action: event,
-      label: label || undefined,
-    });
-  } else {
-    console.log('Analytics event (dev):', { action: event, label });
+
+const getClientId = (): string => {
+  let clientId = localStorage.getItem('ga_client_id');
+  if (!clientId) {
+    clientId = uuidv4();
+    localStorage.setItem('ga_client_id', clientId);
   }
+  return clientId;
+};
+
+export const sendAnalyticsPageWithProxy = async () => {
+  const clientId = getClientId();
+  const pagePath = location.pathname + location.search;
+  const params = {
+    page_path: pagePath,
+  };
+  console.info('[GA.proxy] ', 'page_view', params);
+
+  fetch(getAPIURL() + '/track', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      client_id: clientId,
+      event_name: 'page_view', // Nom de l'événement GA4
+      params: params,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Failed to track pageview');
+      }
+    })
+    .catch((error) => {
+      console.error('Error sending pageview to proxy:', error);
+    });
+};
+
+export const sendAnalyticsWithProxy = async (
+  event: AnalyticsEvent,
+  label?: string
+) => {
+  // if (!ENV_PROD) {
+  //   console.log('Analytics event (dev):', { action: event, label });
+  //   return;
+  // }
+
+  const clientId = getClientId();
+
+  const params = {
+    client_id: clientId,
+    event_name: event,
+    params: label ? { label } : {},
+  };
+  console.info('[GA.proxy] trackEvent', params);
+
+  try {
+    const response = await fetch(getAPIURL() + '/track', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to track event');
+    }
+  } catch (error) {
+    console.error('Error sending event to proxy:', error);
+  }
+};
+
+export const trackEvent = (event: AnalyticsEvent, label?: string) => {
+  // if (ENV_PROD) {
+  sendAnalyticsWithProxy(event, label);
+  // ReactGA.event({
+  //   category: 'User Interaction', // Catégorie globale pour simplifier
+  //   action: event,
+  //   label: label || undefined,
+  // });
+  // } else {
+  //   console.log('Analytics event (dev):', { action: event, label });
+  // }
 };

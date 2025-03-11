@@ -26,7 +26,7 @@ function RenderApp() {
       <Provider store={appStore}>
         <Theme appearance={appearance} hasBackground={false}>
           <BrowserRouter>
-            {ENV_PROD && <RouteTracker />}
+          <RouteTracker />
             <Tooltip.Provider delayDuration={0}>
               <AppRoutes />
             </Tooltip.Provider>
