@@ -19,7 +19,6 @@ import HeaderMobile from '@/common/components/header/HeaderMobile';
 import useIsMobile from '@/common/hooks/useIsMobile';
 import HeaderDesktop from '@/common/components/header/HeaderDesktop';
 import Layout from '@/common/components/Layout';
-import ErrorDialog from '@/common/components/ErrorDialog';
 import { AxiosError } from 'axios';
 import ErrorScreen from '@/common/components/ErrorScreen';
 import { trackEvent } from '@/common/utils/analyticsEvents';
