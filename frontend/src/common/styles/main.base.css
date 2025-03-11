@@ -89,34 +89,41 @@ body {
 }
 
 /* Styles spécifiques WebKit (Chrome, Safari, Edge) */
-.custom-scrollbar::-webkit-scrollbar {
+/* .custom-scrollbar::-webkit-scrollbar, */
+::-webkit-scrollbar {
   width: 8px; /* Largeur de la scrollbar */
   height: 8px; /* Hauteur pour les scrollbars horizontales si présentes */
 }
 
-/* */
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: var(--color-primary-200); /* Couleur de la piste, bleu foncé */
-  border-radius: 4px; /* Coins arrondis */
-}
-.dark .custom-scrollbar::-webkit-scrollbar-track {
-  background: var(--color-primary-800); /* Couleur de la piste, bleu foncé */
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-primary-500);
-  border-radius: 4px; /* Coins arrondis */
-  transition: background 0.3s; /* Transition douce au survol */
-}
-
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: var(--color-primary-500);
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+/* .custom-scrollbar::-webkit-scrollbar-track, */
+::-webkit-scrollbar-track {
   background: var(--color-primary-200);
+  border-radius: 4px;
 }
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+
+/* .dark .custom-scrollbar::-webkit-scrollbar-track, */
+.dark ::-webkit-scrollbar-track {
   background: var(--color-primary-800);
 }
 
+/* .custom-scrollbar::-webkit-scrollbar-thumb, */
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-500);
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+/* .dark .custom-scrollbar::-webkit-scrollbar-thumb, */
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--color-primary-500);
+}
+
+/* .custom-scrollbar::-webkit-scrollbar-thumb:hover, */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-200);
+}
+
+/* .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover */
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-800);
+}

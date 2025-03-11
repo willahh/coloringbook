@@ -1,8 +1,8 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.10.0",
-  "buildDate": "2025-03-11T15:53:50.146Z",
+  "version": "0.11.0",
+  "buildDate": "2025-03-11T16:01:55.313Z",
   "type": "module",
   "scripts": {
     "dev": "npm run build:css && vite --host",

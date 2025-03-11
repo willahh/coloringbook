@@ -11,11 +11,18 @@ import APIService from '@/services/APIService';
 import LoadingScreen from '@/common/components/LoadingScreen';
 import LayoutMobile from '@/common/components/LayoutMobile';
 import HeaderMobile from '@/common/components/header/HeaderMobile';
+import useIsMobile from '@/common/hooks/useIsMobile';
+import Layout from '@/common/components/Layout';
+import HeaderDesktop from '@/common/components/header/HeaderDesktop';
 
 const Library: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const gridDebug = params.get('griddebug') === '1';
+  const isMobile = useIsMobile();
+
+  const LayoutComponent = isMobile ? LayoutMobile : Layout;
+  const HeaderComponent = isMobile ? HeaderMobile : HeaderDesktop;
 
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +44,10 @@ const Library: React.FC = () => {
   }, []);
 
   return (
-    <LayoutMobile header={<HeaderMobile />} className='h-screen overflow-y-auto'>
+    <LayoutComponent
+      header={<HeaderComponent />}
+      className="h-screen overflow-y-auto"
+    >
       {isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
@@ -64,7 +74,7 @@ ${gridDebug ? 'border border-primary-500' : ''}`}
           </div>
         </div>
       )}
-    </LayoutMobile>
+    </LayoutComponent>
   );
 };
 
