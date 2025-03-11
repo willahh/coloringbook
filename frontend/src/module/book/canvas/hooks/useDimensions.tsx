@@ -12,7 +12,6 @@ export const useDimensions = (
     height: document.documentElement.clientHeight,
   });
 
- 
   const isMobile = useIsMobile();
 
   const updateDimensions = useCallback(
@@ -35,6 +34,16 @@ export const useDimensions = (
           width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
           height = window.innerHeight;
         }
+
+        console.log(`#c updateDimensions -
+          isMobile: ${isMobile}
+          window.innerWidth: ${window.innerWidth}
+          window.innerHeight: ${window.innerHeight}
+          sidePanelWidth: ${sidePanelWidth}
+          pagesPanelWidth: ${pagesPanelWidth}`, {
+          width: width,
+          height: height,
+        });
 
         setDimensions({
           width: width,
