@@ -26,23 +26,23 @@ const BookPageDesktop: React.FC = () => {
 
   const sidePanelRef = useRef<HTMLDivElement>(null);
   const pagesPanelRef = useRef<HTMLDivElement>(null);
-  const [sidePanelWidth, setSidePanelWidth] = useState<number>(0);
-  const [pagesPanelWidth, setPagesPanelWidth] = useState<number>(0);
+  // const [sidePanelWidth, setSidePanelWidth] = useState<number>(0);
+  // const [pagesPanelWidth, setPagesPanelWidth] = useState<number>(0);
   const [isErrorDialogOpen, setIsErrorDialogOpen] = useState<boolean>(true);
 
-  useEffect(() => {
-    const updateWidths = () => {
-      if (sidePanelRef.current) {
-        setSidePanelWidth(sidePanelRef.current.offsetWidth);
-      }
-      if (pagesPanelRef.current) {
-        setPagesPanelWidth(pagesPanelRef.current.offsetWidth);
-      }
-    };
-    updateWidths();
-    window.addEventListener('resize', updateWidths);
-    return () => window.removeEventListener('resize', updateWidths);
-  }, [sidePanelRef, pagesPanelRef, sidePanelWidth]);
+  // useEffect(() => {
+  //   const updateWidths = () => {
+  //     if (sidePanelRef.current) {
+  //       setSidePanelWidth(sidePanelRef.current.offsetWidth);
+  //     }
+  //     if (pagesPanelRef.current) {
+  //       setPagesPanelWidth(pagesPanelRef.current.offsetWidth);
+  //     }
+  //   };
+  //   updateWidths();
+  //   window.addEventListener('resize', updateWidths);
+  //   return () => window.removeEventListener('resize', updateWidths);
+  // }, [sidePanelRef, pagesPanelRef, sidePanelWidth]);
 
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
@@ -77,15 +77,15 @@ const BookPageDesktop: React.FC = () => {
 
           <SidePanel
             ref={sidePanelRef}
-            setSidePanelWidth={setSidePanelWidth}
+            // setSidePanelWidth={setSidePanelWidth}
             className="relative z-20"
           />
 
           {book.pages.length > 0 && (
             <SpreadViewerCanvas
               pages={book.pages}
-              sidePanelWidth={sidePanelWidth}
-              pagesPanelWidth={pagesPanelWidth}
+              // sidePanelWidth={sidePanelWidth}
+              // pagesPanelWidth={pagesPanelWidth}
             />
           )}
           <div>

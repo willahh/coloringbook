@@ -65,7 +65,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({
             />
             <SidePanel
               ref={sidePanelRef}
-              setSidePanelWidth={() => {}}
+              // setSidePanelWidth={() => {}}
               className="relative z-20"
             />
           </div>

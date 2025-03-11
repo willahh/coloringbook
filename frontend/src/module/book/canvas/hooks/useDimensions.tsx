@@ -3,9 +3,9 @@ import { debounce } from 'lodash';
 import useIsMobile from '@/common/hooks/useIsMobile';
 
 export const useDimensions = (
-  containerRef: RefObject<HTMLElement | null>,
-  sidePanelWidth: number,
-  pagesPanelWidth: number
+  containerRef: RefObject<HTMLElement | null>
+  // sidePanelWidth: number,
+  // pagesPanelWidth: number
 ) => {
   const [dimensions, setDimensions] = useState({
     width: document.documentElement.clientWidth,
@@ -24,6 +24,13 @@ export const useDimensions = (
 
         const headerHeight = 64;
         const footerHeight = 64;
+
+        const sidepanel = document.querySelector('aside[data-id="sidepanel"]');
+        const sidePanelWidth = sidepanel?.clientWidth || 0;
+
+        const pagesPanel = document.querySelector('div[data-id="pages-panel"]');
+        const pagesPanelWidth = pagesPanel?.clientWidth || 0;
+
         let width = 0;
         let height = 0;
         if (isMobile) {
@@ -35,15 +42,18 @@ export const useDimensions = (
           height = window.innerHeight;
         }
 
-        console.log(`#c updateDimensions -
+        console.log(
+          `#c updateDimensions -
           isMobile: ${isMobile}
           window.innerWidth: ${window.innerWidth}
           window.innerHeight: ${window.innerHeight}
           sidePanelWidth: ${sidePanelWidth}
-          pagesPanelWidth: ${pagesPanelWidth}`, {
-          width: width,
-          height: height,
-        });
+          pagesPanelWidth: ${pagesPanelWidth}`,
+          {
+            width: width,
+            height: height,
+          }
+        );
 
         setDimensions({
           width: width,
@@ -51,7 +61,7 @@ export const useDimensions = (
         });
       }
     }, 50),
-    [containerRef, sidePanelWidth, pagesPanelWidth]
+    [containerRef]
   );
 
   useEffect(() => {

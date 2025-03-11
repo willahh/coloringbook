@@ -69,8 +69,8 @@ const SidePanel: React.FC<{
   className?: string;
   children?: React.ReactNode;
   ref: React.RefObject<HTMLElement>;
-  setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
-}> = ({ className, ref, setSidePanelWidth }) => {
+  // setSidePanelWidth: React.Dispatch<React.SetStateAction<number>>;
+}> = ({ className, ref }) => {
   const [activeTab, setActiveTab] = useLocalStorage(
     'selectedTab',
     TabType.Element
@@ -81,7 +81,7 @@ const SidePanel: React.FC<{
   );
 
   // const [isOpen, setIsOpen] = useState<boolean>(false);
-  const isAnimatingRef = useRef(false);
+  // const isAnimatingRef = useRef(false);
 
   const handleTabClick = (tab: TabType) => {
     if (activeTab === tab) {
@@ -94,24 +94,24 @@ const SidePanel: React.FC<{
     }
   };
 
-  useEffect(() => {
-    if (ref.current) {
-      const handleTransitionEnd = () => {
-        isAnimatingRef.current = false;
-        if (ref.current) {
-          setSidePanelWidth(ref.current.offsetWidth);
-        }
-      };
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     const handleTransitionEnd = () => {
+  //       isAnimatingRef.current = false;
+  //       if (ref.current) {
+  //         setSidePanelWidth(ref.current.offsetWidth);
+  //       }
+  //     };
 
-      ref.current.addEventListener('transitionend', handleTransitionEnd);
+  //     ref.current.addEventListener('transitionend', handleTransitionEnd);
 
-      return () => {
-        if (ref.current) {
-          ref.current.removeEventListener('transitionend', handleTransitionEnd);
-        }
-      };
-    }
-  }, [ref.current]);
+  //     return () => {
+  //       if (ref.current) {
+  //         ref.current.removeEventListener('transitionend', handleTransitionEnd);
+  //       }
+  //     };
+  //   }
+  // }, [ref.current]);
   const width = 280;
   return (
     <aside

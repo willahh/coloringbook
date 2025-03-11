@@ -29,14 +29,14 @@ interface SpreadCanvasProps {
   width?: number;
   height?: number;
   pages: Page[];
-  sidePanelWidth: number;
-  pagesPanelWidth: number;
+  // sidePanelWidth: number;
+  // pagesPanelWidth: number;
 }
 
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   pages,
-  sidePanelWidth,
-  pagesPanelWidth,
+  // sidePanelWidth,
+  // pagesPanelWidth,
 }) => {
   const pageParams = useParams<BookPageParams>();
   const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
@@ -58,8 +58,8 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
   useNavigateToFirstPage(canvas, pages);
   const canvasSize = useDimensions(
     containerRef,
-    sidePanelWidth,
-    pagesPanelWidth
+    // sidePanelWidth,
+    // pagesPanelWidth
   );
 
   // usePageFocusOnWindowResize
