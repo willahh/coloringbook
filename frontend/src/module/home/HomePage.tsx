@@ -8,7 +8,6 @@ import Toast from '@components/Toast';
 import { Book } from '@apptypes/book';
 import { useTheme } from '@/common/contexts/ThemeContext';
 
-// import Layout from '../../common/components/Layout';
 import BookCreationForm from './BookCreationForm';
 import DescriptionSection from './DescriptionSection';
 import UserBooks from './UserBooks';
@@ -20,6 +19,10 @@ import HeaderMobile from '@/common/components/header/HeaderMobile';
 import useIsMobile from '@/common/hooks/useIsMobile';
 import HeaderDesktop from '@/common/components/header/HeaderDesktop';
 import Layout from '@/common/components/Layout';
+import ErrorDialog from '@/common/components/ErrorDialog';
+import { AxiosError } from 'axios';
+import ErrorScreen from '@/common/components/ErrorScreen';
+import { trackEvent } from '@/common/utils/analyticsEvents';
 
 interface ContentDivProps {
   onBookCreationSuccess: (book: Book) => void;
@@ -81,6 +84,10 @@ const ContentDiv: React.FC<ContentDivProps> = ({
   );
 };
 
+interface ServerError {
+  message: string;
+}
+
 const HomePage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
@@ -96,14 +103,24 @@ const HomePage: React.FC = () => {
   // Books data
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<AxiosError<ServerError> | null>(null);
   const [highlightBookId, setHighlightBookId] = useState(0);
 
   const fetchBooks = async () => {
     try {
       const books = await APIService.fetchBooks();
       setBooks(books);
+      setError(null);
     } catch (error) {
-      console.error('Error fetching books:', error);
+      const axiosError = error as AxiosError<ServerError>;
+
+      if (axiosError.response) {
+        trackEvent(
+          'ERROR_SERVER',
+          `status: ${axiosError.status} - msg: ${axiosError.response.data.message}`
+        );
+        setError(axiosError);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -120,7 +137,9 @@ const HomePage: React.FC = () => {
 
   return (
     <LayoutComponent header={<HeaderComponent />}>
-      {isLoading ? (
+      {error ? (
+        <ErrorScreen error={error} />
+      ) : isLoading ? (
         <LoadingScreen isLoading={isLoading} />
       ) : (
         <div className="w-full h-screen items-center">

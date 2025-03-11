@@ -95,6 +95,10 @@ export class BooksController {
 
   @Get()
   findAll() {
+    // throw new HttpException(
+    //   'Service temporarily unavailable for testing',
+    //   HttpStatus.SERVICE_UNAVAILABLE,
+    // );
     return this.booksService.findAll();
   }
 

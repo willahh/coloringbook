@@ -5,6 +5,7 @@ import { getAPIURL } from './api';
 
 export const ANALYTICS_EVENTS = {
   // Global
+  ERROR_SERVER: 'ERROR_SERVER',
   MENU_OPEN: 'MENU_OPEN',
   MENU_CLOSE: 'MENU_CLOSE',
   THEME_LIGHT_SET: 'THEME_LIGHT_SET',
