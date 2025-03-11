@@ -38,6 +38,9 @@ export class SVG implements DrawableElement {
           const objectBounds = object.getBoundingRect();
           const right = objectBounds.left + objectBounds.width;
           const bottom = objectBounds.top + objectBounds.height;
+          // object.noScaleCache = true;
+          // object.objectCaching = false;
+          object.objectCaching = false;
           originalWidth = Math.max(originalWidth, right);
           originalHeight = Math.max(originalHeight, bottom);
           minX = Math.min(minX, objectBounds.left);
@@ -56,9 +59,12 @@ export class SVG implements DrawableElement {
           const originalPos = object.getBoundingRect();
           object.scaleX = scale;
           object.scaleY = scale;
+          // object.noScaleCache = true;
+          object.objectCaching = false;
           // Ajuster la position pour que le SVG commence à (0, 0)
           object.left = (originalPos.left - minX) * scale;
           object.top = (originalPos.top - minY) * scale;
+          // object.noScaleCache
         }
       });
 
@@ -66,8 +72,14 @@ export class SVG implements DrawableElement {
         cornerColor: getSecondaryColor(),
         borderColor: getSecondaryColor(),
         hasBorders: true,
-        
+
         cornerSize: 10,
+        // noScaleCache: true,
+        objectCaching: false, // <============== it works !!!!!!!!!!!!!!!!!!!!
+        
+        // Passer à true pour améliorer les perfs, voir ce que ça donne sur
+        // des devices avec pas beaucoup de ram
+        // objectCaching: true,
 
         cornerStyle: 'circle',
         borderScaleFactor: 2,
@@ -95,7 +107,13 @@ export class SVG implements DrawableElement {
       const url = getAPIURL() + '/image/' + obj.attr.svgURL;
       const svgGroup = await fabric.loadSVGFromURL(url);
       const svgFabricObject = svgGroup.objects.filter((obj) => obj !== null);
-      groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {});
+      groupSVGElements = fabric.util.groupSVGElements(svgFabricObject, {
+        // scaleX: 1 * window.devicePixelRatio,
+        // scaleY: 1 * window.devicePixelRatio,
+        // scaleX: 4,
+        // scaleY: 4,
+      });
+      groupSVGElements.set({ objectCaching: false });
     }
 
     if (!groupSVGElements) {
@@ -113,8 +131,7 @@ export class SVG implements DrawableElement {
     console.log('obj', obj);
   }
 
-  delete(): void {
-  }
+  delete(): void {}
 
   async getObject(): Promise<fabric.Object> {
     if (!this.svgObjects) {

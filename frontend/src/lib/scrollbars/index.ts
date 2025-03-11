@@ -199,19 +199,6 @@ export class Scrollbars {
     this._barViewport.right = x + width;
     this._barViewport.sx = objectWidth / mapWidth;
 
-    console.log(
-      'drawScrollbarX',
-      ' this.canvas.width: ', this.canvas.width,
-      ' this.canvas.height: ', this.canvas.height,
-      ' x: ',
-      x,
-      ' y: ',
-      y,
-      ' w: ',
-      width,
-      ' h: ',
-      this.scrollbarSize
-    );
     this.drawRect(ctx, {
       x,
       y,

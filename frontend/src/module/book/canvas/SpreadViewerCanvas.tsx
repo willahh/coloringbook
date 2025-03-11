@@ -43,10 +43,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const pageId = pageIdParams;
 
   // Effects
-  console.log('#f SpreadViewerCanvas');
-  console.log('#f canvasRef:', canvasRef);
   const canvas = useCanvasInitialization(canvasRef);
-  console.log('#f => canvas: ', canvas)
   useNavigateToFirstPage(canvas, pages);
   const canvasSize = useDimensions(containerRef);
 

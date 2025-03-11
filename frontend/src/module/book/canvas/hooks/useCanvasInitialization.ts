@@ -36,12 +36,23 @@ export function useCanvasInitialization(
       container
     );
 
+    const width = container?.clientWidth || 0;
+    const height = container?.clientHeight || 0;
+
+    // Utiliser le devicePixelRatio pour augmenter la résolution
+    // const pixelRatio = window.devicePixelRatio || 1;
+    const pixelRatio = 1;
+    const scaledWidth = width * pixelRatio;
+    const scaledHeight = height * pixelRatio;
+
     const canvas = new fabric.Canvas(canvasRef.current, {
-      width: container?.clientWidth,
-      height: container?.clientHeight,
+      width: scaledWidth,
+      height: scaledHeight,
       selection: false,
       renderOnAddRemove: true,
       allowTouchScrolling: true,
+      // enableRetinaScaling: true,
+      perf
     });
 
     canvasInstance.current = canvas;
