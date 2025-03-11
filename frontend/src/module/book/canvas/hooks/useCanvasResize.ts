@@ -9,7 +9,9 @@ export function useCanvasResize(
    * [Canvas.onWindowResize]
    */
   useEffect(() => {
-    console.log('#c RESIZE CANVAS');
+    console.log(
+      `#c RESIZE CANVAS with : width: ${canvasSize.width}, height: ${canvasSize.height}`
+    );
     if (canvas) {
       try {
         canvas.setDimensions({

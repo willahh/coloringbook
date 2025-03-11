@@ -4,7 +4,10 @@ import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
 import canvasService from '@/services/CanvasService';
 import useCanvasContext from '../../useCanvasContext';
-import { getPrimary700Color, getSecondaryColor } from '@/common/utils/themeColors';
+import {
+  getPrimary700Color,
+  getSecondaryColor,
+} from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
 import useIsMobile from '@/common/hooks/useIsMobile';
 
@@ -24,6 +27,8 @@ export function useCanvasInitialization(
     const container = canvasRef.current.closest(
       'div[data-id="cb-canvas-wrapper"]'
     );
+    console.log(`#c intialize canvas with: width: ${container?.clientWidth},
+      height: ${container?.clientHeight} container: `, container);
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: container?.clientWidth,
       height: container?.clientHeight,
