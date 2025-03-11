@@ -201,7 +201,9 @@ export class Scrollbars {
 
     console.log(
       'drawScrollbarX',
-      'x: ',
+      ' this.canvas.width: ', this.canvas.width,
+      ' this.canvas.height: ', this.canvas.height,
+      ' x: ',
       x,
       ' y: ',
       y,
