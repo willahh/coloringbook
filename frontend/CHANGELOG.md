@@ -1,5 +1,53 @@
 # Changelog
 
+## Version 0.9.12 - 11 mars 2025
+
+* 17aba38 Bump version to 0.9.12, update build date, and remove unused width state management
+* 0a4190b Bump version to 0.9.11, update build date, and enhance dimension update logging
+* bfa9d79 Enhance canvas initialization and resize logging with detailed dimensions
+* 2292f5e Bump version to 0.9.9, update build date, and enhance scrollbar drawing logs
+* 4763df0 Bump version to 0.9.8, update viewport meta tag formatting, and add console logs for scrollbar drawing
+* 3efffcd Update version to 0.9.7, add error handling for server issues, and implement ErrorScreen component
+* d1f7fc6 Bump version to 0.9.6
+* 253117f Merge pull request #34 from willahh/feature/ga4proxy
+* 1e20ae2 Enhance analytics tracking: add console logs, update event tracking for menu interactions, and refactor page view tracking
+* 4d61390 Refactor analytics event
+* 945a928 Add Google Analytics 4 tracking module and update environment variables
+* 358f882 Bump version to 0.9.5
+* eb7c6f4 Refactor analytics tracking for book events and update event names for consistency
+* 6025586 Bump version to 0.9.4
+* b366a54 Enhance touch controls with zoom momentum and pinch handling
+* b76e497 Bump version to 0.9.3 and update custom scrollbar styles across components
+* 33d3b4a Bump version to 0.9.2 and update custom scrollbar styles in PagesPanel component
+* c9c1dae Bump version to 0.9.1
+* b07bbc4 Bump version to 0.9.0
+* 8458b32 Merge pull request #33 from willahh/feature/image/svg2png-w-lazy
+* 10b7b32 Add custom scrollbar styles and refactor layout in BookPageDesktop and SidePanel components
+* f90d47c Add endpoint to retrieve raw SVG content and refactor SVG loading in frontend
+* 6723828 Add SVG to PNG conversion module and integrate into image processing
+* 469a02f Implement momentum-based panning in touch controls for improved user experience
+* ee90238 Refactor touch controls to improve pinch handling and streamline momentum logic
+* 26fefa0 Refactor touch controls to implement momentum-based panning and improve zoom handling
+* 3b2d0f4 Enhance SpreadViewerCanvas with window resize handling and debounce for page focus
+* da53afd Bump version to 0.8.6
+* 4ae77e1 Integrate analytics middleware for tracking events
+* ea28427 Bump version to 0.8.5
+* 08929d8 Move CHANGELOG.md to /public
+* 4a3fa60 Merge pull request #32 from willahh/feature/mobile
+* 8a99cd6 Fix various warnings, cleanup
+* e77e9f8 Update version and build date in package.json; enhance changelog generation script to filter existing commits and update CHANGELOG.md accordingly
+* 34f88fd Add script to generate changelog and update package.json scripts
+* 8ab895d Refactor LoadingScreen component to manage loading state with a delay; update Home and Book components to use isLoading state
+* f68aa51 Add error boundary to SpreadViewerCanvas and enhance session storage hook; update CSS for responsive design
+* 4bcc097 Refactor BookToolbar component and relocate to components directory
+* 538a9c2 Update LICENSE.md to clarify copyright and usage restrictions
+* b559833 Add LICENSE.md file to specify copyright and usage restrictions
+* 10d65bb Add .DS_Store to .gitignore to prevent tracking of macOS system files
+* 276fe92 Update GitHub Actions workflow to ping both frontend and backend Render services
+* 1d0457b Add GitHub Actions workflow to keep Render Service alive with scheduled pings
+* 4f78791 Comment out unused getBook and updateBook methods in BookService
+* 62eed64 Add pages parameter to printPDF method and improve error logging in BookService
+
 ## Version 0.7.4 - 8 mars 2025
 
 * 8446431 Add Changelog component and update package.json for changelog generation

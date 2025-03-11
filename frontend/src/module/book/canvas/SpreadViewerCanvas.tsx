@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { useParams } from 'react-router';
 
@@ -18,7 +14,6 @@ import { useCanvasInitialization } from './hooks/useCanvasInitialization';
 import { useCanvasResize } from './hooks/useCanvasResize';
 import { useCanvasRedraw } from './hooks/useCanvasRedraw';
 import usePageFocus from './hooks/usePageFocus';
-// import useUpdatePageThumbnails from './hooks/useUpdatePageThumbnails';
 import usePageAutoFocus from './hooks/usePageAutofocus';
 import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 import useIsMobile from '@/common/hooks/useIsMobile';
@@ -29,40 +24,29 @@ interface SpreadCanvasProps {
   width?: number;
   height?: number;
   pages: Page[];
-  // sidePanelWidth: number;
-  // pagesPanelWidth: number;
 }
 
-const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
-  pages,
-  // sidePanelWidth,
-  // pagesPanelWidth,
-}) => {
+const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const pageParams = useParams<BookPageParams>();
   const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
   const { canvas, viewportTransform } = useCanvasContext();
   const isMobile = useIsMobile();
 
-  // State –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // State 
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
 
-  // Refs ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // Refs 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
-  // Process –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // Process
   const pageId = pageIdParams;
 
-  // Effects –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // Effects 
   useCanvasInitialization(canvasRef);
   useNavigateToFirstPage(canvas, pages);
-  const canvasSize = useDimensions(
-    containerRef,
-    // sidePanelWidth,
-    // pagesPanelWidth
-  );
+  const canvasSize = useDimensions(containerRef);
 
-  // usePageFocusOnWindowResize
   useEffect(() => {
     const updateCustom = debounce(() => {
       if (canvas) {
@@ -78,7 +62,6 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({
       updateCustom.cancel();
     };
   }, [canvasSize]);
-
 
   useCanvasResize(canvas, canvasSize);
   useEventHandlers(canvas);

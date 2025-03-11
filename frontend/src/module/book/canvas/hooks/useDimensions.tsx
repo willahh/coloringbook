@@ -4,8 +4,6 @@ import useIsMobile from '@/common/hooks/useIsMobile';
 
 export const useDimensions = (
   containerRef: RefObject<HTMLElement | null>
-  // sidePanelWidth: number,
-  // pagesPanelWidth: number
 ) => {
   const [dimensions, setDimensions] = useState({
     width: document.documentElement.clientWidth,

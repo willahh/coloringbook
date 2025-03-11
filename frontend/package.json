@@ -1,8 +1,8 @@
 {
   "name": "coloringbook",
   "private": true,
-  "version": "0.9.12",
-  "buildDate": "2025-03-11T15:40:17.517Z",
+  "version": "0.10.0",
+  "buildDate": "2025-03-11T15:53:50.146Z",
   "type": "module",
   "scripts": {
     "dev": "npm run build:css && vite --host",
@@ -18,7 +18,7 @@
     "storybook": "storybook dev -p 6006",
     "build:storybook": "storybook build",
     "update:build-date": "node scripts/updateBuildDate.js",
-    "generate:changelog": "node scripts/generateChangelog.js -s && cp CHANGELOG.md ./src/assets/CHANGELOG.md",
+    "generate:changelog": "node scripts/generateChangelog.js -s && cp CHANGELOG.md ./public/CHANGELOG.md",
     "release:major": "npm run update:build-date && npm version major -git-tag-version",
     "release:minor": "npm run update:build-date && npm version minor -git-tag-version",
     "release:patch": "npm run update:build-date && npm version patch -git-tag-version",
