@@ -52,7 +52,7 @@ export function useCanvasInitialization(
       renderOnAddRemove: true,
       allowTouchScrolling: true,
       // enableRetinaScaling: true,
-      perf
+      
     });
 
     canvasInstance.current = canvas;
