@@ -14,7 +14,7 @@ import { selectBook, selectBookPages } from '../BookSlice';
 import { useParams } from 'react-router';
 import useCanvasContext from '../useCanvasContext';
 import { useServices } from '@/common/contexts/ServiceContext';
-import { trackBookEvent, trackEvent } from '@/common/utils/analyticsEvents';
+import { trackBookEvent } from '@/common/utils/analyticsEvents';
 
 const iconProps = {
   className: 'w-12 h-12',

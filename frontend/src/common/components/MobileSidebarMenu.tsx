@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion'; // Importe AnimatePresence
 import {
   DocumentArrowDownIcon,
@@ -8,7 +8,7 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import { LuLibrary } from 'react-icons/lu';
 
-import { trackBookEvent, trackEvent } from '@/common/utils/analyticsEvents';
+import { trackBookEvent } from '@/common/utils/analyticsEvents';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 import { PiFilePdfThin, PiExportThin } from 'react-icons/pi';
 import { useDispatch, useSelector } from '../store';
@@ -193,7 +193,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={() => {
                         if (canvas) {
-                          trackBookEvent('PDF_EXPORT_START', book);
+                          trackBookEvent('BOOK_PDF_EXPORT_START', book);
                           bookExportService.exportToPDF({
                             canvas: canvas,
                             pages: pages,
@@ -210,7 +210,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={async () => {
                         if (canvas) {
-                          trackBookEvent('PDF_PRINT_START', book);
+                          trackBookEvent('BOOK_PDF_PRINT_START', book);
                           await bookExportService.printPDF({
                             canvas: canvas,
                             pages: pages,

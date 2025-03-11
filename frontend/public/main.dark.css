@@ -351,17 +351,17 @@
     --default-mono-font-variation-settings: var(
       --font-mono--font-variation-settings
     );
-    --color-primary-50: #E6F1FF;
-    --color-primary-100: #e2e0ff;
-    --color-primary-200: #cac7fe;
-    --color-primary-300: #aaa5fc;
-    --color-primary-400: #8881f8;
-    --color-primary-500: #6c63f1;
-    --color-primary-600: #5046e5;
-    --color-primary-700: #4138ca;
-    --color-primary-800: #3730a3;
-    --color-primary-900: #332e81;
-    --color-primary-950: #1d1b4b;
+    --color-primary-50: #f3f5fa;
+    --color-primary-100: #eaecf5;
+    --color-primary-200: #d9deec;
+    --color-primary-300: #c1c7e0;
+    --color-primary-400: #a7add2;
+    --color-primary-500: #9194c3;
+    --color-primary-600: #7e7db4;
+    --color-primary-700: #69679b;
+    --color-primary-800: #56557e;
+    --color-primary-900: #494966;
+    --color-primary-950: #2b2a3c;
     --color-secondary-50: #fff1f3;
     --color-secondary-100: #ffe4e9;
     --color-secondary-200: #fecdd5;
@@ -1066,6 +1066,13 @@
       margin-block-end: calc(calc(var(--spacing) * 1) * calc(1 - var(--tw-space-y-reverse)));
     }
   }
+  .space-y-2 {
+    :where(& > :not(:last-child)) {
+      --tw-space-y-reverse: 0;
+      margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
+      margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
+    }
+  }
   .space-y-4 {
     :where(& > :not(:last-child)) {
       --tw-space-y-reverse: 0;
@@ -1104,6 +1111,13 @@
       margin-inline-end: calc(calc(var(--spacing) * 0.5) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
+  .space-x-2 {
+    :where(& > :not(:last-child)) {
+      --tw-space-x-reverse: 0;
+      margin-inline-start: calc(calc(var(--spacing) * 2) * var(--tw-space-x-reverse));
+      margin-inline-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-x-reverse)));
+    }
+  }
   .space-x-4 {
     :where(& > :not(:last-child)) {
       --tw-space-x-reverse: 0;
@@ -1137,6 +1151,11 @@
   .divide-primary-200 {
     :where(& > :not(:last-child)) {
       border-color: var(--color-primary-200);
+    }
+  }
+  .divide-primary-600 {
+    :where(& > :not(:last-child)) {
+      border-color: var(--color-primary-600);
     }
   }
   .self-center {
@@ -1192,6 +1211,9 @@
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
+  }
+  .rounded-xl {
+    border-radius: var(--radius-xl);
   }
   .rounded-xs {
     border-radius: var(--radius-xs);
@@ -1688,6 +1710,9 @@
   .text-blue-400 {
     color: var(--color-blue-400);
   }
+  .text-blue-500 {
+    color: var(--color-blue-500);
+  }
   .text-blue-600 {
     color: var(--color-blue-600);
   }
@@ -1918,17 +1943,9 @@
     --tw-duration: 100ms;
     transition-duration: 100ms;
   }
-  .duration-200 {
-    --tw-duration: 200ms;
-    transition-duration: 200ms;
-  }
-  .duration-300 {
-    --tw-duration: 300ms;
-    transition-duration: 300ms;
-  }
-  .duration-500 {
-    --tw-duration: 500ms;
-    transition-duration: 500ms;
+  .duration-700 {
+    --tw-duration: 700ms;
+    transition-duration: 700ms;
   }
   .duration-1000 {
     --tw-duration: 1000ms;
@@ -1938,13 +1955,21 @@
     --tw-duration: 150ms;
     transition-duration: 150ms;
   }
+  .duration-200 {
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
   .duration-400 {
     --tw-duration: 400ms;
     transition-duration: 400ms;
   }
-  .duration-700 {
-    --tw-duration: 700ms;
-    transition-duration: 700ms;
+  .duration-500 {
+    --tw-duration: 500ms;
+    transition-duration: 500ms;
   }
   .ease-in {
     --tw-ease: var(--ease-in);
@@ -2207,6 +2232,13 @@
     &:hover {
       @media (hover: hover) {
         border-color: var(--color-secondary-500);
+      }
+    }
+  }
+  .hover\:bg-blue-600 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-blue-600);
       }
     }
   }
@@ -3259,6 +3291,11 @@
       color: var(--color-gray-500);
     }
   }
+  .dark\:text-gray-600 {
+    &:where(.dark, .dark *) {
+      color: var(--color-gray-600);
+    }
+  }
   .dark\:text-primary-100 {
     &:where(.dark, .dark *) {
       color: var(--color-primary-100);
@@ -3740,29 +3777,29 @@ body {
 .dark .custom-scrollbar {
   scrollbar-color: var(--color-primary-500) var(--color-primary-800);
 }
-.custom-scrollbar::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
-.custom-scrollbar::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: var(--color-primary-200);
   border-radius: 4px;
 }
-.dark .custom-scrollbar::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track {
   background: var(--color-primary-800);
 }
-.custom-scrollbar::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: var(--color-primary-500);
   border-radius: 4px;
   transition: background 0.3s;
 }
-.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb {
   background: var(--color-primary-500);
 }
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary-200);
 }
-.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primary-800);
 }
 .btn {
