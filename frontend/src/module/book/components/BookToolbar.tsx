@@ -22,6 +22,7 @@ import {
   EXPORT_PDF,
   IMPORT_BOOK_DATA,
   PRINT_PDF,
+  trackBookEvent,
   trackEvent,
 } from '@/common/utils/analyticsEvents';
 
@@ -108,7 +109,7 @@ const BookToolbar: React.FC = () => {
         <ToolbarButton
           tooltipContent="Export"
           onClick={() => {
-            trackEvent(EXPORT_BOOK_DATA);
+            trackBookEvent('BOOK_EXPORT_START', book);
             bookDataService.exportBookToFile(book);
           }}
         >
@@ -118,7 +119,7 @@ const BookToolbar: React.FC = () => {
           <ToolbarButton
             tooltipContent="Import"
             onClick={() => {
-              trackEvent(IMPORT_BOOK_DATA);
+              trackBookEvent('BOOK_IMPORT_START', book);
               fileInputRef.current?.click();
             }}
           >
@@ -138,7 +139,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Download"
           onClick={() => {
             if (canvas) {
-              trackEvent(EXPORT_PDF);
+              trackBookEvent('PDF_EXPORT_START', book);
               bookExportService.exportToPDF({
                 canvas: canvas,
                 pages: pages,
@@ -152,7 +153,7 @@ const BookToolbar: React.FC = () => {
           tooltipContent="Print"
           onClick={async () => {
             if (canvas) {
-              trackEvent(PRINT_PDF);
+              trackBookEvent('PDF_PRINT_START', book);
               await bookExportService.printPDF({
                 canvas: canvas,
                 pages: pages,

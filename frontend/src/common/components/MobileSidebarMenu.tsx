@@ -8,14 +8,7 @@ import { HomeIcon } from '@heroicons/react/24/outline';
 import CloudSavedIcon from '@assets/icons/icon_cloud_saved.svg?react';
 import { LuLibrary } from 'react-icons/lu';
 
-import {
-  EXPORT_BOOK_DATA,
-  EXPORT_PDF,
-  MENU_CLOSED,
-  MENU_OPENED,
-  PRINT_PDF,
-  trackEvent,
-} from '@/common/utils/analyticsEvents';
+import { trackBookEvent, trackEvent } from '@/common/utils/analyticsEvents';
 import CloudNotSavedIcon from '@assets/icons/icon_cloud_notsaved.svg?react';
 import { PiFilePdfThin, PiExportThin } from 'react-icons/pi';
 import { useDispatch, useSelector } from '../store';
@@ -56,9 +49,9 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      trackEvent(MENU_OPENED);
+      trackEvent('MENU_OPEN');
     } else {
-      trackEvent(MENU_CLOSED);
+      trackEvent('MENU_CLOSE');
     }
   }, [isOpen]);
 
@@ -208,7 +201,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={() => {
                         if (canvas) {
-                          trackEvent(EXPORT_PDF);
+                          trackBookEvent('PDF_EXPORT_START', book);
                           bookExportService.exportToPDF({
                             canvas: canvas,
                             pages: pages,
@@ -225,7 +218,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                       className={footerButtonClasses}
                       onClick={async () => {
                         if (canvas) {
-                          trackEvent(PRINT_PDF);
+                          trackBookEvent('PDF_PRINT_START', book);
                           await bookExportService.printPDF({
                             canvas: canvas,
                             pages: pages,
@@ -241,7 +234,7 @@ const MobileSidebarMenu: React.FC<MobileSidebarMenuProps> = ({
                     <button
                       className={footerButtonClasses}
                       onClick={() => {
-                        trackEvent(EXPORT_BOOK_DATA);
+                        trackBookEvent('BOOK_EXPORT_START', book);
                         bookDataService.exportBookToFile(book);
                       }}
                     >

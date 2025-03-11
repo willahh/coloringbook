@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { Element } from '@apptypes/book';
+import { trackBookEvent } from '@/common/utils/analyticsEvents';
 // import canvasService from '@/services/canvas.service';
 
 /**
@@ -16,9 +17,9 @@ export const addElementToPage = createAsyncThunk<
   }
 >('ELEMENT/ADD_ELEMENT_TO_PAGE', async ({ element, pageId }) => {
   console.log(`#01 ELEMENT/ADD_ELEMENT_TO_PAGE pageId: ${pageId}`);
-
-  // canvasService.addElementToCanvas(element);
-
+  const bookId = 0;
+  const bookName = '';
+  trackBookEvent('BOOK_ELEMENT_ADD_TO_PAGE', { id: bookId, name: bookName });
   return { element: element, pageId: pageId };
 });
 

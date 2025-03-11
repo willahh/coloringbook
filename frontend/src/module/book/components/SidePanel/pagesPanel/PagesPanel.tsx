@@ -12,6 +12,7 @@ import * as BookActions from '../../../BookActions';
 import { BookPageParams } from '@/common/interfaces';
 import { selectBookPages } from '../../../BookSlice';
 import { useServices } from '@/common/contexts/ServiceContext';
+import { trackBookEvent } from '@/common/utils/analyticsEvents';
 
 interface PageComponentProps {
   bookId: number;
@@ -28,6 +29,7 @@ const useDeletePage = (bookId: number) => {
 
   const useDeletePage = (pageIdToDelete: number) => {
     if (confirm('Confirmer la suppression de la page ?')) {
+      trackBookEvent('BOOK_PAGE_DELETE', { id: bookId, name: '' });
       dispatch(BookActions.deletePageAction({ pageId: pageIdToDelete }));
       requestAnimationFrame(() => {
         const nextPageId = bookDataService.getNextPageId(pageIdToDelete, pages);
@@ -48,6 +50,7 @@ const useAddPage = (bookId: number) => {
 
   const useAddPage = () => {
     const pageNew = PageService.getNewPage(pages);
+    trackBookEvent('BOOK_PAGE_ADD', { id: bookId, name: '' });
     dispatch(BookActions.addPageAction({ page: pageNew }));
     requestAnimationFrame(() => {
       if (bookId) {

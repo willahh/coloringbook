@@ -1,90 +1,78 @@
 import ReactGA from 'react-ga4';
 import { ENV_PROD } from '@/common/utils/EnvUtils';
+import { Book } from '../types/book';
 
-export enum EventCategory {
-  Action = 'Action',
-  About = 'About',
-  Changelog = 'Changelog',
-  Menu = 'Menu',
-  Newsletter = 'Newsletter',
-  APPEAREANCE_LIGHT = 'APPEAREANCE_LIGHT',
-  APPEAREANCE_DARK = 'APPEAREANCE_DARK',
-  EXPORT_PDF = 'EXPORT_PDF',
-  PRINT_PDF = 'PRINT_PDF',
-  IMPORT_BOOK_DATA = 'IMPORT_BOOK_DATA',
-  EXPORT_BOOK_DATA = 'EXPORT_BOOK_DATA',
-}
+export const ANALYTICS_EVENTS = {
+  // ———————————————————————————————————————————————————————————————————————————
+  // global
+  // ———————————————————————————————————————————————————————————————————————————
+  // Menu
+  MENU_OPEN: 'MENU_OPEN',
+  MENU_CLOSE: 'MENU_CLOSE',
 
-export enum EventAction {
-  Opened = 'Opened',
-  Closed = 'Closed',
-  Subscribed = 'Subscribed',
-  Switched = 'Switched',
-  Error = 'Error',
-  Completed = 'Completed',
-  Started = 'Started',
-  Rejected = 'Rejected',
-}
+  // Theme
+  THEME_LIGHT_SET: 'THEME_LIGHT_SET',
+  THEME_DARK_SET: 'THEME_DARK_SET',
 
-export type EventLabel = string;
+  // Autres interactions
+  ABOUT_OPEN: 'ABOUT_OPEN',
+  ABOUT_CLOSE: 'ABOUT_CLOSE',
+  CHANGELOG_OPEN: 'CHANGELOG_OPEN',
+  CHANGELOG_CLOSE: 'CHANGELOG_CLOSE',
+  NEWSLETTER_SUBSCRIBE: 'NEWSLETTER_SUBSCRIBE',
+  NEWSLETTER_SUBSCRIBE_ERROR: 'NEWSLETTER_SUBSCRIBE_ERROR',
+  PAGE_VIEW: 'PAGE_VIEW',
+  SCROLL_EVENT: 'SCROLL_EVENT',
+  USER_ENGAGE: 'USER_ENGAGE',
+  SESSION_START: 'SESSION_START',
+  CLICK_BUTTON: 'CLICK_BUTTON',
 
-export interface AnalyticsEvent {
-  action: EventAction;
-  category: EventCategory;
-  label?: EventLabel;
-}
+  // Événements génériques
+  ACTION_START: 'ACTION_START',
+  ACTION_SUCCESS: 'ACTION_SUCCESS',
+  ACTION_FAIL: 'ACTION_FAIL',
 
-// Events
-export const MENU_OPENED: AnalyticsEvent = {
-  action: EventAction.Opened,
-  category: EventCategory.Menu,
-};
-export const MENU_CLOSED: AnalyticsEvent = {
-  action: EventAction.Closed,
-  category: EventCategory.Menu,
-};
-export const ABOUT_OPENED = {
-  action: EventAction.Opened,
-  category: EventCategory.About,
-};
-export const CHANGELOG_OPENED = {
-  action: EventAction.Opened,
-  category: EventCategory.Changelog,
-};
-export const NEWSLETTER_SUBSCRIBED = {
-  action: EventAction.Subscribed,
-  category: EventCategory.Newsletter,
-};
-export const APPEAREANCE_LIGHT = {
-  action: EventAction.Switched,
-  category: EventCategory.APPEAREANCE_LIGHT,
-};
-export const APPEAREANCE_DARK = {
-  action: EventAction.Switched,
-  category: EventCategory.APPEAREANCE_DARK,
-};
-export const EXPORT_PDF = {
-  action: EventAction.Started,
-  category: EventCategory.EXPORT_PDF,
-};
-export const PRINT_PDF = {
-  action: EventAction.Started,
-  category: EventCategory.PRINT_PDF,
-};
-export const IMPORT_BOOK_DATA = {
-  action: EventAction.Started,
-  category: EventCategory.IMPORT_BOOK_DATA,
-};
-export const EXPORT_BOOK_DATA = {
-  action: EventAction.Started,
-  category: EventCategory.EXPORT_BOOK_DATA,
-};
+  // ———————————————————————————————————————————————————————————————————————————
+  // book
+  // ———————————————————————————————————————————————————————————————————————————
+  // PDF et Export/Import
+  BOOK_PDF_EXPORT_START: 'BOOK_PDF_EXPORT_START',
+  BOOK_PDF_EXPORT_SUCCESS: 'BOOK_PDF_EXPORT_SUCCESS',
+  BOOK_PDF_EXPORT_FAIL: 'BOOK_PDF_EXPORT_FAIL',
+  BOOK_PDF_PRINT_START: 'BOOK_PDF_PRINT_START',
+  BOOK_PDF_PRINT_SUCCESS: 'BOOK_PDF_PRINT_SUCCESS',
+  BOOK_PDF_PRINT_FAIL: 'BOOK_PDF_PRINT_FAIL',
+  BOOK_IMPORT_START: 'BOOK_IMPORT_START',
+  BOOK_EXPORT_START: 'BOOK_EXPORT_START',
 
-// trackEvent
-export const trackEvent = ({ category, action, label }: AnalyticsEvent) => {
+  // Page
+  BOOK_PAGE_ADD: 'BOOK_PAGE_ADD',
+  BOOK_PAGE_DELETE: 'BOOK_PAGE_DELETE',
+  BOOK_UNDO: 'BOOK_UNDO',
+  BOOK_REDO: 'BOOK_REDO',
+  BOOK_SAVE: 'BOOK_SAVE',
+  BOOK_EDIT_BOOK_NAME: 'BOOK_EDIT_BOOK_NAME',
+  BOOK_ELEMENT_ADD_TO_PAGE: 'BOOK_ELEMENT_ADD_TO_PAGE',
+} as const;
+
+export type AnalyticsEvent =
+  (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
+
+export const trackBookEvent = (
+  analyticsEvent: AnalyticsEvent,
+  book: Partial<Book>
+) => {
+  const label = JSON.stringify({ id: book.id, name: book.name });
+  trackEvent(analyticsEvent, label);
+};
+export const trackEvent = (event: AnalyticsEvent, label?: string) => {
   if (ENV_PROD) {
-    ReactGA.event({ category, action, label });
+    ReactGA.event({
+      category: 'User Interaction', // Catégorie globale pour simplifier
+      action: event,
+      label: label || undefined,
+    });
   } else {
-    console.log('Analytics event (dev):', { category, action, label });
+    console.log('Analytics event (dev):', { action: event, label });
   }
 };

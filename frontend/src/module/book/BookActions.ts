@@ -5,6 +5,7 @@ import { Book, Page, Element } from '@apptypes/book';
 import { ElementService } from '@/services/ElementService';
 import { GraphicAsset } from '@apptypes/graphic-asset.entity';
 import { AxiosErrorResponse, BookError } from '@/common/interfaces';
+import { trackBookEvent } from '@/common/utils/analyticsEvents';
 
 /**
  * fetchBookByIdAction
@@ -21,7 +22,8 @@ export const fetchBookByIdAction = createAsyncThunk<
 >('BOOKS/FETCH_BOOK_BY_ID', async ({ bookId }, { rejectWithValue }) => {
   try {
     const book = await APIService.fetchBook(bookId);
-    const { book: newBook, isModified } = bookDataService.normalizeBookData(book);
+    const { book: newBook, isModified } =
+      bookDataService.normalizeBookData(book);
     return { book: newBook, isModified };
   } catch (error) {
     return rejectWithValue(error as AxiosErrorResponse);
@@ -38,6 +40,7 @@ export const saveBookAction = createAsyncThunk<
     book: Book;
   }
 >('book/saveBookAction', async ({ bookId, book }) => {
+  trackBookEvent('BOOK_SAVE', book);
   const { book: newBook } = bookDataService.normalizeBookData(book);
   const savedBook = await APIService.saveBook(bookId, newBook);
   return savedBook;
@@ -58,6 +61,7 @@ export const editBookNameAction = createAsyncThunk<
     bookName: string;
   }
 >('book/editBookNameAction', async ({ bookId, bookName }) => {
+  trackBookEvent('BOOK_EDIT_BOOK_NAME', { id: bookId, name: bookName });
   const book = await APIService.updateBook(bookId, { name: bookName });
   return book;
 });
@@ -65,7 +69,6 @@ export const editBookNameAction = createAsyncThunk<
 /**
  * updateBookAction
  */
-
 export const updateBookAction = createAction<{
   bookId: number;
   book: Book;
@@ -103,6 +106,7 @@ export const AddGraphicAssetToPageAction = createAsyncThunk<
     pageId: number;
   }
 >('asset/AddGraphicAssetToPageAction', ({ pageId, graphicAsset }) => {
+  trackBookEvent('BOOK_ELEMENT_ADD_TO_PAGE', { id: 0, name: '' });
   const element = ElementService.getElementFromGraphicAsset(graphicAsset);
   return { pageId: pageId, element: element };
 });

@@ -4,11 +4,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { useTheme } from '@/common/contexts/ThemeContext';
 import { Tooltip } from '@components/Tooltip';
 import { ToolbarButtonClassName } from '@/module/book/components/ToolbarButton';
-import {
-  APPEAREANCE_DARK,
-  APPEAREANCE_LIGHT,
-  trackEvent,
-} from '../utils/analyticsEvents';
+import { trackEvent } from '../utils/analyticsEvents';
 
 export type Appearance = 'light' | 'dark';
 
@@ -56,7 +52,7 @@ const Appearance: React.FC = () => {
           <a
             href="#"
             onClick={() => {
-              trackEvent(APPEAREANCE_LIGHT);
+              trackEvent('THEME_LIGHT_SET');
               switchAppearance('light');
             }}
             className={getMenuItemClassName(appearance, 'light')}
@@ -69,7 +65,7 @@ const Appearance: React.FC = () => {
           <a
             href="#"
             onClick={() => {
-              trackEvent(APPEAREANCE_DARK);
+              trackEvent('THEME_DARK_SET');
               switchAppearance('dark');
             }}
             className={getMenuItemClassName(appearance, 'dark')}
