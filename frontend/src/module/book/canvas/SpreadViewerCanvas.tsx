@@ -19,6 +19,7 @@ import useNavigateToFirstPage from './hooks/useNavigateToFirstPage';
 import useIsMobile from '@/common/hooks/useIsMobile';
 import { debounce } from 'lodash';
 import canvasService from '@/services/CanvasService';
+import SvgShapeList from './../components/SvgShapeList'; // Importer le nouveau composant
 
 interface SpreadCanvasProps {
   width?: number;
@@ -34,6 +35,10 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
 
   // State
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
+  const [selectedObject, setSelectedObject] = useState<fabric.Object | null>(
+    null
+  );
+  const [showShapeList, setShowShapeList] = useState<boolean>(false);
 
   // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -86,6 +91,35 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   // le navigateur avec storage.
   // useUpdatePageThumbnails(canvas, pages, needRedrawPages);
 
+  // Gérer la sélection d'un objet
+  useEffect(() => {
+    if (!canvas) return;
+
+    const handleSelection = (e: SelectionEvent) => {
+      const activeObject =
+        e.selected && e.selected.length > 0 ? e.selected[0] : null;
+      setSelectedObject(activeObject);
+      setShowShapeList(!!activeObject);
+    };
+
+    const handleDeselection = () => {
+      setSelectedObject(null);
+      setShowShapeList(false);
+    };
+
+    canvas.on('selection:created', handleSelection);
+    canvas.on('selection:updated', handleSelection);
+    canvas.on('selection:cleared', handleDeselection);
+
+    return () => {
+      canvas.off('selection:created', handleSelection);
+      canvas.off('selection:updated', handleSelection);
+      canvas.off('selection:cleared', handleDeselection);
+    };
+  }, [canvas]);
+
+  console.log('showShapeList', showShapeList)
+
   return (
     <ErrorBoundary fallback={<div>sd</div>}>
       <div
@@ -95,7 +129,13 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       >
         <PagesNavigation />
         <canvas ref={canvasRef} className="w-full h-full" />
-
+        {showShapeList && (
+          <SvgShapeList
+            canvas={canvas}
+            selectedObject={selectedObject}
+            onClose={() => setShowShapeList(false)}
+          />
+        )}
         <div
           data-id="inline-toolbar"
           className={`hidden sm:block absolute bottom-20 right-12 z-10
