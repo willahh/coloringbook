@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as fabric from 'fabric';
 import { Scrollbars } from '@/lib/scrollbars';
 import { makeMouseWheelWithAnimation } from '@/lib/scrollbars/utils';
@@ -19,6 +19,9 @@ export function useCanvasInitialization(
   const scrollbarInstance = useRef<Scrollbars | null>(null);
   const isMobile = useIsMobile();
 
+  // État pour indiquer quand le canvas est prêt
+  const [isCanvasReady, setIsCanvasReady] = useState<boolean>(false);
+
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -27,8 +30,12 @@ export function useCanvasInitialization(
     const container = canvasRef.current.closest(
       'div[data-id="cb-canvas-wrapper"]'
     );
-    console.log(`#c intialize canvas with: width: ${container?.clientWidth},
-      height: ${container?.clientHeight} container: `, container);
+    console.log(
+      `#c initialize canvas with: width: ${container?.clientWidth},
+      height: ${container?.clientHeight}, container: `,
+      container
+    );
+
     const canvas = new fabric.Canvas(canvasRef.current, {
       width: container?.clientWidth,
       height: container?.clientHeight,
@@ -40,6 +47,7 @@ export function useCanvasInitialization(
     canvasInstance.current = canvas;
     setCanvas(canvas);
     canvasService.canvas = canvas;
+    setIsCanvasReady(true); // Marquer le canvas comme prêt
 
     const mousewheel = makeMouseWheelWithAnimation(
       canvas,
@@ -52,7 +60,6 @@ export function useCanvasInitialization(
 
     const scrollbar = new Scrollbars(canvas, {
       fill: getSecondaryColor(),
-      // stroke: 'rgba(0,0,255,.5)',
       stroke: getPrimary700Color(),
       lineWidth: 5,
       scrollbarSize: 8,
@@ -66,12 +73,16 @@ export function useCanvasInitialization(
       canvas.dispose();
       canvasInstance.current = null;
       scrollbarInstance.current = null;
+      setIsCanvasReady(false); // Réinitialiser quand le canvas est détruit
     };
-  }, [canvasRef, setCanvas, setViewportTransform]);
+  }, [canvasRef, setCanvas, setViewportTransform, isMobile]);
 
   useTouchControls({
     canvas: canvasInstance.current,
     scrollbar: scrollbarInstance.current,
     setViewportTransform,
   });
+
+  // Retourner l'instance du canvas uniquement quand elle est prête
+  return isCanvasReady ? canvasInstance.current : null;
 }

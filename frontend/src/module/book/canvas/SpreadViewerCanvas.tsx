@@ -29,21 +29,24 @@ interface SpreadCanvasProps {
 const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
   const pageParams = useParams<BookPageParams>();
   const pageIdParams = pageParams.pageId ? parseInt(pageParams.pageId) : 0;
-  const { canvas, viewportTransform } = useCanvasContext();
+  const { viewportTransform } = useCanvasContext();
   const isMobile = useIsMobile();
 
-  // State 
+  // State
   const [needRedrawPages, setNeedRedrawPages] = useState<boolean>(true);
 
-  // Refs 
+  // Refs
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Process
   const pageId = pageIdParams;
 
-  // Effects 
-  useCanvasInitialization(canvasRef);
+  // Effects
+  console.log('#f SpreadViewerCanvas');
+  console.log('#f canvasRef:', canvasRef);
+  const canvas = useCanvasInitialization(canvasRef);
+  console.log('#f => canvas: ', canvas)
   useNavigateToFirstPage(canvas, pages);
   const canvasSize = useDimensions(containerRef);
 
