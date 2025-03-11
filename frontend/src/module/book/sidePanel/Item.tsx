@@ -6,7 +6,7 @@ const Item: React.FC<{
   tooltipContent?: string;
   onClick?: () => void;
 }> = ({ className, children, tooltipContent, onClick }) => (
-  <div
+  <button
     data-name="item"
     className={`rounded-lg transition-all cursor-pointer duration-300
       border border-primary-300 dark:border-primary-600
@@ -21,6 +21,6 @@ const Item: React.FC<{
     ) : (
       children
     )}
-  </div>
+  </button>
 );
 export default Item;
