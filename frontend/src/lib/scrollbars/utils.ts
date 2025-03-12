@@ -9,6 +9,7 @@ interface CustomPointerEventInfo<EventType extends Event> {
 export const makeMouseWheelWithAnimation =
   (
     canvas: fabric.Canvas,
+    pageId: number,
     size = { min: 0.02, max: 256 },
     enableZoomAnimation = true,
     setViewportTransform: React.Dispatch<
@@ -39,6 +40,9 @@ export const makeMouseWheelWithAnimation =
     let momentumZoomVelocity = 0;
 
     function applyZoom(zoom: number, point: fabric.Point) {
+      if (zoom < canvasService.getZoomMin(canvas, pageId, isMobile)) {
+        return;
+      }
       canvas.zoomToPoint(point, zoom);
 
       if (canvas.viewportTransform) {

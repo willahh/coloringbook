@@ -9,6 +9,20 @@ import {
 import { Appearance } from '@/common/contexts/ThemeContext';
 import * as themeColors from '@/common/utils/themeColors';
 
+// Interface pour les dimensions du canvas
+interface CanvasDimensions {
+  canvasWidth: number;
+  canvasHeight: number;
+}
+
+// Interface pour les dimensions de la page
+interface PageDimensions {
+  pageLeft: number;
+  pageTop: number;
+  pageWidth: number;
+  pageHeight: number;
+}
+
 class CanvasService {
   private _canvas: fabric.Canvas | null = null;
 
@@ -214,12 +228,15 @@ class CanvasService {
     canvas: fabric.Canvas,
     pageId: number
   ): FabricRectPage | undefined {
+    console.log('#a getPageRectbyPageId', pageId);
     const pageRect = canvas.getObjects().find((obj) => {
       // console.log('#a find by pageId ', pageId, obj);
+
       if (
-        obj.type === 'rect' &&
-        (obj as FabricRectPage).pageId === Number(pageId)
+        obj.get('pageId') === pageId
+        // (obj as FabricRectPage).pageId === pageId
       ) {
+        console.log('#a getPageRectbyPageId found !');
         return true;
       }
       return false;
@@ -228,22 +245,22 @@ class CanvasService {
     return pageRect as FabricRectPage;
   }
 
-  getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
-    let pageDimensions = {
-      width: 0,
-      height: 0,
-    };
-    const pageRect = this.getPageRectbyPageId(canvas, pageId);
+  // getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
+  //   let pageDimensions = {
+  //     width: 0,
+  //     height: 0,
+  //   };
+  //   const pageRect = this.getPageRectbyPageId(canvas, pageId);
 
-    if (pageRect) {
-      pageDimensions = {
-        width: pageRect.width,
-        height: pageRect.height ?? 0,
-      };
-    }
+  //   if (pageRect) {
+  //     pageDimensions = {
+  //       width: pageRect.width,
+  //       height: pageRect.height ?? 0,
+  //     };
+  //   }
 
-    return pageDimensions;
-  }
+  //   return pageDimensions;
+  // }
 
   getPages(canvas: fabric.Canvas): PageFabricObject[] {
     const pages = canvas.getObjects().filter((obj) => {
@@ -299,32 +316,7 @@ class CanvasService {
     );
   }
 
-  getPageFocusCoordinates(
-    canvas: fabric.Canvas,
-    pageId: number,
-    isMobile: boolean,
-    // margin = 40
-    margin = 20
-  ): fabric.TMat2D | null {
-    const page = canvas
-      .getObjects()
-      .find(
-        (obj) => (obj as PageFabricObject).pageId === pageId
-      ) as PageFabricObject & fabric.Rect;
-
-    if (!page) {
-      console.warn(`Page with ID ${pageId} not found.`);
-      return null;
-    }
-
-    // Cast en fabric.Rect pour les propriétés spécifiques à Rect
-    const pageRect = page as fabric.Rect;
-    const pageLeft = pageRect.left || 0;
-    const pageTop = pageRect.top || 0;
-    const pageWidth = pageRect.width || 0;
-    const pageHeight = pageRect.height || 0;
-
-    // Dimensions du canvas
+  getCanvasDimensions(isMobile: boolean): CanvasDimensions {
     const viewportWidth = window.innerWidth;
     const viewportHeight = Math.min(
       document.documentElement.clientHeight,
@@ -334,7 +326,7 @@ class CanvasService {
     const headerHeight = 64;
     const footerHeight = 64;
     let canvasWidth = viewportWidth;
-    let canvasHeight = viewportHeight; // 66 = Hauteur du footer
+    let canvasHeight = viewportHeight;
 
     if (isMobile) {
       canvasWidth = viewportWidth;
@@ -347,24 +339,90 @@ class CanvasService {
       const pagesPanelElWidth = pagesPanelEl?.clientWidth || 0;
       const layerEl = document.querySelector('div[data-id="layer-panel"]');
       const layerElWidth = layerEl?.clientWidth || 0;
-
       const sidePanelEl = document.querySelector('aside[data-id="sidepanel"]');
       const sidePanelWidth = sidePanelEl?.clientWidth || 0;
-
       const bookToolbarWidth = bookToolbarEl?.clientWidth || 0;
-      
-      // const { x } = canvas.getElement().getBoundingClientRect();
+
       canvasWidth =
-        viewportWidth - bookToolbarWidth - pagesPanelElWidth - sidePanelWidth - layerElWidth;
+        viewportWidth -
+        bookToolbarWidth -
+        pagesPanelElWidth -
+        sidePanelWidth -
+        layerElWidth;
       canvasHeight = viewportHeight - headerHeight;
     }
 
     console.log('#1.1 canvasWidth', canvasWidth);
-    // console.log('#1.1 canvasHeight', canvasHeight);
-    // Calculer le zoom nécessaire pour voir toute la page avec des marges
-    const zoomX = (canvasWidth - 2 * margin) / pageWidth;
-    const zoomY = (canvasHeight - 2 * margin) / pageHeight;
+    return { canvasWidth, canvasHeight };
+  }
+
+  getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
+    const pageRect = this.getPageRectbyPageId(canvas, pageId);
+
+    // console.log('#a getPageDimensions pageId: ', pageId)
+    // console.log('#a pageRect', pageRect)
+    return {
+      pageLeft: pageRect?.left || 0,
+      pageTop: pageRect?.top || 0,
+      pageWidth: pageRect?.width || 0,
+      pageHeight: pageRect?.height || 0,
+    };
+  }
+
+  getPageFocusMargin(isMobile: boolean) {
+    return isMobile
+      ? { verticalMargin: 20, horizontalMargin: 10 }
+      : { verticalMargin: 24, horizontalMargin: 20 };
+  }
+  calculateZoomMin(
+    canvasWidth: number,
+    canvasHeight: number,
+    pageWidth: number,
+    pageHeight: number,
+    isMobile: boolean
+  ): number {
+    const { verticalMargin, horizontalMargin } =
+      this.getPageFocusMargin(isMobile);
+    const zoomX = (canvasWidth - 2 * horizontalMargin) / pageWidth;
+    const zoomY = (canvasHeight - 2 * verticalMargin) / pageHeight;
     const zoom = Math.min(zoomX, zoomY);
+
+    return zoom;
+  }
+
+  getZoomMin(canvas: fabric.Canvas, pageId: number, isMobile: boolean): number {
+    const { canvasWidth, canvasHeight } = this.getCanvasDimensions(isMobile);
+    const { pageWidth, pageHeight } = this.getPageDimensions(canvas, pageId);
+
+    const zoom = this.calculateZoomMin(
+      canvasWidth,
+      canvasHeight,
+      pageWidth,
+      pageHeight,
+      isMobile
+    );
+
+    return zoom;
+  }
+
+  getPageFocusCoordinates(
+    canvas: fabric.Canvas,
+    pageId: number,
+    isMobile: boolean
+  ): fabric.TMat2D | null {
+    const { canvasWidth, canvasHeight } = this.getCanvasDimensions(isMobile);
+    const { pageLeft, pageTop, pageWidth, pageHeight } = this.getPageDimensions(
+      canvas,
+      pageId
+    );
+
+    const zoom = this.calculateZoomMin(
+      canvasWidth,
+      canvasHeight,
+      pageWidth,
+      pageHeight,
+      isMobile
+    );
 
     // Calculer le centre de la page et du canvas pour positionner correctement le viewport
     const centerPageX = pageLeft + pageWidth / 2;
@@ -383,6 +441,7 @@ class CanvasService {
       deltaX,
       isMobile
     );
+
     return [zoom, 0, 0, zoom, deltaX, deltaY];
   }
 
@@ -412,7 +471,6 @@ class CanvasService {
     }
   }
 
-  // avec scale
   constrainHorizontalMovement(
     canvasWidth: number,
     maxPageWidth: number,
