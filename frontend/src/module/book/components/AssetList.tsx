@@ -100,6 +100,7 @@ const AssetList: React.FC<{ title: string }> = ({ title }) => {
   const pageId = Number(params.pageId);
 
   const svgs = [
+    { name: 'Garden', file: 'garden.svg' },
     { name: 'Castle', file: 'castle.svg' },
     { name: 'Cat', file: 'cat.svg' },
     { name: 'Cochon', file: 'cochon.svg' },
