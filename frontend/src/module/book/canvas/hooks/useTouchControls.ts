@@ -53,9 +53,11 @@ export function useTouchControls({
     let animationFrameId: number | null = null;
     let initialPinchDistance: number | null = null;
     let isPinching = false;
-    const isZoomed =
+    let isZoomed =
       canvas.getZoom() >
       canvasService.getZoomMin(canvas, pageIdParam, isMobile);
+
+    // alert('isZoomed pageId: ' + pageIdParam + ' ' + canvas.getZoom() + ' - ' + canvasService.getZoomMin(canvas, pageIdParam, isMobile));
 
     const MOMENTUM_THRESHOLD = 100;
     const MOMENTUM_DAMPING = 0.95;
@@ -223,9 +225,14 @@ export function useTouchControls({
           const zoomFactor = currentDistance / initialPinchDistance;
           let zoom = currentZoom * zoomFactor;
           zoom = Math.max(0.02, Math.min(256, zoom));
-          const zoomMin = canvasService.getZoomMin(canvas, pageIdParam, isMobile);
+          const zoomMin = canvasService.getZoomMin(
+            canvas,
+            pageIdParam,
+            isMobile
+          );
 
-          if (zoom <= zoomMin - 0.4) {
+          const threashold = 0.6;
+          if (zoom <= zoomMin - threashold) {
             console.log('zoom limit');
             zoom = currentZoom;
           }
@@ -559,7 +566,7 @@ export function useTouchControls({
         const isTap =
           distanceMoved < tapThreshold && touchDuration < tapDurationThreshold;
 
-        let isZoomed =
+        const isZoomed =
           canvas.getZoom() >
           canvasService.getZoomMin(canvas, pageIdParam, isMobile);
 
@@ -572,9 +579,9 @@ export function useTouchControls({
                 canvas.getActiveObjects().length === 0
               ) {
                 canvasService.pageFocus(canvas, pages, pageId, isMobile);
-                isZoomed =
-                  canvas.getZoom() >
-                  canvasService.getZoomMin(canvas, pageIdParam, isMobile);
+                // isZoomed =
+                //   canvas.getZoom() >
+                //   canvasService.getZoomMin(canvas, pageIdParam, isMobile);
               }
             } else {
               canvas.setActiveObject(target);
@@ -652,10 +659,16 @@ export function useTouchControls({
     });
     upperCanvas.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-    // const handleZoomChange = () => {
-    //   updateZoomState();
-    // };
-    // canvas.on('after:render', handleZoomChange);
+    const updateZoomState = () => {
+      isZoomed =
+        canvas.getZoom() >
+        canvasService.getZoomMin(canvas, pageIdParam, isMobile);
+    };
+
+    const handleZoomChange = () => {
+      updateZoomState();
+    };
+    canvas.on('after:render', handleZoomChange);
 
     return () => {
       if (animationFrameId) cancelAnimationFrame(animationFrameId);

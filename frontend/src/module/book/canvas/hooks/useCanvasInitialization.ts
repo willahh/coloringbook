@@ -11,6 +11,7 @@ import {
 import { useTouchControls } from './useTouchControls';
 import useIsMobile from '@/common/hooks/useIsMobile';
 import { useParams } from 'react-router-dom';
+import { toDataURL } from 'node_modules/fabric/dist/src/util';
 
 export function useCanvasInitialization(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
@@ -77,6 +78,8 @@ export function useCanvasInitialization(
       lineWidth: 5,
       scrollbarSize: 8,
       offsetY: isMobile ? 0 : 62,
+      hideX: isMobile ? true : false,
+      hideY: isMobile ? true : false
     });
     scrollbarInstance.current = scrollbar;
 

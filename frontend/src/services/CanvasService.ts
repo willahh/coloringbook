@@ -402,10 +402,11 @@ class CanvasService {
     const centerPageY = pageTop + pageHeight / 2;
     const centerCanvasX = canvasWidth / 2;
     const centerCanvasY = canvasHeight / 2;
+    const offsetY = isMobile ? 20 : 0;
 
     // Calculer le déplacement nécessaire pour centrer la page dans le canvas
     let deltaX = centerCanvasX - centerPageX * zoom;
-    const deltaY = centerCanvasY - centerPageY * zoom;
+    const deltaY = (centerCanvasY - centerPageY - offsetY) * zoom;
 
     // Appliquer la contrainte horizontale
     deltaX = this.constrainHorizontalMovement(
