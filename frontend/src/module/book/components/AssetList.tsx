@@ -15,9 +15,11 @@ const ElementItem: React.FC<{
 }> = ({ children, onClick, className }) => {
   return (
     <Item
-      className={`flex justify-center w-full aspect-square object-cover p-2
+      className={`${
+        className || ''
+      } flex justify-center w-full aspect-square object-cover p-2
         dark:fill-white
-        bg-primary-100 dark:bg-primary-700 ${className || ''}`}
+        bg-primary-100 dark:bg-primary-700/50`}
       onClick={onClick}
     >
       {children}
@@ -25,7 +27,7 @@ const ElementItem: React.FC<{
   );
 };
 
-const LazyElementItem: React.FC<{
+const LazyAssetItem: React.FC<{
   svg: (typeof svgs)[number];
   pageId: number;
   dispatch: ReturnType<typeof useDispatch>;
@@ -86,7 +88,7 @@ const LazyElementItem: React.FC<{
         src={`${getAPIURL()}/image/2png/${svg.file}`}
         loading="lazy"
         alt={svg.name}
-        className="h-full object-contain"
+        className="h-full object-contain dark:invert-75 dark:sm:invert-0" // Invert vectoriel path from black to white in dark mode mobile
       />
     </ElementItem>
   );
@@ -115,10 +117,10 @@ const AssetList: React.FC<{ title: string }> = ({ title }) => {
     <div className="flex flex-col @container h-full">
       <div>{title}</div>
       <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
-        <div className="grid grid-cols-1 @4xs:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 @4xs:grid-cols-3 @sm:grid-cols-4 @md:grid-cols-6 @lg:grid-cols-8 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>
-              <LazyElementItem svg={svg} pageId={pageId} dispatch={dispatch} />
+              <LazyAssetItem svg={svg} pageId={pageId} dispatch={dispatch} />
             </Suspense>
           ))}
         </div>

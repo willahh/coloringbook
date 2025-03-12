@@ -30,48 +30,49 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [lastDragPosition, setLastDragPosition] = useState<number>(0); // Sauvegarde de la dernière position y
   const panelRef = useRef<HTMLDivElement>(null);
+  const iconClassName = 'w-6 h-6';
 
   const tabs: Tab[] = [
     {
       id: 'Illustrations',
       label: 'Illustrations',
-      icon: <FaImages className="inline-block mr-2" />,
+      icon: <FaImages className={iconClassName} />,
       content: <IllustrationsPanel />,
     },
     {
       id: 'Elements',
       label: 'Elements',
-      icon: <FaShapes className="inline-block mr-2" />,
+      icon: <FaShapes className={iconClassName} />,
       content: <ShapesPanel />,
     },
     {
       id: 'Textes',
       label: 'Textes',
-      icon: <FaFont className="inline-block mr-2" />,
+      icon: <FaFont className={iconClassName} />,
       content: <ShapesPanel />,
     },
     {
       id: 'Formes',
       label: 'Formes',
-      icon: <FaShapes className="inline-block mr-2" />,
+      icon: <FaShapes className={iconClassName} />,
       content: <ShapesPanel />,
     },
     {
       id: 'Dessiner',
       label: 'Dessiner',
-      icon: <FaPencilAlt className="inline-block mr-2" />,
+      icon: <FaPencilAlt className={iconClassName} />,
       content: <ShapesPanel />,
     },
     {
       id: 'Colorier',
       label: 'Colorier',
-      icon: <IoColorPalette className="inline-block mr-2" />,
+      icon: <IoColorPalette className={iconClassName} />,
       content: <ShapesPanel />,
     },
     {
       id: 'Importer',
       label: 'Importer',
-      icon: <FaUpload className="inline-block mr-2" />,
+      icon: <FaUpload className={iconClassName} />,
       content: <ShapesPanel />,
     },
   ];
@@ -149,25 +150,29 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     >
       {/* Barre des onglets (toujours visible en bas) */}
       <div
-        className="absolute bottom-0 z-30 flex overflow-x-auto snap-x border-t
+        className="absolute bottom-0 w-full z-30 border-t  overflow-x-auto snap-x
        border-primary-200 dark:border-primary-800 bg-primary-100 dark:bg-primary-950"
       >
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            className={`flex flex-col items-center snap-center p-4 text-sm font-normal ${
-              activeTab === tab.id
-                ? 'text-secondary-500'
-                : 'text-primary-500 hover:text-primary-700 dark:text-primary-500 dark:hover:text-primary-300'
-            }`}
-            onClick={() => handleTabClick(tab.id)}
-            aria-expanded={activeTab === tab.id && isOpen}
-            aria-controls={`panel-${tab.id}`}
-          >
-            {tab.icon}
-            {tab.label}
-          </button>
-        ))}
+        <div className="flex">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`flex flex-col items-center snap-center px-4 py-4 text-sm font-normal transition-all duration-300 ${
+                activeTab === tab.id
+                  ? 'text-secondary-500'
+                  : 'text-primary-500 hover:text-primary-700 dark:text-primary-500 dark:hover:text-primary-300'
+              }`}
+              onClick={() => handleTabClick(tab.id)}
+              aria-expanded={activeTab === tab.id && isOpen}
+              aria-controls={`panel-${tab.id}`}
+            >
+              <span className="mb-1 flex items-end justify-center">
+                {tab.icon}
+              </span>
+              <span className="text-xs">{tab.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Panneau animé avec drag-and-drop */}
@@ -205,7 +210,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
               dragMomentum={true} // Activer l'inertie après le drag
               onDrag={handleDrag} // Mettre à jour la position en temps réel
               onDragEnd={handleDragEnd} // Gérer la fin du drag
-              className="fixed bottom-0 w-full overflow-hidden z-20 bg-primary-100 dark:bg-primary-950 shadow-lg rounded-tl-3xl rounded-tr-3xl"
+              className="fixed bottom-0 w-full overflow-hidden z-20 bg-primary-100 border-t border-primary-300 dark:bg-primary-950 dark:border-primary-800 rounded-tl-3xl rounded-tr-3xl shadow-2xl"
               // style={{ height: 'calc(min(400px, 70vh))' }}
               style={{ height: '70vh' }}
             >
