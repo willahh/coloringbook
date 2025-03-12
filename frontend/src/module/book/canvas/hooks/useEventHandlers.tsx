@@ -46,10 +46,10 @@ export const useEventHandlers = (canvas: fabric.Canvas | null) => {
           );
           const newElement: Element = {
             ...element,
-            x: fabricObject.getRelativeX() / pageDimensions.width,
-            y: (fabricObject.getRelativeY() - offsetY) / pageDimensions.height,
-            w: fabricObject.getScaledWidth() / pageDimensions.width,
-            h: fabricObject.getScaledHeight() / pageDimensions.height,
+            x: fabricObject.getRelativeX() / pageDimensions.pageWidth,
+            y: (fabricObject.getRelativeY() - offsetY) / pageDimensions.pageHeight,
+            w: fabricObject.getScaledWidth() / pageDimensions.pageWidth,
+            h: fabricObject.getScaledHeight() / pageDimensions.pageHeight,
           };
           console.log('newElement', newElement);
           dispatch(

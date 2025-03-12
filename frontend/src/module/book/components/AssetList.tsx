@@ -88,7 +88,7 @@ const LazyAssetItem: React.FC<{
         src={`${getAPIURL()}/image/2png/${svg.file}`}
         loading="lazy"
         alt={svg.name}
-        className="h-full object-contain dark:invert-75 dark:sm:invert-0" // Invert vectoriel path from black to white in dark mode mobile
+        className="h-full object-contain dark:invert-100" // Invert vectoriel path from black to white in dark mode mobile
       />
     </ElementItem>
   );

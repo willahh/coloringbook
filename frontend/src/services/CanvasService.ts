@@ -228,15 +228,8 @@ class CanvasService {
     canvas: fabric.Canvas,
     pageId: number
   ): FabricRectPage | undefined {
-    console.log('#a getPageRectbyPageId', pageId);
     const pageRect = canvas.getObjects().find((obj) => {
-      // console.log('#a find by pageId ', pageId, obj);
-
-      if (
-        obj.get('pageId') === pageId
-        // (obj as FabricRectPage).pageId === pageId
-      ) {
-        console.log('#a getPageRectbyPageId found !');
+      if (obj.get('pageId') === pageId) {
         return true;
       }
       return false;
@@ -244,23 +237,6 @@ class CanvasService {
 
     return pageRect as FabricRectPage;
   }
-
-  // getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
-  //   let pageDimensions = {
-  //     width: 0,
-  //     height: 0,
-  //   };
-  //   const pageRect = this.getPageRectbyPageId(canvas, pageId);
-
-  //   if (pageRect) {
-  //     pageDimensions = {
-  //       width: pageRect.width,
-  //       height: pageRect.height ?? 0,
-  //     };
-  //   }
-
-  //   return pageDimensions;
-  // }
 
   getPages(canvas: fabric.Canvas): PageFabricObject[] {
     const pages = canvas.getObjects().filter((obj) => {
@@ -352,15 +328,12 @@ class CanvasService {
       canvasHeight = viewportHeight - headerHeight;
     }
 
-    console.log('#1.1 canvasWidth', canvasWidth);
     return { canvasWidth, canvasHeight };
   }
 
   getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
     const pageRect = this.getPageRectbyPageId(canvas, pageId);
 
-    // console.log('#a getPageDimensions pageId: ', pageId)
-    // console.log('#a pageRect', pageRect)
     return {
       pageLeft: pageRect?.left || 0,
       pageTop: pageRect?.top || 0,
