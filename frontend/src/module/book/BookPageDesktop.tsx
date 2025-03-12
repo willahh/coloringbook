@@ -15,6 +15,7 @@ import { backgroundRadialStyles } from '@/common/utils/backgroundStyles';
 import BookFooterDesktop from './components/BookFooterDesktop';
 // import LayerPanel from './components/LayerPanel';
 import useCanvasContext from './useCanvasContext';
+import VectorizerComponent from './components/vectorizer/VectorizerComponent';
 
 const BookPageDesktop: React.FC = () => {
   let { bookId = 0 /*, pageId = 1 */ } = useParams<{
@@ -65,6 +66,7 @@ const BookPageDesktop: React.FC = () => {
       ) : !isLoading ? (
         <>
           <BookToolbar />
+          <VectorizerComponent />
           <SidePanel ref={sidePanelRef} className="relative z-20" />
           {book.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
           {/* <LayerPanel canvas={canvas} onUpdateCanvas={handleCanvasUpdate} /> */}
