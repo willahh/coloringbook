@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @config "./../../../tailwind.config.js";
-@import './themes/theme.bluegray.css';
+@import './themes/theme.violet-red.css';
 @import './main.base.css';
 
 .btn {

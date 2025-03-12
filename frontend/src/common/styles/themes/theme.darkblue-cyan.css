@@ -1,0 +1,61 @@
+/* 
+https://color.adobe.com/fr/explore
+https://www.tints.dev/primary/B4BEC9 
+*/
+
+@theme {
+  --color-primary-50: #f1f3f8;
+  --color-primary-100: #e7eaf2;
+  --color-primary-200: #d4dae9;
+  --color-primary-300: #b6c2da;
+  --color-primary-400: #93a2c7;
+  --color-primary-500: #7987b8;
+  --color-primary-600: #6772a9;
+  --color-primary-700: #5b629a;
+  --color-primary-800: #4e537f;
+  --color-primary-900: #424666;
+  --color-primary-950: #2b2d40;
+}
+
+@theme {
+  --color-secondary-50: #f1fafa;
+  --color-secondary-100: #dcf1f1;
+  --color-secondary-200: #bce4e5;
+  --color-secondary-300: #8eced2;
+  --color-secondary-400: #4aa6ad;
+  --color-secondary-500: #3d959d;
+  --color-secondary-600: #357a85;
+  --color-secondary-700: #31646d;
+  --color-secondary-800: #2f545b;
+  --color-secondary-900: #2a474f;
+  --color-secondary-950: #182e34;
+}
+
+/* 
+@theme {
+  --color-primary-50: #f6f7f8;
+  --color-primary-100: #eaecef;
+  --color-primary-200: #d9dee4;
+  --color-primary-300: #b4bec9;
+  --color-primary-400: #a0acba;
+  --color-primary-500: #8995a8;
+  --color-primary-600: #778299;
+  --color-primary-700: #6b738a;
+  --color-primary-800: #5a6073;
+  --color-primary-900: #4b505d;
+  --color-primary-950: #30333b;
+}
+
+@theme {
+  --color-secondary-50: #f1fcfb;
+  --color-secondary-100: #cef9f4;
+  --color-secondary-200: #9df2ea;
+  --color-secondary-300: #64e4dd;
+  --color-secondary-400: #35ccc9;
+  --color-secondary-500: #1bb1b0;
+  --color-secondary-600: #159a9c;
+  --color-secondary-700: #146e71;
+  --color-secondary-800: #14595b;
+  --color-secondary-900: #16494b;
+  --color-secondary-950: #062a2d;
+} */

@@ -2249,6 +2249,13 @@
       }
     }
   }
+  .hover\:bg-gray-100 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-gray-100);
+      }
+    }
+  }
   .hover\:bg-primary-50 {
     &:hover {
       @media (hover: hover) {
@@ -2358,6 +2365,13 @@
     &:hover {
       @media (hover: hover) {
         color: var(--color-primary-500);
+      }
+    }
+  }
+  .hover\:text-red-700 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-red-700);
       }
     }
   }
