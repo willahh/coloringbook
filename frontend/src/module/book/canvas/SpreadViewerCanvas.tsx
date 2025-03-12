@@ -118,7 +118,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
     };
   }, [canvas]);
 
-  console.log('showShapeList', showShapeList)
+  //console.log('showShapeList', showShapeList)
 
   return (
     <ErrorBoundary fallback={<div>sd</div>}>
@@ -136,7 +136,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
             onClose={() => setShowShapeList(false)}
           />
         )} */}
-        <div
+        {/* <div
           data-id="inline-toolbar"
           className={`hidden sm:block absolute bottom-20 right-12 z-10
           rounded-full px-4 py-2
@@ -152,7 +152,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
           <button>Duplicate</button>
           <button>Delete</button>
           <button>Plus</button>
-        </div>
+        </div> */}
       </div>
     </ErrorBoundary>
   );

@@ -10,11 +10,13 @@ import {
 } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
 import useIsMobile from '@/common/hooks/useIsMobile';
+import { useParams } from 'react-router-dom';
 
 export function useCanvasInitialization(
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>
 ) {
   const { setCanvas, setViewportTransform } = useCanvasContext();
+  const { pageId } = useParams<{ pageId?: string }>();
   const canvasInstance = useRef<fabric.Canvas | null>(null);
   const scrollbarInstance = useRef<Scrollbars | null>(null);
   const isMobile = useIsMobile();
@@ -52,7 +54,6 @@ export function useCanvasInitialization(
       renderOnAddRemove: true,
       allowTouchScrolling: true,
       // enableRetinaScaling: true,
-      
     });
 
     canvasInstance.current = canvas;
@@ -62,6 +63,7 @@ export function useCanvasInitialization(
 
     const mousewheel = makeMouseWheelWithAnimation(
       canvas,
+      Number(pageId),
       { min: 0.02, max: 256 },
       true,
       setViewportTransform,

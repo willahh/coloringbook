@@ -188,6 +188,8 @@ export function useTouchControls({
         const x = vpt[4] + deltaX;
         const y = vpt[5] + deltaY;
 
+        // console.log('canvas.getZoom()', canvas.getZoom())
+
         vpt[4] = canvasService.constrainHorizontalMovement(
           canvasWidth,
           totalWidth * canvas.getZoom(),

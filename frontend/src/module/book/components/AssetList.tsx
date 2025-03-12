@@ -1,29 +1,12 @@
-import Item from '../Item';
+import Item from '../sidePanel/Item';
 import { Suspense, useEffect, useState } from 'react';
 import Loader from '@components/Loader';
 import { useDispatch } from '@/common/store';
-import { addElementToPage } from '../../element/Element.action';
+import { addElementToPage } from '../element/Element.action';
 import { useParams } from 'react-router';
 import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
 import { getAPIURL } from '@/common/utils/api';
-
-// Liste des SVG (sans imports locaux)
-const svgs = [
-  { name: 'Castle', file: 'castle.svg' },
-  { name: 'Cat', file: 'cat.svg' },
-  { name: 'Cochon', file: 'cochon.svg' },
-  { name: 'Dinosaure', file: 'dinosaure.svg' },
-  { name: 'Flower', file: 'flower.svg' },
-  { name: 'Hibou', file: 'hibou.svg' },
-  { name: 'Hippocampe', file: 'hippocampe.svg' },
-  { name: 'Lapin', file: 'lapin.svg' },
-  { name: 'Perroquet', file: 'perroquet.svg' },
-  { name: 'Pieuvre', file: 'pieuvre.svg' },
-  { name: 'Dinosaure2', file: 'dinosaure2.svg' },
-];
-
-const API_BASE_URL = getAPIURL();
 
 const ElementItem: React.FC<{
   className?: string;
@@ -42,27 +25,6 @@ const ElementItem: React.FC<{
   );
 };
 
-const ElementTabContent: React.FC = () => {
-  const dispatch = useDispatch();
-  const params = useParams<{ pageId?: string }>();
-  const pageId = Number(params.pageId);
-
-  return (
-    <div className="flex flex-col @container h-full">
-      <div>Ressources graphiques</div>
-      <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
-        <div className="grid grid-cols-1 @4xs:grid-cols-2 gap-4">
-          {svgs.map((svg, index) => (
-            <Suspense fallback={<Loader />} key={index}>
-              <LazyElementItem svg={svg} pageId={pageId} dispatch={dispatch} />
-            </Suspense>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const LazyElementItem: React.FC<{
   svg: (typeof svgs)[number];
   pageId: number;
@@ -75,7 +37,7 @@ const LazyElementItem: React.FC<{
     const fetchSvgContent = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}/image/svg-content/${svg.file}`
+          `${getAPIURL()}/image/svg-content/${svg.file}`
         );
         if (!response.ok) {
           throw new Error(
@@ -121,7 +83,7 @@ const LazyElementItem: React.FC<{
         <HeartIcon className="w-4 h-4 text-pink-500" />
       </button>
       <img
-        src={`${API_BASE_URL}/image/2png/${svg.file}`}
+        src={`${getAPIURL()}/image/2png/${svg.file}`}
         loading="lazy"
         alt={svg.name}
         className="h-full object-contain"
@@ -130,4 +92,39 @@ const LazyElementItem: React.FC<{
   );
 };
 
-export default ElementTabContent;
+const AssetList: React.FC<{ title: string }> = ({ title }) => {
+  const dispatch = useDispatch();
+  const params = useParams<{ pageId?: string }>();
+  const pageId = Number(params.pageId);
+
+  const svgs = [
+    { name: 'Castle', file: 'castle.svg' },
+    { name: 'Cat', file: 'cat.svg' },
+    { name: 'Cochon', file: 'cochon.svg' },
+    { name: 'Dinosaure', file: 'dinosaure.svg' },
+    { name: 'Flower', file: 'flower.svg' },
+    { name: 'Hibou', file: 'hibou.svg' },
+    { name: 'Hippocampe', file: 'hippocampe.svg' },
+    { name: 'Lapin', file: 'lapin.svg' },
+    { name: 'Perroquet', file: 'perroquet.svg' },
+    { name: 'Pieuvre', file: 'pieuvre.svg' },
+    { name: 'Dinosaure2', file: 'dinosaure2.svg' },
+  ];
+
+  return (
+    <div className="flex flex-col @container h-full">
+      <div>{title}</div>
+      <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
+        <div className="grid grid-cols-1 @4xs:grid-cols-3 gap-4">
+          {svgs.map((svg, index) => (
+            <Suspense fallback={<Loader />} key={index}>
+              <LazyElementItem svg={svg} pageId={pageId} dispatch={dispatch} />
+            </Suspense>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AssetList;

@@ -9,6 +9,9 @@ import {
 } from 'react-icons/fa';
 import { IoColorPalette } from 'react-icons/io5';
 
+import ShapesPanel from './ShapesPanel';
+import IllustrationsPanel from './IllustrationsPanel';
+
 interface Tab {
   id: string;
   label: string;
@@ -83,10 +86,10 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     }
   };
 
-  const onOverlayClick = () => {
-    setIsOpen(false);
-    setActiveTab(null);
-  };
+  // const onOverlayClick = () => {
+  //   setIsOpen(false);
+  //   setActiveTab(null);
+  // };
 
   // Animation pour le panneau avec position sauvegardée
   const panelVariants = {
@@ -147,7 +150,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
       {/* Barre des onglets (toujours visible en bas) */}
       <div
         className="absolute bottom-0 z-30 flex overflow-x-auto snap-x border-t
-       border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900"
+       border-primary-200 dark:border-primary-800 bg-primary-100 dark:bg-primary-950"
       >
         {tabs.map((tab) => (
           <button
@@ -155,7 +158,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
             className={`flex flex-col items-center snap-center p-4 text-sm font-normal ${
               activeTab === tab.id
                 ? 'text-secondary-500'
-                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                : 'text-primary-500 hover:text-primary-700 dark:text-primary-500 dark:hover:text-primary-300'
             }`}
             onClick={() => handleTabClick(tab.id)}
             aria-expanded={activeTab === tab.id && isOpen}
@@ -173,7 +176,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
           <>
             {/* Overlay */}
             {/* <motion.div
-              className="fixed z-10 inset-0 bg-primary-100/75 dark:bg-primary-900/75"
+              className="fixed z-10 inset-0 bg-primary-100/75 dark:bg-primary-950/75"
               variants={overlayVariants}
               initial="hidden"
               animate="visible"
@@ -202,15 +205,16 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
               dragMomentum={true} // Activer l'inertie après le drag
               onDrag={handleDrag} // Mettre à jour la position en temps réel
               onDragEnd={handleDragEnd} // Gérer la fin du drag
-              className="fixed bottom-0 w-full overflow-hidden z-20 bg-gray-100 dark:bg-gray-900 shadow-lg rounded-tl-3xl rounded-tr-3xl"
-              style={{ height: 'calc(min(400px, 70vh))' }}
+              className="fixed bottom-0 w-full overflow-hidden z-20 bg-primary-100 dark:bg-primary-950 shadow-lg rounded-tl-3xl rounded-tr-3xl"
+              // style={{ height: 'calc(min(400px, 70vh))' }}
+              style={{ height: '70vh' }}
             >
               {/* En-tête du panneau avec une zone de drag */}
               <div
-                className="flex justify-center items-center p-2 border-b border-gray-200 dark:border-gray-700 cursor-grab"
+                className="flex justify-center items-center p-2 border-b border-primary-200 dark:border-primary-800 cursor-grab"
                 style={{ touchAction: 'none' }} // Empêcher le scroll par défaut
               >
-                <div className="w-12 h-1 bg-gray-400 rounded-full" />
+                <div className="w-12 h-1 bg-primary-400 rounded-full" />
               </div>
               <div className="flex-1 p-4 overflow-auto h-full">
                 {tabs.find((tab) => tab.id === activeTab)?.content}
@@ -222,20 +226,5 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     </div>
   );
 };
-
-// Composants temporaires pour le contenu des onglets
-const ShapesPanel: React.FC = () => (
-  <div className="text-gray-800 dark:text-gray-200">
-    <h3 className="text-lg font-semibold">Formes</h3>
-    <p>Contenu pour les formes (ex. carrés, cercles, triangles).</p>
-  </div>
-);
-
-const IllustrationsPanel: React.FC = () => (
-  <div className="text-gray-800 dark:text-gray-200">
-    <h3 className="text-lg font-semibold">Illustrations</h3>
-    <p>Contenu pour les illustrations (ex. animaux, objets).</p>
-  </div>
-);
 
 export default FooterTabsPanelMobile;
