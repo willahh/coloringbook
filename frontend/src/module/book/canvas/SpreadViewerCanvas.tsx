@@ -129,13 +129,13 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
       >
         <PagesNavigation />
         <canvas ref={canvasRef} className="w-full h-full" />
-        {showShapeList && (
+        {/* {showShapeList && (
           <SvgShapeList
             canvas={canvas}
             selectedObject={selectedObject}
             onClose={() => setShowShapeList(false)}
           />
-        )}
+        )} */}
         <div
           data-id="inline-toolbar"
           className={`hidden sm:block absolute bottom-20 right-12 z-10

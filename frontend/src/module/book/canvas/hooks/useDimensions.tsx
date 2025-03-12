@@ -29,6 +29,9 @@ export const useDimensions = (
         const pagesPanel = document.querySelector('div[data-id="pages-panel"]');
         const pagesPanelWidth = pagesPanel?.clientWidth || 0;
 
+        const layerPanel = document.querySelector('div[data-id="layer-panel"]');
+        const layerPanelWidth = layerPanel?.clientWidth || 0;
+
         let width = 0;
         let height = 0;
         if (isMobile) {
@@ -36,7 +39,7 @@ export const useDimensions = (
           height = viewportHeight - headerHeight - footerHeight;
         } else {
           // Ajoute un offset de 50 en desktop pour compenser la toolbar à gauche
-          width = window.innerWidth - sidePanelWidth - pagesPanelWidth - 50;
+          width = window.innerWidth - sidePanelWidth - pagesPanelWidth - layerPanelWidth - 50;
           height = window.innerHeight;
         }
 

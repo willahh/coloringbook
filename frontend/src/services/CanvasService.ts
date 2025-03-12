@@ -344,13 +344,18 @@ class CanvasService {
         'div[data-id="book-toolbar"]'
       );
       const pagesPanelEl = document.querySelector('div[data-id="pages-panel"]');
-      const sidePanelEl = document.querySelector('aside[data-id="sidepanel"]');
-      const bookToolbarWidth = bookToolbarEl?.clientWidth || 0;
       const pagesPanelElWidth = pagesPanelEl?.clientWidth || 0;
+      const layerEl = document.querySelector('div[data-id="layer-panel"]');
+      const layerElWidth = layerEl?.clientWidth || 0;
+
+      const sidePanelEl = document.querySelector('aside[data-id="sidepanel"]');
       const sidePanelWidth = sidePanelEl?.clientWidth || 0;
+
+      const bookToolbarWidth = bookToolbarEl?.clientWidth || 0;
+      
       // const { x } = canvas.getElement().getBoundingClientRect();
       canvasWidth =
-        viewportWidth - bookToolbarWidth - pagesPanelElWidth - sidePanelWidth;
+        viewportWidth - bookToolbarWidth - pagesPanelElWidth - sidePanelWidth - layerElWidth;
       canvasHeight = viewportHeight - headerHeight;
     }
 

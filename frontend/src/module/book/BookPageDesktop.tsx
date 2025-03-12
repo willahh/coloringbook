@@ -13,6 +13,8 @@ import LoadingScreen from '@/common/components/LoadingScreen';
 import ErrorDialog from '@/common/components/ErrorDialog';
 import { backgroundRadialStyles } from '@/common/utils/backgroundStyles';
 import BookFooterDesktop from './components/BookFooterDesktop';
+// import LayerPanel from './components/LayerPanel';
+import useCanvasContext from './useCanvasContext';
 
 const BookPageDesktop: React.FC = () => {
   let { bookId = 0 /*, pageId = 1 */ } = useParams<{
@@ -23,6 +25,7 @@ const BookPageDesktop: React.FC = () => {
 
   const dispatch = useDispatch();
   const { book, error, isLoading } = useSelector(selectBook);
+  const { canvas } = useCanvasContext();
 
   const sidePanelRef = useRef<HTMLDivElement>(null);
   const pagesPanelRef = useRef<HTMLDivElement>(null);
@@ -31,6 +34,10 @@ const BookPageDesktop: React.FC = () => {
   useEffect(() => {
     dispatch(bookActions.fetchBookByIdAction({ bookId: bookId }));
   }, [bookId]);
+
+  const handleCanvasUpdate = () => {
+    canvas?.renderAll();
+  };
 
   return (
     <Layout
@@ -58,17 +65,9 @@ const BookPageDesktop: React.FC = () => {
       ) : !isLoading ? (
         <>
           <BookToolbar />
-
-          <SidePanel
-            ref={sidePanelRef}
-            className="relative z-20"
-          />
-
-          {book.pages.length > 0 && (
-            <SpreadViewerCanvas
-              pages={book.pages}
-            />
-          )}
+          <SidePanel ref={sidePanelRef} className="relative z-20" />
+          {book.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
+          {/* <LayerPanel canvas={canvas} onUpdateCanvas={handleCanvasUpdate} /> */}
           <div>
             <PagesPanel
               ref={pagesPanelRef}
