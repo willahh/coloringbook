@@ -25,6 +25,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [lastDragPosition, setLastDragPosition] = useState<number>(0); // Sauvegarde de la dernière position y
   const panelRef = useRef<HTMLDivElement>(null);
 
   const tabs: Tab[] = [
@@ -87,36 +88,54 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     setActiveTab(null);
   };
 
-  // Animation pour le panneau
+  // Animation pour le panneau avec position sauvegardée
   const panelVariants = {
     closed: {
       y: '100%', // Panneau hors écran (en bas)
     },
-    open: {
-      y: 0, // Panneau remonté
-    },
+    open: (custom: number) => ({
+      y: custom || 0, // Position initiale basée sur lastDragPosition ou 0 par défaut
+      transition: {
+        type: 'spring',
+        stiffness: 500,
+        damping: 50,
+        bounce: 0.1,
+      },
+    }),
   };
 
-  // Animation pour l'overlay
-  const overlayVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-    exit: { opacity: 0, transition: { duration: 0.2 } },
-  };
+  // const overlayVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: { opacity: 1 },
+  //   exit: { opacity: 0, transition: { duration: 0.2 } },
+  // };
 
-  // Gestion de la fin du drag
+  // Gestion de la fin du drag avec sauvegarde de la position
   const handleDragEnd = (event: any, info: any) => {
     const panelHeight = panelRef.current?.clientHeight || 0;
-    const threshold = panelHeight * 0.5; // Seuil de 50% de la hauteur du panneau
     const dragDistance = info.offset.y;
+    const threshold = panelHeight * 0.5; // Seuil de 30% pour une fermeture rapide
 
     if (dragDistance > threshold) {
-      // Si l'utilisateur a glissé vers le bas au-delà du seuil, fermer le panneau
+      // Fermeture rapide si glissé vers le bas au-delà du seuil
       setIsOpen(false);
       setActiveTab(null);
     } else if (dragDistance < -threshold) {
-      // Si l'utilisateur a glissé vers le haut au-delà du seuil, ouvrir complètement
+      // Ouverture complète si glissé vers le haut au-delà du seuil
       setIsOpen(true);
+    } else {
+      // Sauvegarde de la position actuelle si entre les seuils
+      // setLastDragPosition(info.point.y - (window.innerHeight - panelHeight));
+      // setIsOpen(!!activeTab);
+    }
+  };
+
+  // Mise à jour de la position en temps réel pendant le drag
+  const handleDrag = (event: any, info: any) => {
+    const panelHeight = panelRef.current?.clientHeight || 0;
+    const newPosition = info.point.y - (window.innerHeight - panelHeight);
+    if (newPosition >= 0 && newPosition <= panelHeight) {
+      setLastDragPosition(newPosition);
     }
   };
 
@@ -170,14 +189,21 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
               animate="open"
               exit="closed"
               variants={panelVariants}
-              transition={{ type: 'spring', bounce: 0.25 }}
+              // custom={lastDragPosition} // Passer la dernière position comme custom value
+              transition={{
+                type: 'spring',
+                stiffness: 500,
+                damping: 50,
+                bounce: 0.1,
+              }}
               drag="y" // Activer le drag vertical
               dragConstraints={{ top: 0, bottom: window.innerHeight }} // Limiter le drag
               dragElastic={0.2} // Résistance élastique
               dragMomentum={true} // Activer l'inertie après le drag
+              onDrag={handleDrag} // Mettre à jour la position en temps réel
               onDragEnd={handleDragEnd} // Gérer la fin du drag
               className="fixed bottom-0 w-full overflow-hidden z-20 bg-gray-100 dark:bg-gray-900 shadow-lg rounded-tl-3xl rounded-tr-3xl"
-              style={{ height: '70vh' }}
+              style={{ height: 'calc(min(400px, 70vh))' }}
             >
               {/* En-tête du panneau avec une zone de drag */}
               <div
