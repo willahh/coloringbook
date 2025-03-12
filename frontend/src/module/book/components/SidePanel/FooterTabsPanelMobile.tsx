@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   FaImages,
   FaShapes,
   FaFont,
   FaPencilAlt,
   FaUpload,
-} from 'react-icons/fa'; // Font Awesome icons
-import { IoColorPalette } from 'react-icons/io5'; // Ionicon for "Colorier"
+} from 'react-icons/fa';
+import { IoColorPalette } from 'react-icons/io5';
 
-// Interface for tab props
 interface Tab {
   id: string;
   label: string;
@@ -17,76 +17,130 @@ interface Tab {
 }
 
 interface FooterTabsPanelMobileProps {
-  className: string;
+  className?: string;
 }
 
 const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
-  className,
+  className = '',
 }) => {
-  const [activeTab, setActiveTab] = useState<string>('Formes');
+  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const tabs: Tab[] = [
     {
       id: 'Illustrations',
       label: 'Illustrations',
-      icon: <FaImages className="inline-block mr-2" />, // Icon for Illustrations
+      icon: <FaImages className="inline-block mr-2" />,
       content: <IllustrationsPanel />,
     },
     {
       id: 'Elements',
       label: 'Elements',
-      icon: <FaShapes className="inline-block mr-2" />, // Icon for Elements
+      icon: <FaShapes className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
     {
       id: 'Textes',
       label: 'Textes',
-      icon: <FaFont className="inline-block mr-2" />, // Icon for Textes
+      icon: <FaFont className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
     {
       id: 'Formes',
       label: 'Formes',
-      icon: <FaShapes className="inline-block mr-2" />, // Icon for Formes
+      icon: <FaShapes className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
     {
       id: 'Dessiner',
       label: 'Dessiner',
-      icon: <FaPencilAlt className="inline-block mr-2" />, // Icon for Dessiner
+      icon: <FaPencilAlt className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
     {
       id: 'Colorier',
       label: 'Colorier',
-      icon: <IoColorPalette className="inline-block mr-2" />, // Icon for Colorier
+      icon: <IoColorPalette className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
     {
       id: 'Importer',
       label: 'Importer',
-      icon: <FaUpload className="inline-block mr-2" />, // Icon for Importer
+      icon: <FaUpload className="inline-block mr-2" />,
       content: <ShapesPanel />,
     },
   ];
 
+  const handleTabClick = (tabId: string) => {
+    if (activeTab === tabId && isOpen) {
+      setIsOpen(false);
+      setActiveTab(null);
+    } else {
+      setActiveTab(tabId);
+      setIsOpen(true);
+    }
+  };
+
+  const onOverlayClick = () => {
+    setIsOpen(false);
+    setActiveTab(null);
+  };
+
+  // Animation pour le panneau
+  const panelVariants = {
+    closed: {
+      y: '100%', // Panneau hors écran (en bas)
+    },
+    open: {
+      y: 0, // Panneau remonté
+    },
+  };
+
+  // Animation pour l'overlay
+  const overlayVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+    exit: { opacity: 0, transition: { duration: 0.2 } },
+  };
+
+  // Gestion de la fin du drag
+  const handleDragEnd = (event: any, info: any) => {
+    const panelHeight = panelRef.current?.clientHeight || 0;
+    const threshold = panelHeight * 0.5; // Seuil de 50% de la hauteur du panneau
+    const dragDistance = info.offset.y;
+
+    if (dragDistance > threshold) {
+      // Si l'utilisateur a glissé vers le bas au-delà du seuil, fermer le panneau
+      setIsOpen(false);
+      setActiveTab(null);
+    } else if (dragDistance < -threshold) {
+      // Si l'utilisateur a glissé vers le haut au-delà du seuil, ouvrir complètement
+      setIsOpen(true);
+    }
+  };
+
   return (
     <div
       data-id="footer-tabs-panel-mobile"
-      className={`${className} flex-col w-full flex overflow-hidden 
-      rounded-tl-3xl rounded-tr-3xl bg-gray-100 dark:bg-gray-900`}
+      className={`${className} fixed bottom-0 left-0 w-full z-30`}
     >
-      {/* Tab Bar */}
-      <div className="flex overflow-x-auto snap-x border-t border-gray-200 dark:border-gray-700">
+      {/* Barre des onglets (toujours visible en bas) */}
+      <div
+        className="absolute bottom-0 z-30 flex overflow-x-auto snap-x border-t
+       border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-900"
+      >
         {tabs.map((tab) => (
           <button
             key={tab.id}
             className={`flex flex-col items-center snap-center p-4 text-sm font-normal ${
               activeTab === tab.id
-                ? 'text-secondary-500 '
+                ? 'text-secondary-500'
                 : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
             }`}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => handleTabClick(tab.id)}
+            aria-expanded={activeTab === tab.id && isOpen}
+            aria-controls={`panel-${tab.id}`}
           >
             {tab.icon}
             {tab.label}
@@ -94,20 +148,60 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
         ))}
       </div>
 
-      {/* Panel Content */}
-      <div className="flex-1 p-4 overflow-auto">
-        {tabs.find((tab) => tab.id === activeTab)?.content}
-      </div>
+      {/* Panneau animé avec drag-and-drop */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Overlay */}
+            {/* <motion.div
+              className="fixed z-10 inset-0 bg-primary-100/75 dark:bg-primary-900/75"
+              variants={overlayVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              onClick={onOverlayClick}
+            /> */}
+
+            {/* Panneau */}
+            <motion.div
+              ref={panelRef}
+              key="panel"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={panelVariants}
+              transition={{ type: 'spring', bounce: 0.25 }}
+              drag="y" // Activer le drag vertical
+              dragConstraints={{ top: 0, bottom: window.innerHeight }} // Limiter le drag
+              dragElastic={0.2} // Résistance élastique
+              dragMomentum={true} // Activer l'inertie après le drag
+              onDragEnd={handleDragEnd} // Gérer la fin du drag
+              className="fixed bottom-0 w-full overflow-hidden z-20 bg-gray-100 dark:bg-gray-900 shadow-lg rounded-tl-3xl rounded-tr-3xl"
+              style={{ height: '70vh' }}
+            >
+              {/* En-tête du panneau avec une zone de drag */}
+              <div
+                className="flex justify-center items-center p-2 border-b border-gray-200 dark:border-gray-700 cursor-grab"
+                style={{ touchAction: 'none' }} // Empêcher le scroll par défaut
+              >
+                <div className="w-12 h-1 bg-gray-400 rounded-full" />
+              </div>
+              <div className="flex-1 p-4 overflow-auto h-full">
+                {tabs.find((tab) => tab.id === activeTab)?.content}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
 
-// Dummy Panel Components (replace with actual content)
+// Composants temporaires pour le contenu des onglets
 const ShapesPanel: React.FC = () => (
   <div className="text-gray-800 dark:text-gray-200">
     <h3 className="text-lg font-semibold">Formes</h3>
     <p>Contenu pour les formes (ex. carrés, cercles, triangles).</p>
-    {/* Add your shapes content here */}
   </div>
 );
 
@@ -115,7 +209,6 @@ const IllustrationsPanel: React.FC = () => (
   <div className="text-gray-800 dark:text-gray-200">
     <h3 className="text-lg font-semibold">Illustrations</h3>
     <p>Contenu pour les illustrations (ex. animaux, objets).</p>
-    {/* Add your illustrations content here */}
   </div>
 );
 

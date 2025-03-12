@@ -41,9 +41,7 @@ const BookPageMobile: React.FC = () => {
           }}
         />
       }
-      footer={
-        <FooterTabsPanelMobile className="fixed bottom-0 relative -top-32" />
-      }
+      footer={<FooterTabsPanelMobile  />}
     >
       {error ? (
         <ErrorDialog
@@ -56,7 +54,11 @@ const BookPageMobile: React.FC = () => {
         />
       ) : !isLoading ? (
         <>
-          {book?.pages.length > 0 && <SpreadViewerCanvas pages={book.pages} />}
+          {book?.pages.length > 0 && (
+            <SpreadViewerCanvas
+              pages={book.pages}
+            />
+          )}
         </>
       ) : (
         <LoadingScreen isLoading={isLoading} />
