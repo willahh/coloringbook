@@ -231,7 +231,7 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
                           trackEvent('CHANGELOG_CLOSE');
                           setShowChangelog(false);
                         }}
-                        className="text-blue-600 dark:text-blue-400 hover:underline focus:outline-none"
+                        className="btn"
                       >
                         Retour
                       </button>

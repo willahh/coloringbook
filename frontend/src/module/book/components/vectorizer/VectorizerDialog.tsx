@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 import {
   Dialog,
   Transition,
@@ -7,9 +8,10 @@ import {
   DialogTitle,
 } from '@headlessui/react';
 import { Fragment } from 'react';
-import ImageImporter from './ImageImporter';
-import Vectorizer from './Vectorizer';
-import SvgExporter from './SvgExporter';
+
+import VectorizerImportButton from './VectorizerImportButton';
+import VectorizerForm from './VectorizerForm';
+import VectorizerExportButton from './VectorizerExportButton';
 import { useTheme } from '@/common/contexts/ThemeContext'; // Si vous avez un contexte de thème
 
 interface VectorizerDialogProps {
@@ -24,7 +26,7 @@ const VectorizerDialog: React.FC<VectorizerDialogProps> = ({
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [svgOutput, setSvgOutput] = useState<string | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const { appearance } = useTheme(); // Si vous utilisez un contexte de thème
+  const { appearance } = useTheme();
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -58,41 +60,34 @@ const VectorizerDialog: React.FC<VectorizerDialogProps> = ({
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel
-                className={`w-full max-w-lg transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 shadow-xl transition-all
+                className={`w-full max-w-6xl transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 shadow-xl transition-all
                 p-6 text-sm text-left align-middle text-gray-700 dark:text-gray-300`}
               >
-                <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <DialogTitle className="flex gap-4 justify-between text-lg font-semibold text-gray-900 dark:text-gray-100">
                   Convertisseur d'image Bitmap en SVG
+                  <span>
+                    <button
+                      className="btn btn-transparent"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      <XMarkIcon className="w-6 h-6" />
+                    </button>
+                  </span>
                 </DialogTitle>
 
-                <div className="mt-4">
-                  <ImageImporter setImageSrc={setImageSrc} />
+                <div className="flex gap-2 mt-4">
+                  <VectorizerImportButton setImageSrc={setImageSrc} />
+                  <VectorizerExportButton svgOutput={svgOutput} />
                 </div>
 
                 {imageSrc && (
-                  <>
-                    <div className="mt-4 bg-white">
-                      <Vectorizer
-                        imageSrc={imageSrc}
-                        setSvgOutput={setSvgOutput}
-                      />
-                    </div>
-                    <div className="mt-4">
-                      <SvgExporter svgOutput={svgOutput} />
-                    </div>
-                  </>
+                  <div className="mt-4">
+                    <VectorizerForm
+                      imageSrc={imageSrc}
+                      setSvgOutput={setSvgOutput}
+                    />
+                  </div>
                 )}
-
-                <div className="mt-4">
-                  <button
-                    ref={closeButtonRef}
-                    type="button"
-                    className="btn"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Fermer
-                  </button>
-                </div>
               </DialogPanel>
             </TransitionChild>
           </div>
@@ -102,7 +97,6 @@ const VectorizerDialog: React.FC<VectorizerDialogProps> = ({
   );
 };
 
-// Composant principal avec un bouton pour ouvrir le dialog
 const VectorizerComponent: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 

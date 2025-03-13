@@ -1,8 +1,12 @@
-interface ImageImporterProps {
+import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
+import { useRef } from 'react';
+
+interface VectorizerImportButtonProps {
   setImageSrc: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const ImageImporter: React.FC<ImageImporterProps> = ({ setImageSrc }) => {
+const VectorizerImportButton: React.FC<VectorizerImportButtonProps> = ({ setImageSrc }) => {
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   // const handleFileSelect = async () => {
   //   try {
   //     const [fileHandle] = await window.showOpenFilePicker({
@@ -26,7 +30,7 @@ const ImageImporter: React.FC<ImageImporterProps> = ({ setImageSrc }) => {
   //   }
   // };
 
-  const handleFileSelectFallback = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const url = URL.createObjectURL(file);
@@ -35,17 +39,20 @@ const ImageImporter: React.FC<ImageImporterProps> = ({ setImageSrc }) => {
   };
 
   return (
-    <div>
-      {/* <button onClick={handleFileSelect}>Importer une image</button> */}
+    <label className="cursor-pointer">
+      <button className="btn" onClick={() => fileInputRef.current?.click()}>
+        <DocumentArrowDownIcon />
+        <span>Importer</span>
+      </button>
       <input
         type="file"
         accept="image/*"
-        onChange={handleFileSelectFallback}
-        style={{ display: 'block', marginTop: '10px' }}
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: 'none' }}
       />
-      ;
-    </div>
+    </label>
   );
 };
 
-export default ImageImporter;
+export default VectorizerImportButton;

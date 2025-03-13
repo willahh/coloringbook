@@ -111,7 +111,7 @@ const Newsletter: React.FC<NewsletterProps> = ({ onSubscribe }) => {
               </div>
               <button
                 onClick={handleSubscribe}
-                className="btn"
+                className="btn btn-secondary"
                 disabled={isLoading} // Désactiver le bouton pendant le chargement
               >
                 {isLoading ? 'Chargement...' : 'S’inscrire'}

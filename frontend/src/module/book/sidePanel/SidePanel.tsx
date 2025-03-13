@@ -18,7 +18,12 @@ const tabs: Tab[] = [
     label: 'Eléments',
     icon: PaintBrushIcon,
     active: true,
-    content: <AssetList title="Elements" />,
+    content: (
+      <div>
+        
+        <AssetList title="Elements" />
+      </div>
+    ),
   },
   {
     id: TabType.Text,

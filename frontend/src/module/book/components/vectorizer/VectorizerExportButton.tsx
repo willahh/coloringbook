@@ -1,7 +1,6 @@
 import React from 'react';
 
-// Composant pour exporter le SVG
-const SvgExporter: React.FC<{ svgOutput: string | null }> = ({ svgOutput }) => {
+const VectorizerExportButton: React.FC<{ svgOutput: string | null }> = ({ svgOutput }) => {
   const handleExport = () => {
     if (!svgOutput) return;
 
@@ -20,12 +19,10 @@ const SvgExporter: React.FC<{ svgOutput: string | null }> = ({ svgOutput }) => {
   };
 
   return (
-    <div style={{ marginTop: '20px' }}>
-      <button onClick={handleExport} disabled={!svgOutput}>
-        Exporter en SVG
-      </button>
-    </div>
+    <button className="btn" onClick={handleExport} disabled={!svgOutput}>
+      Exporter en SVG
+    </button>
   );
 };
 
-export default SvgExporter;
+export default VectorizerExportButton;

@@ -7,6 +7,7 @@ import { useParams } from 'react-router';
 import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
 import { getAPIURL } from '@/common/utils/api';
+import VectorizerComponent from './vectorizer/VectorizerDialog';
 
 const ElementItem: React.FC<{
   className?: string;
@@ -112,12 +113,14 @@ const AssetList: React.FC<{ title: string }> = ({ title }) => {
     { name: 'Perroquet', file: 'perroquet.svg' },
     { name: 'Pieuvre', file: 'pieuvre.svg' },
     { name: 'Dinosaure2', file: 'dinosaure2.svg' },
+    { name: 'image-vectorisée07.svg', file: 'converted/image-vectorisée07.svg' },
   ];
 
   return (
     <div className="flex flex-col @container h-full">
       <div>{title}</div>
       <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
+        <VectorizerComponent />
         <div className="grid grid-cols-2 @4xs:grid-cols-3 @sm:grid-cols-4 @md:grid-cols-6 @lg:grid-cols-8 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>
