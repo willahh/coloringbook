@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { potrace } from 'esm-potrace-wasm';
+import { potrace, init } from 'esm-potrace-wasm';
+import { optimize } from 'svgo';
 import { FaSpinner, FaRotate } from 'react-icons/fa6';
-import 'pinch-zoom-element';
+import 'pinch-zoom-element'; // Importer la bibliothèque
 
 interface VectorizerFormProps {
   imageSrc: string | null;
@@ -12,74 +13,91 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
   imageSrc,
   setSvgOutput,
 }) => {
-  const [threshold, setThreshold] = useState<number>(128);
-  const [turdSize, setTurdSize] = useState<number>(50);
-  const [alphaMax, setAlphaMax] = useState<number>(1.0);
-  const [optiCurve, setOptiCurve] = useState<boolean>(true);
-  const [optTolerance, setOptTolerance] = useState<number>(0.2);
-  const [turnPolicy, setTurnPolicy] = useState<number>(4);
+  const [threshold, setThreshold] = useState<number>(128); // Seuil de détection
+  const [turdSize, setTurdSize] = useState<number>(50); // Supprimer les taches
+  const [alphaMax, setAlphaMax] = useState<number>(1.0); // AlphaMax (0.0 à 1.3334)
+  const [optiCurve, setOptiCurve] = useState<boolean>(true); // OptiCurve (booléen)
+  const [optTolerance, setOptTolerance] = useState<number>(0.2); // OptTolerance (0.0 à 1.0)
+  const [turnPolicy, setTurnPolicy] = useState<number>(4); // TurnPolicy (0 à 6)
   const [svgOutput, setSvgOutputLocal] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState<boolean>(false);
-  const [rotation, setRotation] = useState<number>(0);
-  const svgRef = useRef<SVGSVGElement>(null);
-  const pinchZoomRef = useRef<HTMLElement>(null);
+  const [isProcessing, setIsProcessing] = useState<boolean>(false); // État pour le loader
+  const [rotation, setRotation] = useState<number>(0); // Angle de rotation (0°, 90°, 180°, 270°)
+  const svgRef = useRef<SVGSVGElement>(null); // Référence au SVG pour appliquer les transformations
+  const pinchZoomRef = useRef<HTMLElement>(null); // Référence à l'élément pinch-zoom
 
   useEffect(() => {
     if (!imageSrc) return;
 
     const vectorizeImage = async () => {
-      setIsProcessing(true);
+      setIsProcessing(true); // Activer le loader
       try {
+        // Charger l'image dans un canvas
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.src = imageSrc;
         await new Promise((resolve) => (img.onload = resolve));
 
-        const maxWidth = 1920;
+        // Redimensionner l'image pour éviter les problèmes de mémoire
+        const maxWidth = 1280; // Limite de largeur, ne pas mettre une valeur trop haute pour éviter des pbs de mem
         const scale = Math.min(1, maxWidth / img.width);
+        console.log('scale', scale);
+        console.log('maxWidth / img.width', maxWidth / img.width);
         const canvas = document.createElement('canvas');
         canvas.width = Math.floor(img.width * scale);
         canvas.height = Math.floor(img.height * scale);
         const ctx = canvas.getContext('2d');
         if (!ctx) throw new Error('Impossible de créer le contexte 2D');
 
+        // Dessiner l'image redimensionnée
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 
-        const data = imageData.data;
-        for (let i = 0; i < data.length; i += 4) {
-          const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
-          data[i] = gray;
-          data[i + 1] = gray;
-          data[i + 2] = gray;
-          data[i + 3] = data[i + 3];
-        }
+        // Conversion en niveaux de gris pour améliorer le monochrome
+        // const data = imageData.data;
+        // for (let i = 0; i < data.length; i += 4) {
+        //   const gray = (data[i] + data[i + 1] + data[i + 2]) / 3;
+        //   data[i] = gray; // Rouge
+        //   data[i + 1] = gray; // Vert
+        //   data[i + 2] = gray; // Bleu
+        //   data[i + 3] = data[i + 3]; // Alpha inchangé
+        // }
         ctx.putImageData(imageData, 0, 0);
 
+        // Vectorisation avec esm-potrace-wasm
         const options = {
-          threshold,
-          extractcolors: false,
-          turdSize,
-          alphamax: alphaMax,
-          opticurve: optiCurve ? 1 : 0,
+          // threshold: 0,
+          threshold: threshold,
+          extractcolors: false, // Mode monochrome
+          // turdSize: turdSize, // suppress speckles (tâches) of up to this size (default: 2).
+          turdSize: 50, // Noise 0-82
+          alphamax: alphaMax, // corner threshold parameter (default: 1).
+          opticurve: optiCurve ? 1 : 0, // turn on/off curve optimization (default: true).
           opttolerance: optTolerance,
           turnpolicy: turnPolicy,
         };
-        console.log('Vectorization options:', options);
-
+        console.log('#s options', options);
+        await init();
+        
         const svg = await potrace(imageData, options);
-        console.log('Generated SVG:', svg); // Log pour vérifier le SVG généré
+
+        // Optimisation avec SVGO
+        // const optimizedSvg = optimize(svg, {
+        //   multipass: true,
+        //   plugins: [{ name: 'preset-default' }, { name: 'removeDimensions' }],
+        // }).data;
 
         setSvgOutputLocal(svg);
         setSvgOutput(svg);
       } catch (error) {
         console.error('Erreur lors de la vectorisation :', error);
       } finally {
-        setIsProcessing(false);
+        setIsProcessing(false); // Désactiver le loader une fois terminé
       }
     };
 
-    vectorizeImage(); // Suppression du debounce pour tester
+    // Déclencher la vectorisation avec un léger délai
+    const debounceTimer = setTimeout(vectorizeImage, 300);
+    return () => clearTimeout(debounceTimer);
   }, [
     imageSrc,
     threshold,
@@ -91,7 +109,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
     setSvgOutput,
   ]);
 
-  // Gestion des événements pour pinch-zoom (inchangée)
+  // Gestion des événements pour pinch-zoom
   useEffect(() => {
     const pinchZoomElement = pinchZoomRef.current;
     if (!pinchZoomElement || !svgRef.current) return;
@@ -101,15 +119,18 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
       const x = target?.getAttribute('x') || 0;
       const y = target?.getAttribute('y') || 0;
       const scale = target?.getAttribute('scale') || 1;
+      console.log('PinchZoom change:', { x, y, scale }); // Débogage
       const transform = `rotate(${rotation}) translate(${x}, ${y}) scale(${scale})`;
       svgRef.current?.setAttribute('transform', transform);
     };
 
     const handlePointerDown = () => {
+      console.log('Pointer down'); // Débogage
       pinchZoomElement.style.cursor = 'grabbing';
     };
 
     const handlePointerUp = () => {
+      console.log('Pointer up'); // Débogage
       pinchZoomElement.style.cursor = '';
     };
 
@@ -122,30 +143,36 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
       pinchZoomElement.removeEventListener('pointerdown', handlePointerDown);
       pinchZoomElement.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [svgOutput, rotation]);
+  }, [svgOutput, rotation]); // Inclure rotation dans les dépendances
 
+  // Fonction pour incrémenter la rotation de 90 degrés
   const handleRotate = () => {
     setRotation((prevRotation) => (prevRotation + 90) % 360);
   };
 
+  // Fonction pour réinitialiser le pan et zoom
   const resetPanAndZoom = () => {
     if (svgRef.current) {
       svgRef.current.setAttribute('transform', '');
     }
-    setRotation(0);
+    setRotation(0); // Réinitialiser également la rotation
   };
 
+  console.log('#s render - svgOutput && !isProcessing', svgOutput && !isProcessing)
   return (
     <div className="flex flex-col md:flex-row w-full h-full min-h-[500px] gap-4">
-      <div className="w-full md:w-1/2 md:max-w-52 p-4 bg-gray-100 dark:bg-gray-800 overflow-y-auto">
+      {/* Colonne gauche : Curseurs */}
+      <div className="w-full md:w-1/2 md:max-w-52 p-4 bg-gray-100 dark:bg-gray-800 overflow-y-auto hidden">
         <h3 className="text-base font-medium text-gray-900 dark:text-gray-100">
           Options de vectorisation (Monochrome)
         </h3>
         <div className="@container mt-2 space-y-4">
+          {/* Options SVG */}
           <h4 className="text-sm font-medium text-gray-900 dark:text-gray-100">
             Options SVG
           </h4>
           <div className="grid grid-cols-3 gap-3 md:grid-cols-1 mt-2 space-y-2">
+            {/* Seuil de détection */}
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Seuil de détection (0-255) :
               <input
@@ -159,6 +186,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               <span>{threshold}</span>
             </label>
 
+            {/* Supprimer les taches */}
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Supprimer les taches (0-50 pixels) :
               <input
@@ -172,6 +200,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               <span>{turdSize}</span>
             </label>
 
+            {/* AlphaMax */}
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               AlphaMax (0.0-1.3334) :
               <input
@@ -186,6 +215,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               <span>{alphaMax.toFixed(2)}</span>
             </label>
 
+            {/* OptiCurve */}
             <label className="inline-flex items-center">
               <input
                 type="checkbox"
@@ -198,6 +228,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               </span>
             </label>
 
+            {/* OptTolerance */}
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               OptTolerance (0.0-1.0) :
               <input
@@ -212,6 +243,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               <span>{optTolerance.toFixed(2)}</span>
             </label>
 
+            {/* TurnPolicy */}
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               TurnPolicy (0-6) :
               <input
@@ -229,6 +261,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
         </div>
       </div>
 
+      {/* Colonne droite : Aperçu et rotation */}
       <div className="grow md:w-1/2 p-4 bg-white dark:bg-white checkerboard relative">
         {isProcessing && (
           <div className="flex items-center justify-center">
@@ -249,13 +282,19 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
         
         {svgOutput && !isProcessing && (
           <div className="w-full h-full">
+            <pinch-zoom
+              ref={pinchZoomRef}
+              className="w-full h-full flex items-center justify-center"
+              style={{ touchAction: 'none' }}
+            >
             <svg
               ref={svgRef}
               className="w-full h-full"
-              key={svgOutput} // Forcer le re-rendu
+              key={svgOutput} // Ajouter une clé unique basée sur svgOutput
               dangerouslySetInnerHTML={{ __html: svgOutput }}
             />
-            <div className="mt-4 flex justify-center space-x-4">
+            </pinch-zoom>
+            {/* <div className="mt-4 flex justify-center space-x-4">
               <button
                 onClick={handleRotate}
                 disabled={isProcessing}
@@ -271,7 +310,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               >
                 Réinitialiser
               </button>
-            </div>
+            </div> */}
           </div>
         )}
       </div>
