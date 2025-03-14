@@ -28,7 +28,7 @@ const SvgConvertedAssetsList: React.FC = () => {
         setLoading(true);
         const response = await APIService.fetchSvgConvertedList();
         setSvgList(response);
-      } catch (err) {
+      } catch {
         setError('Failed to load SVG list');
       } finally {
         setLoading(false);
@@ -55,7 +55,7 @@ const SvgConvertedAssetsList: React.FC = () => {
           pageId: pageIdParam,
         })
       );
-    } catch (err) {
+    } catch {
       setError('Failed to load SVG content');
     }
   };

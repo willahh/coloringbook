@@ -11,13 +11,15 @@ interface GridListItem {
 
 interface GridListProps {
   className?: string;
-  items: GridListItem[];
+  children?: React.ReactNode;
+  items?: GridListItem[];
   renderItem?: (item: GridListItem, index: number) => React.ReactNode;
 }
 
 const GridList: React.FC<GridListProps> = ({
-  items,
   className = 'sb-grid',
+  children,
+  items,
   renderItem,
 }) => {
   const getColumnClasses = () => {
@@ -48,9 +50,14 @@ const GridList: React.FC<GridListProps> = ({
   return (
     <div className={`${className || ''}`}>
       <ul className={`${getColumnClasses()} gap-4 ${className}`}>
-        {items.map((item, index) =>
-          renderItem ? renderItem(item, index) : defaultRenderItem(item, index)
-        )}
+        {children
+          ? children
+          : items &&
+            items.map((item, index) =>
+              renderItem
+                ? renderItem(item, index)
+                : defaultRenderItem(item, index)
+            )}
       </ul>
     </div>
   );

@@ -2,8 +2,8 @@
  * TODO: Ajouter une animation
  */
 import React, { useRef } from 'react';
-import SidePanel from '../sidePanel/SidePanel';
-import { PagesPanel } from './SidePanel/pagesPanel/PagesPanel';
+import SidePanel from './sidebar/sidebarDesktop/SidePanel';
+import { PagesPanel } from './PagesPanel';
 import { Book } from '@/common/types/book'; // Ajuste le chemin selon ton projet
 
 interface MobileDrawerProps {

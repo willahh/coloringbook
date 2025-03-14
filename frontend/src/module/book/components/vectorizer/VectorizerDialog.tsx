@@ -14,7 +14,6 @@ import VectorizerForm from './VectorizerForm';
 import { useTheme } from '@/common/contexts/ThemeContext'; // Si vous avez un contexte de thème
 import APIService from '@/services/APIService';
 
-
 const VectorizerDialog: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState<string | null>(null);
@@ -101,7 +100,10 @@ const VectorizerDialog: React.FC = () => {
                           //     pageId: Number(pageId),
                           //   })
                           // );
-                          APIService.saveSvg(svgOutput);
+                          const fileName = imageSrc?.split('/').pop();
+                          if (fileName) {
+                            APIService.saveSvg(fileName, svgOutput);
+                          }
                         }
                       }}
                     >

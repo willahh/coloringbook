@@ -9,7 +9,7 @@ import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 
 import ErrorDialog from '@/common/components/ErrorDialog';
 import LoadingScreen from '@/common/components/LoadingScreen';
-import FooterTabsPanelMobile from './components/footerTabsPanelMobile/FooterTabsPanelMobile';
+import FooterTabsPanelMobile from './components/sidebar/FooterTabsPanelMobile';
 import BookHeaderMobile from './components/BookHeaderMobile';
 
 const BookPageMobile: React.FC = () => {

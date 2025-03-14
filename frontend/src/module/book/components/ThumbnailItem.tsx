@@ -9,8 +9,8 @@ const ThumbnailItem: React.FC<{
   <button
     data-name="item"
     className={`rounded-lg transition-all cursor-pointer duration-300
-      flex justify-center w-full aspect-square object-cover p-1
-      border border-primary-300 dark:border-primary-600
+      flex justify-center w-full aspect-square object-cover p-2
+      border border-transparent
     hover:border-secondary-500
     focus:outline-0 focus:border-secondary-500 
     

@@ -1,11 +1,11 @@
-import { Tab, TabType } from './sidepanel.types';
+import { Tab, TabType } from './../TabsConfig';
 import SidebarCornerTop from '@assets/sidebar-corner-top.svg?react';
 
 const Tabs: React.FC<{
-  tabs: Tab[];
+  tabsConfig: Tab[];
   activeTab: TabType;
   onTabClick: (tabId: number) => void;
-}> = ({ tabs, activeTab, onTabClick }) => {
+}> = ({ tabsConfig: tabs, activeTab, onTabClick }) => {
   return (
     <div
       data-id="sp-tabs"
@@ -27,12 +27,10 @@ const Tabs: React.FC<{
 
            hover:bg-primary-50  dark:hover:bg-primary-700
            last:border-b-0 first:rounded-tr-xl 
-
            
            ${
-             //  tab.active
              tab.id === activeTab
-               ? 'bg-primary-50 dark:!bg-primary-700 !border-l-0'
+               ? 'bg-primary-50 dark:!bg-primary-700 text-secondary-500 !border-l-0'
                : ''
            }
            `}
@@ -51,7 +49,7 @@ const Tabs: React.FC<{
             )}
 
             <div className="flex flex-col items-center gap-1 ">
-              <tab.icon className="w-6 h-6" />
+              {tab.icon}
               <div className="text-xs">{tab.label}</div>
             </div>
           </button>

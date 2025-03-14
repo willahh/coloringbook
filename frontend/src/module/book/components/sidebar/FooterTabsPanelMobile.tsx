@@ -1,23 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  FaImages,
-  FaShapes,
-  FaFont,
-  FaPencilAlt,
-  FaUpload,
-} from 'react-icons/fa';
-import { IoColorPalette } from 'react-icons/io5';
 
-import ShapesPanel from './ShapesPanel';
-import IllustrationsPanel from './IllustrationsPanel';
-
-interface Tab {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  content: React.ReactNode;
-}
+import { TabsConfig, TabType } from './TabsConfig';
 
 interface FooterTabsPanelMobileProps {
   className?: string;
@@ -26,71 +10,20 @@ interface FooterTabsPanelMobileProps {
 const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
   className = '',
 }) => {
-  const [activeTab, setActiveTab] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<TabType>(TabType.Illustrations);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [lastDragPosition, setLastDragPosition] = useState<number>(0); // Sauvegarde de la dernière position y
+  const [, setLastDragPosition] = useState<number>(0); // Sauvegarde de la dernière position y
   const panelRef = useRef<HTMLDivElement>(null);
-  const iconClassName = 'w-6 h-6';
 
-  const tabs: Tab[] = [
-    {
-      id: 'Illustrations',
-      label: 'Illustrations',
-      icon: <FaImages className={iconClassName} />,
-      content: <IllustrationsPanel />,
-    },
-    {
-      id: 'Elements',
-      label: 'Elements',
-      icon: <FaShapes className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-    {
-      id: 'Textes',
-      label: 'Textes',
-      icon: <FaFont className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-    {
-      id: 'Formes',
-      label: 'Formes',
-      icon: <FaShapes className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-    {
-      id: 'Dessiner',
-      label: 'Dessiner',
-      icon: <FaPencilAlt className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-    {
-      id: 'Colorier',
-      label: 'Colorier',
-      icon: <IoColorPalette className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-    {
-      id: 'Importer',
-      label: 'Importer',
-      icon: <FaUpload className={iconClassName} />,
-      content: <ShapesPanel />,
-    },
-  ];
-
-  const handleTabClick = (tabId: string) => {
+  const handleTabClick = (tabId: TabType) => {
     if (activeTab === tabId && isOpen) {
       setIsOpen(false);
-      setActiveTab(null);
+      // setActiveTab(null);
     } else {
       setActiveTab(tabId);
       setIsOpen(true);
     }
   };
-
-  // const onOverlayClick = () => {
-  //   setIsOpen(false);
-  //   setActiveTab(null);
-  // };
 
   // Animation pour le panneau avec position sauvegardée
   const panelVariants = {
@@ -108,14 +41,8 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     }),
   };
 
-  // const overlayVariants = {
-  //   hidden: { opacity: 0 },
-  //   visible: { opacity: 1 },
-  //   exit: { opacity: 0, transition: { duration: 0.2 } },
-  // };
-
   // Gestion de la fin du drag avec sauvegarde de la position
-  const handleDragEnd = (event: any, info: any) => {
+  const handleDragEnd = (_event: unknown, info: { offset: { y: number } }) => {
     const panelHeight = panelRef.current?.clientHeight || 0;
     const dragDistance = info.offset.y;
     const threshold = panelHeight * 0.5; // Seuil de 30% pour une fermeture rapide
@@ -123,7 +50,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
     if (dragDistance > threshold) {
       // Fermeture rapide si glissé vers le bas au-delà du seuil
       setIsOpen(false);
-      setActiveTab(null);
+      // setActiveTab(null);
     } else if (dragDistance < -threshold) {
       // Ouverture complète si glissé vers le haut au-delà du seuil
       setIsOpen(true);
@@ -135,7 +62,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
   };
 
   // Mise à jour de la position en temps réel pendant le drag
-  const handleDrag = (event: any, info: any) => {
+  const handleDrag = (event: unknown, info: { point: { y: number } }) => {
     const panelHeight = panelRef.current?.clientHeight || 0;
     const newPosition = info.point.y - (window.innerHeight - panelHeight);
     if (newPosition >= 0 && newPosition <= panelHeight) {
@@ -154,7 +81,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
        border-primary-200 dark:border-primary-800 bg-primary-100 dark:bg-primary-950"
       >
         <div className="flex">
-          {tabs.map((tab) => (
+          {TabsConfig.map((tab) => (
             <button
               key={tab.id}
               className={`flex flex-col items-center snap-center px-4 py-4 text-sm font-normal transition-all duration-300 ${
@@ -222,7 +149,7 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
                 <div className="w-12 h-1 bg-primary-400 rounded-full" />
               </div>
               <div className="flex-1 p-4 overflow-auto h-full">
-                {tabs.find((tab) => tab.id === activeTab)?.content}
+                {TabsConfig.find((tab) => tab.id === activeTab)?.content}
               </div>
             </motion.div>
           </>

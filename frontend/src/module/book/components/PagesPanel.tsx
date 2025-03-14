@@ -4,13 +4,13 @@ import { motion } from 'framer-motion'; // Assuming you use framer-motion for an
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 
 import type { Page } from '@apptypes/book';
-import { ToolbarButton } from '../../ToolbarButton';
+import { ToolbarButton } from './ToolbarButton';
 import { Tooltip } from '@components/Tooltip';
 import { useDispatch, useSelector } from '@/common/store';
 import { PageService } from '@/services/PageService';
-import * as BookActions from '../../../BookActions';
+import * as BookActions from '../BookActions';
 import { BookPageParams } from '@/common/interfaces';
-import { selectBookPages } from '../../../BookSlice';
+import { selectBookPages } from '../BookSlice';
 import { useServices } from '@/common/contexts/ServiceContext';
 import { trackBookEvent } from '@/common/utils/analyticsEvents';
 

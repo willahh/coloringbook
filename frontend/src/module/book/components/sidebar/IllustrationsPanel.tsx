@@ -1,4 +1,4 @@
-import AssetList from "../AssetList";
+import AssetList from "./AssetList";
 
 const IllustrationsPanel: React.FC = () => (
   <div className="text-gray-800 dark:text-gray-200">

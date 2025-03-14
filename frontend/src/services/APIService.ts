@@ -74,9 +74,10 @@ class APIService {
   /**
    * POST /image/save
    */
-  static async saveSvg(svgContent: string) {
+  static async saveSvg(fileName: string, svgContent: string) {
     try {
       const formData = new FormData();
+      formData.append('fileName', fileName);
       formData.append('svgContent', svgContent);
 
       const response = await axios.post(`${getAPIURL()}/image/save`, formData, {
@@ -113,7 +114,7 @@ class APIService {
   static async fetchSvgContent(filePath: string) {
     try {
       const response = await axios.get(
-        `${getAPIURL()}/image/svg-content-from-path/${filePath}`
+        `${getAPIURL()}/image/svg/${filePath}`
       );
       return response.data;
     } catch (error) {
