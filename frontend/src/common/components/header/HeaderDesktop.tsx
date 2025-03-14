@@ -57,6 +57,7 @@ const HeaderDesktop: React.FC<HeaderProps> = ({
 
           <div
             className={`flex items-center gap-4 font-mono text-xs py-0.5 px-4 rounded-sm 
+              truncate text-nowrap
                text-primary-800 dark:text-primary-200 
               border border-primary-100 dark:border-primary-900/50`}
           >

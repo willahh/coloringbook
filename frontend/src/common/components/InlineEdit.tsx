@@ -48,14 +48,14 @@ const InlineEdit: React.FC<InlineEditProps> = ({
         onKeyDown={handleKeyDown}
         onBlur={handleBlur}
         autoFocus
-        className={`w-full border rounded px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
+        className={`w-full max-w-10 lg:max-w-5xl border rounded px-1 py-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 ${className}`}
       />
     );
   } else {
     return (
       <span
         onClick={() => setEditing(true)}
-        className={`inline-block cursor-text transition-all hover:text-black dark:hover:text-white ${className}`}
+        className={`truncate max-w-10 lg:max-w-5xl inline-block cursor-text transition-all hover:text-black dark:hover:text-white ${className}`}
       >
         {value}
       </span>

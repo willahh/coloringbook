@@ -2,9 +2,7 @@ import React from 'react';
 import { Tooltip } from '@components/Tooltip';
 
 export const ToolbarButtonClassName = (className?: string) => {
-  return `rounded-lg 
-  
-  w-12 h-12  p-1 
+  return `rounded-lg cursor-pointer w-12 h-12 p-1
   flex items-center justify-center transition-all duration-300
   text-secondary-950 dark:text-secondary-50 group border border-transparent
   hover:bg-secondary-100 dark:hover:bg-secondary-900 hover:border-secondary-500 hover:scale-110

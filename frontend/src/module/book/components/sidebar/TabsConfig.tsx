@@ -109,13 +109,13 @@ export const TabsConfigDesktop: Tab[] = [
     active: false,
     content: <ShapesPanel />,
   },
-  {
-    id: TabType.Elements,
-    label: 'Elements',
-    icon: <FaShapes className={iconClassName} />,
-    active: false,
-    content: <ShapesPanel />,
-  },
+  // {
+  //   id: TabType.Elements,
+  //   label: 'Elements',
+  //   icon: <FaShapes className={iconClassName} />,
+  //   active: false,
+  //   content: <ShapesPanel />,
+  // },
   {
     id: TabType.Textes,
     label: 'Textes',

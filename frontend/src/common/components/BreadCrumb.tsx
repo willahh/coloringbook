@@ -20,7 +20,7 @@ const BreadCrumb: React.FC<BreadCrumbProps> = function ({ pages, className }) {
       aria-label="bread-crumb"
       className={`${className || ''} flex`}
     >
-      <ol role="list" className="flex items-center space-x-4">
+      <ol role="list" className="flex items-center space-x-4 whitespace-nowrap">
         <li>
           <Tooltip content="Accueil">
             <Link className="text-gray-400 hover:text-gray-500" to="/">
