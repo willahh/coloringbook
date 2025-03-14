@@ -20,7 +20,8 @@ export class SvgConversionService {
     '..',
     '..',
     'uploads',
-    'svg-converted',
+    'svg',
+    'converted',
   );
   private readonly thumbDir = path.join(
     __dirname,
@@ -84,7 +85,7 @@ export class SvgConversionService {
     return fs.readFileSync(svgFullPath, 'utf-8');
   }
 
-  async saveSvgAndConvert(svgContent: string) {
+  async saveSvgAndConvert(fileName: string, svgContent: string) {
     try {
       // Vérifier si svgContent est valide
       if (!svgContent || typeof svgContent !== 'string') {
@@ -93,7 +94,7 @@ export class SvgConversionService {
 
       // Générer un nom de fichier unique
       const timestamp = Date.now();
-      const svgFileName = `converted-${timestamp}.svg`;
+      const svgFileName = `${fileName}-${timestamp}.svg`;
 
       const svgPath = path.join(this.svgConvertedDir, svgFileName);
 

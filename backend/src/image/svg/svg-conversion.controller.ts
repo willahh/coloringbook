@@ -61,6 +61,9 @@ export class SvgConversionController {
     schema: {
       type: 'object',
       properties: {
+        fileName: {
+          type: 'string',
+        },
         file: {
           type: 'string',
           format: 'binary',
@@ -74,8 +77,10 @@ export class SvgConversionController {
   async saveSvg(
     @UploadedFile() file: Express.Multer.File,
     @Body('svgContent') svgContent: string,
+    @Body('fileName') fileName: string,
   ) {
     return this.svgConversionService.saveSvgAndConvert(
+      fileName,
       svgContent || file.buffer.toString(),
     );
   }
@@ -101,7 +106,7 @@ export class SvgConversionController {
     return this.svgConversionService.getSvgConvertedList();
   }
 
-  @Get('svg-content-from-path/:filePath(*)')
+  @Get('svg/:filePath(*)')
   @ApiOperation({ summary: 'Get SVG content from file path' })
   @ApiResponse({
     status: 200,
