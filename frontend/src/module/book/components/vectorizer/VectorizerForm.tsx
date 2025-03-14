@@ -77,17 +77,17 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
         };
         console.log('#s options', options);
         await init();
-        
+
         const svg = await potrace(imageData, options);
 
         // Optimisation avec SVGO
-        // const optimizedSvg = optimize(svg, {
-        //   multipass: true,
-        //   plugins: [{ name: 'preset-default' }, { name: 'removeDimensions' }],
-        // }).data;
+        const optimizedSvg = optimize(svg, {
+          multipass: true,
+          plugins: [{ name: 'preset-default' }, { name: 'removeDimensions' }],
+        }).data;
 
-        setSvgOutputLocal(svg);
-        setSvgOutput(svg);
+        setSvgOutputLocal(optimizedSvg);
+        setSvgOutput(optimizedSvg);
       } catch (error) {
         console.error('Erreur lors de la vectorisation :', error);
       } finally {
@@ -158,7 +158,10 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
     setRotation(0); // Réinitialiser également la rotation
   };
 
-  console.log('#s render - svgOutput && !isProcessing', svgOutput && !isProcessing)
+  console.log(
+    '#s render - svgOutput && !isProcessing',
+    svgOutput && !isProcessing
+  );
   return (
     <div className="flex flex-col md:flex-row w-full h-full min-h-[500px] gap-4">
       {/* Colonne gauche : Curseurs */}
@@ -279,7 +282,7 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
             Aucun aperçu disponible. Veuillez charger une image.
           </div>
         )}
-        
+
         {svgOutput && !isProcessing && (
           <div className="w-full h-full">
             <pinch-zoom
@@ -287,12 +290,12 @@ const VectorizerForm: React.FC<VectorizerFormProps> = ({
               className="w-full h-full flex items-center justify-center"
               style={{ touchAction: 'none' }}
             >
-            <svg
-              ref={svgRef}
-              className="w-full h-full"
-              key={svgOutput} // Ajouter une clé unique basée sur svgOutput
-              dangerouslySetInnerHTML={{ __html: svgOutput }}
-            />
+              <svg
+                ref={svgRef}
+                className="w-full h-full"
+                key={svgOutput} // Ajouter une clé unique basée sur svgOutput
+                dangerouslySetInnerHTML={{ __html: svgOutput }}
+              />
             </pinch-zoom>
             {/* <div className="mt-4 flex justify-center space-x-4">
               <button

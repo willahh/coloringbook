@@ -1,4 +1,4 @@
-import Item from '../sidePanel/Item';
+
 import { Suspense, useEffect, useState } from 'react';
 import Loader from '@components/Loader';
 import { useDispatch } from '@/common/store';
@@ -7,26 +7,7 @@ import { useParams } from 'react-router';
 import { ElementService } from '@/services/ElementService';
 import { HeartIcon } from '@heroicons/react/20/solid';
 import { getAPIURL } from '@/common/utils/api';
-import VectorizerComponent from './vectorizer/VectorizerDialog';
-
-const ElementItem: React.FC<{
-  className?: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-}> = ({ children, onClick, className }) => {
-  return (
-    <Item
-      className={`${
-        className || ''
-      } flex justify-center w-full aspect-square object-cover p-2
-        dark:fill-white
-        bg-primary-100 dark:bg-primary-700/50`}
-      onClick={onClick}
-    >
-      {children}
-    </Item>
-  );
-};
+import ElementItem from './ElementItem';
 
 const LazyAssetItem: React.FC<{
   svg: (typeof svgs)[number];
@@ -113,14 +94,24 @@ const AssetList: React.FC<{ title: string }> = ({ title }) => {
     { name: 'Perroquet', file: 'perroquet.svg' },
     { name: 'Pieuvre', file: 'pieuvre.svg' },
     { name: 'Dinosaure2', file: 'dinosaure2.svg' },
-    { name: 'image-vectorisée07.svg', file: 'converted/image-vectorisée07.svg' },
+    {
+      name: 'image-vectorisée08.svg',
+      file: 'converted/image-vectorisée08.svg',
+    },
+    {
+      name: 'image-vectorisée08_02.svg',
+      file: 'converted/image-vectorisée08_02.svg',
+    },
+    {
+      name: 'image-vectorisée09.svg',
+      file: 'converted/image-vectorisée09.svg',
+    },
   ];
 
   return (
     <div className="flex flex-col @container h-full">
       <div>{title}</div>
       <div className="flex-1 overflow-y-auto w-full custom-scrollbar">
-        <VectorizerComponent />
         <div className="grid grid-cols-2 @4xs:grid-cols-3 @sm:grid-cols-4 @md:grid-cols-6 @lg:grid-cols-8 gap-4">
           {svgs.map((svg, index) => (
             <Suspense fallback={<Loader />} key={index}>

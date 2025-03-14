@@ -18,12 +18,15 @@ const tabs: Tab[] = [
     label: 'Eléments',
     icon: PaintBrushIcon,
     active: true,
-    content: (
-      <div>
-        
-        <AssetList title="Elements" />
-      </div>
-    ),
+    content: <AssetList title="Elements" />,
+  },
+  {
+    id: TabType.Personal,
+    label: 'Personnel',
+    description: 'Charger vos images',
+    icon: UserIcon,
+    active: false,
+    content: <UserContent />,
   },
   {
     id: TabType.Text,
@@ -54,14 +57,6 @@ const tabs: Tab[] = [
     content: <div>Fonds</div>,
   },
   {
-    id: TabType.Personal,
-    label: 'Personnel',
-    description: 'Charger vos images',
-    icon: UserIcon,
-    active: false,
-    content: <UserContent />,
-  },
-  {
     id: TabType.Parameters,
     label: 'Paramètres ',
     description: 'Paramètres du livre',
@@ -85,9 +80,6 @@ const SidePanel: React.FC<{
     true
   );
 
-  // const [isOpen, setIsOpen] = useState<boolean>(false);
-  // const isAnimatingRef = useRef(false);
-
   const handleTabClick = (tab: TabType) => {
     if (activeTab === tab) {
       setIsSidebarOpen(!isSidebarOpen);
@@ -98,26 +90,7 @@ const SidePanel: React.FC<{
       }
     }
   };
-
-  // useEffect(() => {
-  //   if (ref.current) {
-  //     const handleTransitionEnd = () => {
-  //       isAnimatingRef.current = false;
-  //       if (ref.current) {
-  //         setSidePanelWidth(ref.current.offsetWidth);
-  //       }
-  //     };
-
-  //     ref.current.addEventListener('transitionend', handleTransitionEnd);
-
-  //     return () => {
-  //       if (ref.current) {
-  //         ref.current.removeEventListener('transitionend', handleTransitionEnd);
-  //       }
-  //     };
-  //   }
-  // }, [ref.current]);
-  const width = 280;
+  const width = 360;
   return (
     <aside
       ref={ref}
@@ -136,13 +109,10 @@ const SidePanel: React.FC<{
            border-primary-100 dark:border-primary-900`}
           style={{
             width: isSidebarOpen ? width : 0,
-            // height: `calc(100vh - ${headerHeight}px)`,
             height: `calc(100vh)`,
           }}
         >
           <div className="h-full p-4 pb-20">
-            {' '}
-            {/* pb-20 => desktop footer height  */}
             {activeTab == TabType.Personal && <UserContent />}
             {activeTab == TabType.Element && <AssetList title="Elements" />}
           </div>

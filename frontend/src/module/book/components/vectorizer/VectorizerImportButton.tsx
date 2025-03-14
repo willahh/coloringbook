@@ -2,10 +2,14 @@ import { DocumentArrowDownIcon } from '@heroicons/react/24/outline';
 import { useRef } from 'react';
 
 interface VectorizerImportButtonProps {
+  buttonText?: string;
   setImageSrc: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-const VectorizerImportButton: React.FC<VectorizerImportButtonProps> = ({ setImageSrc }) => {
+const VectorizerImportButton: React.FC<VectorizerImportButtonProps> = ({
+  setImageSrc,
+  buttonText = 'Importer',
+}) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   // const handleFileSelect = async () => {
   //   try {
@@ -42,7 +46,7 @@ const VectorizerImportButton: React.FC<VectorizerImportButtonProps> = ({ setImag
     <label className="cursor-pointer">
       <button className="btn" onClick={() => fileInputRef.current?.click()}>
         <DocumentArrowDownIcon />
-        <span>Importer</span>
+        <span>{buttonText}</span>
       </button>
       <input
         type="file"

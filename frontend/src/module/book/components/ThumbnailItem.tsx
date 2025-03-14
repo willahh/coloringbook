@@ -1,6 +1,6 @@
 import { Tooltip } from '@components/Tooltip';
 
-const Item: React.FC<{
+const ThumbnailItem: React.FC<{
   className?: string;
   children: React.ReactNode;
   tooltipContent?: string;
@@ -9,6 +9,7 @@ const Item: React.FC<{
   <button
     data-name="item"
     className={`rounded-lg transition-all cursor-pointer duration-300
+      flex justify-center w-full aspect-square object-cover p-1
       border border-primary-300 dark:border-primary-600
     hover:border-secondary-500
     focus:outline-0 focus:border-secondary-500 
@@ -23,4 +24,4 @@ const Item: React.FC<{
     )}
   </button>
 );
-export default Item;
+export default ThumbnailItem;

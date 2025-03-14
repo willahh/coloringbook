@@ -67,6 +67,60 @@ class APIService {
     );
     return response.data;
   }
+
+  // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  // /image
+  // –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+  /**
+   * POST /image/save
+   */
+  static async saveSvg(svgContent: string) {
+    try {
+      const formData = new FormData();
+      formData.append('svgContent', svgContent);
+
+      const response = await axios.post(`${getAPIURL()}/image/save`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      return response.data; // { svgPath, pngPath }
+    } catch (error) {
+      console.error('Error saving SVG:', error);
+      throw error;
+    }
+  }
+
+  static async fetchSvgConvertedList(): Promise<
+    {
+      name: string;
+      file: string;
+      thumb: string;
+    }[]
+  > {
+    try {
+      const response = await axios.get(
+        `${getAPIURL()}/image/svg-converted-list`
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching SVG list:', error);
+      throw error;
+    }
+  }
+
+  static async fetchSvgContent(filePath: string) {
+    try {
+      const response = await axios.get(
+        `${getAPIURL()}/image/svg-content-from-path/${filePath}`
+      );
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching SVG content:', error);
+      throw error;
+    }
+  }
 }
 
 export default APIService;

@@ -1,6 +1,8 @@
 import React from 'react';
 
-const VectorizerExportButton: React.FC<{ svgOutput: string | null }> = ({ svgOutput }) => {
+const VectorizerExportButton: React.FC<{ svgOutput: string | null }> = ({
+  svgOutput,
+}) => {
   const handleExport = () => {
     if (!svgOutput) return;
 
