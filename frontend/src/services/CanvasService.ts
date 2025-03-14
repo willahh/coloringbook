@@ -345,7 +345,7 @@ class CanvasService {
   getPageFocusMargin(isMobile: boolean) {
     return isMobile
       ? { verticalMargin: 20, horizontalMargin: 10 }
-      : { verticalMargin: 24, horizontalMargin: 20 };
+      : { verticalMargin: 24, horizontalMargin: 100 };
   }
   calculateZoomMin(
     canvasWidth: number,
