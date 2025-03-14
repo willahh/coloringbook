@@ -389,6 +389,13 @@ class CanvasService {
       pageId
     );
 
+    // console.log(
+    //   '#a getPageFocusCoordinates canvasWidth: ',
+    //   canvasWidth,
+    //   ' canvasHeight: ',
+    //   canvasHeight
+    // );
+
     const zoom = this.calculateZoomMin(
       canvasWidth,
       canvasHeight,
@@ -402,11 +409,11 @@ class CanvasService {
     const centerPageY = pageTop + pageHeight / 2;
     const centerCanvasX = canvasWidth / 2;
     const centerCanvasY = canvasHeight / 2;
-    const offsetY = isMobile ? 20 : 0;
+    const offsetY = isMobile ? -20 : 40; // Ajustement vertical (doit correspondre à une hauteur de libellé de page ou un menu)
 
     // Calculer le déplacement nécessaire pour centrer la page dans le canvas
-    let deltaX = centerCanvasX - centerPageX * zoom;
-    const deltaY = (centerCanvasY - centerPageY - offsetY) * zoom;
+    let deltaX = (centerCanvasX - centerPageX) * zoom;
+    const deltaY = (centerCanvasY - centerPageY + offsetY) * zoom;
 
     // Appliquer la contrainte horizontale
     deltaX = this.constrainHorizontalMovement(
