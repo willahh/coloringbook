@@ -6,6 +6,7 @@ import canvasService from '@/services/CanvasService';
 import useCanvasContext from '../../useCanvasContext';
 import {
   getPrimary700Color,
+  getPrimaryColor,
   getSecondaryColor,
 } from '@/common/utils/themeColors';
 import { useTouchControls } from './useTouchControls';
@@ -73,7 +74,7 @@ export function useCanvasInitialization(
     canvas.on('mouse:wheel', mousewheel);
 
     const scrollbar = new Scrollbars(canvas, {
-      fill: getSecondaryColor(),
+      fill: getPrimaryColor(),
       stroke: getPrimary700Color(),
       lineWidth: 5,
       scrollbarSize: 8,
