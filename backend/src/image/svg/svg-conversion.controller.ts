@@ -5,9 +5,20 @@ import {
   Res,
   HttpException,
   HttpStatus,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  Body,
 } from '@nestjs/common';
 import { SvgConversionService } from './svg-conversion.service';
 import { Response } from 'express';
+import { FileInterceptor } from '@nestjs/platform-express';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 @Controller('image')
 export class SvgConversionController {
@@ -29,7 +40,6 @@ export class SvgConversionController {
     }
   }
 
-  // Nouvel endpoint pour récupérer le contenu brut du SVG
   @Get('svg-content/:svgPath(*)')
   async getSvgContent(@Param('svgPath') svgPath: string, @Res() res: Response) {
     try {
@@ -39,6 +49,74 @@ export class SvgConversionController {
     } catch (error) {
       throw new HttpException(
         error.message || 'Failed to retrieve SVG content',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+  }
+
+  @Post('save')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+        svgContent: {
+          type: 'string',
+        },
+      },
+    },
+  })
+  async saveSvg(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('svgContent') svgContent: string,
+  ) {
+    return this.svgConversionService.saveSvgAndConvert(
+      svgContent || file.buffer.toString(),
+    );
+  }
+
+  @Get('svg-converted-list')
+  @ApiOperation({ summary: 'Get list of converted SVG files with thumbnails' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of SVG files with their PNG thumbnails',
+    type: Array,
+    schema: {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          file: { type: 'string' },
+          thumb: { type: 'string' },
+        },
+      },
+    },
+  })
+  async getSvgConvertedList() {
+    return this.svgConversionService.getSvgConvertedList();
+  }
+
+  @Get('svg-content-from-path/:filePath(*)')
+  @ApiOperation({ summary: 'Get SVG content from file path' })
+  @ApiResponse({
+    status: 200,
+    description: 'SVG content as string',
+    type: String,
+  })
+  @ApiResponse({ status: 404, description: 'SVG file not found' })
+  async getSvgContentFromPath(@Param('filePath') filePath: string) {
+    try {
+      const svgContent =
+        await this.svgConversionService.getSvgContentFromPath(filePath);
+      return svgContent;
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Failed to retrieve SVG content from path',
         HttpStatus.NOT_FOUND,
       );
     }

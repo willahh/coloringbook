@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as sharp from 'sharp';
-import * as fs from 'fs';
+import * as fs from 'fs'; // FIXME: use fs/promises
+import * as fsPromises from 'fs/promises';
 import * as path from 'path';
 
 @Injectable()
@@ -13,7 +14,15 @@ export class SvgConversionService {
     'assets',
     'svg',
   );
-  private readonly pngCacheDir = path.join(
+  private readonly svgConvertedDir = path.join(
+    __dirname,
+    '..',
+    '..',
+    '..',
+    'uploads',
+    'svg-converted',
+  );
+  private readonly thumbDir = path.join(
     __dirname,
     '..',
     '..',
@@ -27,8 +36,11 @@ export class SvgConversionService {
     if (!fs.existsSync(this.svgDir)) {
       fs.mkdirSync(this.svgDir, { recursive: true });
     }
-    if (!fs.existsSync(this.pngCacheDir)) {
-      fs.mkdirSync(this.pngCacheDir, { recursive: true });
+    if (!fs.existsSync(this.svgConvertedDir)) {
+      fs.mkdirSync(this.svgConvertedDir, { recursive: true });
+    }
+    if (!fs.existsSync(this.thumbDir)) {
+      fs.mkdirSync(this.thumbDir, { recursive: true });
     }
   }
 
@@ -39,7 +51,7 @@ export class SvgConversionService {
       : path.join(this.svgDir, svgPath);
 
     const pngFileName = `${path.basename(svgPath, '.svg')}.png`;
-    const pngFullPath = path.join(this.pngCacheDir, pngFileName);
+    const pngFullPath = path.join(this.thumbDir, pngFileName);
 
     // Vérifier si le PNG existe déjà dans le cache
     if (fs.existsSync(pngFullPath)) {
@@ -70,5 +82,99 @@ export class SvgConversionService {
     }
 
     return fs.readFileSync(svgFullPath, 'utf-8');
+  }
+
+  async saveSvgAndConvert(svgContent: string) {
+    try {
+      // Vérifier si svgContent est valide
+      if (!svgContent || typeof svgContent !== 'string') {
+        throw new Error('Invalid SVG content provided');
+      }
+
+      // Générer un nom de fichier unique
+      const timestamp = Date.now();
+      const svgFileName = `converted-${timestamp}.svg`;
+
+      const svgPath = path.join(this.svgConvertedDir, svgFileName);
+
+      // Sauvegarder le fichier SVG
+      await fsPromises.writeFile(svgPath, svgContent);
+
+      // Convertir en PNG
+      await this.convertSvgToPng(svgPath);
+
+      return svgPath;
+    } catch (error) {
+      console.error('Error in saveSvgAndConvert:', error.message, error.stack);
+      throw new Error(`Failed to save and convert SVG: ${error.message}`);
+    }
+  }
+
+  async getSvgConvertedList(): Promise<{ file: string; thumb: string }[]> {
+    try {
+      console.log(
+        'Reading SVG converted directory:',
+        path.resolve(this.svgConvertedDir),
+      );
+
+      const files = await fsPromises.readdir(this.svgConvertedDir);
+      const svgFiles = files.filter((file) => file.endsWith('.svg'));
+
+      const result = await Promise.all(
+        svgFiles.map(async (svgFile) => {
+          const svgPath = `${this.svgConvertedDir}/${svgFile}`;
+          const pngFile = `${path.basename(svgFile, '.svg')}.png`;
+          const pngPath = `${this.thumbDir}/${pngFile}`;
+          const name = svgFile;
+
+          return { name: name, file: svgPath, thumb: pngPath };
+        }),
+      );
+
+      console.log('SVG converted list:', result);
+      return result;
+    } catch (error) {
+      console.error(
+        'Error in getSvgConvertedList:',
+        error.message,
+        error.stack,
+      );
+      throw new Error(`Failed to list SVG files: ${error.message}`);
+    }
+  }
+
+  async getSvgContentFromPath(relativePath: string): Promise<string> {
+    try {
+      // Normaliser le chemin pour gérer les différences de format
+      const normalizedPath = relativePath.startsWith('/')
+        ? relativePath.slice(1)
+        : relativePath;
+
+      // Construire le chemin complet
+      const svgFullPath = path.join(__dirname, '../../../', normalizedPath);
+
+      console.log('Attempting to read SVG from:', svgFullPath);
+
+      // Vérifier si le fichier existe
+      if (
+        !(await fsPromises
+          .access(svgFullPath)
+          .then(() => true)
+          .catch(() => false))
+      ) {
+        throw new Error(`SVG file not found: ${svgFullPath}`);
+      }
+
+      // Lire et retourner le contenu
+      const content = await fsPromises.readFile(svgFullPath, 'utf-8');
+      return content;
+    } catch (error) {
+      console.error(
+        'Error in getSvgContentFromPath:',
+        error.message,
+        error.stack,
+      );
+      throw new Error(`Failed to get SVG content: ${error.message}`);
+    }
   }
 }

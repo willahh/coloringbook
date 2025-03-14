@@ -5,7 +5,6 @@ import { AppModule } from '@/app.module';
 import { delayMiddleware } from '@/middlewares/delay.middleware';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import * as fs from 'fs';
 
 async function bootstrap() {
   // Charger les certificats SSL
