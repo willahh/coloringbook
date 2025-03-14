@@ -38,7 +38,9 @@ export function useTouchControls({
   const isMobile = useIsMobile();
   const pages = useSelector(selectBookPages);
   const { pageId } = useParams<{ pageId?: string }>();
+  console.log('a pageId', pageId)
   const pageIdParam = Number(pageId);
+  console.log('b pageIdParam', pageIdParam)
 
   useEffect(() => {
     if (!canvas || !scrollbar) return;
@@ -225,6 +227,7 @@ export function useTouchControls({
           const zoomFactor = currentDistance / initialPinchDistance;
           let zoom = currentZoom * zoomFactor;
           zoom = Math.max(0.02, Math.min(256, zoom));
+          console.log('pageIdParam: ', pageIdParam)
           const zoomMin = canvasService.getZoomMin(
             canvas,
             pageIdParam,
@@ -232,6 +235,12 @@ export function useTouchControls({
           );
 
           const threashold = 0.6;
+          console.log('zoom: ', zoom)
+          console.log('zoomMin: ', zoomMin)
+          console.log('(zoomMin - threashold): ', zoomMin - threashold)
+          // TODO:
+          // FIXME : Ici il faut régler ce problème
+          // du pinch qui ne fonctionne pas tout le temps en mobile
           if (zoom <= zoomMin - threashold) {
             console.log('zoom limit');
             zoom = currentZoom;
@@ -285,12 +294,21 @@ export function useTouchControls({
 
     const snapToNearestPage = (startVpt: fabric.TMat2D) => {
       console.log('snapToNearestPage');
-      if (!canvas) return;
+      if (!canvas) {
+        console.warn('Canvas not initialized');
+        return;
+      }
 
+      // Récupérer les dimensions du canvas et le zoom
       const canvasHeight = canvas.getHeight();
-      const zoom = canvas.getZoom();
-      const centerY = -startVpt[5] / zoom + canvasHeight / 2 / zoom;
+      const zoom = startVpt[0]; // Utiliser le zoom du viewport (startVpt[0] = zoomX, startVpt[3] = zoomY)
+      const canvasCenterY = canvasHeight / 2; // Centre du canvas en pixels (espace écran)
 
+      // Calculer le centre Y du viewport dans l'espace du canvas (avant zoom)
+      const viewportDeltaY = startVpt[5]; // Décalage Y du viewport
+      const centerY = (canvasCenterY - viewportDeltaY) / zoom; // Centre Y dans l'espace du canvas
+
+      // Récupérer et trier les pages
       const pages = canvas
         .getObjects('rect')
         .filter((obj) => obj.isPage)
@@ -301,17 +319,16 @@ export function useTouchControls({
         return;
       }
 
+      // Trouver la page la plus proche
       let nearestPage: fabric.Object | null = null;
       let minDistance = Infinity;
 
       pages.forEach((page) => {
-        const pageTop = (page.top || 0) / zoom;
-        const pageHeight = (page.height || 0) / zoom;
-        const pageCenter = pageTop + pageHeight / 2;
+        const pageTop = page.top || 0; // Position Y du haut de la page (espace canvas)
+        const pageHeight = page.height || 0; // Hauteur de la page (espace canvas)
+        const pageCenter = pageTop + pageHeight / 2; // Centre Y de la page (espace canvas)
+
         const distance = Math.abs(pageCenter - centerY);
-        console.log(
-          `Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`
-        );
 
         if (distance < minDistance) {
           minDistance = distance;
@@ -324,38 +341,60 @@ export function useTouchControls({
         return;
       }
 
-      const pageId = (nearestPage as fabric.Object).get('pageId');
+      const pageId = nearestPage.get('pageId');
+      console.log('#b snapToNearestPage - pageId: ', pageId);
 
-      if (pageId !== undefined) {
-        const targetVpt = canvasService.getPageFocusCoordinates(
-          canvas,
-          pageId,
-          isMobile
-        );
-        if (targetVpt) {
-          canvasService.animateViewportTransform(
-            canvas,
-            startVpt,
-            targetVpt,
-            300
-          );
-          canvas.__isPanning = false;
-          updateObjectControls(false);
-          // updateZoomState();
-        }
+      if (pageId === undefined || pageId === null) {
+        console.warn('Nearest page has no pageId:', nearestPage);
+        return;
       }
+
+      // Calculer les coordonnées pour centrer la page
+      const targetVpt = canvasService.getPageFocusCoordinates(
+        canvas,
+        pageId,
+        isMobile
+      );
+      if (!targetVpt) {
+        console.warn('Failed to get target viewport for page:', pageId);
+        return;
+      }
+
+      // Animer le viewport vers la page cible
+      canvasService.animateViewportTransform(canvas, startVpt, targetVpt, 300);
+      canvas.__isPanning = false;
+      updateObjectControls(false);
     };
 
     const snapToAdjacentPage = (
       startVpt: fabric.TMat2D,
       direction: 'up' | 'down'
     ) => {
-      if (!canvas) return;
+      console.log('snapToAdjacentPage', direction);
+      if (!canvas) {
+        console.warn('Canvas not initialized');
+        return;
+      }
 
+      // Récupérer les dimensions du canvas et le zoom
       const canvasHeight = canvas.getHeight();
-      const zoom = canvas.getZoom();
-      const centerY = -startVpt[5] / zoom + canvasHeight / 2 / zoom;
+      const zoom = startVpt[0]; // Utiliser le zoom du viewport (startVpt[0] = zoomX, startVpt[3] = zoomY)
+      const canvasCenterY = canvasHeight / 2; // Centre du canvas en pixels (espace écran)
 
+      // Calculer le centre Y du viewport dans l'espace du canvas (avant zoom)
+      const viewportDeltaY = startVpt[5]; // Décalage Y du viewport
+      const centerY = (canvasCenterY - viewportDeltaY) / zoom; // Centre Y dans l'espace du canvas
+
+      console.log(
+        '#b snapToAdjacentPage - centerY: ',
+        centerY,
+        'canvasHeight: ',
+        canvasHeight,
+        'zoom: ',
+        zoom
+      );
+
+      // Récupérer et trier les pages
       const pages = canvas
         .getObjects('rect')
         .filter((obj) => obj.isPage)
@@ -366,14 +405,36 @@ export function useTouchControls({
         return;
       }
 
+      // Trouver la page actuellement visible (la plus proche du centre)
       let currentPage: fabric.Object | null = null;
       let minDistance = Infinity;
 
       pages.forEach((page) => {
-        const pageTop = (page.top || 0) / zoom;
-        const pageHeight = (page.height || 0) / zoom;
-        const pageCenter = pageTop + pageHeight / 2;
+        if (typeof page.top !== 'number' || typeof page.height !== 'number') {
+          console.warn('Invalid page dimensions:', page);
+          return;
+        }
+
+        const pageTop = page.top; // Position Y du haut de la page (espace canvas)
+        const pageHeight = page.height; // Hauteur de la page (espace canvas)
+        const pageCenter = pageTop + pageHeight / 2; // Centre Y de la page (espace canvas)
         const distance = Math.abs(pageCenter - centerY);
+
+        // console.log(
+        //   `Page ${page.pageNumber}: Top=${pageTop}, Center=${pageCenter}, Distance=${distance}`
+        // );
+        // console.log(
+        //   '#b Page: ',
+        //   ' - pageCenterY: ',
+        //   pageCenter,
+        //   page.get('pageId'),
+        //   ' - pageHeight: ',
+        //   pageHeight,
+        //   ' - pageTop: ',
+        //   pageTop,
+        //   ' - distance: ',
+        //   distance
+        // );
 
         if (distance < minDistance) {
           minDistance = distance;
@@ -386,6 +447,7 @@ export function useTouchControls({
         return;
       }
 
+      // Trouver la page adjacente
       const currentIndex = pages.indexOf(currentPage);
       let targetPage: fabric.Object | null = null;
 
@@ -402,26 +464,35 @@ export function useTouchControls({
           } page`
         );
         const pageId = targetPage.get('pageId');
-        if (pageId !== undefined) {
-          const targetVpt = canvasService.getPageFocusCoordinates(
-            canvas,
-            pageId,
-            isMobile
-          );
-          if (targetVpt) {
-            canvasService.animateViewportTransform(
-              canvas,
-              startVpt,
-              targetVpt,
-              300
-            );
-            canvas.__isPanning = false;
-            updateObjectControls(false);
-            // updateZoomState();
-          }
+        if (pageId === undefined || pageId === null) {
+          console.warn('Target page has no pageId:', targetPage);
+          return;
         }
+
+        // Calculer les coordonnées pour centrer la page cible
+        const targetVpt = canvasService.getPageFocusCoordinates(
+          canvas,
+          pageId,
+          isMobile
+        );
+        if (!targetVpt) {
+          console.warn('Failed to get target viewport for page:', pageId);
+          return;
+        }
+
+        // Animer le viewport vers la page cible
+        canvasService.animateViewportTransform(
+          canvas,
+          startVpt,
+          targetVpt,
+          300
+        );
+        canvas.__isPanning = false;
+        updateObjectControls(false);
       } else {
-        console.log('No adjacent page to snap to');
+        console.log(
+          'No adjacent page to snap to, falling back to nearest page'
+        );
         snapToNearestPage(startVpt);
       }
     };

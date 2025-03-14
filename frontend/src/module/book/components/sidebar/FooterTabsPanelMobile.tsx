@@ -73,11 +73,11 @@ const FooterTabsPanelMobile: React.FC<FooterTabsPanelMobileProps> = ({
   return (
     <div
       data-id="footer-tabs-panel-mobile"
-      className={`${className} fixed bottom-0 left-0 w-full z-30`}
+      className={`${className} fixed bottom-0 left-0 w-full z-30 `}
     >
       {/* Barre des onglets (toujours visible en bas) */}
       <div
-        className="absolute bottom-0 w-full z-30 border-t  overflow-x-auto snap-x
+        className="absolute bottom-0 w-full z-30 border-t overflow-x-auto 
        border-primary-200 dark:border-primary-800 bg-primary-100 dark:bg-primary-950"
       >
         <div className="flex">

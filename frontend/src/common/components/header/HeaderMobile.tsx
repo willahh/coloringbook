@@ -52,7 +52,7 @@ const HeaderMobile: React.FC<FooterMobileProps> = ({
     <>
       <header
         data-id="header-mobile"
-        className={`${className} 
+        className={`${className} z-20
          bg-primary-50 dark:bg-primary-950 border-b border-primary-100 dark:border-primary-900 
         `}
       >

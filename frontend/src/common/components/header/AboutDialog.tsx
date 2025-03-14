@@ -220,7 +220,7 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
                 leaveTo="opacity-0 scale-95"
               >
                 <DialogPanel
-                  className={`w-full max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 shadow-xl transition-all
+                  className={`w-full overflow-y-auto max-w-md transform overflow-hidden rounded-2xl bg-white dark:bg-primary-950 shadow-xl transition-all
                   p-6 text-sm text-left align-middle text-gray-700 dark:text-gray-300`}
                 >
                   <DialogTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex justify-between items-center">
@@ -239,14 +239,14 @@ const AboutDialog: React.FC<AboutDialogProps> = ({
                   </DialogTitle>
 
                   {showChangelog ? (
-                    <div className="mt-2 max-h-96 overflow-y-auto">
+                    <div className="mt-2 max-h-96">
                       <Changelog />
                     </div>
                   ) : (
-                    <>
+                    <div className='max-h-96 overflow-y-auto pr-2'>
                       {renderAboutContent()}
                       {renderFooterContent()}
-                    </>
+                    </div>
                   )}
 
                   <div className="mt-4">

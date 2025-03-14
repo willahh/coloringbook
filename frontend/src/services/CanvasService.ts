@@ -228,6 +228,9 @@ class CanvasService {
     canvas: fabric.Canvas,
     pageId: number
   ): FabricRectPage | undefined {
+    if (!pageId) {
+      console.error('pageId is undefined')
+    }
     const pageRect = canvas.getObjects().find((obj) => {
       if (obj.get('pageId') === pageId) {
         return true;
@@ -299,8 +302,18 @@ class CanvasService {
       window.innerHeight || 0
     );
 
+    const footerTabsPanelMobileEl = document.querySelector(
+      'div[data-id="footer-tabs-panel-mobile"]'
+    );
+    const footerTabsPanelMobileHeight =
+      footerTabsPanelMobileEl?.clientHeight || 85;
+
+    // console.log('#a footerTabsPanelMobileHeight', footerTabsPanelMobileHeight);
+
     const headerHeight = 64;
-    const footerHeight = 64;
+    const footerHeight = isMobile ? footerTabsPanelMobileHeight : 64;
+    // console.log('#a footerHeight', footerHeight);
+
     let canvasWidth = viewportWidth;
     let canvasHeight = viewportHeight;
 
@@ -328,10 +341,14 @@ class CanvasService {
       canvasHeight = viewportHeight - headerHeight;
     }
 
+    // console.log('#a viewportHeight', viewportHeight);
+    // console.log('#a canvasHeight', canvasHeight);
+
     return { canvasWidth, canvasHeight };
   }
 
   getPageDimensions(canvas: fabric.Canvas, pageId: number): PageDimensions {
+    console.log('getPageDimensions pageId:', pageId)
     const pageRect = this.getPageRectbyPageId(canvas, pageId);
 
     return {
@@ -364,9 +381,13 @@ class CanvasService {
   }
 
   getZoomMin(canvas: fabric.Canvas, pageId: number, isMobile: boolean): number {
+    console.log('getZoomMin pageId: ', pageId)
     const { canvasWidth, canvasHeight } = this.getCanvasDimensions(isMobile);
     const { pageWidth, pageHeight } = this.getPageDimensions(canvas, pageId);
 
+    console.log('getZoomMin called with:', {  pageId, isMobile });
+    console.log('Canvas dimensions:', { canvasWidth, canvasHeight });
+    console.log('Page dimensions:', { pageWidth, pageHeight });
     const zoom = this.calculateZoomMin(
       canvasWidth,
       canvasHeight,
@@ -389,12 +410,12 @@ class CanvasService {
       pageId
     );
 
-    // console.log(
-    //   '#a getPageFocusCoordinates canvasWidth: ',
-    //   canvasWidth,
-    //   ' canvasHeight: ',
-    //   canvasHeight
-    // );
+    console.log(
+      '#a getPageFocusCoordinates canvasWidth: ',
+      canvasWidth,
+      ' canvasHeight: ',
+      canvasHeight
+    );
 
     const zoom = this.calculateZoomMin(
       canvasWidth,
@@ -404,16 +425,22 @@ class CanvasService {
       isMobile
     );
 
+    
     // Calculer le centre de la page et du canvas pour positionner correctement le viewport
     const centerPageX = pageLeft + pageWidth / 2;
-    const centerPageY = pageTop + pageHeight / 2;
+    // const centerPageY = pageTop + pageHeight / 2;
     const centerCanvasX = canvasWidth / 2;
-    const centerCanvasY = canvasHeight / 2;
-    const offsetY = isMobile ? -20 : 40; // Ajustement vertical (doit correspondre à une hauteur de libellé de page ou un menu)
+    // const centerCanvasY = canvasHeight / 2;
+
 
     // Calculer le déplacement nécessaire pour centrer la page dans le canvas
     let deltaX = (centerCanvasX - centerPageX) * zoom;
-    const deltaY = (centerCanvasY - centerPageY + offsetY) * zoom;
+    // const deltaY = (centerCanvasY - centerPageY) * zoom;
+    const a = (canvasHeight - (pageHeight * zoom)) / 2;
+    console.log('#a canvasHeight:', canvasHeight)
+    console.log('#a pageHeight:', pageHeight)
+    console.log('#a =>', a)
+    const pageCenterY = ((pageTop * zoom) - a) * -1;
 
     // Appliquer la contrainte horizontale
     deltaX = this.constrainHorizontalMovement(
@@ -423,7 +450,15 @@ class CanvasService {
       isMobile
     );
 
-    return [zoom, 0, 0, zoom, deltaX, deltaY];
+    // Appliquer une contrainte verticale pour s'assurer que la page est bien centrée
+    // deltaY = this.constrainVerticalMovement(
+    //   canvasHeight,
+    //   pageHeight * zoom,
+    //   deltaY,
+    //   isMobile
+    // );
+
+    return [zoom, 0, 0, zoom, deltaX, pageCenterY];
   }
 
   static previousPagFocusId: number;
@@ -627,7 +662,7 @@ class CanvasService {
     canvas: fabric.Canvas,
     currentVpt: number[],
     targetVpt: number[],
-    animationDuration: number = 500
+    animationDuration: number = 300
   ) {
     const startTime = performance.now();
     let animationFrameId: number;

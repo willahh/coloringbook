@@ -127,7 +127,7 @@ const SpreadViewerCanvas: React.FC<SpreadCanvasProps> = ({ pages }) => {
         data-id="cb-canvas-wrapper"
         className="relative flex-1"
       >
-        <PagesNavigation />
+        {!isMobile && <PagesNavigation />}
         <canvas ref={canvasRef} className="w-full h-full" />
         {/* {showShapeList && (
           <SvgShapeList

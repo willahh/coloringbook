@@ -63,7 +63,7 @@ const Pages: React.FC<PagesProps> = ({ className, pages }) => {
       : bookFormat === BookFormat.A4_PORTRAIT
       ? 160
       : bookFormat === BookFormat.CARRE
-      ? 80
+      ? 140
       : 0;
 
   console.log('#01 bookFormat', bookFormat);
