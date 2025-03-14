@@ -7,7 +7,7 @@ import SpreadViewerCanvas from './canvas/SpreadViewerCanvas';
 import SidePanel from './components/sidebar/sidebarDesktop/SidePanel';
 import * as bookActions from './BookActions';
 import { selectBook } from './BookSlice';
-import { PagesPanel } from './components/PagesPanel';
+import { PagesPanel } from './components/pagesPanel/PagesPanel';
 import BookToolbar from './components/BookToolbar';
 import LoadingScreen from '@/common/components/LoadingScreen';
 import ErrorDialog from '@/common/components/ErrorDialog';

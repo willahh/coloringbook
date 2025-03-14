@@ -3,7 +3,7 @@
  */
 import React, { useRef } from 'react';
 import SidePanel from './sidebar/sidebarDesktop/SidePanel';
-import { PagesPanel } from './PagesPanel';
+import { PagesPanel } from './pagesPanel/PagesPanel';
 import { Book } from '@/common/types/book'; // Ajuste le chemin selon ton projet
 
 interface MobileDrawerProps {
