@@ -40,7 +40,8 @@ export const makeMouseWheelWithAnimation =
     let momentumZoomVelocity = 0;
 
     function applyZoom(zoom: number, point: fabric.Point) {
-      if (zoom < canvasService.getZoomMin(canvas, pageId, isMobile)) {
+      // if (zoom < canvasService.getZoomMin(canvas, pageId, isMobile)) {
+      if (zoom < 0.25) {
         return;
       }
       canvas.zoomToPoint(point, zoom);

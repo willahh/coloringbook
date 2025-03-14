@@ -48,7 +48,7 @@ const Tabs: React.FC<{
               />
             )}
 
-            <div className="flex flex-col items-center gap-1 ">
+            <div className="flex flex-col items-center gap-1 select-none">
               {tab.icon}
               <div className="text-xs">{tab.label}</div>
             </div>

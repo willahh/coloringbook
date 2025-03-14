@@ -1,5 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { FixedSizeList } from 'react-window';
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 import type { Page } from '@apptypes/book';
@@ -8,19 +9,18 @@ import { useDispatch, useSelector } from '@/common/store';
 import { PageService } from '@/services/PageService';
 import * as BookActions from '../../BookActions';
 import { BookPageParams } from '@/common/interfaces';
-import { selectBookPages } from '../../BookSlice';
+import { selectBook, selectBookFormat, selectBookPages } from '../../BookSlice';
 import { useServices } from '@/common/contexts/ServiceContext';
 import { trackBookEvent } from '@/common/utils/analyticsEvents';
 import PageComponent from './PageComponent';
 import useDeletePage from './useDeletePage';
-
+import { BookFormat } from '@/common/types/book.enum';
 
 interface PagesProps {
   className?: string;
   pages: Page[];
   onDeleteButtonClick?: (pageId: number) => void;
 }
-
 
 const useAddPage = (bookId: number) => {
   const dispatch = useDispatch();
@@ -44,94 +44,76 @@ const useAddPage = (bookId: number) => {
 const Pages: React.FC<PagesProps> = ({ className, pages }) => {
   const { bookId, pageId } = useParams<BookPageParams>();
   const { bookDataService } = useServices();
-
+  const bookFormat = useSelector(selectBookFormat);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<FixedSizeList>(null);
   const selectedPageId = pageId ? Number(pageId) : -1;
   const useSpread = false;
   let spreads: Page[][] = [];
 
   if (pages.length > 0) {
-    if (useSpread) {
-      spreads = bookDataService.transformPagesToSpread(pages);
-    } else {
-      spreads = [pages];
-    }
+    spreads = useSpread
+      ? bookDataService.transformPagesToSpread(pages)
+      : [pages];
   }
 
-  /**
-   * Automatically scrolling to page feature
-   */
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const scrollToPage = (targetPageId: string) => {
-    const container = scrollContainerRef.current;
-    const pageElement: HTMLElement | null = document.querySelector(
-      'div[data-id="sp-page-' + targetPageId + '"]'
-    );
+  const itemHeight =
+    bookFormat === BookFormat.A4_PAYSAGE
+      ? 110
+      : bookFormat === BookFormat.A4_PORTRAIT
+      ? 160
+      : bookFormat === BookFormat.CARRE
+      ? 80
+      : 0;
 
-    if (container && pageElement) {
-      const containerHeight = container.clientHeight;
-      const pageHeight = pageElement.offsetHeight;
-      const pageOffsetTop = pageElement.offsetTop;
-      const scrollPosition = pageOffsetTop - (containerHeight - pageHeight) / 2;
+  console.log('#01 bookFormat', bookFormat);
+  console.log('#01 itemHeight', itemHeight);
+  // const itemHeight = bookFormat. 180; // Ajustez après mesure
 
-      container.scrollTo({
-        top: scrollPosition,
-        behavior: 'smooth',
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (pageId) {
-      scrollToPage(pageId);
-    }
-  }, [pageId]);
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  const renderSpreads = () => {
-    return spreads.map((spread, index) => (
-      <div
-        key={`spread-${index}`}
-        className={`flex gap-4 ${
-          useSpread ? 'flex-row' : 'flex-col'
-        } justify-center`}
-      >
-        {spread.map((page) => (
+  const renderPage = useCallback(
+    ({ index, style }) => {
+      const page = spreads[0][index];
+      return (
+        <div style={style} className="px-2">
           <PageComponent
-            key={page.pageId} // Ajoutez cette ligne
             bookId={Number(bookId)}
             page={page}
             selected={page.pageId === selectedPageId}
           />
-        ))}
-        {index === 0 ? (
-          <div data-name="page-placeholder" className=""></div>
-        ) : null}
-      </div>
-    ));
-  };
+        </div>
+      );
+    },
+    [spreads, selectedPageId, bookId]
+  );
+
+  useEffect(() => {
+    if (pageId && listRef.current) {
+      const targetIndex = pages.findIndex((p) => p.pageId === Number(pageId));
+      if (targetIndex !== -1) {
+        listRef.current.scrollToItem(targetIndex, 'smart');
+      }
+    }
+  }, [pageId, pages]);
 
   return (
     <div
       ref={scrollContainerRef}
-      className={`flex flex-col ${className || ''} rounded-md pt-4
- overflow-y-scroll custom-scrollbar
- dark:scrollbar-thumb-primary-700 scrollbar-track-primary-100 dark:scrollbar-track-primary-900 scrollbar-track-rounded-full`}
-      style={{
-        maxHeight: 'calc(100vh - 10em)', // FIXME: magic number 10em
-      }}
+      className={`${
+        className || ''
+      } flex flex-col rounded-md pt-4 overflow-hidden`}
+      style={{ maxHeight: 'calc(100vh - 10em)' }}
     >
-      {renderSpreads()}
+      <FixedSizeList
+        height={scrollContainerRef.current?.clientHeight || 600}
+        width="100%"
+        itemCount={pages.length}
+        itemSize={itemHeight}
+        overscanCount={5}
+        outerRef={scrollContainerRef}
+        ref={listRef} // Ajout du ref pour contrôler le scroll
+      >
+        {renderPage}
+      </FixedSizeList>
     </div>
   );
 };
@@ -177,6 +159,7 @@ export const PagesPanel: React.FC<{
       data-id="pages-panel"
       ref={ref}
       className={`${className || ''} flex flex-col gap-4 overflow-y-auto z-20
+      
       bg-primary-50 dark:bg-primary-950`}
     >
       <Pages className="p-2 flex-1" pages={pages} />
